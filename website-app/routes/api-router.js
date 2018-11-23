@@ -461,7 +461,6 @@ router.post('/page/', session.isAuthenticated, (req, res) => {
 })
 
 router.get('/pages/:page', session.isAuthenticated, (req, res) => {
-    console.log('== pages ==')
     let skipPosts = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
     modelPage.countDocuments()
     .then(totalItems => {
