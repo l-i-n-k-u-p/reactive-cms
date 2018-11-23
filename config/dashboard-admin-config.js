@@ -1,0 +1,6 @@
+const DASBOARD_ADMIN_CONFIG = {
+    MAX_PAGES_BY_REQUEST: 20,
+}
+
+
+module.exports = DASBOARD_ADMIN_CONFIG

@@ -1,0 +1,143 @@
+<template lang="html">
+    <div class="app-wrapper" v-on:scroll="onScroll">
+        <Header v-on:dashboard-toggle-menu="menuIsOpen" v-bind:userName="userName" v-bind:scrollTop="scrollTop" v-bind:pageTitle="pageTitle"></Header>
+        <RibbonError v-if="appErrorMessage"><slot>{{ appErrorMessage }}</slot></RibbonError>
+        <RibbonSuccess v-if="appSuccessMessage"><slot>{{ appSuccessMessage }}</slot></RibbonSuccess>
+        <div class="content-wrapper">
+            <Menu v-if="menuIsOpen"></Menu>
+            <div v-bind:class="pageWrapperClass">
+                <!-- <DashboardTitle v-bind:title="pageTitle"/> -->
+                <!-- <router-view :key="$route.fullPath"/> if there is a problem when call the same route and not update the view use this -->
+                <router-view :key="$route.fullPath"/>
+            </div>
+        </div>
+        <footer>
+            <span>Development by</span>
+            <a href="https://reactive-web.com" target="_blank">
+                <img src="/asset/reactive-web.png">
+            </a>
+            <span>Version 1.0.0</span>
+        </footer>
+    </div>
+</template>
+
+
+<script>
+import Header from './components/header.vue'
+import RibbonError from './components/templates/ribbon-error.vue'
+import RibbonSuccess from './components/templates/ribbon-success.vue'
+import Menu from './components/menu.vue'
+// import DashboardTitle from './components/templates/dashboard-title.vue'
+
+export default {
+    components: {
+        Header,
+        Menu,
+        // DashboardTitle,
+        RibbonError,
+        RibbonSuccess,
+    },
+    data: function() {
+        return {
+            pageWrapperClass: 'page-content-wrapper closed',
+            menuIsOpen: false,
+            pageTitle: '',
+            appErrorMessage: '',
+            appSuccessMessage: '',
+            userName: '',
+            scrollTop: 0,
+        }
+    },
+    created() {
+        this.getSessionUserData()
+        this.$eventHub.$on('dashboard-app-page-title', (title) => {
+            if(title)
+                this.pageTitle = ' - '+title
+            else
+                this.pageTitle = title
+        })
+        this.$eventHub.$on('dashboard-app-error', (errorMessage) => {
+            this.appErrorMessage = errorMessage
+        })
+        this.$eventHub.$on('dashboard-app-success', (successMessage) => {
+            this.appSuccessMessage = successMessage
+        })
+        this.$eventHub.$on('dashboard-app-toggle-menu', () => {
+            if(this.menuIsOpen === true) {
+                this.menuIsOpen = false
+                this.pageWrapperClass = 'page-content-wrapper closed'
+            } else {
+                this.menuIsOpen = true
+                this.pageWrapperClass = 'page-content-wrapper'
+            }
+        })
+    },
+    methods: {
+        getSessionUserData: function() {
+            this.$userSession.set('_id', window.user_id)
+            this.$userSession.fetch()
+            .then(data => {
+                this.userName = this.$userSession.get('user_first_name')
+            })
+            .catch(data => {
+                this.$eventHub.$emit('dashboard-app-error', data.message)
+            })
+
+        },
+        onScroll: function(el) {
+            this.scrollTop = el.target.scrollTop
+        }
+    },
+}
+</script>
+
+
+<style scoped lang="css">
+
+.app-wrapper {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.content-wrapper {
+    min-height: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.page-content-wrapper {
+    margin: auto;
+    max-width: 1145px;
+    padding-bottom: 60px;
+    position: relative;
+    top: 50px;
+}
+
+.page-content-wrapper.closed {
+    margin-left: auto;
+}
+
+footer {
+    bottom: 10px;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+    z-index: 0;
+}
+
+footer span {
+    align-self: center;
+    display: flex;
+    font-size: 12px;
+    margin: auto 5px auto 5px;
+}
+
+footer img {
+    display: flex;
+    position: relative;
+    top: -1px;
+    width: 130px;
+}
+
+</style>

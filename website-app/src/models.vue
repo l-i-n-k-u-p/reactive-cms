@@ -1,0 +1,423 @@
+<script>
+import {Model, Collection} from 'vue-mc'
+
+const appApiBaseURL = '/admin-website/api';
+
+Pusher.logToConsole = true;
+const pusher = new Pusher('c6e6a7cab15691ed1fab', {
+    cluster: 'us2',
+    forceTLS: true,
+})
+
+class User extends Model {
+    constructor(props) {
+        super(props)
+        this.listenPushMessages()
+    }
+
+    listenPushMessages() {
+        this.getChannel().bind('put', (data) => {
+            if(this.get('_id') === data.data._id)
+                this.set(data.data)
+        })
+
+        this.getChannel().bind('delete', (data) => {
+            if(this.get('_id') === data.data._id) {
+                this.removeFromAllCollections()
+            }
+        })
+    }
+
+    getChannel() {
+        return pusher.subscribe('dashboard-user')
+    }
+
+    defaults() {
+        return {
+            user_first_name: '',
+            user_last_name: '',
+            user_name: '',
+            user_pass: '',
+            user_email: '',
+            user_type: '',
+            user_registration_date: '',
+        }
+    }
+
+    options() {
+        return {}
+    }
+
+    post() {
+        let method = 'POST'
+        let route = this.getRoute('post')
+        let url = this.getURL(route, this.getRouteParameters())
+        let data = this._attributes
+
+        return this.getRequest({method, url, data}).send()
+    }
+
+    put() {
+        let method = 'PUT'
+        let route = this.getRoute('put')
+        let url = this.getURL(route, this.getRouteParameters())
+        let data = this._attributes
+
+        return this.getRequest({method, url, data}).send()
+    }
+
+    delete() {
+        let method = 'DELETE'
+        let route = this.getRoute('delete')
+        let url = this.getURL(route, this.getRouteParameters())
+        let data = this._attributes
+
+        return this.getRequest({method, url, data}).send()
+    }
+
+    routes() {
+        return {
+            fetch: appApiBaseURL+'/user/{_id}',
+            // get: appApiBaseURL+'/user/{_id}',
+            post:  appApiBaseURL+'/user/',
+            put: appApiBaseURL+'/user/{_id}',
+            delete: appApiBaseURL+'/user/{_id}',
+        }
+    }
+}
+
+class UserList extends Collection {
+    constructor(props) {
+        super(props)
+        this.listenPushMessages()
+    }
+
+    listenPushMessages() {
+        this.getChannel().bind('post', (data) => {
+            if(this.models.length < 20)
+                this.add(data.data)
+        })
+    }
+
+    getChannel() {
+        return pusher.subscribe('dashboard-user')
+    }
+
+    model() {
+        return User
+    }
+
+    getModelsFromResponse (response) {
+        return response.getData().items
+    }
+
+    bulkDelete(params) {
+        let method = 'DELETE'
+        let route = this.getRoute('bulkDelete')
+        let url = this.getURL(route, this.getRouteParameters())
+        // let data = this._attributes
+        let data = params
+
+        return this.getRequest({method, url, data}).send()
+    }
+
+    bulkUpdate(params) {
+        let method = 'PUT'
+        let route = this.getRoute('bulkDelete')
+        let url = this.getURL(route, this.getRouteParameters())
+        // let data = this._attributes
+        let data = params
+
+        return this.getRequest({method, url, data}).send()
+    }
+
+    routes() {
+        return {
+            fetch: appApiBaseURL+'/users/{page}',
+            bulkDelete: appApiBaseURL+'/users/',
+            bulkUpdate: appApiBaseURL+'/users/',
+        }
+    }
+}
+
+class SearchList extends Collection {
+    getModelsFromResponse (response) {
+        return response.getData().items
+    }
+
+    routes() {
+        return {
+            fetch: appApiBaseURL+'/search/{search}',
+        }
+    }
+}
+
+class Post extends Model {
+    constructor(props) {
+        super(props)
+        this.listenPushMessages()
+    }
+
+    listenPushMessages() {
+        this.getChannel().bind('put', (data) => {
+            if(this.get('_id') === data.data._id) {
+                this.setOption('hasUpdate', true)
+                this.set(data.data)
+            }
+        })
+
+        this.getChannel().bind('delete', (data) => {
+            if(this.get('_id') === data.data._id) {
+                this.removeFromAllCollections()
+            }
+        })
+    }
+
+    getChannel() {
+        return pusher.subscribe('dashboard-post')
+    }
+
+    defaults() {
+        return {
+            post_title: '',
+            post_content: '',
+            post_slug: '',
+            post_date: '',
+            post_status: '',
+        }
+    }
+
+    options() {
+        return {}
+    }
+
+    post() {
+        let method = 'POST'
+        let route = this.getRoute('post')
+        let url = this.getURL(route, this.getRouteParameters())
+        let data = this._attributes
+
+        return this.getRequest({method, url, data}).send()
+    }
+
+    put() {
+        let method = 'PUT'
+        let route = this.getRoute('put')
+        let url = this.getURL(route, this.getRouteParameters())
+        let data = this._attributes
+
+        return this.getRequest({method, url, data}).send()
+    }
+
+    delete() {
+        let method = 'DELETE'
+        let route = this.getRoute('delete')
+        let url = this.getURL(route, this.getRouteParameters())
+        let data = this._attributes
+
+        return this.getRequest({method, url, data}).send()
+    }
+
+    routes() {
+        return {
+            fetch: appApiBaseURL+'/post/{_id}',
+            post:  appApiBaseURL+'/post/',
+            put: appApiBaseURL+'/post/{_id}',
+            delete: appApiBaseURL+'/post/{_id}',
+        }
+    }
+}
+
+class PostList extends Collection {
+    constructor(props) {
+        super(props)
+        this.listenPushMessages()
+    }
+
+    listenPushMessages() {
+        this.getChannel().bind('post', (data) => {
+            if(this.models.length < 20)
+                this.add(data.data)
+        })
+    }
+
+    getChannel() {
+        return pusher.subscribe('dashboard-post')
+    }
+
+    model() {
+        return Post
+    }
+
+    getModelsFromResponse (response) {
+        return response.getData().items
+    }
+
+    bulkDelete(params) {
+        let method = 'DELETE'
+        let route = this.getRoute('bulkDelete')
+        let url = this.getURL(route, this.getRouteParameters())
+        let data = params
+
+        return this.getRequest({method, url, data}).send()
+    }
+
+    bulkUpdate(params) {
+        let method = 'PUT'
+        let route = this.getRoute('bulkUpdate')
+        let url = this.getURL(route, this.getRouteParameters())
+        // let data = this._attributes
+        let data = params
+
+        return this.getRequest({method, url, data}).send()
+    }
+
+    routes() {
+        return {
+            fetch: appApiBaseURL+'/posts/{page}',
+            bulkDelete: appApiBaseURL+'/posts/',
+            bulkUpdate: appApiBaseURL+'/posts/',
+        }
+    }
+}
+
+class Page extends Model {
+    constructor(props) {
+        super(props)
+        this.listenPushMessages()
+    }
+
+    listenPushMessages() {
+        this.getChannel().bind('put', (data) => {
+            if(this.get('_id') === data.data._id) {
+                this.setOption('hasUpdate', true)
+                this.set(data.data)
+            }
+        })
+
+        this.getChannel().bind('delete', (data) => {
+            if(this.get('_id') === data.data._id) {
+                this.removeFromAllCollections()
+            }
+        })
+    }
+
+    getChannel() {
+        return pusher.subscribe('dashboard-page')
+    }
+
+    defaults() {
+        return {
+            page_title: '',
+            page_content: '',
+            page_slug: '',
+            page_date: '',
+            page_status: '',
+        }
+    }
+
+    options() {
+        return {}
+    }
+
+    post() {
+        let method = 'POST'
+        let route = this.getRoute('post')
+        let url = this.getURL(route, this.getRouteParameters())
+        let data = this._attributes
+
+        return this.getRequest({method, url, data}).send()
+    }
+
+    put() {
+        let method = 'PUT'
+        let route = this.getRoute('put')
+        let url = this.getURL(route, this.getRouteParameters())
+        let data = this._attributes
+
+        return this.getRequest({method, url, data}).send()
+    }
+
+    delete() {
+        let method = 'DELETE'
+        let route = this.getRoute('delete')
+        let url = this.getURL(route, this.getRouteParameters())
+        let data = this._attributes
+
+        return this.getRequest({method, url, data}).send()
+    }
+
+    routes() {
+        return {
+            fetch: appApiBaseURL+'/page/{_id}',
+            post:  appApiBaseURL+'/page/',
+            put: appApiBaseURL+'/page/{_id}',
+            delete: appApiBaseURL+'/page/{_id}',
+        }
+    }
+}
+
+class PageList extends Collection {
+    constructor(props) {
+        super(props)
+        this.listenPushMessages()
+    }
+
+    listenPushMessages() {
+        this.getChannel().bind('post', (data) => {
+            if(this.models.length < 20)
+                this.add(data.data)
+        })
+    }
+
+    getChannel() {
+        return pusher.subscribe('dashboard-page')
+    }
+
+    model() {
+        return Page
+    }
+
+    getModelsFromResponse (response) {
+        return response.getData().items
+    }
+
+    bulkDelete(params) {
+        let method = 'DELETE'
+        let route = this.getRoute('bulkDelete')
+        let url = this.getURL(route, this.getRouteParameters())
+        let data = params
+
+        return this.getRequest({method, url, data}).send()
+    }
+
+    bulkUpdate(params) {
+        let method = 'PUT'
+        let route = this.getRoute('bulkUpdate')
+        let url = this.getURL(route, this.getRouteParameters())
+        // let data = this._attributes
+        let data = params
+
+        return this.getRequest({method, url, data}).send()
+    }
+
+    routes() {
+        return {
+            fetch: appApiBaseURL+'/pages/{page}',
+            bulkDelete: appApiBaseURL+'/pages/',
+            bulkUpdate: appApiBaseURL+'/pages/',
+        }
+    }
+}
+
+export default {
+    User: User,
+    UserList: UserList,
+    SearchList: SearchList,
+    Post: Post,
+    PostList: PostList,
+    Page: Page,
+    PageList: PageList,
+}
+
+</script>

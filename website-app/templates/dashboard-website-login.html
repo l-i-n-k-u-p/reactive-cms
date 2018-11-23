@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <title>
+            <%= title %>
+        </title>
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,500i,700,900,900i" rel="stylesheet">
+        <link href="/css/dashboard-website-login.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="wrapper">
+            <div class="login-form-wrapper">
+                <h1>LOGIN</h1>
+                <h2><%= title %></h2>
+                <form action="admin" method="POST" autocomplete="off">
+                    <div class="input-text">
+                        <label>User</label>
+                        <input type="text" name="user_name" placeholder="Username" autocomplete="off"/>
+                    </div>
+                    <div class="input-text">
+                        <label>Password</label>
+                        <input class="input-text" type="password" name="user_pass" placeholder="Password" autocomplete="off"/>
+                    </div>
+                    <button class="button" type="submit">Iniciar</button>
+                    <%= error_message %>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
