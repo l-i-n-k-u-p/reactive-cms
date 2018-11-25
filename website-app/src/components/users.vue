@@ -2,6 +2,7 @@
     <BoxWrapper>
         <div>
             <div class="header">
+                <NavigationButtons/>
                 <h2>Users</h2>
                 <div class="buttons-wrapper">
                     <Dropdown style="margin-right: 10px;" label="Bulk Actions" v-bind:onSelectOption="onSelectOption" v-bind:selectOptions="selectOptions"></Dropdown>
@@ -18,6 +19,7 @@ import UserListTable from './user-components/user-list-table.vue'
 import BoxWrapper from './templates/box-wrapper.vue'
 import Button from './templates/button.vue'
 import Dropdown from './templates/dropdown.vue'
+import NavigationButtons from './templates/navigation-buttons.vue'
 
 export default {
     data() {
@@ -49,6 +51,7 @@ export default {
         BoxWrapper,
         Button,
         Dropdown,
+        NavigationButtons,
     },
     created() {
         this.$eventHub.$emit('dashboard-app-page-title', 'Users')

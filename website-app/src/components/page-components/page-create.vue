@@ -2,6 +2,7 @@
     <BoxWrapper style="padding: 0;">
         <div class="page">
             <div class="header">
+                <NavigationButtons/>
                 <h2>Create page</h2>
             </div>
             <img src="https://via.placeholder.com/800x200/bbb/bbb" class="page-thumbnail">
@@ -25,6 +26,7 @@ import BoxWrapper from '../templates/box-wrapper.vue'
 import Button from '../templates/button.vue'
 import InputText from '../templates/input-text.vue'
 import DropdownSelect from '../templates/dropdown-select.vue'
+import NavigationButtons from '../templates/navigation-buttons.vue'
 
 export default {
     data() {
@@ -52,6 +54,7 @@ export default {
         BoxWrapper,
         Button,
         InputText,
+        NavigationButtons,
     },
     created() {
 

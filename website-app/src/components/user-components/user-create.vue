@@ -1,6 +1,7 @@
 <template lang="html">
     <BoxWrapper>
         <div class="header">
+            <NavigationButtons/>
             <h2>Create user</h2>
         </div>
         <form v-on:submit.prevent="noop">
@@ -23,6 +24,7 @@
 import BoxWrapper from '../templates/box-wrapper.vue'
 import Button from '../templates/button.vue'
 import InputText from '../templates/input-text.vue'
+import NavigationButtons from '../templates/navigation-buttons.vue'
 
 export default {
     data() {
@@ -42,6 +44,7 @@ export default {
         BoxWrapper,
         Button,
         InputText,
+        NavigationButtons,
     },
     created() {
         this.$eventHub.$emit('dashboard-app-page-title', 'New User')
