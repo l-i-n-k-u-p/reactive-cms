@@ -1,11 +1,12 @@
 <template lang="html">
-    <div class="menu-wrapper">
-        <div id="menu">
+    <div>
+        <div id="menu" v-click-outside='closeMenu'>
+            <img class="logo" src="/assets/reactive-cms-logo.png">
             <router-link v-for="(option) in options" v-bind:key="option.position" v-bind:class="option.class" :to="{ name: option.name, params: option.params}">
                 <i class="material-icons icon">{{ option.icon }}</i>{{ option.title }}
             </router-link>
         </div>
-        <div class="shadow" v-on:click="closeMenu"></div>
+        <div class="shadow"></div>
     </div>
 </template>
 
@@ -72,7 +73,28 @@ export default {
         closeMenu: function() {
             this.$eventHub.$emit('dashboard-app-toggle-menu', '')
         }
-    }
+    },
+    directives: {
+        'click-outside': {
+            bind: function(el, binding, vNode) {
+                // Define Handler and cache it on the element
+                const bubble = binding.modifiers.bubble
+                const handler = (e) => {
+                    if (bubble || (!el.contains(e.target) && el !== e.target)) {
+                        binding.value(e)
+                    }
+                }
+                el.__vueClickOutside__ = handler
+                // add Event Listeners
+                document.addEventListener('click', handler)
+            },
+            unbind: function(el, binding) {
+                // Remove Event Listeners
+                document.removeEventListener('click', el.__vueClickOutside__)
+                el.__vueClickOutside__ = null
+            }
+        }
+    },
 }
 
 </script>
@@ -84,11 +106,17 @@ export default {
     left: 0;
     min-width: 200px;
     background-color: #fff;
-    z-index: 4;
+    z-index: 1;
     top: 0px;
     height: 100%;
     flex-grow: 0;
-    /* padding-top: 60px; */
+    box-shadow: 0 0px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24);
+}
+
+.logo {
+    max-width: 200px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 #menu .option {
@@ -109,6 +137,7 @@ export default {
     text-decoration: none;
     margin: 5px;
     border-radius: 3px;
+    z-index: 2;
 }
 
 #menu .option:hover {
@@ -121,7 +150,6 @@ export default {
 }
 
 .shadow {
-    background-color: rgba(0, 0, 0, 0.25);
     width: 100%;
     height: 100%;
     top: 0;
@@ -129,7 +157,7 @@ export default {
     left: 0;
     right: 0;
     position: fixed;
-    z-index: 3;
+    z-index: 0;
 }
 
 </style>

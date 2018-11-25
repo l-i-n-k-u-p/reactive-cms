@@ -1,6 +1,7 @@
 <template lang="html">
     <BoxWrapper>
         <div class="header">
+            <NavigationButtons/>
             <h2>User: {{ user.user_name }} detail</h2>
         </div>
         <form v-on:submit.prevent="noop">
@@ -24,6 +25,7 @@ import BoxWrapper from '../templates/box-wrapper.vue'
 import ConfirmationModal from '../templates/confirmation-modal.vue'
 import Button from '../templates/button.vue'
 import InputText from '../templates/input-text.vue'
+import NavigationButtons from '../templates/navigation-buttons.vue'
 
 export default {
     data() {
@@ -40,6 +42,7 @@ export default {
         ConfirmationModal,
         Button,
         InputText,
+        NavigationButtons,
     },
     created() {
         this.$eventHub.$emit('dashboard-app-page-title', 'User')

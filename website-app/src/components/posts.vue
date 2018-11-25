@@ -2,6 +2,7 @@
     <BoxWrapper>
         <div>
             <div class="header">
+                <NavigationButtons/>
                 <h2>Posts</h2>
                 <div class="buttons-wrapper">
                     <Dropdown style="margin-right: 10px;" label="Bulk Actions" v-bind:onSelectOption="onSelectOption" v-bind:selectOptions="selectOptions"></Dropdown>
@@ -17,6 +18,7 @@
 import PostListTable from './post-components/post-list-table.vue'
 import BoxWrapper from './templates/box-wrapper.vue'
 import Button from './templates/button.vue'
+import NavigationButtons from './templates/navigation-buttons.vue'
 import Dropdown from './templates/dropdown.vue'
 
 export default {
@@ -49,6 +51,7 @@ export default {
         BoxWrapper,
         Button,
         Dropdown,
+        NavigationButtons,
     },
     created() {
         this.$eventHub.$emit('dashboard-app-page-title', 'Posts')

@@ -2,6 +2,7 @@
     <BoxWrapper style="padding: 0;">
         <div class="post">
             <div class="header">
+                <NavigationButtons/>
                 <h2>Create post</h2>
             </div>
             <img src="https://via.placeholder.com/800x200/bbb/bbb" class="post-thumbnail">
@@ -26,6 +27,7 @@ import Button from '../templates/button.vue'
 import InputText from '../templates/input-text.vue'
 import DropdownSelect from '../templates/dropdown-select.vue'
 import ConfirmationModal from '../templates/confirmation-modal.vue'
+import NavigationButtons from '../templates/navigation-buttons.vue'
 
 export default {
     data() {
@@ -57,6 +59,7 @@ export default {
         Button,
         InputText,
         ConfirmationModal,
+        NavigationButtons,
     },
     created() {
         this.post.setOption('hasUpdate', false)

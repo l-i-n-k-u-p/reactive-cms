@@ -4,13 +4,15 @@
         <RibbonError v-if="appErrorMessage"><slot>{{ appErrorMessage }}</slot></RibbonError>
         <RibbonSuccess v-if="appSuccessMessage"><slot>{{ appSuccessMessage }}</slot></RibbonSuccess>
         <div class="content-wrapper">
-            <Menu v-if="menuIsOpen"></Menu>
             <div v-bind:class="pageWrapperClass">
                 <!-- <DashboardTitle v-bind:title="pageTitle"/> -->
                 <!-- <router-view :key="$route.fullPath"/> if there is a problem when call the same route and not update the view use this -->
                 <router-view :key="$route.fullPath"/>
             </div>
         </div>
+        <transition name="fade">
+            <Menu class="left-menu-wrapper" v-if="menuIsOpen"></Menu>
+        </transition>
         <footer>
             <span>Development by</span>
             <a href="https://reactive-web.com" target="_blank">
@@ -82,7 +84,6 @@ export default {
             .catch(data => {
                 this.$eventHub.$emit('dashboard-app-error', data.message)
             })
-
         },
         onScroll: function(el) {
             this.scrollTop = el.target.scrollTop
@@ -97,6 +98,7 @@ export default {
 .app-wrapper {
     height: 100%;
     overflow-y: auto;
+    position: relative;
 }
 
 .content-wrapper {
@@ -138,6 +140,19 @@ footer img {
     position: relative;
     top: -1px;
     width: 130px;
+}
+
+.left-menu-wrapper {
+    z-index: 4;
+    position: relative;
+}
+
+.fade-enter-active, .fade-leave-active {
+    transition: all 100ms ease;
+}
+
+.fade-enter, .fade-leave-to {
+    opacity: 0;
 }
 
 </style>
