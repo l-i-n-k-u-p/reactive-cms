@@ -28,6 +28,7 @@ router.get('/search/:search', session.isAuthenticated, (req, res) => {
         modelUser.find({'user_name': searchRegex}).select(['user_name']).exec(),
         modelPost.find({'post_title': searchRegex}).select(['post_title']).exec(),
         modelPage.find({'page_title': searchRegex}).select(['page_title']).exec(),
+        modelMedia.find({'media_title': searchRegex}).select(['media_title']).exec(),
     ])
     .then(data => {
         res.json({
