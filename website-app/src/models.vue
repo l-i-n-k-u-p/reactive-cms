@@ -410,6 +410,139 @@ class PageList extends Collection {
     }
 }
 
+
+class Media extends Model {
+    constructor(props) {
+        super(props)
+        this.listenPushMessages()
+    }
+
+    listenPushMessages() {
+        this.getChannel().bind('put', (data) => {
+            if(this.get('_id') === data.data._id) {
+                this.setOption('hasUpdate', true)
+                this.set(data.data)
+            }
+        })
+
+        this.getChannel().bind('delete', (data) => {
+            if(this.get('_id') === data.data._id) {
+                this.removeFromAllCollections()
+            }
+        })
+    }
+
+    getChannel() {
+        return pusher.subscribe('dashboard-media')
+    }
+
+    defaults() {
+        return {
+            media_original_name: '',
+            media_name: '',
+            media_title: '',
+            media_mime_type: '',
+            media_size: '',
+            media_path: '',
+            media_date: '',
+        }
+    }
+
+    options() {
+        return {}
+    }
+
+    post() {
+        let method = 'POST'
+        let route = this.getRoute('post')
+        let url = this.getURL(route, this.getRouteParameters())
+        let data = this._attributes
+
+        return this.getRequest({method, url, data}).send()
+    }
+
+    put() {
+        let method = 'PUT'
+        let route = this.getRoute('put')
+        let url = this.getURL(route, this.getRouteParameters())
+        let data = this._attributes
+
+        return this.getRequest({method, url, data}).send()
+    }
+
+    delete() {
+        let method = 'DELETE'
+        let route = this.getRoute('delete')
+        let url = this.getURL(route, this.getRouteParameters())
+        let data = this._attributes
+
+        return this.getRequest({method, url, data}).send()
+    }
+
+    routes() {
+        return {
+            fetch: appApiBaseURL+'/media-file/{_id}',
+            post:  appApiBaseURL+'/media-file/',
+            put: appApiBaseURL+'/media-file/{_id}',
+            delete: appApiBaseURL+'/media-file/{_id}',
+        }
+    }
+}
+
+class MediaList extends Collection {
+    constructor(props) {
+        super(props)
+        this.listenPushMessages()
+    }
+
+    listenPushMessages() {
+        this.getChannel().bind('post', (data) => {
+            if(this.models.length < 20)
+                this.add(data.data)
+        })
+    }
+
+    getChannel() {
+        return pusher.subscribe('dashboard-media')
+    }
+
+    model() {
+        return Media
+    }
+
+    getModelsFromResponse (response) {
+        return response.getData().items
+    }
+
+    bulkDelete(params) {
+        let method = 'DELETE'
+        let route = this.getRoute('bulkDelete')
+        let url = this.getURL(route, this.getRouteParameters())
+        let data = params
+
+        return this.getRequest({method, url, data}).send()
+    }
+
+    bulkUpdate(params) {
+        let method = 'PUT'
+        let route = this.getRoute('bulkUpdate')
+        let url = this.getURL(route, this.getRouteParameters())
+        // let data = this._attributes
+        let data = params
+
+        return this.getRequest({method, url, data}).send()
+    }
+
+    routes() {
+        return {
+            fetch: appApiBaseURL+'/media-files/{page}',
+            bulkDelete: appApiBaseURL+'/media-files/',
+            bulkUpdate: appApiBaseURL+'/media-files/',
+        }
+    }
+}
+
+
 export default {
     User: User,
     UserList: UserList,
@@ -418,6 +551,8 @@ export default {
     PostList: PostList,
     Page: Page,
     PageList: PageList,
+    Media: Media,
+    MediaList: MediaList,
 }
 
 </script>

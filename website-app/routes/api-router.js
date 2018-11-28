@@ -9,12 +9,14 @@ const DASHBOARD_ADMIN_CONFIG = require('../../config/dashboard-admin-config.js')
 const modelUser = require(path.join(APP_GLOBAL.appServerPath, '../models/user'))
 const modelPost = require(path.join(APP_GLOBAL.appServerPath, '../models/post'))
 const modelPage = require(path.join(APP_GLOBAL.appServerPath, '../models/page'))
+const modelMedia = require(path.join(APP_GLOBAL.appServerPath, '../models/media'))
 const session = require('../../lib/session')
 const {
     generatePostSlug,
     generatePageSlug,
 } = require('../lib/lib')
 const { pushMessage } = require('../../lib/push-message')
+const { MediaUpload } = require('../../lib/media-upload')
 
 
 // start - search
@@ -572,6 +574,174 @@ router.delete('/page/:id', session.isAuthenticated, (req, res, next) => {
 })
 
 // end - pages
+
+
+// start - media
+
+router.get('/media-file/:id', session.isAuthenticated, (req, res) => {
+    modelMedia.findById(req.params.id, (err, media) => {
+        if(media)
+            res.json(media)
+        else
+            res.json({
+                status_code: 1,
+                status_msg: 'Media not found',
+            })
+    })
+})
+
+router.post('/media-file/', session.isAuthenticated, (req, res) => {
+    MediaUpload(req, res)
+    .then(data => {
+        let newMedia = new modelMedia({
+            media_original_name: data.fileData.originalname,
+            media_name: data.fileData.filename,
+            media_title: data.postData.media_title,
+            media_mime_type: data.fileData.mimetype,
+            media_size: data.fileData.size,
+            media_path: data.fileData.path,
+            media_date: dateTime.create().format('Y-m-d H:M:S'),
+        })
+        newMedia.save()
+        .then(media => {
+            res.json({
+                status_code: 0,
+                status_msg: 'New media added',
+                data: {
+                    id: media.id
+                },
+            })
+            pushMessage.trigger('dashboard-media', 'post', {
+                data: media
+            })
+        })
+        .catch(err => {
+            res.json({
+                status_code: 1,
+                status_msg: 'Error at upload media',
+            })
+        })
+    })
+    .catch(err => {
+        res.json({
+            status_code: 1,
+            status_msg: 'Error at upload media',
+        })
+    })
+})
+
+router.get('/media-files/:page', session.isAuthenticated, (req, res) => {
+    let skipPosts = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
+    modelMedia.countDocuments()
+    .then(totalItems => {
+        modelMedia.find().skip(skipPosts).limit(DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST).exec()
+        .then(items => {
+            res.json({
+                items: items,
+                total_pages: Math.ceil(totalItems/DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST),
+                items_skipped: skipPosts,
+                total_items: totalItems,
+                status_code: 0,
+                status_msg: '',
+            })
+        })
+        .catch(err => {
+            res.json({
+                status_code: 1,
+                status_msg: 'Error loading the media',
+            })
+        })
+    })
+    .catch(err => {
+        res.json({
+            status_code: 1,
+            status_msg: 'Error loading the media',
+        })
+    })
+})
+
+router.put('/media-file/:id', session.isAuthenticated, (req, res, next) => {
+    modelMedia.findById(req.params.id)
+    .then(media => {
+        media.media_content = req.body.media_content
+        media.media_status = req.body.media_status
+        if(media.media_title === req.body.media_title) {
+            media.media_title = req.body.media_title
+            media.save()
+            .then(media => {
+                res.json({
+                    status_code: 0,
+                    status_msg: 'Post updated',
+                })
+                pushMessage.trigger('dashboard-media', 'put', {
+                    data: media
+                })
+            })
+            .catch(err => {
+                res.json({
+                    status_code: 1,
+                    status_msg: 'It was not updated',
+                })
+            })
+        } else {
+            let newMediaSlug = slugify(req.body.media_title, {lower: true})
+            generatePageSlug(media._id, newMediaSlug)
+            .then(slug => {
+                media.media_title = req.body.media_title
+                media.media_slug = slug
+                media.save()
+                .then(media => {
+                    res.json({
+                        status_code: 0,
+                        status_msg: 'Post updated',
+                    })
+                    pushMessage.trigger('dashboard-media', 'put', {
+                        data: media
+                    })
+                })
+                .catch(err => {
+                    res.json({
+                        status_code: 1,
+                        status_msg: 'It was not updated',
+                    })
+                })
+            })
+            .catch(err => {
+                cres.json({
+                    status_code: 1,
+                    status_msg: 'It was not updated',
+                })
+            })
+        }
+    })
+    .catch(err => {
+        res.json({
+            status_code: 1,
+            status_msg: 'It was not updated',
+        })
+    })
+})
+
+router.delete('/media-file/:id', session.isAuthenticated, (req, res, next) => {
+    modelMedia.findByIdAndRemove(req.params.id)
+    .then(media => {
+        res.json({
+            status_code: 0,
+            status_msg: 'Media deleted',
+        })
+        pushMessage.trigger('dashboard-media', 'delete', {
+            data: media
+        })
+    })
+    .catch(err => {
+        res.json({
+            status_code: 1,
+            status_msg: 'Error at delete media',
+        })
+    })
+})
+
+// end - media
 
 
 module.exports = router

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server/server.js",
     "pm2:start": "node_modules/pm2/bin/pm2 start server/server.js -i 1 --name='VENoM'",
-    "pm2:start-watch": "node_modules/pm2/bin/pm2 start server/server.js -i 1 --name='VENoM' --watch",
+    "pm2:start-watch": "node_modules/pm2/bin/pm2 start ecosystem.config.js",
     "pm2:kill": "node_modules/pm2/bin/pm2 kill",
     "pm2:monit": "node_modules/pm2/bin/pm2 monit",
     "pm2:global-logs": "node_modules/pm2/bin/pm2 logs",
@@ -33,6 +33,7 @@
     "fastify": "^1.12.1",
     "mongoose": "^5.3.10",
     "morgan": "^1.9.1",
+    "multer": "^1.4.1",
     "node-datetime": "^2.1.2",
     "pm2": "^3.2.2",
     "pusher": "^2.1.3",

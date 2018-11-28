@@ -16,7 +16,7 @@
         <footer>
             <span>Development by</span>
             <a href="https://reactive-web.com" target="_blank">
-                <img src="/asset/reactive-web.png">
+                <img src="/assets/reactive-web.png">
             </a>
             <span>Version 1.0.0</span>
         </footer>
