@@ -20,7 +20,6 @@ export default {
     components: {
     },
     created() {
-        console.log('== this.$router ==', this.$router.history.current)
     },
     methods: {
         routerHistory: function(position) {

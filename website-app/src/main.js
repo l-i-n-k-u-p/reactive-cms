@@ -21,6 +21,8 @@ import PostDetail from './components/post-components/post-detail.vue';
 import PostCreate from './components/post-components/post-create.vue';
 import PageDetail from './components/page-components/page-detail.vue';
 import PageCreate from './components/page-components/page-create.vue';
+import MediaDetail from './components/media-components/media-detail.vue';
+import MediaCreate from './components/media-components/media-create.vue';
 
 
 const getHexColor = function(string) {
@@ -67,7 +69,7 @@ const routes = [
     },
     {
         name: 'media',
-        path: appBaseURL+'/media',
+        path: appBaseURL+'/media-files/:page',
         component: Media
     },
     {
@@ -109,6 +111,16 @@ const routes = [
         name: 'new-page',
         path: appBaseURL+'/new-page/',
         component: PageCreate
+    },
+    {
+        name: 'media-detail',
+        path: appBaseURL+'/media/:id',
+        component: MediaDetail
+    },
+    {
+        name: 'new-media',
+        path: appBaseURL+'/new-media/',
+        component: MediaCreate
     },
 ];
 

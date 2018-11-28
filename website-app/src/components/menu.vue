@@ -47,6 +47,7 @@ export default {
                     class: 'option',
                     name: 'media',
                     icon: 'perm_media',
+                    params: { page: 1 },
                 },
                 {
                     position: 4,
