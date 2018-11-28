@@ -33,7 +33,6 @@ export default {
     margin-left: 20px;
     margin-right: 20px;
     padding: 15px 20px 15px 20px;
-    overflow: hidden;
 }
 
 </style>

@@ -5,7 +5,7 @@
                 <NavigationButtons/>
                 <h2>Media detail</h2>
             </div>
-            <img src="https://via.placeholder.com/800x200/bbb/bbb" class="media-thumbnail">
+            <div class="media-thumbnail"></div>
             <div class="content-wrapper">
                 <InputText class="input" inputName="Media Title" v-bind:inputValue="media.media_title" v-bind:onChangeValue="onChangeInputValue" propName='media_title'></InputText>
                 <div class="buttons-wrapper">
@@ -142,6 +142,7 @@ export default {
     top: 0;
     left: 0;
     padding: 15px 20px 15px 20px;
+    z-index: 1;
 }
 
 h2 {
@@ -168,12 +169,22 @@ form {
 }
 
 .media-thumbnail {
-    /* position: absolute; */
+    box-sizing: border-box;
     top: 0;
     left: 0;
     right: 0;
     display: flex;
     width: 100%;
+    background-color: #f8f8f8;
+    height: 200px;
+    z-index: 0;
+    position: relative;
+    pointer-events: none;
+    color: #616161;
+    padding: 10px;
+    transition-duration: 100ms;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
 }
 
 .content-wrapper {

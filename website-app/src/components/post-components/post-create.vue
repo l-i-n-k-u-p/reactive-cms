@@ -5,7 +5,7 @@
                 <NavigationButtons/>
                 <h2>Create post</h2>
             </div>
-            <img src="https://via.placeholder.com/800x200/bbb/bbb" class="post-thumbnail">
+            <div class="post-thumbnail"></div>
             <div class="content-wrapper">
                 <InputText class="input" inputName="Post Title" v-bind:inputValue="post.post_title" v-bind:onChangeValue="onChangeInputValue" propName='post_title'></InputText>
                 <editor v-bind:content="editorContent" v-bind:onChangeContent="onChangeContent"></editor>
@@ -103,7 +103,8 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
-    padding: 20px;
+    padding: 15px 20px 15px 20px;
+    z-index: 1;
 }
 
 h2 {
@@ -130,12 +131,22 @@ form {
 }
 
 .post-thumbnail {
-    /* position: absolute; */
+    box-sizing: border-box;
     top: 0;
     left: 0;
     right: 0;
     display: flex;
     width: 100%;
+    background-color: #f8f8f8;
+    height: 200px;
+    z-index: 0;
+    position: relative;
+    pointer-events: none;
+    color: #616161;
+    padding: 10px;
+    transition-duration: 100ms;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
 }
 
 .content-wrapper {
