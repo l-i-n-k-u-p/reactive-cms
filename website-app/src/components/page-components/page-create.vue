@@ -103,7 +103,7 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
-    padding: 20px;
+    padding: 15px 20px 15px 20px;
 }
 
 h2 {
