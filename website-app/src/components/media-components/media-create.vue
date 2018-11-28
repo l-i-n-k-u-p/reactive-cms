@@ -153,6 +153,8 @@ h2 {
     padding: 10px;
     border: 2px dashed #ccc;
     transition-duration: 100ms;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
 }
 
 .dropzone.dragover {
