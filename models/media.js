@@ -15,4 +15,13 @@ const Media = new Schema({
 });
 
 
+Media.virtual('model_name').get(function(){
+  return 'media'
+})
+
+Media.set('toJSON', {
+   virtuals: true
+})
+
+
 module.exports = mongoose.model('Media', Media);

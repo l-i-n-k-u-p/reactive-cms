@@ -24,6 +24,10 @@
                             <i class="material-icons">insert_drive_file</i>
                             <label>{{ item.page_title }}</label>
                         </div>
+                        <div v-if="item.model_name == 'media'" v-on:click="showMediaDetail(item)">
+                            <i class="material-icons">image</i>
+                            <label>{{ item.media_title }}</label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -112,6 +116,9 @@ export default {
         },
         showPageDetail: function(page) {
             this.$router.push({ name: 'page-detail', params: { id: page.get('_id') }})
+        },
+        showMediaDetail: function(media) {
+            this.$router.push({ name: 'media-detail', params: { id: media.get('_id') }})
         },
     },
     directives: {
