@@ -139,7 +139,7 @@ export default {
 }
 
 .table-wrapper tbody tr:hover {
-    background-color: #eee;
+    background-color: rgba(200, 200, 200, 0.3);
 }
 
 .navigation-wrapper {
@@ -164,6 +164,7 @@ export default {
     height: 24px;
     width: 24px;
     justify-content: center;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
 }
 
 .avatar span {

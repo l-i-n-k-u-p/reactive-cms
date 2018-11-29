@@ -13,7 +13,7 @@
             <InputText inputName="User Type" v-bind:inputValue="user.user_type" v-bind:onChangeValue="onChangeInputValue" propName='user_type'></InputText>
             <div class="buttons-wrapper">
                 <Button buttonIcon="close" v-bind:buttonAction="cancelCrateUser">Cancel</button>
-                <Button buttonIcon="add" v-bind:buttonAction="createUser" style="margin-left: 10px;">Create</button>
+                <Button buttonIcon="save" v-bind:buttonAction="createUser" style="margin-left: 10px;">Create</button>
             </div>
         </form>
     </BoxWrapper>

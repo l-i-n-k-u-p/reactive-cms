@@ -13,7 +13,7 @@
             <InputText inputName="User Type" v-bind:inputValue="user.user_type" v-bind:onChangeValue="onChangeInputValue" propName='user_type'></InputText>
             <div class="buttons-wrapper">
                 <Button buttonIcon="remove" v-bind:buttonAction="showConfirmationModal">Delete</button>
-                <Button buttonIcon="update" v-bind:buttonAction="updateUser" style="margin-left: 10px;">Update</button>
+                <Button buttonIcon="save" v-bind:buttonAction="updateUser" style="margin-left: 10px;">Update</button>
             </div>
         </form>
         <ConfirmationModal v-if="showModal" v-bind:modalTitle="modalTitle" v-bind:modalDescription="modalDescription" v-bind:cancelAction="cancelAction" v-bind:acceptAction="acceptAction"></ConfirmationModal>

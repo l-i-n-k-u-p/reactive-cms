@@ -2,17 +2,17 @@
     <BoxWrapper style="padding: 0;">
         <div class="page">
             <div class="header">
-                <NavigationButtons/>
+                <NavigationButtons buttonColor="#f0f0f0"/>
                 <h2>Create page</h2>
             </div>
-            <div class="page-thumbnail"></div>
+            <div class="page-thumbnail" v-bind:style="$getHexColor(page.page_title)"></div>
             <div class="content-wrapper">
                 <InputText class="input" inputName="Page Title" v-bind:inputValue="page.page_title" v-bind:onChangeValue="onChangeInputValue" propName='page_title'></InputText>
                 <editor v-bind:content="editorContent" v-bind:onChangeContent="onChangeContent"></editor>
                 <div class="buttons-wrapper">
                     <DropdownSelect label="Status" v-bind:initialIndexOption="pageStatusIndex" v-bind:onSelectOption="onSelectOption" v-bind:selectOptions="selectOptions"></DropdownSelect>
                     <Button buttonIcon="remove" v-bind:buttonAction="showConfirmationModal" style="margin-left: 10px;">Delete</button>
-                    <Button buttonIcon="update" v-bind:buttonAction="updatePage" style="margin-left: 10px;">Update</button>
+                    <Button buttonIcon="save" v-bind:buttonAction="updatePage" style="margin-left: 10px;">Update</button>
                 </div>
             </div>
         </div>
@@ -172,7 +172,7 @@ h2 {
     font-size: 16px;
     font-weight: 500;
     display: flex;
-    color: #616161;
+    color: #f0f0f0;
     flex-grow: 1;
     margin-bottom: 20px;
     margin-top: 5px;
