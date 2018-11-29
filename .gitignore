@@ -72,6 +72,9 @@ typings/
 # Serverless directories
 .serverless
 
+# macOS
+*.DS_Store
+.DS_Store
 
 # VENoM static
 site-static/uploads/
