@@ -16,7 +16,7 @@ const {
     generatePageSlug,
 } = require('../lib/lib')
 const { pushMessage } = require('../../lib/push-message')
-const { MediaUpload } = require('../../lib/media-upload')
+const { mediaUpload } = require('../../lib/media-upload')
 
 
 // start - search
@@ -592,7 +592,7 @@ router.get('/media-file/:id', session.isAuthenticated, (req, res) => {
 })
 
 router.post('/media-file/', session.isAuthenticated, (req, res) => {
-    MediaUpload(req, res)
+    mediaUpload(req, res)
     .then(data => {
         let newMedia = new modelMedia({
             media_original_name: data.fileData.originalname,
