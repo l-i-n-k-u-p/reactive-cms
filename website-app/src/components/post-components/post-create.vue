@@ -12,7 +12,7 @@
                 <div class="buttons-wrapper">
                     <DropdownSelect label="Status" initialIndexOption="0" v-bind:onSelectOption="onSelectOption" v-bind:selectOptions="selectOptions"></DropdownSelect>
                     <Button style="margin-left: 10px;" buttonIcon="close" v-bind:buttonAction="cancelCrateUser">Cancel</button>
-                    <Button buttonIcon="add" v-bind:buttonAction="createPost" style="margin-left: 10px;">Create</button>
+                    <Button buttonIcon="save" v-bind:buttonAction="createPost" style="margin-left: 10px;">Create</button>
                 </div>
             </div>
         </div>

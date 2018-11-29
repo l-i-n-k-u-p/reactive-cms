@@ -19,7 +19,7 @@
                 <InputText class="input" inputName="Media Title" v-bind:inputValue="mediaTitle" v-bind:onChangeValue="onChangeInputValue" propName=''></InputText>
                 <div class="buttons-wrapper">
                     <Button style="margin-left: 10px;" buttonIcon="close" v-bind:buttonAction="cancelCreateMedia">Cancel</button>
-                    <Button buttonIcon="add" v-bind:buttonAction="createMedia" style="margin-left: 10px;">Create</button>
+                    <Button buttonIcon="save" v-bind:buttonAction="createMedia" style="margin-left: 10px;">Create</button>
                 </div>
             </div>
         </div>

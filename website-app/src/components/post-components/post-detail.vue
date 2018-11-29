@@ -2,17 +2,17 @@
     <BoxWrapper style="padding: 0;">
         <div class="post">
             <div class="header">
-                <NavigationButtons/>
+                <NavigationButtons buttonColor="#f0f0f0"/>
                 <h2>Create post</h2>
             </div>
-            <div class="post-thumbnail"></div>
+            <div class="post-thumbnail" v-bind:style="$getHexColor(post.post_title)"></div>
             <div class="content-wrapper">
                 <InputText class="input" inputName="Post Title" v-bind:inputValue="post.post_title" v-bind:onChangeValue="onChangeInputValue" propName='post_title'></InputText>
                 <editor v-bind:content="editorContent" v-bind:onChangeContent="onChangeContent"></editor>
                 <div class="buttons-wrapper">
                     <DropdownSelect label="Status" v-bind:initialIndexOption="postStatusIndex" v-bind:onSelectOption="onSelectOption" v-bind:selectOptions="selectOptions"></DropdownSelect>
                     <Button buttonIcon="remove" v-bind:buttonAction="showConfirmationModal" style="margin-left: 10px;">Delete</button>
-                    <Button buttonIcon="update" v-bind:buttonAction="updatePost" style="margin-left: 10px;">Update</button>
+                    <Button buttonIcon="save" v-bind:buttonAction="updatePost" style="margin-left: 10px;">Update</button>
                 </div>
             </div>
         </div>
@@ -172,7 +172,7 @@ h2 {
     font-size: 16px;
     font-weight: 500;
     display: flex;
-    color: #616161;
+    color: #f0f0f0;
     flex-grow: 1;
     margin-bottom: 20px;
     margin-top: 5px;
