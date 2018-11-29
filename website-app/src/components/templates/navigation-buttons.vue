@@ -1,9 +1,9 @@
 <template lang="html">
     <div id="navigation-buttons-wrapper">
-        <div id="button-wrapper" v-on:click="routerHistory(-1)">
+        <div id="button-wrapper" v-on:click="routerHistory(-1)" v-bind:style="this.getColor()">
             <i class="material-icons icon">keyboard_arrow_left</i>
         </div>
-        <div id="button-wrapper" v-on:click="routerHistory(1)">
+        <div id="button-wrapper" v-on:click="routerHistory(1)" v-bind:style="this.getColor()">
             <i class="material-icons icon">keyboard_arrow_right</i>
         </div>
     </div>
@@ -13,6 +13,9 @@
 <script>
 
 export default {
+    props: [
+        'buttonColor',
+    ],
     data() {
         return {
         }
@@ -24,6 +27,11 @@ export default {
     methods: {
         routerHistory: function(position) {
             this.$router.go(position)
+        },
+        getColor: function() {
+            if(this.buttonColor)
+                return 'color: '+this.buttonColor
+            return 'color: #616161'
         },
     }
 }
@@ -42,7 +50,6 @@ export default {
     background: transparent;
     border-radius: 3px;
     border: none;
-    color: #616161;
     cursor: pointer;
     display: block;
     display: inline-flex;
@@ -58,7 +65,7 @@ export default {
 }
 
 #button-wrapper:hover {
-    background-color: #eee;
+    background-color: rgba(200, 200, 200, 0.3);
 }
 
 #button-wrapper .icon {

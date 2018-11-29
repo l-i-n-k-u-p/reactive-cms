@@ -88,7 +88,7 @@ export default {
 }
 
 .select-wrapper:hover {
-    background-color: #eee;
+    background-color: rgba(200, 200, 200, 0.3);
 }
 
 .select-wrapper .icon {

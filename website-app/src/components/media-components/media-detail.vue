@@ -2,15 +2,17 @@
     <BoxWrapper style="padding: 0;">
         <div class="media">
             <div class="header">
-                <NavigationButtons/>
+                <NavigationButtons buttonColor="#f0f0f0"/>
                 <h2>Media detail</h2>
             </div>
-            <div class="media-thumbnail"></div>
+            <div class="media-thumbnail" v-if="media.isImage()" v-bind:style="$getThumbnailURL(media.media_name)"></div>
+            <div class="media-thumbnail" v-if="!media.isImage()" v-bind:style="$getHexColor(media.media_title)"></div>
+            <Button class="media-download" buttonColor="#f0f0f0" buttonIcon="cloud_download" v-bind:buttonAction="openMediaFile">Open</Button>
             <div class="content-wrapper">
                 <InputText class="input" inputName="Media Title" v-bind:inputValue="media.media_title" v-bind:onChangeValue="onChangeInputValue" propName='media_title'></InputText>
                 <div class="buttons-wrapper">
-                    <Button buttonIcon="remove" v-bind:buttonAction="showConfirmationModal" style="margin-left: 10px;">Delete</button>
-                    <Button buttonIcon="update" v-bind:buttonAction="updateMedia" style="margin-left: 10px;">Update</button>
+                    <Button buttonIcon="remove" v-bind:buttonAction="showConfirmationModal" style="margin-left: 10px;">Delete</Button>
+                    <Button buttonIcon="save" v-bind:buttonAction="updateMedia" style="margin-left: 10px;">Update</Button>
                 </div>
             </div>
         </div>
@@ -124,6 +126,10 @@ export default {
         acceptAction: function() {
             this.deleteMedia()
         },
+        openMediaFile: function() {
+            let mediaURL = this.media.getMediaURL()
+            window.open(mediaURL, '_blank')
+        },
     }
 }
 
@@ -149,10 +155,10 @@ h2 {
     font-size: 16px;
     font-weight: 500;
     display: flex;
-    color: #616161;
     flex-grow: 1;
     margin-bottom: 20px;
     margin-top: 5px;
+    color: #f0f0f0;
 }
 
 form {
@@ -185,6 +191,7 @@ form {
     transition-duration: 100ms;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
+    overflow: hidden;
 }
 
 .content-wrapper {
@@ -194,6 +201,12 @@ form {
 
 .input {
     margin-top: 20px;
+}
+
+.media-download {
+    position: absolute !important;
+    top: 15px;
+    right: 20px;
 }
 
 </style>

@@ -6,6 +6,8 @@
                     <td></td>
                     <td>Thumbnail</td>
                     <td>Media Title</td>
+                    <td>Media Original Name</td>
+                    <td>Media MIME Type</td>
                     <td>Media Date</td>
                 </tr>
             </thead>
@@ -13,9 +15,12 @@
                 <tr v-for="(media) in collectionItems">
                     <td><Checkbox style="margin-right: 10px;" v-bind:onChangeValue="onChangeValue" v-bind:item="media._id"></Checkbox></td>
                     <td v-on:click="onClickRow(media)">
-                        <div class="avatar" v-bind:style="$getHexColor(media.media_title)"><span>{{ media.media_title[0] }}</span></div>
+                        <div class="avatar" v-if="media.isImage()" v-bind:style="$getAvatarURL(media.media_name)"></div>
+                        <div class="avatar" v-if="!media.isImage()" v-bind:style="$getHexColor(media.media_title)"><span>{{ media.media_title[0] }}</span></div>
                     </td>
                     <td v-on:click="onClickRow(media)">{{ media.media_title }}</td>
+                    <td v-on:click="onClickRow(media)">{{ media.media_original_name }}</td>
+                    <td v-on:click="onClickRow(media)">{{ media.media_mime_type }}</td>
                     <td v-on:click="onClickRow(media)">{{ media.media_date }}</td>
                 </tr>
             </tbody>
@@ -24,6 +29,8 @@
                     <td></td>
                     <td>Thumbnail</td>
                     <td>Media Title</td>
+                    <td>Media Original Name</td>
+                    <td>Media MIME Type</td>
                     <td>Media Date</td>
                 </tr>
             </tfoot>
@@ -127,7 +134,7 @@ export default {
 }
 
 .table-wrapper tbody tr:hover {
-    background-color: #eee;
+    background-color: rgba(200, 200, 200, 0.3);
 }
 
 .navigation-wrapper {
@@ -152,6 +159,7 @@ export default {
     height: 24px;
     width: 24px;
     justify-content: center;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
 }
 
 .avatar span {
