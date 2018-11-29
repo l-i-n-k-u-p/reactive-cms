@@ -71,3 +71,9 @@ typings/
 
 # Serverless directories
 .serverless
+
+
+# VENoM static
+site-static/uploads/
+website-app/static/css/
+website-app/static/js/
