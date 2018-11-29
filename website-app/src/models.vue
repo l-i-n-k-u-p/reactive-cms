@@ -487,6 +487,17 @@ class Media extends Model {
             delete: appApiBaseURL+'/media-file/{_id}',
         }
     }
+
+    isImage() {
+        let mimetype = this.get('media_mime_type')
+        if(mimetype == 'image/jpeg' || mimetype == 'image/png')
+            return true
+        return false
+    }
+
+    getMediaURL() {
+        return '/uploads/'+this.get('media_name')
+    }
 }
 
 class MediaList extends Collection {

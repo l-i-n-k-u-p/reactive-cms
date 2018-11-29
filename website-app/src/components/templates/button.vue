@@ -1,5 +1,5 @@
 <template lang="html">
-    <div id="button-wrapper" v-on:click="buttonAction">
+    <div id="button-wrapper" v-on:click="buttonAction" v-bind:style="this.getColor()">
         <i v-if="buttonIcon" class="material-icons icon">{{ buttonIcon }}</i><slot></slot>
     </div>
 </template>
@@ -8,7 +8,7 @@
 <script>
 
 export default {
-    props: ['buttonIcon', 'buttonAction'],
+    props: ['buttonIcon', 'buttonAction', 'buttonColor'],
     data() {
         return {
         }
@@ -18,6 +18,11 @@ export default {
     created() {
     },
     methods: {
+        getColor: function() {
+            if(this.buttonColor)
+                return 'color: '+this.buttonColor
+            return 'color: #616161'
+        },
     }
 }
 
@@ -38,7 +43,6 @@ export default {
     display: block;
     text-transform: uppercase;
     transition-duration: 150ms;
-    color: #616161;
     outline: none;
     display: flex;
     height: 14px;
@@ -46,7 +50,7 @@ export default {
 }
 
 #button-wrapper:hover {
-    background-color: #eee;
+    background-color: rgba(200, 200, 200, 0.3);
 }
 
 #button-wrapper .icon {
