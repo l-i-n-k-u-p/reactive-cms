@@ -21,15 +21,36 @@ const { mediaUpload } = require('../../lib/media-upload')
 
 // start - search
 
-router.get('/search/:search', session.isAuthenticated, (req, res) => {
-    let result_items = []
-    const searchRegex = new RegExp(req.params.search, 'i')
+router.get('/search/', session.isAuthenticated, (req, res) => {
+    const searchRegex = new RegExp(req.query.search, 'i')
     Promise.all([
         modelUser.find({'user_name': searchRegex}).select(['user_name']).exec(),
         modelPost.find({'post_title': searchRegex}).select(['post_title']).exec(),
         modelPage.find({'page_title': searchRegex}).select(['page_title']).exec(),
         modelMedia.find({'media_title': searchRegex}).select(['media_title']).exec(),
     ])
+    .then(data => {
+        res.json({
+            items: data,
+            status_code: 0,
+            status_msg: '',
+        })
+    })
+    .catch(err => {
+        res.json({
+            status_code: 1,
+            status_msg: 'Error searching',
+        })
+    })
+})
+
+router.get('/search-media/', session.isAuthenticated, (req, res) => {
+    const searchRegex = new RegExp(req.query.search, 'i')
+    const mimetypeRegex = new RegExp(req.query.mimetype, 'i')
+    modelMedia.find({
+        'media_title': searchRegex,
+        'media_mime_type': mimetypeRegex
+    }).exec()
     .then(data => {
         res.json({
             items: data,

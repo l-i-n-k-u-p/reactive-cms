@@ -63,7 +63,7 @@ export default {
         scrollTop: function(newVal, oldVal) {
             let height = (140 - (newVal))
 
-            if(height < 50)
+            if(height < 95)
                 this.boxShadowHeader = 'box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 3px -2px rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12);'
             else
                 this.boxShadowHeader = ''
@@ -84,8 +84,11 @@ export default {
                 return
             this.searchItems.clear()
             this.showResults()
-            this.searchItems.set('search', this.searchValue)
-            this.searchItems.fetch()
+            this.searchItems.fetch({
+                params: {
+                    'search': this.searchValue,
+                }
+            })
             .then(data => {
                 if(data.response.data.status_code) {
                     this.$eventHub.$emit('dashboard-app-error', data.response.data.status_msg)

@@ -104,7 +104,6 @@ export default {
 .content-wrapper {
     min-height: 100%;
     position: relative;
-    z-index: 1;
 }
 
 .page-content-wrapper {
@@ -123,9 +122,9 @@ footer {
     bottom: 10px;
     display: flex;
     justify-content: center;
-    position: absolute;
+    position: fixed;
     width: 100%;
-    z-index: 0;
+    z-index: -1;
 }
 
 footer span {
