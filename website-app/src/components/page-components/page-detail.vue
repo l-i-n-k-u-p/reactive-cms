@@ -18,7 +18,7 @@
             </div>
         </div>
         <ConfirmationModal v-if="showModal" v-bind:modalTitle="modalTitle" v-bind:modalDescription="modalDescription" v-bind:cancelAction="cancelAction" v-bind:acceptAction="acceptAction"></ConfirmationModal>
-        <MediaModal v-if="showMediaModal" onlyImages="yes" modalTitle="Set Featured Image" modalDescription="Chose one image or upload new" v-bind:closeMediaModal="closeMediaModal" v-bind:setMediaFeature="setMediaFeature"></MediaModal>
+        <MediaModal v-if="showMediaModal" onlyImages="yes" modalTitle="Set Featured Image" modalDescription="Chose one image or upload new" v-bind:closeMediaModal="closeMediaModal" v-bind:onMediaSelect="onMediaSelect"></MediaModal>
     </BoxWrapper>
 </template>
 
@@ -161,8 +161,9 @@ export default {
         closeMediaModal: function() {
             this.showMediaModal = false
         },
-        setMediaFeature: function() {
-            console.log('== set media image ==')
+        onMediaSelect: function(media) {
+            console.log('== set media image ==', media)
+            this.closeMediaModal()
         },
     }
 }

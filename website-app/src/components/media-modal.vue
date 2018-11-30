@@ -2,19 +2,41 @@
     <div class="modal-box-wrapper">
         <div class="position-wrapper">
             <div class="box-content">
-                <div class="title">{{ modalTitle }}</div>
-                <p>{{ modalDescription }}</p>
-                <InputText class="search-input" inputName="Search" v-bind:inputValue="searchValue" v-bind:onChangeValue="onChangeInputValue" propName=''></InputText>
-                <div class="media-files-wrapper" ref="mediaWrapper" v-on:scroll="onScroll">
-                    <div class="image" v-for="(media) in mediaFiles.models" v-on:click="selectMediaImage(media)" v-if="showThisMedia(media)" v-bind:style="getPreview(media)"></div>
+                <div class="header">
+                    <div class="modal-title">{{ modalTitle }}</div>
+                    <div class="modal-description">{{ modalDescription }}</div>
+                    <div class="navgation-buttons">
+                        <Button buttonIcon="photo_library" v-bind:buttonAction="activeLibrary">Library</Button>
+                        <Button buttonIcon="cloud_upload" v-bind:buttonAction="activeUpload" style="margin-left: 5px;">Upload</Button>
+                    </div>
                 </div>
-                <div class="media-file-info-wrapper">
-                    <label>Media title: {{ selectedMedia.get('media_title') }}</label>
-                    <label>Media original name: {{ selectedMedia.get('media_original_name') }}</label>
+                <div class="content">
+                    <div v-if="activeTab === 0" class="library-wrapper">
+                        <InputText class="search-input" inputName="Search" v-bind:inputValue="searchValue" v-bind:onChangeValue="onChangeInputValue" propName=''></InputText>
+                        <div class="media-files-wrapper" ref="mediaWrapper" v-on:scroll="onScroll">
+                            <div class="image" v-for="(media) in mediaFiles.models" v-on:click="selectMediaImage(media)" v-if="showThisMedia(media)" v-bind:style="getPreview(media)"></div>
+                        </div>
+                    </div>
+                    <div v-if="activeTab === 1" class="upload-wrapper">
+                        <div class="dropzone" ref="dropzone">
+                            <div>
+                                <p class="upload-description">Choose a file or drag it here</p>
+                                <p class="upload-media-name">{{ mediaName }}</p>
+                                <i class="upload-icon material-icons">cloud_upload</i>
+                            </div>
+                        </div>
+                        <input class="file-input" type="file" ref="file" name="file" @change="addFile()">
+                    </div>
                 </div>
-                <div class="buttons-wrapper">
-                    <Button buttonIcon="clear" v-bind:buttonAction="closeMediaModal">Cancel</button>
-                    <Button buttonIcon="done" v-bind:buttonAction="setMediaFeature" style="margin-left: 10px;">Accept</button>
+                <div class="footer">
+                    <div v-if="activeTab === 0" class="media-file-info-wrapper">
+                        <p>Media title: {{ selectedMedia.get('media_title') }}</p>
+                        <p>Media original name: {{ selectedMedia.get('media_original_name') }}</p>
+                    </div>
+                    <div class="buttons-wrapper">
+                        <Button buttonIcon="clear" v-bind:buttonAction="closeMediaModal">Cancel</Button>
+                        <Button v-if="activeTab === 0" buttonIcon="done" v-bind:buttonAction="selectMedia" style="margin-left: 10px;">Accept</Button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -30,7 +52,7 @@ export default {
         'modalTitle',
         'modalDescription',
         'closeMediaModal',
-        'setMediaFeature',
+        'onMediaSelect',
         'onlyImages'
     ],
     data() {
@@ -43,10 +65,19 @@ export default {
             searchValue: '',
             searchMediaItems: new this.$models.SearchMediaList(),
             searchMimetype: '',
+            activeTab: 0,
+            formData: new FormData(),
+            mediaName: '',
         }
     },
     created() {
         this.getMedia()
+    },
+    updated() {
+        if(this.activeTab) {
+            console.log('== updated ==', this.activeTab)
+            this.addDragEnterAndLeaveEventListener()
+        }
     },
     components: {
         Button,
@@ -62,7 +93,7 @@ export default {
                         return
                     }
                     this.totalPages = data.getData().total_pages
-                    this.mediaPage = this.mediaPage + 1
+                    this.mediaPage++
                     if(this.mediaPage === 2)
                         this.getMedia()
                     this.totalItems = data.getData().total_items
@@ -92,13 +123,16 @@ export default {
                 return this.$getAvatarURL(media.get('media_name'))
             return this.$getHexColor(media.get('media_title'))
         },
+        resetLibraryData: function() {
+            this.mediaFiles.clear()
+            this.mediaPage = 1
+            this.totalItems = 0
+            this.totalPages = 1
+        },
         onChangeInputValue: function(propName, value) {
             this.searchValue = value
             if(!this.searchValue) {
-                this.mediaFiles.clear()
-                this.mediaPage = 1
-                this.totalItems = 0
-                this.totalPages = 1
+                this.resetLibraryData()
                 this.getMedia()
                 return
             }
@@ -124,6 +158,56 @@ export default {
                 this.$eventHub.$emit('dashboard-app-error', data.message)
             })
         },
+        activeLibrary: function() {
+            this.activeTab = 0
+        },
+        activeUpload: function() {
+            this.activeTab = 1
+        },
+        addFile: function() {
+            this.formData.delete('name')
+            this.formData.delete('type')
+            this.formData.delete('size')
+            this.formData.delete('file')
+            this.formData.append('name', this.$refs.file.files[0].name)
+            this.formData.append('type', this.$refs.file.files[0].type)
+            this.formData.append('size', this.$refs.file.files[0].size)
+            this.formData.append('file', this.$refs.file.files[0])
+            this.formData.append('media_title', this.$refs.file.files[0].name)
+            this.mediaName = this.$refs.file.files[0].name
+            this.createMedia()
+        },
+        addDragEnterAndLeaveEventListener: function() {
+            this.$refs.file.addEventListener('dragover', (e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                this.$refs.dropzone.classList.add('dragover')
+            })
+            this.$refs.file.addEventListener('dragleave', (e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                this.$refs.dropzone.classList.remove('dragover')
+            })
+            this.$refs.file.addEventListener('drop', (e) => {
+                this.$refs.dropzone.classList.remove('dragover')
+            })
+        },
+        createMedia: function() {
+            this.axios.post('/admin-website/api/media-file/', this.formData, {headers: {'Content-Type': 'multipart/form-data'}})
+            .then(data => {
+                this.activeTab = 0
+                this.resetLibraryData()
+                this.getMedia()
+                this.$eventHub.$emit('dashboard-app-success', data.data.status_msg)
+            })
+            .catch(data => {
+                this.$eventHub.$emit('dashboard-app-error', data.message)
+            })
+        },
+        selectMedia: function() {
+            if(this.selectedMedia.get('id'))
+                this.onMediaSelect(this.selectedMedia)
+        }
     }
 }
 
@@ -160,7 +244,6 @@ export default {
     background-color: white;
     width: 100%;
     border-radius: 3px;
-    align-self: center;
     margin: auto;
     padding: 15px;
     box-shadow: 0 11px 15px -7px rgba(0, 0, 0, 0.2), 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12);
@@ -170,23 +253,55 @@ export default {
     flex-direction: column;
 }
 
+.header, .footer {
+    flex-grow: 0;
+}
+
+.content {
+    flex-grow: 1;
+    display: flex;
+}
+
+.modal-title {
+    color: #616161;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 32px;
+}
+
+.modal-description {
+    color: #616161;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 20px;
+    margin-bottom: 5px;
+    margin-top: 0;
+}
+
+.navgation-buttons {
+    display: flex;
+}
+
+.library-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.search-input {
+    margin-bottom: 15px;
+    margin-top: 25px;
+}
+
 .media-files-wrapper {
-    height: 100%;
+    height: 260px;
     width: 100%;
     display: flex;
     overflow: scroll;
     flex-wrap: wrap;
     align-content: flex-start;
     flex-flow: row wrap;
-}
-
-.media-file-info-wrapper {
-    display: flex;
-    flex-direction: column;
-    color: #616161;
-    font-size: 13px;
-    bottom: -8px;
-    position: relative;
 }
 
 .image {
@@ -215,27 +330,96 @@ export default {
     background-color: rgba(255, 255, 255, 0.7)
 }
 
-.title {
-    color: #616161;
-    font-size: 16px;
-    font-weight: 400;
-    letter-spacing: 0;
-    line-height: 32px;
+.media-file-info-wrapper {
+    position: absolute;
 }
 
-.box-content p {
+.media-file-info-wrapper p {
     color: #616161;
     font-size: 13px;
-    font-weight: 400;
-    letter-spacing: 0;
-    line-height: 20px;
-    margin-bottom: 16px;
-    margin-top: 0;
-    margin-bottom: 30px;
+    position: relative;
+    margin: 0;
+    line-height: 16px;
 }
 
-.search-input {
-    margin-bottom: 15px;
+.upload-wrapper {
+    position: relative;
+    margin: auto;
+    width: 100%;
+}
+
+.dropzone {
+    box-sizing: border-box;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    width: 100%;
+    background-color: #f8f8f8;
+    height: 260px;
+    z-index: 1;
+    position: relative;
+    pointer-events: none;
+    color: #616161;
+    padding: 10px;
+    border: 2px dashed #ccc;
+    transition-duration: 100ms;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.dropzone.dragover {
+    background-color: #ccc;
+}
+
+.description {
+    font-size: 20px;
+    margin: 10px;
+}
+
+.media-name {
+    font-size: 16px;
+    margin: 10px;
+}
+
+.dropzone i {
+    font-size: 40px;
+}
+
+.dropzone div {
+    display: flex;
+    align-self: center;
+    margin: auto;
+    flex-direction: column;
+    text-align: center;
+}
+
+.file-input {
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    width: 100%;
+    background-color: transparent;
+    height: 260px;
+    position: absolute;
+    z-index: 0;
+    outline: none;
+    cursor: pointer;
+}
+
+.upload-description {
+    font-size: 20px;
+    margin: 10px;
+}
+
+.upload-media-name {
+    font-size: 16px;
+    margin: 10px;
+}
+
+.upload-description-icon {
+    font-size: 40px;
 }
 
 .buttons-wrapper {
