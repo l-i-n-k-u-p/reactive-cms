@@ -6,6 +6,7 @@
                 <h2>Create page</h2>
             </div>
             <div class="page-thumbnail" v-bind:style="$getHexColor(page.page_title)"></div>
+            <Button class="media-modal" buttonIcon="update" v-bind:buttonAction="openMediaModal" buttonColor="#f0f0f0" style="margin-left: 10px;">Update Image</button>
             <div class="content-wrapper">
                 <InputText class="input" inputName="Page Title" v-bind:inputValue="page.page_title" v-bind:onChangeValue="onChangeInputValue" propName='page_title'></InputText>
                 <editor v-bind:content="editorContent" v-bind:onChangeContent="onChangeContent"></editor>
@@ -17,6 +18,7 @@
             </div>
         </div>
         <ConfirmationModal v-if="showModal" v-bind:modalTitle="modalTitle" v-bind:modalDescription="modalDescription" v-bind:cancelAction="cancelAction" v-bind:acceptAction="acceptAction"></ConfirmationModal>
+        <MediaModal v-if="showMediaModal" onlyImages="yes" modalTitle="Set Featured Image" modalDescription="Chose one image or upload new" v-bind:closeMediaModal="closeMediaModal" v-bind:onMediaSelect="onMediaSelect"></MediaModal>
     </BoxWrapper>
 </template>
 
@@ -28,6 +30,7 @@ import InputText from '../templates/input-text.vue'
 import DropdownSelect from '../templates/dropdown-select.vue'
 import ConfirmationModal from '../templates/confirmation-modal.vue'
 import NavigationButtons from '../templates/navigation-buttons.vue'
+import MediaModal from '../media-modal.vue'
 
 export default {
     data() {
@@ -50,6 +53,7 @@ export default {
             modalTitle: '',
             modalDescription: '',
             pageStatusIndex: 0,
+            showMediaModal: false,
         }
     },
     components: {
@@ -60,6 +64,7 @@ export default {
         InputText,
         ConfirmationModal,
         NavigationButtons,
+        MediaModal,
     },
     created() {
         this.page.setOption('hasUpdate', false)
@@ -147,6 +152,19 @@ export default {
         onChangeContent: function({ getJSON, getHTML }) {
             this.page.set('page_content', getHTML())
         },
+        openMediaModal: function() {
+            console.log('== open ==')
+        },
+        openMediaModal: function() {
+            this.showMediaModal = true
+        },
+        closeMediaModal: function() {
+            this.showMediaModal = false
+        },
+        onMediaSelect: function(media) {
+            console.log('== set media image ==', media)
+            this.closeMediaModal()
+        },
     }
 }
 
@@ -217,6 +235,12 @@ form {
 
 .input {
     margin-top: 20px;
+}
+
+.media-modal {
+    position: absolute !important;
+    top: 15px;
+    right: 20px;
 }
 
 </style>

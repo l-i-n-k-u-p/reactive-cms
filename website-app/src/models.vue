@@ -147,7 +147,19 @@ class SearchList extends Collection {
 
     routes() {
         return {
-            fetch: appApiBaseURL+'/search/{search}',
+            fetch: appApiBaseURL+'/search/',
+        }
+    }
+}
+
+class SearchMediaList extends Collection {
+    getModelsFromResponse (response) {
+        return response.getData().items
+    }
+
+    routes() {
+        return {
+            fetch: appApiBaseURL+'/search-media/',
         }
     }
 }
@@ -564,6 +576,7 @@ export default {
     PageList: PageList,
     Media: Media,
     MediaList: MediaList,
+    SearchMediaList: SearchMediaList,
 }
 
 </script>

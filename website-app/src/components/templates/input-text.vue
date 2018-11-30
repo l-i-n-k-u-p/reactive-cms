@@ -47,13 +47,11 @@ export default {
     background-color: transparent;
     position: relative;
     margin-bottom: 35px;
-    display: flex;
 }
 
 .input-wrapper label {
     position: absolute;
     top: 5px;
-    /* left: 10px; */
     background-color: transparent;
     font-size: 13px;
     font-weight: 500;
@@ -67,8 +65,6 @@ export default {
     outline: none;
     caret-color: #0088d4;
     width: 100%;
-    /* padding-left: 10px; */
-    /* padding-right: 10px; */
     font-size: 13px;
     background: transparent;
     margin: 0;
@@ -81,7 +77,6 @@ export default {
 .input-wrapper.focus label {
     color: #0088d4;
     top: -20px;
-    /* left: 0px; */
 }
 
 .input-wrapper.focus input {
@@ -90,7 +85,6 @@ export default {
 
 .input-wrapper.no-empty label {
     top: -20px;
-    /* left: 0px; */
 }
 
 </style>
