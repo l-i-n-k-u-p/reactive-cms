@@ -1,6 +1,6 @@
 <template lang="html">
     <div class="app-wrapper" v-on:scroll="onScroll">
-        <Header v-on:dashboard-toggle-menu="menuIsOpen" v-bind:userName="userName" v-bind:scrollTop="scrollTop" v-bind:pageTitle="pageTitle"></Header>
+        <Header v-on:dashboard-toggle-menu="menuIsOpen" v-bind:scrollTop="scrollTop" v-bind:pageTitle="pageTitle"></Header>
         <RibbonError v-if="appErrorMessage"><slot>{{ appErrorMessage }}</slot></RibbonError>
         <RibbonSuccess v-if="appSuccessMessage"><slot>{{ appSuccessMessage }}</slot></RibbonSuccess>
         <div class="content-wrapper">
@@ -46,12 +46,10 @@ export default {
             pageTitle: '',
             appErrorMessage: '',
             appSuccessMessage: '',
-            userName: '',
             scrollTop: 0,
         }
     },
     created() {
-        this.getSessionUserData()
         this.$eventHub.$on('dashboard-app-page-title', (title) => {
             if(title)
                 this.pageTitle = ' - '+title
@@ -75,16 +73,6 @@ export default {
         })
     },
     methods: {
-        getSessionUserData: function() {
-            this.$userSession.set('_id', window.user_id)
-            this.$userSession.fetch()
-            .then(data => {
-                this.userName = this.$userSession.get('user_first_name')
-            })
-            .catch(data => {
-                this.$eventHub.$emit('dashboard-app-error', data.message)
-            })
-        },
         onScroll: function(el) {
             this.scrollTop = el.target.scrollTop
         }

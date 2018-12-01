@@ -148,32 +148,20 @@ export default {
 }
 
 h2 {
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 500;
     display: flex;
     color: #616161;
     flex-grow: 1;
-    margin-bottom: 20px;
-    margin-top: 5px;
+    text-transform: uppercase;
+    margin-top: 7px;
 }
 
 .buttons-wrapper {
     display: flex;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     justify-content: flex-end;
     flex-grow: 1;
-}
-
-.test-title {
-    font-size: 14px;
-    color: white;
-    margin-top: 90px;
-    margin-bottom: 15px;
-    padding-left: 20px;
-    margin-left: 15px;
-    margin-right: 15px;
-    text-transform: uppercase;
-    font-weight: 500;
 }
 
 </style>

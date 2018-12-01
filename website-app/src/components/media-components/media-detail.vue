@@ -147,29 +147,29 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
-    padding: 15px 20px 15px 20px;
+    padding: 15px;
     z-index: 1;
 }
 
 h2 {
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 500;
     display: flex;
-    flex-grow: 1;
-    margin-bottom: 20px;
-    margin-top: 5px;
     color: #f0f0f0;
+    flex-grow: 1;
+    text-transform: uppercase;
+    margin-top: 7px;
 }
 
 form {
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 .buttons-wrapper {
     bottom: 0;
     right: 0;
     padding: 0px;
-    margin-top: 20px;
+    margin-top: 15px;
     display: flex;
     justify-content: flex-end;
 }
@@ -195,18 +195,18 @@ form {
 }
 
 .content-wrapper {
-    padding: 20px;
+    padding: 15px;
     box-sizing: content-box;
 }
 
 .input {
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 .media-download {
     position: absolute !important;
     top: 15px;
-    right: 20px;
+    right: 15px;
 }
 
 </style>
