@@ -35,7 +35,6 @@ const appBaseURL = '/dashboard'
 Vue.prototype.$eventHub = new Vue()
 Vue.prototype.$models = Models
 Vue.prototype.$appBaseURL = appBaseURL
-Vue.prototype.$userSession = new Models.User()
 Vue.prototype.$getHexColor = getHexColor
 Vue.prototype.$getAvatarURL = getAvatarURL
 Vue.prototype.$getThumbnailURL = getThumbnailURL

@@ -123,17 +123,13 @@ export default {
 }
 
 h2 {
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 500;
     display: flex;
     color: #616161;
     flex-grow: 1;
-    margin-bottom: 20px;
-    margin-top: 5px;
-}
-
-form {
-    margin-top: 20px;
+    text-transform: uppercase;
+    margin-top: 7px;
 }
 
 .buttons-wrapper {

@@ -46,7 +46,7 @@ export default {
 .input-wrapper {
     background-color: transparent;
     position: relative;
-    margin-bottom: 35px;
+    margin-top: 25px;
 }
 
 .input-wrapper label {
@@ -72,11 +72,12 @@ export default {
     font-weight: 500;
     border-bottom: 1px solid #616161;
     padding-bottom: 5px;
+    box-sizing: border-box;
 }
 
 .input-wrapper.focus label {
     color: #0088d4;
-    top: -20px;
+    top: -15px;
 }
 
 .input-wrapper.focus input {
@@ -84,7 +85,7 @@ export default {
 }
 
 .input-wrapper.no-empty label {
-    top: -20px;
+    top: -15px;
 }
 
 </style>

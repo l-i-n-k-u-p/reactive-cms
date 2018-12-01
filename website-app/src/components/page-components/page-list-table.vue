@@ -99,8 +99,6 @@ export default {
     border-collapse: collapse;
     border-spacing: 0;
     color: #616161;
-    padding-left: 20px;
-    padding-right: 20px;
     width: 100%;
 }
 
@@ -118,7 +116,8 @@ export default {
 }
 
 .table-wrapper thead tr td:first-child, .table-wrapper tbody tr td:first-child, .table-wrapper tfoot tr td:first-child {
-    padding-left: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .table-wrapper tbody tr td {
@@ -137,7 +136,7 @@ export default {
     display: flex;
     justify-content: flex-end;
     position: relative;
-    margin-top: 20px;
+    margin-top: 15px;
     color: #616161;
     font-weight: 500;
 }

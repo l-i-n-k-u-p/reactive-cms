@@ -74,7 +74,7 @@ export default {
     border-radius: 3px;
     cursor: pointer;
     padding: 7px;
-    transition-duration: 150ms;
+    transition-duration: 100ms;
     color: #616161;
     outline: none;
     display: flex;

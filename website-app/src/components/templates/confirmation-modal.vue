@@ -48,7 +48,7 @@ export default {
     border-radius: 3px;
     align-self: center;
     margin: auto;
-    padding: 20px;
+    padding: 15px;
     box-shadow: 0 11px 15px -7px rgba(0, 0, 0, 0.2), 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12);
 }
 
@@ -66,7 +66,7 @@ export default {
     font-weight: 400;
     letter-spacing: 0;
     line-height: 20px;
-    margin-bottom: 16px;
+    margin: 0px;
 }
 
 .buttons-wrapper {

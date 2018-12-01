@@ -131,14 +131,16 @@ export default {
     position: relative;
     border: 0;
     color: #616161;
-    font-size: 14px;
-    padding-left: 20px;
-    padding-right: 20px;
+    font-size: 13px;
+    padding-left: 15px;
+    padding-right: 15px;
     cursor: pointer;
     text-decoration: none;
-    margin: 5px;
     border-radius: 3px;
     z-index: 2;
+    text-transform: uppercase;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 #menu .option:hover {

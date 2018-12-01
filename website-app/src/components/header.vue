@@ -2,7 +2,7 @@
     <div>
         <div id="header" v-bind:style="boxShadowHeader">
             <div class="left-wrapper">
-                <i class="material-icons menu" v-on:click="toggleMenu">menu</i>
+                <i class="material-icons menu-icon" v-on:click="toggleMenu">menu</i>
                 <label class="page-title">DASHBOARD</label>
             </div>
             <div class="search-wrapper" v-bind:class="{'search-active': resultsIsVisible}" v-click-outside="clickOutsite">
@@ -10,8 +10,8 @@
                 <input type="text" placeholder="Search" v-model="searchValue" v-on:focus="onChangeSearchValue">
                 <div class="bkg"></div>
                 <div class="results-wrapper" v-if="resultsIsVisible">
-                    <div class="no-results" v-if="!this.searchItems.models.length">Without Results</div>
-                    <div class="item" v-on:click="onClickResult" v-for="(item) in this.searchItems.models">
+                    <div class="no-results" v-if="!searchItems.models.length">Without Results</div>
+                    <div class="item" v-on:click="onClickResult" v-for="(item) in searchItems.models">
                         <div v-if="item.model_name == 'user'" v-on:click="showUserDetail(item)">
                             <i class="material-icons">person</i>
                             <label>{{ item.user_name }}</label>
@@ -32,11 +32,13 @@
                 </div>
             </div>
             <div class="right-wrapper">
-                <div class="username">
-                    <div class="avatar" v-bind:style="$getHexColor(userName)"><span>{{ userName[0] }}</span></div>
-                    <label>{{ userName }}</label>
-                    <div class="menu">
-                        <a class="option" href="/admin-logout">Sign Out</a>
+                <div class="username" v-on:click="showUserMenu">
+                    <div class="avatar" v-bind:style="$getHexColor(user.get('user_first_name'))"><span>{{ user.get('user_first_name')[0] }}</span></div>
+                    <label>{{ user.get('user_first_name') }}</label>
+                    <div class="menu" v-if="userMenuOpen" v-click-outside="hideUserMenu">
+                        <div class="options-wrapper">
+                            <a class="option" href="/admin-logout">Sign Out</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -56,13 +58,17 @@ export default {
             searchValue: '',
             resultsIsVisible: false,
             searchItems: new this.$models.SearchList(),
+            user: new this.$models.User(),
+            userMenuOpen: false,
         }
     },
-    props: ['userName', 'scrollTop', 'pageTitle'],
+    props: [
+        'scrollTop',
+        'pageTitle',
+    ],
     watch: {
         scrollTop: function(newVal, oldVal) {
             let height = (140 - (newVal))
-
             if(height < 95)
                 this.boxShadowHeader = 'box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 3px -2px rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12);'
             else
@@ -74,6 +80,7 @@ export default {
         },
     },
     created() {
+        this.getSessionUserData()
     },
     methods: {
         toggleMenu: function() {
@@ -122,6 +129,23 @@ export default {
         },
         showMediaDetail: function(media) {
             this.$router.push({ name: 'media-detail', params: { id: media.get('_id') }})
+        },
+        showUserMenu: function() {
+            this.userMenuOpen = true
+        },
+        hideUserMenu: function() {
+            this.userMenuOpen = false
+        },
+        getSessionUserData: function() {
+            this.user.set('_id', window.user_id)
+            this.user.fetch()
+            .then(data => {
+                // this.userName = this.user.get('user_first_name')
+                console.log('== data ==', this.user.get('user_first_name'))
+            })
+            .catch(data => {
+                this.$eventHub.$emit('dashboard-app-error', data.message)
+            })
         },
     },
     directives: {
@@ -183,11 +207,11 @@ export default {
     justify-content: flex-end;
 }
 
-.menu {
+.menu-icon {
     align-self: center;
     cursor: pointer;
     flex-grow: 0;
-    padding-left: 20px;
+    padding-left: 15px;
 }
 
 .page-title {
@@ -203,8 +227,8 @@ export default {
     align-self: center;
     cursor: pointer;
     display: flex;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
     position: relative;
 }
 
@@ -236,30 +260,35 @@ export default {
 }
 
 .username .menu {
-    -webkit-overflow-scrolling: touch;
-    background-color: #fff;
-    background-color: white;
-    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-    display: none;
+    background-color: transparent;
+    display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
     max-height: calc(100vh - 64px);
-    padding: 10px 0px 10px 0px;
     position: absolute;
     right: 15px;
-    top: 20px;
-    width: 200px;
+    padding-top: 35px;
+    width: 150px;
 }
 
-.username:hover .menu {
-    display: flex;
+.options-wrapper {
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, .2), 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12);
+    background-color: white;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .username .menu .option {
-    color: #333;
-    font-size: 14px;
-    padding: 5px 20px 5px 20px;
+    color: #616161;
+    font-size: 13px;
+    padding: 10px 20px 10px 32px;
     text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 500;
+    max-width: 100%;
+    display: flex;
 }
 
 .username .menu .option:hover {
@@ -273,12 +302,12 @@ export default {
     position: relative;
     align-self: center;
     min-width: 150px;
-    max-width: 1105px;
+    max-width: 1115px;
 }
 
 .search-wrapper .icon {
     position: absolute;
-    left: 20px;
+    left: 15px;
     display: flex;
     align-self: center;
     font-size: 20px;
@@ -294,7 +323,7 @@ export default {
     position: absolute;
     width: 100%;
     color: white;
-    padding-left: 60px;
+    padding-left: 45px;
     display: flex;
     align-self: center;
     outline: none;
@@ -347,7 +376,7 @@ export default {
 }
 
 .results-wrapper .item > div {
-    padding: 10px 20px 10px 20px;
+    padding: 10px 15px 10px 15px;
     color: #616161;
     font-size: 13px;
     display: flex;
@@ -379,7 +408,7 @@ export default {
 }
 
 .no-results {
-    padding: 10px 20px 10px 20px;
+    padding: 10px 15px 10px 15px;
     color: #616161;
     font-size: 13px;
 }

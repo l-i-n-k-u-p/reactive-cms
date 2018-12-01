@@ -230,7 +230,6 @@ button i {
 .ProseMirror {
     background: transparent;
     border-bottom: 1px solid #616161;
-    border: none;
     caret-color: #0088d4;
     color: #616161;
     font-size: 13px;
