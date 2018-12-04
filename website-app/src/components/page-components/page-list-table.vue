@@ -14,11 +14,12 @@
                 <tr v-for="(page) in collectionItems">
                     <td><Checkbox style="margin-right: 10px;" v-bind:onChangeValue="onChangeValue" v-bind:item="page._id"></Checkbox></td>
                     <td v-on:click="onClickRow(page)">
-                        <div class="avatar" v-bind:style="$getHexColor(page.page_title)"><span>{{ page.page_title[0] }}</span></div>
+                        <div class="avatar" v-if="page.get('page_media_name')" v-bind:style="$getAvatarURL(page.get('page_media_name'))"></div>
+                        <div class="avatar" v-if="!page.get('page_media_name')" v-bind:style="getAvatarColor(page)"><span>{{ page.get('page_title')[0] }}</span></div>
                     </td>
-                    <td v-on:click="onClickRow(page)">{{ page.page_title }}</td>
-                    <td v-on:click="onClickRow(page)">{{ page.page_date }}</td>
-                    <td v-on:click="onClickRow(page)">{{ page.page_status }}</td>
+                    <td v-on:click="onClickRow(page)">{{ page.get('page_title') }}</td>
+                    <td v-on:click="onClickRow(page)">{{ page.get('page_date') }}</td>
+                    <td v-on:click="onClickRow(page)">{{ page.get('page_status') }}</td>
                 </tr>
             </tbody>
             <tfoot>
@@ -87,6 +88,24 @@ export default {
                 delete this.itemSelected[itemId]
             this.$eventHub.$emit('items-selected', this.itemSelected)
         },
+        getAvatarColor: function(page) {
+            this.getAvatarURL(page)
+            page.on('change', ({attribute, value}) => {
+                if(attribute === 'page_thumbnail')
+                    this.getAvatarURL(page)
+            })
+            return this.$getHexColor(page.get('page_title'))
+        },
+        getAvatarURL: function(page) {
+            if(!page.get('page_thumbnail'))
+                return
+
+            let media = new this.$models.Media({'_id': page.get('page_thumbnail')})
+            media.fetch()
+            .then((data) => {
+                page.set('page_media_name', media.get('media_name'))
+            })
+        }
     }
 }
 

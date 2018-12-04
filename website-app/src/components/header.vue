@@ -139,10 +139,6 @@ export default {
         getSessionUserData: function() {
             this.user.set('_id', window.user_id)
             this.user.fetch()
-            .then(data => {
-                // this.userName = this.user.get('user_first_name')
-                console.log('== data ==', this.user.get('user_first_name'))
-            })
             .catch(data => {
                 this.$eventHub.$emit('dashboard-app-error', data.message)
             })

@@ -194,6 +194,16 @@ form {
     overflow: hidden;
 }
 
+.media-thumbnail:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-image: url(/assets/texture-bkg.png);
+}
+
 .content-wrapper {
     padding: 15px;
     box-sizing: content-box;

@@ -14,7 +14,8 @@
                 <tr v-for="(post) in collectionItems">
                     <td><Checkbox style="margin-right: 10px;" v-bind:onChangeValue="onChangeValue" v-bind:item="post._id"></Checkbox></td>
                     <td v-on:click="onClickRow(post)">
-                        <div class="avatar" v-bind:style="$getHexColor(post.post_title)"><span>{{ post.post_title[0] }}</span></div>
+                        <div class="avatar" v-if="post.post_media_name" v-bind:style="$getAvatarURL(post.post_media_name)"></div>
+                        <div class="avatar" v-if="!post.post_media_name" v-bind:style="getAvatarColor(post)"><span>{{ post.get('post_title')[0] }}</span></div>
                     </td>
                     <td v-on:click="onClickRow(post)">{{ post.post_title }}</td>
                     <td v-on:click="onClickRow(post)">{{ post.post_date }}</td>
@@ -87,6 +88,24 @@ export default {
                 delete this.itemSelected[itemId]
             this.$eventHub.$emit('items-selected', this.itemSelected)
         },
+        getAvatarColor: function(post) {
+            this.getAvatarURL(post)
+            post.on('change', ({attribute, value}) => {
+                if(attribute === 'post_thumbnail')
+                    this.getAvatarURL(post)
+            })
+            return this.$getHexColor(post.get('post_title'))
+        },
+        getAvatarURL: function(post) {
+            if(!post.get('post_thumbnail'))
+                return
+
+            let media = new this.$models.Media({'_id': post.get('post_thumbnail')})
+            media.fetch()
+            .then((data) => {
+                post.set('post_media_name', media.get('media_name'))
+            })
+        }
     }
 }
 

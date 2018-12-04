@@ -4,9 +4,13 @@
             <div class="header">
                 <NavigationButtons buttonColor="#f0f0f0"/>
                 <h2>Create page</h2>
+                <div class="header-action-buttons-wrapper">
+                    <Button v-if="page.get('page_thumbnail')" buttonIcon="broken_image" v-bind:buttonAction="removeMedia" buttonColor="#f0f0f0">Remove Image</Button>
+                    <Button buttonIcon="image" v-bind:buttonAction="openMediaModal" buttonColor="#f0f0f0" style="margin-left: 10px;">Set Image</Button>
+                </div>
             </div>
-            <div class="page-thumbnail" v-bind:style="$getHexColor(page.page_title)"></div>
-            <Button class="media-modal" buttonIcon="update" v-bind:buttonAction="openMediaModal" buttonColor="#f0f0f0" style="margin-left: 10px;">Update Image</button>
+            <div class="page-thumbnail" v-if="media.isImage()" v-bind:style="$getThumbnailURL(media.media_name)"></div>
+            <div class="page-thumbnail" v-if="!page.page_thumbnail" v-bind:style="$getHexColor(page.page_title)"></div>
             <div class="content-wrapper">
                 <InputText class="input" inputName="Page Title" v-bind:inputValue="page.page_title" v-bind:onChangeValue="onChangeInputValue" propName='page_title'></InputText>
                 <editor v-bind:content="editorContent" v-bind:onChangeContent="onChangeContent"></editor>
@@ -54,6 +58,7 @@ export default {
             modalDescription: '',
             pageStatusIndex: 0,
             showMediaModal: false,
+            media: new this.$models.Media(),
         }
     },
     components: {
@@ -70,6 +75,13 @@ export default {
         this.page.setOption('hasUpdate', false)
         this.getPageData()
         this.setOnChangePage()
+    },
+    mounted() {
+        this.page.on('change', ({attribute, value}) => {
+            if(attribute === 'page_thumbnail') {
+                this.setMediaIDAndFetchMedia(this.page.get('page_thumbnail'))
+            }
+        })
     },
     methods: {
         setOnChangePage: function() {
@@ -102,6 +114,7 @@ export default {
                 this.editorContent = this.page.get('page_content')
                 if(this.page.get('page_status') === 'pending')
                     this.pageStatusIndex = 1
+                this.setMediaIDAndFetchMedia(this.page.get('page_thumbnail'))
             })
             .catch(err => {
                 this.$eventHub.$emit('dashboard-app-error', err.message)
@@ -153,17 +166,28 @@ export default {
             this.page.set('page_content', getHTML())
         },
         openMediaModal: function() {
-            console.log('== open ==')
-        },
-        openMediaModal: function() {
             this.showMediaModal = true
         },
         closeMediaModal: function() {
             this.showMediaModal = false
         },
         onMediaSelect: function(media) {
-            console.log('== set media image ==', media)
+            this.page.set('page_thumbnail', media.get('id'))
+            this.setMediaIDAndFetchMedia(media.get('id'))
             this.closeMediaModal()
+        },
+        setMediaIDAndFetchMedia: function(mediaID) {
+            if(!mediaID)
+                return
+
+            this.media.clear()
+            this.media = new this.$models.Media()
+            this.media.set('_id', mediaID)
+            this.media.fetch()
+        },
+        removeMedia: function() {
+            this.media.clear()
+            this.page.set('page_thumbnail', '')
         },
     }
 }
@@ -184,6 +208,8 @@ export default {
     left: 0;
     padding: 15px;
     z-index: 1;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 h2 {
@@ -222,6 +248,17 @@ h2 {
     transition-duration: 100ms;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
+    overflow: hidden;
+}
+
+.page-thumbnail:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-image: url(/assets/texture-bkg.png);
 }
 
 .content-wrapper {
@@ -233,10 +270,12 @@ h2 {
     margin-top: 15px;
 }
 
-.media-modal {
-    position: absolute !important;
-    top: 15px;
-    right: 15px;
+.header-action-buttons-wrapper {
+    top: 0;
+    right: 0;
+    padding: 0px;
+    display: flex;
+    justify-content: flex-end;
 }
 
 </style>
