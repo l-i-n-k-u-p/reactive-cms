@@ -356,6 +356,7 @@ router.put('/post/:id', session.isAuthenticated, (req, res, next) => {
     .then(post => {
         post.post_content = req.body.post_content
         post.post_status = req.body.post_status
+        post.post_thumbnail = req.body.post_thumbnail
         if(post.post_title === req.body.post_title) {
             post.post_title = req.body.post_title
             post.save()
@@ -519,6 +520,7 @@ router.put('/page/:id', session.isAuthenticated, (req, res, next) => {
     .then(page => {
         page.page_content = req.body.page_content
         page.page_status = req.body.page_status
+        page.page_thumbnail = req.body.page_thumbnail
         if(page.page_title === req.body.page_title) {
             page.page_title = req.body.page_title
             page.save()

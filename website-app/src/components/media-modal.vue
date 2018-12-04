@@ -287,6 +287,7 @@ export default {
 .library-wrapper {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 .search-input {
