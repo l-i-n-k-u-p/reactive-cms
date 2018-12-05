@@ -20,6 +20,14 @@
                 height: 100%;
                 box-sizing: border-box;
             }
+            ::selection {
+                background: #3bb7ff;
+                color: white;
+            }
+            ::-moz-selection {
+                background: #3bb7ff;
+                color: white;
+            }
         </style>
         <div id="app"></div>
         <script>window.user_id = "<%= user_id %>"; </script>
