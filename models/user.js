@@ -11,6 +11,8 @@ const User = new Schema({
     user_type: { type: String, required: true },
     user_registration_date: { type: String, required: true},
     user_active: { type: Boolean, required: true },
+    user_thumbnail: { type: String, trim: true },
+    user_avatar: { type: String, trim: true },
 }, {
     collection: 'user'
 })

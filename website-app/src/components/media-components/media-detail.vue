@@ -188,7 +188,6 @@ form {
     pointer-events: none;
     color: #616161;
     padding: 10px;
-    transition-duration: 100ms;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
     overflow: hidden;

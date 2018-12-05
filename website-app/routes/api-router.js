@@ -83,6 +83,8 @@ router.get('/users/:page', session.isAuthenticated, (req, res) => {
             'user_type',
             'user_registration_date',
             'user_active',
+            'user_thumbnail',
+            'user_avatar',
         ])
         .skip(skipUsers)
         .limit(DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST).exec()
@@ -120,6 +122,8 @@ router.get('/user/:id', session.isAuthenticated, (req, res) => {
         'user_type',
         'user_active',
         'user_registration_date',
+        'user_thumbnail',
+        'user_avatar',
     ])
     .then(user => {
         res.json(user)
