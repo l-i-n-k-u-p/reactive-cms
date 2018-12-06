@@ -1,41 +1,115 @@
 <template lang="html">
-    <div class="modal-box-wrapper">
-        <div class="position-wrapper">
-            <div class="box-content">
-                <div class="header">
-                    <div class="modal-title">{{ modalTitle }}</div>
-                    <div class="modal-description">{{ modalDescription }}</div>
-                    <div class="navgation-buttons">
-                        <Button buttonIcon="photo_library" v-bind:buttonAction="activeLibrary">Library</Button>
-                        <Button buttonIcon="cloud_upload" v-bind:buttonAction="activeUpload" style="margin-left: 5px;">Upload</Button>
+    <div
+        class="modal-box-wrapper">
+        <div
+            class="position-wrapper">
+            <div
+                class="box-content">
+                <div
+                    class="header">
+                    <div
+                        class="modal-title">
+                        {{ modalTitle }}
+                    </div>
+                    <div
+                        class="modal-description">
+                        {{ modalDescription }}
+                    </div>
+                    <div
+                        class="navgation-buttons">
+                        <Button
+                            buttonIcon="photo_library"
+                            v-bind:buttonAction="activeLibrary">
+                            Library
+                        </Button>
+                        <Button
+                            buttonIcon="cloud_upload"
+                            v-bind:buttonAction="activeUpload"
+                            style="margin-left: 5px;">
+                            Upload
+                        </Button>
                     </div>
                 </div>
-                <div class="content">
-                    <div v-if="activeTab === 0" class="library-wrapper">
-                        <InputText class="search-input" inputName="Search" v-bind:inputValue="searchValue" v-bind:onChangeValue="onChangeInputValue" propName=''></InputText>
-                        <div class="media-files-wrapper" ref="mediaWrapper" v-on:scroll="onScroll">
-                            <div class="image" v-for="(media) in mediaFiles.models" v-on:click="selectMediaImage(media)" v-if="showThisMedia(media)" v-bind:style="getPreview(media)"></div>
-                        </div>
-                    </div>
-                    <div v-if="activeTab === 1" class="upload-wrapper">
-                        <div class="dropzone" ref="dropzone">
-                            <div>
-                                <p class="upload-description">Choose a file or drag it here</p>
-                                <p class="upload-media-name">{{ mediaName }}</p>
-                                <i class="upload-icon material-icons">cloud_upload</i>
+                <div
+                    class="content">
+                    <div
+                        v-if="activeTab === 0"
+                        class="library-wrapper">
+                        <InputText
+                            class="search-input"
+                            inputName="Search"
+                            v-bind:inputValue="searchValue"
+                            v-bind:onChangeValue="onChangeInputValue"
+                            propName=''>
+                        </InputText>
+                        <div
+                            class="media-files-wrapper"
+                            ref="mediaWrapper"
+                            v-on:scroll="onScroll">
+                            <div
+                                class="image"
+                                v-for="(media) in mediaFiles.models"
+                                v-on:click="selectMediaImage(media)"
+                                v-if="showThisMedia(media)"
+                                v-bind:style="getPreview(media)">
                             </div>
                         </div>
-                        <input class="file-input" type="file" ref="file" name="file" @change="addFile()">
+                    </div>
+                    <div
+                        v-if="activeTab === 1"
+                        class="upload-wrapper">
+                        <div
+                            class="dropzone"
+                            ref="dropzone">
+                            <div>
+                                <p
+                                    class="upload-description">
+                                    Choose a file or drag it here
+                                </p>
+                                <p
+                                    class="upload-media-name">
+                                    {{ mediaName }}
+                                </p>
+                                <i
+                                    class="upload-icon material-icons">
+                                    cloud_upload
+                                </i>
+                            </div>
+                        </div>
+                        <input
+                            class="file-input"
+                            type="file"
+                            ref="file"
+                            name="file"
+                            @change="addFile()">
                     </div>
                 </div>
-                <div class="footer">
-                    <div v-if="activeTab === 0" class="media-file-info-wrapper">
-                        <p>Media title: {{ selectedMedia.get('media_title') }}</p>
-                        <p>Media original name: {{ selectedMedia.get('media_original_name') }}</p>
+                <div
+                    class="footer">
+                    <div
+                        v-if="activeTab === 0"
+                        class="media-file-info-wrapper">
+                        <p>
+                            Media title: {{ selectedMedia.get('media_title') }}
+                        </p>
+                        <p>
+                            Media original name: {{ selectedMedia.get('media_original_name') }}
+                        </p>
                     </div>
-                    <div class="buttons-wrapper">
-                        <Button buttonIcon="clear" v-bind:buttonAction="closeMediaModal">Cancel</Button>
-                        <Button v-if="activeTab === 0" buttonIcon="done" v-bind:buttonAction="selectMedia" style="margin-left: 10px;">Accept</Button>
+                    <div
+                        class="buttons-wrapper">
+                        <Button
+                            buttonIcon="clear"
+                            v-bind:buttonAction="closeMediaModal">
+                            Cancel
+                        </Button>
+                        <Button
+                            v-if="activeTab === 0"
+                            buttonIcon="done"
+                            v-bind:buttonAction="selectMedia"
+                            style="margin-left: 10px;">
+                            Accept
+                        </Button>
                     </div>
                 </div>
             </div>

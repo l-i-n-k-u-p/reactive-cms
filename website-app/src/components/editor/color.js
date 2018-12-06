@@ -1,6 +1,7 @@
 import { Node, Mark } from 'tiptap'
 import { removeMark, updateMark } from 'tiptap-commands'
 
+
 export default class TextColor extends Mark {
     get name() {
         return 'textcolor'

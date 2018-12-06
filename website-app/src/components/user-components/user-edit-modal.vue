@@ -1,27 +1,59 @@
 <template lang="html">
-
-    <div class="modal-box-wrapper close-modal" v-on:click="closeModalBox">
-        <div class="box-content">
-            <div class="title">User</div>
-            <p>Edit {{ user.user_name }} user</p>
-            <form v-on:submit.prevent="updateUser">
-                <div v-bind:class="{ active: isActive(0), 'input-text': true }">
-                    <label>User Email</label>
-                    <input type="text" v-model="user.user_email" v-on:focus="inputFocus(0)" v-on:blur="inputFocus(-1)" placeholder="Email">
+    <div
+        class="modal-box-wrapper close-modal"
+        v-on:click="closeModalBox">
+        <div
+            class="box-content">
+            <div
+                class="title">
+                User
+            </div>
+            <p>
+                Edit {{ user.user_name }} user
+            </p>
+            <form
+                v-on:submit.prevent="updateUser">
+                <div
+                    v-bind:class="{ active: isActive(0), 'input-text': true }">
+                    <label>
+                        User Email
+                    </label>
+                    <input
+                        type="text"
+                        v-model="user.user_email"
+                        v-on:focus="inputFocus(0)"
+                        v-on:blur="inputFocus(-1)"
+                        placeholder="Email">
                 </div>
-                <div v-bind:class="{ active: isActive(1), 'input-text': true }">
-                    <label>User Type</label>
-                    <input class="input-text" type="text" v-model="user.user_type"  v-on:focus="inputFocus(1)" v-on:blur="inputFocus(-1)" placeholder="Type">
+                <div
+                    v-bind:class="{ active: isActive(1), 'input-text': true }">
+                    <label>
+                        User Type
+                    </label>
+                    <input
+                        class="input-text"
+                        type="text"
+                        v-model="user.user_type"
+                        v-on:focus="inputFocus(1)"
+                        v-on:blur="inputFocus(-1)"
+                        placeholder="Type">
                 </div>
-                <div class="buttons-wrapper">
-                    <div class="button close-modal" v-on:click="closeModalBox">Cancel</div>
-                    <button class="button" type="submit">Update</button>
+                <div
+                    class="buttons-wrapper">
+                    <div
+                        class="button close-modal"
+                        v-on:click="closeModalBox">
+                        Cancel</div>
+                    <button
+                        class="button"
+                        type="submit">
+                        Update
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </template>
-
 
 <script>
 
@@ -44,9 +76,6 @@ export default {
         if(this.closeModal)
             this.onClickOutsiteFn = this.closeModal;
     },
-    // updated() {
-    //
-    // },
     methods: {
         closeModalBox: function(element) {
             var className = element.target.classList.value;

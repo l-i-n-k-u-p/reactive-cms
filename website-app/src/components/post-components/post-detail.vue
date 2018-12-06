@@ -1,28 +1,94 @@
 <template lang="html">
-    <BoxWrapper style="padding: 0;">
-        <div class="post">
-            <div class="header">
-                <NavigationButtons buttonColor="#f0f0f0"/>
-                <h2>Post detail</h2>
-                <div class="header-action-buttons-wrapper">
-                    <Button v-if="post.get('post_thumbnail')" buttonIcon="broken_image" v-bind:buttonAction="removeMedia" buttonColor="#f0f0f0">Remove Image</Button>
-                    <Button buttonIcon="image" v-bind:buttonAction="openMediaModal" buttonColor="#f0f0f0" style="margin-left: 10px;">Set Image</Button>
+    <BoxWrapper
+        style="padding: 0;">
+        <div
+            class="post">
+            <div
+                class="header">
+                <NavigationButtons
+                    buttonColor="#f0f0f0"/>
+                <h2>
+                    Post detail
+                </h2>
+                <div
+                    class="header-action-buttons-wrapper">
+                    <Button
+                        v-if="post.get('post_thumbnail')"
+                        buttonIcon="broken_image"
+                        v-bind:buttonAction="removeMedia"
+                        buttonColor="#f0f0f0">
+                        Remove Image
+                    </Button>
+                    <Button
+                        buttonIcon="image"
+                        v-bind:buttonAction="openMediaModal"
+                        buttonColor="#f0f0f0"
+                        style="margin-left: 10px;">
+                        Set Image
+                    </Button>
                 </div>
             </div>
-            <div class="post-thumbnail" v-if="media.isImage()" v-bind:style="$getThumbnailURL(media.media_name)"></div>
-            <div class="post-thumbnail" v-if="!post.post_thumbnail" v-bind:style="$getHexColor(post.post_title)"></div>
-            <div class="content-wrapper">
-                <InputText class="input" inputName="Post Title" v-bind:inputValue="post.post_title" v-bind:onChangeValue="onChangeInputValue" propName='post_title'></InputText>
-                <editor v-bind:content="editorContent" v-bind:onChangeContent="onChangeContent"></editor>
-                <div class="buttons-wrapper">
-                    <DropdownSelect label="Status" v-bind:initialIndexOption="postStatusIndex" v-bind:onSelectOption="onSelectOption" v-bind:selectOptions="selectOptions"></DropdownSelect>
-                    <Button buttonIcon="remove" v-bind:buttonAction="showConfirmationModal" style="margin-left: 10px;">Delete</button>
-                    <Button buttonIcon="save" v-bind:buttonAction="updatePost" style="margin-left: 10px;">Update</button>
+            <div
+                class="post-thumbnail"
+                v-if="media.isImage()"
+                v-bind:style="$getThumbnailURL(media.media_name)">
+            </div>
+            <div
+                class="post-thumbnail"
+                v-if="!post.post_thumbnail"
+                v-bind:style="$getHexColor(post.post_title)">
+            </div>
+            <div
+                class="content-wrapper">
+                <InputText
+                    class="input"
+                    inputName="Post Title"
+                    v-bind:inputValue="post.post_title"
+                    v-bind:onChangeValue="onChangeInputValue"
+                    propName="post_title">
+                </InputText>
+                <editor
+                    v-bind:content="editorContent"
+                    v-bind:onChangeContent="onChangeContent">
+                </editor>
+                <div
+                    class="buttons-wrapper">
+                    <DropdownSelect
+                        label="Status"
+                        v-bind:initialIndexOption="postStatusIndex"
+                        v-bind:onSelectOption="onSelectOption"
+                        v-bind:selectOptions="selectOptions">
+                    </DropdownSelect>
+                    <Button
+                        buttonIcon="remove"
+                        v-bind:buttonAction="showConfirmationModal"
+                        style="margin-left: 10px;">
+                        Delete
+                    </button>
+                    <Button
+                        buttonIcon="save"
+                        v-bind:buttonAction="updatePost"
+                        style="margin-left: 10px;">
+                        Update
+                    </button>
                 </div>
             </div>
         </div>
-        <ConfirmationModal v-if="showModal" v-bind:modalTitle="modalTitle" v-bind:modalDescription="modalDescription" v-bind:cancelAction="cancelAction" v-bind:acceptAction="acceptAction"></ConfirmationModal>
-        <MediaModal v-if="showMediaModal" onlyImages="yes" modalTitle="Set Featured Image" modalDescription="Chose one image or upload new" v-bind:closeMediaModal="closeMediaModal" v-bind:onMediaSelect="onMediaSelect"></MediaModal>
+        <ConfirmationModal
+            v-if="showModal"
+            v-bind:modalTitle="modalTitle"
+            v-bind:modalDescription="modalDescription"
+            v-bind:cancelAction="cancelAction"
+            v-bind:acceptAction="acceptAction">
+        </ConfirmationModal>
+        <MediaModal
+            v-if="showMediaModal"
+            onlyImages="yes"
+            modalTitle="Set Featured Image"
+            modalDescription="Chose one image or upload new"
+            v-bind:closeMediaModal="closeMediaModal"
+            v-bind:onMediaSelect="onMediaSelect">
+        </MediaModal>
     </BoxWrapper>
 </template>
 
@@ -193,7 +259,6 @@ export default {
 }
 
 </script>
-
 
 <style scoped lang="css">
 

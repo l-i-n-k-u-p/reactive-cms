@@ -1,11 +1,20 @@
 <template lang="html">
-    <label class="input-wrapper">
-        <label v-if="label">{{ label }}</label>
-        <input type="checkbox" v-model="isChecked" v-bind:checked="isChecked" v-on:change="onChange">
-        <span class="checkmark"></span>
+    <label
+        class="input-wrapper">
+        <label
+            v-if="label">
+            {{ label }}
+        </label>
+        <input
+            type="checkbox"
+            v-model="isChecked"
+            v-bind:checked="isChecked"
+            v-on:change="onChange">
+        <span
+            class="checkmark">
+        </span>
     </label>
 </template>
-
 
 <script>
 
@@ -28,7 +37,6 @@ export default {
 }
 
 </script>
-
 
 <style scoped lang="css">
 

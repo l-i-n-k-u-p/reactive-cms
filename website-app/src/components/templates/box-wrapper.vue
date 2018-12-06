@@ -1,9 +1,11 @@
 <template lang="html">
-    <div id="box-wrapper">
-        <slot>CONTENT</slot>
+    <div
+        id="box-wrapper">
+        <slot>
+            CONTENT
+        </slot>
     </div>
 </template>
-
 
 <script>
 
@@ -21,7 +23,6 @@ export default {
 }
 
 </script>
-
 
 <style scoped lang="css">
 

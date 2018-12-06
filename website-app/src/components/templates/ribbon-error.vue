@@ -1,14 +1,19 @@
 <template lang="html">
-    <transition name="fade">
-        <div id="ribbon-error-wrapper">
+    <transition
+        name="fade">
+        <div
+            id="ribbon-error-wrapper">
             <p>
                 <slot></slot>
             </p>
-            <i class="material-icons" v-on:click="removeRibbonMessage">close</i>
+            <i
+                class="material-icons"
+                v-on:click="removeRibbonMessage">
+                close
+            </i>
         </div>
     </transition>
 </template>
-
 
 <script>
 
@@ -29,7 +34,6 @@ export default {
 }
 
 </script>
-
 
 <style scoped lang="css">
 

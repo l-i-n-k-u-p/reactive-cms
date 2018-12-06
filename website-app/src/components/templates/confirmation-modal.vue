@@ -1,16 +1,32 @@
 <template lang="html">
-    <div class="modal-box-wrapper">
-        <div class="box-content">
-            <div class="title">{{ modalTitle }}</div>
-            <p>{{ modalDescription }}</p>
-            <div class="buttons-wrapper">
-                <Button buttonIcon="clear" v-bind:buttonAction="cancelAction">Cancel</button>
-                <Button buttonIcon="done" v-bind:buttonAction="acceptAction" style="margin-left: 10px;">Accept</button>
+    <div
+        class="modal-box-wrapper">
+        <div
+            class="box-content">
+            <div
+                class="title">
+                {{ modalTitle }}
+            </div>
+            <p>
+                {{ modalDescription }}
+            </p>
+            <div
+                class="buttons-wrapper">
+                <Button
+                    buttonIcon="clear"
+                    v-bind:buttonAction="cancelAction">
+                    Cancel
+                </button>
+                <Button
+                    buttonIcon="done"
+                    v-bind:buttonAction="acceptAction"
+                    style="margin-left: 10px;">
+                    Accept
+                </button>
             </div>
         </div>
     </div>
 </template>
-
 
 <script>
 import Button from './button.vue'

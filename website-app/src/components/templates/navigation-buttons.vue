@@ -1,14 +1,26 @@
 <template lang="html">
-    <div id="navigation-buttons-wrapper">
-        <div id="button-wrapper" v-on:click="routerHistory(-1)" v-bind:style="this.getColor()">
-            <i class="material-icons icon">keyboard_arrow_left</i>
+    <div
+        id="navigation-buttons-wrapper">
+        <div
+            id="button-wrapper"
+            v-on:click="routerHistory(historyBack)"
+            v-bind:style="this.getColor()">
+            <i
+                class="material-icons icon">
+                keyboard_arrow_left
+            </i>
         </div>
-        <div id="button-wrapper" v-on:click="routerHistory(1)" v-bind:style="this.getColor()">
-            <i class="material-icons icon">keyboard_arrow_right</i>
+        <div
+            id="button-wrapper"
+            v-on:click="routerHistory(historyNext)"
+            v-bind:style="this.getColor()">
+            <i
+                class="material-icons icon">
+                keyboard_arrow_right
+            </i>
         </div>
     </div>
 </template>
-
 
 <script>
 
@@ -18,6 +30,8 @@ export default {
     ],
     data() {
         return {
+            historyBack: -1,
+            historyNext: 1,
         }
     },
     components: {
@@ -37,7 +51,6 @@ export default {
 }
 
 </script>
-
 
 <style scoped lang="css">
 

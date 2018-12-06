@@ -1,53 +1,110 @@
 <template lang="html">
     <div>
-        <table class="table-wrapper">
+        <table
+            class="table-wrapper">
             <thead>
                 <tr>
                     <td></td>
-                    <td>Thumbnail</td>
-                    <td>Media Title</td>
-                    <td>Media Original Name</td>
-                    <td>Media MIME Type</td>
-                    <td>Media Date</td>
+                    <td>
+                        Thumbnail
+                    </td>
+                    <td>
+                        Media Title
+                    </td>
+                    <td>
+                        Media Original Name
+                    </td>
+                    <td>
+                        Media MIME Type
+                    </td>
+                    <td>
+                        Media Date
+                    </td>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(media) in collectionItems">
-                    <td><Checkbox style="margin-right: 10px;" v-bind:onChangeValue="onChangeValue" v-bind:item="media._id"></Checkbox></td>
-                    <td v-on:click="onClickRow(media)">
-                        <div class="avatar" v-if="media.isImage()" v-bind:style="$getAvatarURL(media.media_name)"></div>
-                        <div class="avatar" v-if="!media.isImage()" v-bind:style="$getHexColor(media.media_title)"><span>{{ media.media_title[0] }}</span></div>
+                <tr
+                    v-for="(media) in collectionItems">
+                    <td>
+                        <Checkbox
+                            style="margin-right: 10px;"
+                            v-bind:onChangeValue="onChangeValue"
+                            v-bind:item="media._id">
+                        </Checkbox>
                     </td>
-                    <td v-on:click="onClickRow(media)">{{ media.media_title }}</td>
-                    <td v-on:click="onClickRow(media)">{{ media.media_original_name }}</td>
-                    <td v-on:click="onClickRow(media)">{{ media.media_mime_type }}</td>
-                    <td v-on:click="onClickRow(media)">{{ media.media_date }}</td>
+                    <td
+                        v-on:click="onClickRow(media)">
+                        <div
+                            class="avatar"
+                            v-if="media.isImage()"
+                            v-bind:style="$getAvatarURL(media.media_name)">
+                        </div>
+                        <div
+                            class="avatar"
+                            v-if="!media.isImage()"
+                            v-bind:style="$getHexColor(media.media_title)">
+                            <span>
+                                {{ media.media_title[0] }}
+                            </span>
+                        </div>
+                    </td>
+                    <td
+                        v-on:click="onClickRow(media)">{{ media.media_title }}
+                    </td>
+                    <td
+                        v-on:click="onClickRow(media)">{{ media.media_original_name }}
+                    </td>
+                    <td
+                        v-on:click="onClickRow(media)">{{ media.media_mime_type }}
+                    </td>
+                    <td
+                        v-on:click="onClickRow(media)">{{ media.media_date }}
+                    </td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
                     <td></td>
-                    <td>Thumbnail</td>
-                    <td>Media Title</td>
-                    <td>Media Original Name</td>
-                    <td>Media MIME Type</td>
-                    <td>Media Date</td>
+                    <td>
+                        Thumbnail
+                    </td>
+                    <td>
+                        Media Title
+                    </td>
+                    <td>
+                        Media Original Name
+                    </td>
+                    <td>
+                        Media MIME Type
+                    </td>
+                    <td>
+                        Media Date
+                    </td>
                 </tr>
             </tfoot>
         </table>
-        <div class="navigation-wrapper">
-            <div class="data">
+        <div
+            class="navigation-wrapper">
+            <div
+                class="data">
                 Rows from {{ itemsSkipped + 1 }} to {{ itemsSkipped + collection.models.length }} of {{ totalItems }}
             </div>
-            <div class="data">
+            <div
+                class="data">
                 Page {{ currentPage }} of {{ totalPages }}
             </div>
-            <ButtonIcon buttonIcon="navigate_before" v-bind:buttonAction="navigationBefore" style="margin-left: 10px; margin-right: 10px;"></ButtonIcon>
-            <ButtonIcon buttonIcon="navigate_next" v-bind:buttonAction="navigationNext"></ButtonIcon>
+            <ButtonIcon
+                buttonIcon="navigate_before"
+                v-bind:buttonAction="navigationBefore"
+                style="margin-left: 10px; margin-right: 10px;">
+            </ButtonIcon>
+            <ButtonIcon
+                buttonIcon="navigate_next"
+                v-bind:buttonAction="navigationNext">
+            </ButtonIcon>
         </div>
     </div>
 </template>
-
 
 <script>
 
@@ -95,7 +152,6 @@ export default {
 }
 
 </script>
-
 
 <style scoped lang="css">
 

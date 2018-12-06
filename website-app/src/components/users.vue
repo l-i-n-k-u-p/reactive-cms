@@ -1,15 +1,35 @@
 <template lang="html">
     <BoxWrapper>
         <div>
-            <div class="header">
+            <div
+                class="header">
                 <NavigationButtons/>
                 <h2>Users</h2>
-                <div class="buttons-wrapper">
-                    <Dropdown style="margin-right: 10px;" label="Bulk Actions" v-bind:onSelectOption="onSelectOption" v-bind:selectOptions="selectOptions"></Dropdown>
-                    <Button buttonIcon="add" v-bind:buttonAction="openNewUserForm">Add User</button>
+                <div
+                    class="buttons-wrapper">
+                    <Dropdown
+                        style="margin-right: 10px;"
+                        label="Bulk Actions"
+                        v-bind:onSelectOption="onSelectOption"
+                        v-bind:selectOptions="selectOptions">
+                    </Dropdown>
+                    <Button
+                        buttonIcon="add"
+                        v-bind:buttonAction="openNewUserForm">
+                        Add User
+                    </button>
                 </div>
             </div>
-            <UserListTable v-if="users.models.length" v-bind:userList="users" v-bind:onClickRow="showUserDetail" v-bind:navigationBefore="navigationBefore" v-bind:navigationNext="navigationNext" v-bind:currentPage="currentPage" v-bind:totalPages="totalPages" v-bind:itemsSkipped="itemsSkipped" v-bind:totalUsers="totalUsers"/>
+            <UserListTable
+                v-if="users.models.length"
+                v-bind:userList="users"
+                v-bind:onClickRow="showUserDetail"
+                v-bind:navigationBefore="navigationBefore"
+                v-bind:navigationNext="navigationNext"
+                v-bind:currentPage="currentPage"
+                v-bind:totalPages="totalPages"
+                v-bind:itemsSkipped="itemsSkipped"
+                v-bind:totalUsers="totalUsers"/>
         </div>
     </BoxWrapper>
 </template>

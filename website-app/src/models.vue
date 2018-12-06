@@ -1,9 +1,10 @@
 <script>
 import {Model, Collection} from 'vue-mc'
 
-const appApiBaseURL = '/admin-website/api';
 
-Pusher.logToConsole = true;
+const appApiBaseURL = '/admin-website/api'
+
+Pusher.logToConsole = true
 const pusher = new Pusher('c6e6a7cab15691ed1fab', {
     cluster: 'us2',
     forceTLS: true,

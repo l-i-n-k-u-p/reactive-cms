@@ -1,8 +1,8 @@
 import { setBlockType, toggleBlockType } from 'tiptap-commands'
 import { Node } from 'tiptap'
 
-export default class ParagraphNode extends Node {
 
+export default class ParagraphNode extends Node {
 	get name() {
 		return 'paragraph'
 	}
@@ -32,5 +32,4 @@ export default class ParagraphNode extends Node {
 	commands({ type, schema }) {
 		return attrs => toggleBlockType(type, schema.nodes.paragraph, attrs)
 	}
-
 }

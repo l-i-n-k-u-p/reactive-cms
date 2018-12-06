@@ -1,49 +1,130 @@
 <template lang="html">
     <div>
-        <div id="header" v-bind:style="boxShadowHeader">
-            <div class="left-wrapper">
-                <i class="material-icons menu-icon" v-on:click="toggleMenu">menu</i>
-                <label class="page-title">DASHBOARD</label>
+        <div
+            id="header"
+            v-bind:style="boxShadowHeader">
+            <div
+                class="left-wrapper">
+                <i
+                    class="material-icons menu-icon"
+                    v-on:click="toggleMenu">
+                    menu
+                </i>
+                <label
+                    class="page-title">
+                    DASHBOARD
+                </label>
             </div>
-            <div class="search-wrapper" v-bind:class="{'search-active': resultsIsVisible}" v-click-outside="clickOutsite">
-                <i class="material-icons icon">search</i>
-                <input type="text" placeholder="Search" v-model="searchValue" v-on:focus="onChangeSearchValue">
-                <div class="bkg"></div>
-                <div class="results-wrapper" v-if="resultsIsVisible">
-                    <div class="no-results" v-if="!searchItems.models.length">Without Results</div>
-                    <div class="item" v-on:click="onClickResult" v-for="(item) in searchItems.models">
-                        <div v-if="item.model_name == 'user'" v-on:click="showUserDetail(item)">
-                            <i class="material-icons">person</i>
-                            <label>{{ item.user_name }}</label>
+            <div
+                class="search-wrapper"
+                v-bind:class="{'search-active': resultsIsVisible}"
+                v-click-outside="clickOutsite">
+                <i
+                    class="material-icons icon">
+                    search
+                </i>
+                <input
+                    type="text"
+                    placeholder="Search"
+                    v-model="searchValue"
+                    v-on:focus="onChangeSearchValue">
+                <div
+                    class="bkg">
+                </div>
+                <div
+                    class="results-wrapper"
+                    v-if="resultsIsVisible">
+                    <div
+                        class="no-results"
+                        v-if="!searchItems.models.length">
+                        Without Results
+                    </div>
+                    <div
+                        class="item"
+                        v-on:click="onClickResult"
+                        v-for="(item) in searchItems.models">
+                        <div
+                            v-if="item.model_name == 'user'"
+                            v-on:click="showUserDetail(item)">
+                            <i
+                                class="material-icons">
+                                person
+                            </i>
+                            <label>
+                                {{ item.user_name }}
+                            </label>
                         </div>
-                        <div v-if="item.model_name == 'post'" v-on:click="showPostDetail(item)">
-                            <i class="material-icons">insert_drive_file</i>
-                            <label>{{ item.post_title }}</label>
+                        <div
+                            v-if="item.model_name == 'post'"
+                            v-on:click="showPostDetail(item)">
+                            <i
+                                class="material-icons">
+                                insert_drive_file
+                            </i>
+                            <label>
+                                {{ item.post_title }}
+                            </label>
                         </div>
-                        <div v-if="item.model_name == 'page'" v-on:click="showPageDetail(item)">
-                            <i class="material-icons">insert_drive_file</i>
-                            <label>{{ item.page_title }}</label>
+                        <div
+                            v-if="item.model_name == 'page'"
+                            v-on:click="showPageDetail(item)">
+                            <i
+                                class="material-icons">
+                                insert_drive_file
+                            </i>
+                            <label>
+                                {{ item.page_title }}
+                            </label>
                         </div>
-                        <div v-if="item.model_name == 'media'" v-on:click="showMediaDetail(item)">
-                            <i class="material-icons">image</i>
-                            <label>{{ item.media_title }}</label>
+                        <div
+                            v-if="item.model_name == 'media'"
+                            v-on:click="showMediaDetail(item)">
+                            <i
+                                class="material-icons">
+                                image
+                            </i>
+                            <label>
+                                {{ item.media_title }}
+                            </label>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="right-wrapper">
-                <div class="username" v-on:click="showUserMenu">
-                    <div class="avatar" v-bind:style="$getHexColor(user.get('user_first_name'))"><span>{{ user.get('user_first_name')[0] }}</span></div>
-                    <label>{{ user.get('user_first_name') }}</label>
-                    <div class="menu" v-if="userMenuOpen" v-click-outside="hideUserMenu">
-                        <div class="options-wrapper">
-                            <a class="option" href="/admin-logout">Sign Out</a>
+            <div
+                class="right-wrapper">
+                <div
+                    class="username"
+                    v-on:click="showUserMenu">
+                    <div
+                        class="avatar"
+                        v-bind:style="$getHexColor(user.get('user_first_name'))">
+                        <span>
+                            {{ user.get('user_first_name')[0] }}
+                        </span>
+                    </div>
+                    <label>
+                        {{ user.get('user_first_name') }}
+                    </label>
+                    <div
+                        class="menu"
+                        v-if="userMenuOpen"
+                        v-click-outside="hideUserMenu">
+                        <div
+                            class="options-wrapper">
+                            <a
+                                class="option"
+                                href="/admin-logout">
+                                Sign Out
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="background-extension-header" v-bind:style="backgroundHeightHeader"></div>
+        <div
+            class="background-extension-header"
+            v-bind:style="backgroundHeightHeader">
+        </div>
     </div>
 </template>
 

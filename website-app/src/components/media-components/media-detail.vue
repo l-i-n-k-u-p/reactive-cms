@@ -1,22 +1,66 @@
 <template lang="html">
-    <BoxWrapper style="padding: 0;">
-        <div class="media">
-            <div class="header">
-                <NavigationButtons buttonColor="#f0f0f0"/>
-                <h2>Media detail</h2>
+    <BoxWrapper
+        style="padding: 0;">
+        <div
+            class="media">
+            <div
+                class="header">
+                <NavigationButtons
+                    buttonColor="#f0f0f0"/>
+                <h2>
+                    Media detail
+                </h2>
             </div>
-            <div class="media-thumbnail" v-if="media.isImage()" v-bind:style="$getThumbnailURL(media.media_name)"></div>
-            <div class="media-thumbnail" v-if="!media.isImage()" v-bind:style="$getHexColor(media.media_title)"></div>
-            <Button class="media-download" buttonColor="#f0f0f0" buttonIcon="cloud_download" v-bind:buttonAction="openMediaFile">Open</Button>
-            <div class="content-wrapper">
-                <InputText class="input" inputName="Media Title" v-bind:inputValue="media.media_title" v-bind:onChangeValue="onChangeInputValue" propName='media_title'></InputText>
-                <div class="buttons-wrapper">
-                    <Button buttonIcon="remove" v-bind:buttonAction="showConfirmationModal" style="margin-left: 10px;">Delete</Button>
-                    <Button buttonIcon="save" v-bind:buttonAction="updateMedia" style="margin-left: 10px;">Update</Button>
+            <div
+                class="media-thumbnail"
+                v-if="media.isImage()"
+                v-bind:style="$getThumbnailURL(media.media_name)">
+            </div>
+            <div
+                class="media-thumbnail"
+                v-if="!media.isImage()"
+                v-bind:style="$getHexColor(media.media_title)">
+            </div>
+            <Button
+                class="media-download"
+                buttonColor="#f0f0f0"
+                buttonIcon="cloud_download"
+                v-bind:buttonAction="openMediaFile">
+                Open
+            </Button>
+            <div
+                class="content-wrapper">
+                <InputText
+                    class="input"
+                    inputName="Media Title"
+                    v-bind:inputValue="media.media_title"
+                    v-bind:onChangeValue="onChangeInputValue"
+                    propName='media_title'>
+                </InputText>
+                <div
+                    class="buttons-wrapper">
+                    <Button
+                        buttonIcon="remove"
+                        v-bind:buttonAction="showConfirmationModal"
+                        style="margin-left: 10px;">
+                        Delete
+                    </Button>
+                    <Button
+                        buttonIcon="save"
+                        v-bind:buttonAction="updateMedia"
+                        style="margin-left: 10px;">
+                        Update
+                    </Button>
                 </div>
             </div>
         </div>
-        <ConfirmationModal v-if="showModal" v-bind:modalTitle="modalTitle" v-bind:modalDescription="modalDescription" v-bind:cancelAction="cancelAction" v-bind:acceptAction="acceptAction"></ConfirmationModal>
+        <ConfirmationModal
+            v-if="showModal"
+            v-bind:modalTitle="modalTitle"
+            v-bind:modalDescription="modalDescription"
+            v-bind:cancelAction="cancelAction"
+            v-bind:acceptAction="acceptAction">
+        </ConfirmationModal>
     </BoxWrapper>
 </template>
 
@@ -134,7 +178,6 @@ export default {
 }
 
 </script>
-
 
 <style scoped lang="css">
 

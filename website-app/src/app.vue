@@ -1,21 +1,41 @@
 <template lang="html">
-    <div class="app-wrapper" v-on:scroll="onScroll">
-        <Header v-on:dashboard-toggle-menu="menuIsOpen" v-bind:scrollTop="scrollTop" v-bind:pageTitle="pageTitle"></Header>
-        <RibbonError v-if="appErrorMessage"><slot>{{ appErrorMessage }}</slot></RibbonError>
-        <RibbonSuccess v-if="appSuccessMessage"><slot>{{ appSuccessMessage }}</slot></RibbonSuccess>
-        <div class="content-wrapper">
-            <div v-bind:class="pageWrapperClass">
+    <div
+        class="app-wrapper"
+        v-on:scroll="onScroll">
+        <Header
+            v-on:dashboard-toggle-menu="menuIsOpen"
+            v-bind:scrollTop="scrollTop"
+            v-bind:pageTitle="pageTitle">
+        </Header>
+        <RibbonError
+            v-if="appErrorMessage">
+            <slot>{{ appErrorMessage }}</slot>
+        </RibbonError>
+        <RibbonSuccess
+            v-if="appSuccessMessage">
+            <slot>{{ appSuccessMessage }}</slot>
+        </RibbonSuccess>
+        <div
+            class="content-wrapper">
+            <div
+                v-bind:class="pageWrapperClass">
                 <!-- <DashboardTitle v-bind:title="pageTitle"/> -->
                 <!-- <router-view :key="$route.fullPath"/> if there is a problem when call the same route and not update the view use this -->
                 <router-view :key="$route.fullPath"/>
             </div>
         </div>
-        <transition name="fade">
-            <Menu class="left-menu-wrapper" v-if="menuIsOpen"></Menu>
+        <transition
+            name="fade">
+            <Menu
+                class="left-menu-wrapper"
+                v-if="menuIsOpen">
+            </Menu>
         </transition>
         <footer>
             <span>Development by</span>
-            <a href="https://reactive-web.com" target="_blank">
+            <a
+                href="https://reactive-web.com"
+                target="_blank">
                 <img src="/assets/reactive-web.png">
             </a>
             <span>Version 1.0.0</span>

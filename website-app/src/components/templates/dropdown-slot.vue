@@ -1,14 +1,22 @@
 <template lang="html">
-    <div v-bind:class="{'select-wrapper': true, 'open': show}" v-on:click="showOptions" v-click-outside="clickOutsite">
-        <i class="material-icons icon">{{ icon }}</i>
-        <transition name="fade">
-            <div class="items-wrapper" v-if="show">
+    <div
+        v-bind:class="{'select-wrapper': true, 'open': show}"
+        v-on:click="showOptions"
+        v-click-outside="clickOutsite">
+        <i
+            class="material-icons icon">
+            {{ icon }}
+        </i>
+        <transition
+            name="fade">
+            <div
+                class="items-wrapper"
+                v-if="show">
                 <slot></slot>
             </div>
         </transition>
     </div>
 </template>
-
 
 <script>
 
@@ -54,7 +62,6 @@ export default {
 }
 
 </script>
-
 
 <style scoped lang="css">
 
