@@ -10,6 +10,7 @@ const modelUser = require(path.join(APP_GLOBAL.appServerPath, '../models/user'))
 const modelPost = require(path.join(APP_GLOBAL.appServerPath, '../models/post'))
 const modelPage = require(path.join(APP_GLOBAL.appServerPath, '../models/page'))
 const modelMedia = require(path.join(APP_GLOBAL.appServerPath, '../models/media'))
+const modelSetting = require(path.join(APP_GLOBAL.appServerPath, '../models/setting'))
 const session = require('../../lib/session')
 const {
     generatePostSlug,
@@ -770,6 +771,45 @@ router.delete('/media-file/:id', session.isAuthenticated, (req, res, next) => {
 })
 
 // end - media
+
+
+// start - setting
+
+router.get('/setting/', session.isAuthenticated, (req, res) => {
+    modelSetting.findOne()
+    .then(settings => {
+        res.json(settings)
+    })
+    .catch(err => {
+        res.json({
+            status_code: 1,
+            status_msg: 'Settings not found',
+        })
+    })
+})
+
+router.put('/setting/', session.isAuthenticated, (req, res) => {
+    if(req.body) {
+        modelSetting.findOneAndUpdate({'_id': req.body.id}, req.body, {new: true})
+        .then(settings => {
+            res.json({
+                status_code: 0,
+                status_msg: 'Settings updated',
+            })
+            pushMessage.trigger('dashboard-setting', 'put', {
+                data: settings
+            })
+        })
+        .catch(err => {
+            res.json({
+                status_code: 1,
+                status_msg: 'It could not update the settings',
+            })
+        })
+    }
+})
+
+// end - setting
 
 
 module.exports = router

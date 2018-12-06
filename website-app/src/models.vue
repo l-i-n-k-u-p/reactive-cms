@@ -566,6 +566,78 @@ class MediaList extends Collection {
 }
 
 
+class Setting extends Model {
+    constructor(props) {
+        super(props)
+        this.listenPushMessages()
+    }
+
+    listenPushMessages() {
+        this.getChannel().bind('put', (data) => {
+            if(this.get('_id') === data.data._id)
+                this.set(data.data)
+        })
+
+        this.getChannel().bind('delete', (data) => {
+            if(this.get('_id') === data.data._id) {
+                this.removeFromAllCollections()
+            }
+        })
+    }
+
+    getChannel() {
+        return pusher.subscribe('dashboard-setting')
+    }
+
+    defaults() {
+        return {
+            setting_page_title: '',
+            setting_items_peer_page: '',
+        }
+    }
+
+    options() {
+        return {}
+    }
+
+    post() {
+        let method = 'POST'
+        let route = this.getRoute('post')
+        let url = this.getURL(route, this.getRouteParameters())
+        let data = this._attributes
+
+        return this.getRequest({method, url, data}).send()
+    }
+
+    put() {
+        let method = 'PUT'
+        let route = this.getRoute('put')
+        let url = this.getURL(route, this.getRouteParameters())
+        let data = this._attributes
+
+        return this.getRequest({method, url, data}).send()
+    }
+
+    delete() {
+        let method = 'DELETE'
+        let route = this.getRoute('delete')
+        let url = this.getURL(route, this.getRouteParameters())
+        let data = this._attributes
+
+        return this.getRequest({method, url, data}).send()
+    }
+
+    routes() {
+        return {
+            fetch: appApiBaseURL+'/setting/',
+            post:  appApiBaseURL+'/setting/',
+            put: appApiBaseURL+'/setting/',
+            delete: appApiBaseURL+'/setting/',
+        }
+    }
+}
+
+
 export default {
     User: User,
     UserList: UserList,
@@ -577,6 +649,7 @@ export default {
     Media: Media,
     MediaList: MediaList,
     SearchMediaList: SearchMediaList,
+    Setting: Setting,
 }
 
 </script>

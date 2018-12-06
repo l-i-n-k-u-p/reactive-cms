@@ -12,16 +12,16 @@ const Media = new Schema({
     media_date: { type: String, trim: true, required: true },
 }, {
     collection: 'media'
-});
+})
 
 
 Media.virtual('model_name').get(function(){
-  return 'media'
+    return 'media'
 })
 
 Media.set('toJSON', {
-   virtuals: true
+    virtuals: true
 })
 
 
-module.exports = mongoose.model('Media', Media);
+module.exports = mongoose.model('Media', Media)
