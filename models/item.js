@@ -8,7 +8,7 @@ const Item = new Schema({
 
 }, {
     collection: 'items'
-});
+})
 
 
-module.exports = mongoose.model('Item', Item);
+module.exports = mongoose.model('Item', Item)

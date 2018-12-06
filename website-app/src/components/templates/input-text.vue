@@ -19,7 +19,9 @@ export default {
     computed: {
         value: {
             get() {
-                this.hasText = this.inputValue.length
+                this.hasText = false
+                if(this.inputValue)
+                    this.hasText = true
                 return this.inputValue
             },
             set(newVal) {
