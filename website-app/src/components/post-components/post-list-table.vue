@@ -1,50 +1,104 @@
 <template lang="html">
     <div>
-        <table class="table-wrapper">
+        <table
+            class="table-wrapper">
             <thead>
                 <tr>
                     <td></td>
-                    <td>Thumbnail</td>
-                    <td>Post Title</td>
-                    <td>Post Date</td>
-                    <td>Post Status</td>
+                    <td>
+                        Thumbnail
+                    </td>
+                    <td>
+                        Post Title
+                    </td>
+                    <td>
+                        Post Date
+                    </td>
+                    <td>
+                        Post Status
+                    </td>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(post) in collectionItems">
-                    <td><Checkbox style="margin-right: 10px;" v-bind:onChangeValue="onChangeValue" v-bind:item="post._id"></Checkbox></td>
-                    <td v-on:click="onClickRow(post)">
-                        <div class="avatar" v-if="post.post_media_name" v-bind:style="$getAvatarURL(post.post_media_name)"></div>
-                        <div class="avatar" v-if="!post.post_media_name" v-bind:style="getAvatarColor(post)"><span>{{ post.get('post_title')[0] }}</span></div>
+                <tr
+                    v-for="(post) in collectionItems">
+                    <td>
+                        <Checkbox
+                            style="margin-right: 10px;"
+                            v-bind:onChangeValue="onChangeValue"
+                            v-bind:item="post._id">
+                        </Checkbox>
                     </td>
-                    <td v-on:click="onClickRow(post)">{{ post.post_title }}</td>
-                    <td v-on:click="onClickRow(post)">{{ post.post_date }}</td>
-                    <td v-on:click="onClickRow(post)">{{ post.post_status }}</td>
+                    <td
+                        v-on:click="onClickRow(post)">
+                        <div
+                            class="avatar"
+                            v-if="post.post_media_name"
+                            v-bind:style="$getAvatarURL(post.post_media_name)">
+                        </div>
+                        <div
+                            class="avatar"
+                            v-if="!post.post_media_name"
+                            v-bind:style="getAvatarColor(post)">
+                            <span>
+                                {{ post.get('post_title')[0] }}
+                            </span>
+                        </div>
+                    </td>
+                    <td
+                        v-on:click="onClickRow(post)">
+                        {{ post.post_title }}
+                    </td>
+                    <td
+                        v-on:click="onClickRow(post)">
+                        {{ post.post_date }}
+                    </td>
+                    <td
+                        v-on:click="onClickRow(post)">
+                        {{ post.post_status }}
+                    </td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
                     <td></td>
-                    <td>Thumbnail</td>
-                    <td>Post Title</td>
-                    <td>Post Date</td>
-                    <td>Post Status</td>
+                    <td>
+                        Thumbnail
+                    </td>
+                    <td>
+                        Post Title
+                    </td>
+                    <td>
+                        Post Date
+                    </td>
+                    <td>
+                        Post Status
+                    </td>
                 </tr>
             </tfoot>
         </table>
-        <div class="navigation-wrapper">
-            <div class="data">
+        <div
+            class="navigation-wrapper">
+            <div
+                class="data">
                 Rows from {{ itemsSkipped + 1 }} to {{ itemsSkipped + collection.models.length }} of {{ totalItems }}
             </div>
-            <div class="data">
+            <div
+                class="data">
                 Page {{ currentPage }} of {{ totalPages }}
             </div>
-            <ButtonIcon buttonIcon="navigate_before" v-bind:buttonAction="navigationBefore" style="margin-left: 10px; margin-right: 10px;"></ButtonIcon>
-            <ButtonIcon buttonIcon="navigate_next" v-bind:buttonAction="navigationNext"></ButtonIcon>
+            <ButtonIcon
+                buttonIcon="navigate_before"
+                v-bind:buttonAction="navigationBefore"
+                style="margin-left: 10px; margin-right: 10px;">
+            </ButtonIcon>
+            <ButtonIcon
+                buttonIcon="navigate_next"
+                v-bind:buttonAction="navigationNext">
+            </ButtonIcon>
         </div>
     </div>
 </template>
-
 
 <script>
 
@@ -110,7 +164,6 @@ export default {
 }
 
 </script>
-
 
 <style scoped lang="css">
 

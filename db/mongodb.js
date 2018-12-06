@@ -3,21 +3,18 @@ const APP_GLOBAL = require('../config/global.js')
 const mongoose = require('mongoose')
 
 
-
-var connect = () => {
-    mongoose.connect(APP_CONFIG.mongoDBURI, {
-        promiseLibrary: global.Promise,
-        useNewUrlParser: true
-    })
-    .then( () => {
+var connect = async () => {
+    try {
+        let mongooseConnection = await mongoose.connect(APP_CONFIG.mongoDBURI, {
+            promiseLibrary: global.Promise,
+            useNewUrlParser: true
+        })
         console.log(APP_GLOBAL.logAppName, 'db connected!')
-        return mongoose.connection
-    })
-    .catch( err => {
+        return mongooseConnection.connection
+    } catch(err) {
         console.log(APP_GLOBAL.logAppName, 'db conexion error!', err)
         return err
-    })
-    return mongoose.connection
+    }
 }
 
 

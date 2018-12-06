@@ -1,44 +1,155 @@
 <template lang="html">
-    <BoxWrapper style="padding: 0; position: relative;">
-        <div class="header">
-            <NavigationButtons buttonColor="#f0f0f0"/>
-            <h2>User Detail</h2>
-            <div class="header-action-buttons-wrapper">
-                <Button v-if="user.get('user_thumbnail')" buttonIcon="broken_image" v-bind:buttonAction="removeMedia" buttonColor="#f0f0f0">Remove Image</Button>
-                <Button buttonIcon="image" v-bind:buttonAction="openMediaModal" buttonColor="#f0f0f0" style="margin-left: 10px;">Set Image</Button>
+    <BoxWrapper
+        style="padding: 0; position: relative;">
+        <div
+            class="header">
+            <NavigationButtons
+                buttonColor="#f0f0f0"/>
+            <h2>
+                User Detail
+            </h2>
+            <div
+                class="header-action-buttons-wrapper">
+                <Button
+                    v-if="user.get('user_thumbnail')"
+                    buttonIcon="broken_image"
+                    v-bind:buttonAction="removeMedia"
+                    buttonColor="#f0f0f0">
+                    Remove Image
+                </Button>
+                <Button
+                    buttonIcon="image"
+                    v-bind:buttonAction="openMediaModal"
+                    buttonColor="#f0f0f0"
+                    style="margin-left: 10px;">
+                    Set Image
+                </Button>
             </div>
         </div>
-        <div class="user-thumbnail" v-if="user.get('user_thumbnail')" v-bind:style="$getThumbnailURL(media.get('media_name'))"></div>
-        <div class="user-thumbnail" v-if="!user.get('user_thumbnail')" v-bind:style="$getHexColor(user.get('user_first_name'))"></div>
-        <div class="user-avatar-wrapper">
-            <div class="user-avatar">
-                <div class="user-image-color" v-if="user.get('user_avatar')" v-bind:style="$getAvatarURL(mediaAvatar.get('media_name'))"></div>
-                <div class="user-image-color" v-if="!user.get('user_avatar')" v-bind:style="$getHexColor(user.get('user_first_name'))">
-                    <span class="user-letter">
+        <div
+            class="user-thumbnail"
+            v-if="user.get('user_thumbnail')"
+            v-bind:style="$getThumbnailURL(media.get('media_name'))">
+        </div>
+        <div
+            class="user-thumbnail"
+            v-if="!user.get('user_thumbnail')"
+            v-bind:style="$getHexColor(user.get('user_first_name'))">
+        </div>
+        <div
+            class="user-avatar-wrapper">
+            <div
+                class="user-avatar">
+                <div
+                    class="user-image-color"
+                    v-if="user.get('user_avatar')"
+                    v-bind:style="$getAvatarURL(mediaAvatar.get('media_name'))">
+                </div>
+                <div
+                    class="user-image-color"
+                    v-if="!user.get('user_avatar')"
+                    v-bind:style="$getHexColor(user.get('user_first_name'))">
+                    <span
+                        class="user-letter">
                         {{ user.get('user_first_name')[0] }}
                     </span>
                 </div>
-                <div class="avatar-buttons-wrapper">
-                    <Button class="buttom-top" v-if="user.get('user_avatar')" buttonIcon="broken_image" v-bind:buttonAction="removeMediaAvatar" buttonColor="#f0f0f0">Remove Avatar</Button>
-                    <Button class="buttom-bottom" buttonIcon="image" v-bind:buttonAction="openMediaAvatarModal" buttonColor="#f0f0f0">Set Avatar</Button>
+                <div
+                    class="avatar-buttons-wrapper">
+                    <Button
+                        class="buttom-top"
+                        v-if="user.get('user_avatar')"
+                        buttonIcon="broken_image"
+                        v-bind:buttonAction="removeMediaAvatar"
+                        buttonColor="#f0f0f0">
+                        Remove Avatar
+                    </Button>
+                    <Button
+                        class="buttom-bottom"
+                        buttonIcon="image"
+                        v-bind:buttonAction="openMediaAvatarModal"
+                        buttonColor="#f0f0f0">
+                        Set Avatar
+                    </Button>
                 </div>
             </div>
         </div>
-        <div class="form-wrapper">
-            <InputText inputName="User First Name" v-bind:inputValue="user.user_first_name" v-bind:onChangeValue="onChangeInputValue" propName='user_first_name'></InputText>
-            <InputText inputName="User Last Name" v-bind:inputValue="user.user_last_name" v-bind:onChangeValue="onChangeInputValue" propName='user_last_name'></InputText>
-            <InputText inputName="User Name" v-bind:inputValue="user.user_name" v-bind:onChangeValue="onChangeInputValue" propName='user_name'></InputText>
-            <InputText inputName="User New Password" v-bind:inputValue="newPassword" v-bind:onChangeValue="onSetNewPassword" propName=''></InputText>
-            <InputText inputName="User Email" v-bind:inputValue="user.user_email" v-bind:onChangeValue="onChangeInputValue" propName='user_email'></InputText>
-            <InputText inputName="User Type" v-bind:inputValue="user.user_type" v-bind:onChangeValue="onChangeInputValue" propName='user_type'></InputText>
-            <div class="buttons-wrapper">
-                <Button buttonIcon="remove" v-bind:buttonAction="showConfirmationModal">Delete</button>
-                <Button buttonIcon="save" v-bind:buttonAction="updateUser" style="margin-left: 10px;">Update</button>
+        <div
+            class="form-wrapper">
+            <InputText
+                inputName="User First Name"
+                v-bind:inputValue="user.user_first_name"
+                v-bind:onChangeValue="onChangeInputValue"
+                propName="user_first_name">
+            </InputText>
+            <InputText
+                inputName="User Last Name"
+                v-bind:inputValue="user.user_last_name"
+                v-bind:onChangeValue="onChangeInputValue"
+                propName="user_last_name">
+            </InputText>
+            <InputText
+                inputName="User Name"
+                v-bind:inputValue="user.user_name"
+                v-bind:onChangeValue="onChangeInputValue"
+                propName="user_name">
+            </InputText>
+            <InputText
+                inputName="User New Password"
+                v-bind:inputValue="newPassword"
+                v-bind:onChangeValue="onSetNewPassword"
+                propName="">
+            </InputText>
+            <InputText
+                inputName="User Email"
+                v-bind:inputValue="user.user_email"
+                v-bind:onChangeValue="onChangeInputValue"
+                propName="user_email">
+            </InputText>
+            <InputText
+                inputName="User Type"
+                v-bind:inputValue="user.user_type"
+                v-bind:onChangeValue="onChangeInputValue"
+                propName="user_type">
+            </InputText>
+            <div
+                class="buttons-wrapper">
+                <Button
+                    buttonIcon="remove"
+                    v-bind:buttonAction="showConfirmationModal">
+                    Delete
+                </button>
+                <Button
+                    buttonIcon="save"
+                    v-bind:buttonAction="updateUser"
+                    style="margin-left: 10px;">
+                    Update
+                </button>
             </div>
         </div>
-        <ConfirmationModal v-if="showModal" v-bind:modalTitle="modalTitle" v-bind:modalDescription="modalDescription" v-bind:cancelAction="cancelAction" v-bind:acceptAction="acceptAction"></ConfirmationModal>
-        <MediaModal v-if="showMediaModal" onlyImages="yes" modalTitle="Set Featured Image" modalDescription="Chose one image or upload new" v-bind:closeMediaModal="closeMediaModal" v-bind:onMediaSelect="onMediaSelect"></MediaModal>
-        <MediaModal v-if="showMediaAvatarModal" onlyImages="yes" modalTitle="Set Avatar Image" modalDescription="Chose one image or upload new" v-bind:closeMediaModal="closeMediaAvatarModal" v-bind:onMediaSelect="onMediaAvatarSelect"></MediaModal>
+        <ConfirmationModal
+            v-if="showModal"
+            v-bind:modalTitle="modalTitle"
+            v-bind:modalDescription="modalDescription"
+            v-bind:cancelAction="cancelAction"
+            v-bind:acceptAction="acceptAction">
+        </ConfirmationModal>
+        <MediaModal
+            v-if="showMediaModal"
+            onlyImages="yes"
+            modalTitle="Set Featured Image"
+            modalDescription="Chose one image or upload new"
+            v-bind:closeMediaModal="closeMediaModal"
+            v-bind:onMediaSelect="onMediaSelect">
+        </MediaModal>
+        <MediaModal
+            v-if="showMediaAvatarModal"
+            onlyImages="yes"
+            modalTitle="Set Avatar Image"
+            modalDescription="Chose one image or upload new"
+            v-bind:closeMediaModal="closeMediaAvatarModal"
+            v-bind:onMediaSelect="onMediaAvatarSelect">
+        </MediaModal>
     </BoxWrapper>
 </template>
 
@@ -199,7 +310,6 @@ export default {
 }
 
 </script>
-
 
 <style scoped lang="css">
 

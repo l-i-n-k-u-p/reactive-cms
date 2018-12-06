@@ -1,56 +1,124 @@
 <template lang="html">
     <div>
-        <table class="table-wrapper">
+        <table
+            class="table-wrapper">
             <thead>
                 <tr>
                     <td></td>
-                    <td>Avatar</td>
-                    <td>User Name</td>
-                    <td>User Email</td>
-                    <td>User Type</td>
-                    <td>User Registered</td>
-                    <td>User Active</td>
+                    <td>
+                        Avatar
+                    </td>
+                    <td>
+                        User Name
+                    </td>
+                    <td>
+                        User Email
+                    </td>
+                    <td>
+                        User Type
+                    </td>
+                    <td>
+                        User Registered
+                    </td>
+                    <td>
+                        User Active
+                    </td>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(user) in userListItems">
-                    <td><Checkbox style="margin-right: 10px;" v-bind:onChangeValue="onChangeValue" v-bind:item="user._id"></Checkbox></td>
-                    <td v-on:click="onClickRow(user)">
-                        <div class="avatar" v-if="user.get('user_avatar_media_name')" v-bind:style="$getAvatarURL(user.get('user_avatar_media_name'))"></div>
-                        <div class="avatar" v-if="!user.get('user_avatar_media_name')" v-bind:style="getAvatarColor(user)"><span>{{ user.get('user_first_name')[0] }}</span></div>
+                <tr
+                    v-for="(user) in userListItems">
+                    <td>
+                        <Checkbox
+                            style="margin-right: 10px;"
+                            v-bind:onChangeValue="onChangeValue"
+                            v-bind:item="user._id">
+                        </Checkbox>
                     </td>
-                    <td v-on:click="onClickRow(user)">{{ user.user_name }}</td>
-                    <td v-on:click="onClickRow(user)">{{ user.user_email }}</td>
-                    <td v-on:click="onClickRow(user)">{{ user.user_type }}</td>
-                    <td v-on:click="onClickRow(user)">{{ user.user_registration_date }}</td>
-                    <td v-on:click="onClickRow(user)">{{ userIsActive(user.user_active) }}</td>
+                    <td
+                        v-on:click="onClickRow(user)">
+                        <div
+                            class="avatar"
+                            v-if="user.get('user_avatar_media_name')"
+                            v-bind:style="$getAvatarURL(user.get('user_avatar_media_name'))">
+                        </div>
+                        <div
+                            class="avatar"
+                            v-if="!user.get('user_avatar_media_name')"
+                            v-bind:style="getAvatarColor(user)">
+                            <span>
+                                {{ user.get('user_first_name')[0] }}
+                            </span>
+                        </div>
+                    </td>
+                    <td
+                        v-on:click="onClickRow(user)">
+                        {{ user.user_name }}
+                    </td>
+                    <td
+                        v-on:click="onClickRow(user)">
+                        {{ user.user_email }}
+                    </td>
+                    <td
+                        v-on:click="onClickRow(user)">
+                        {{ user.user_type }}
+                    </td>
+                    <td
+                        v-on:click="onClickRow(user)">
+                        {{ user.user_registration_date }}
+                    </td>
+                    <td
+                        v-on:click="onClickRow(user)">
+                        {{ userIsActive(user.user_active) }}
+                    </td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
                     <td></td>
-                    <td>Avatar</td>
-                    <td>User Name</td>
-                    <td>User Email</td>
-                    <td>User Type</td>
-                    <td>User Registered</td>
-                    <td>User Active</td>
+                    <td>
+                        Avatar
+                    </td>
+                    <td>
+                        User Name
+                    </td>
+                    <td>
+                        User Email
+                    </td>
+                    <td>
+                        User Type
+                    </td>
+                    <td>
+                        User Registered
+                    </td>
+                    <td>
+                        User Active
+                    </td>
                 </tr>
             </tfoot>
         </table>
-        <div class="navigation-wrapper">
-            <div class="data">
+        <div
+            class="navigation-wrapper">
+            <div
+                class="data">
                 Rows from {{ itemsSkipped + 1 }} to {{ itemsSkipped + userList.models.length }} of {{ totalUsers }}
             </div>
-            <div class="data">
+            <div
+                class="data">
                 Page {{ currentPage }} of {{ totalPages }}
             </div>
-            <ButtonIcon buttonIcon="navigate_before" v-bind:buttonAction="navigationBefore" style="margin-left: 10px; margin-right: 10px;"></ButtonIcon>
-            <ButtonIcon buttonIcon="navigate_next" v-bind:buttonAction="navigationNext"></ButtonIcon>
+            <ButtonIcon
+                buttonIcon="navigate_before"
+                v-bind:buttonAction="navigationBefore"
+                style="margin-left: 10px; margin-right: 10px;">
+            </ButtonIcon>
+            <ButtonIcon
+                buttonIcon="navigate_next"
+                v-bind:buttonAction="navigationNext">
+            </ButtonIcon>
         </div>
     </div>
 </template>
-
 
 <script>
 
@@ -119,9 +187,7 @@ export default {
         }
     }
 }
-
 </script>
-
 
 <style scoped lang="css">
 

@@ -1,7 +1,9 @@
 <template lang="html">
-    <div class="page-title">{{ title }}</div>
+    <div
+        class="page-title">
+        {{ title }}
+    </div>
 </template>
-
 
 <script>
 

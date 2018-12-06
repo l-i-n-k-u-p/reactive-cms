@@ -1,31 +1,71 @@
 <template lang="html">
-    <BoxWrapper style="padding: 0;">
-        <div class="media">
-            <div class="header">
+    <BoxWrapper
+        style="padding: 0;">
+        <div
+            class="media">
+            <div
+                class="header">
                 <NavigationButtons/>
-                <h2>Create media</h2>
+                <h2>
+                    Create media
+                </h2>
             </div>
-            <form enctype="multipart/form-data" method="POST">
-                <div class="dropzone" ref="dropzone">
+            <form
+                enctype="multipart/form-data"
+                method="POST">
+                <div
+                    class="dropzone"
+                    ref="dropzone">
                     <div>
-                        <p class="description">Choose a file or drag it here</p>
-                        <p class="media-name">{{ mediaName }}</p>
-                        <i class="material-icons">cloud_upload</i>
+                        <p
+                            class="description">
+                            Choose a file or drag it here
+                        </p>
+                        <p
+                            class="media-name">
+                            {{ mediaName }}
+                        </p>
+                        <i
+                            class="material-icons">
+                            cloud_upload
+                        </i>
                     </div>
                 </div>
-                <input class="file-input" type="file" ref="file" name="file" @change="addFile()">
+                <input
+                    class="file-input"
+                    type="file"
+                    ref="file"
+                    name="file"
+                    @change="addFile()">
             </form>
-            <div class="content-wrapper">
-                <InputText class="input" inputName="Media Title" v-bind:inputValue="mediaTitle" v-bind:onChangeValue="onChangeInputValue" propName=''></InputText>
-                <div class="buttons-wrapper">
-                    <Button style="margin-left: 10px;" buttonIcon="close" v-bind:buttonAction="cancelCreateMedia">Cancel</button>
-                    <Button buttonIcon="save" v-bind:buttonAction="createMedia" style="margin-left: 10px;">Create</button>
+            <div
+                class="content-wrapper">
+                <InputText
+                    class="input"
+                    inputName="Media Title"
+                    v-bind:inputValue="mediaTitle"
+                    v-bind:onChangeValue="onChangeInputValue"
+                    propName=''>
+                </InputText>
+                <div
+                    class="buttons-wrapper">
+                    <Button
+                        style="margin-left: 10px;"
+                        buttonIcon="close"
+                        v-bind:buttonAction="cancelCreateMedia">
+                        Cancel
+                    </button>
+                    <Button
+                        buttonIcon="save"
+                        v-bind:buttonAction="createMedia"
+                        style="margin-left: 10px;">
+                        Create
+                    </button>
                 </div>
             </div>
         </div>
     </BoxWrapper>
 </template>
-
 
 <script>
 import BoxWrapper from '../templates/box-wrapper.vue'
@@ -101,7 +141,6 @@ export default {
 }
 
 </script>
-
 
 <style scoped lang="css">
 

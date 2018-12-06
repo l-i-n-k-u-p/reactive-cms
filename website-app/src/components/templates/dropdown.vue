@@ -1,15 +1,29 @@
 <template lang="html">
-    <div v-bind:class="{'select-wrapper': true, 'open': show}" v-on:click="showOptions">
-        <i class="material-icons icon">arrow_drop_down</i>
-        <label>{{ label }}</label>
-        <transition name="fade">
-            <ul class="select-options" v-if="show" v-click-outside="clickOutsite">
-                <li v-for="(option) in selectOptions" v-on:click="onSelect(option.value)">{{ option.name }}</li>
+    <div
+        v-bind:class="{'select-wrapper': true, 'open': show}"
+        v-on:click="showOptions">
+        <i
+            class="material-icons icon">
+            arrow_drop_down
+        </i>
+        <label>
+            {{ label }}
+        </label>
+        <transition
+            name="fade">
+            <ul
+                class="select-options"
+                v-if="show"
+                v-click-outside="clickOutsite">
+                <li
+                    v-for="(option) in selectOptions"
+                    v-on:click="onSelect(option.value)">
+                    {{ option.name }}
+                </li>
             </ul>
         </transition>
     </div>
 </template>
-
 
 <script>
 
@@ -61,7 +75,6 @@ export default {
 }
 
 </script>
-
 
 <style scoped lang="css">
 

@@ -1,14 +1,19 @@
 <template lang="html">
-    <transition name="fade">
-        <div id="ribbon-success-wrapper">
+    <transition
+        name="fade">
+        <div
+            id="ribbon-success-wrapper">
             <p>
                 <slot></slot>
             </p>
-            <i class="material-icons" v-on:click="removeRibbonMessage">close</i>
+            <i
+                class="material-icons"
+                v-on:click="removeRibbonMessage">
+                close
+            </i>
         </div>
     </transition>
 </template>
-
 
 <script>
 
@@ -25,12 +30,10 @@ export default {
         removeRibbonMessage: function() {
             this.$eventHub.$emit('dashboard-app-success', '')
         },
-
     }
 }
 
 </script>
-
 
 <style scoped lang="css">
 

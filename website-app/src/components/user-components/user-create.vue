@@ -1,24 +1,67 @@
 <template lang="html">
     <BoxWrapper>
-        <div class="header">
+        <div
+            class="header">
             <NavigationButtons/>
-            <h2>Create user</h2>
+            <h2>
+                Create user
+            </h2>
         </div>
-        <form v-on:submit.prevent="noop">
-            <InputText inputName="User First Name" v-bind:inputValue="user.user_first_name" v-bind:onChangeValue="onChangeInputValue" propName='user_first_name'></InputText>
-            <InputText inputName="User Last Name" v-bind:inputValue="user.user_last_name" v-bind:onChangeValue="onChangeInputValue" propName='user_last_name'></InputText>
-            <InputText inputName="User Name" v-bind:inputValue="user.user_name" v-bind:onChangeValue="onChangeInputValue" propName='user_name'></InputText>
-            <InputText inputName="User New Password" v-bind:inputValue="user.user_pass" v-bind:onChangeValue="onChangeInputValue" propName='user_pass'></InputText>
-            <InputText inputName="User Email" v-bind:inputValue="user.user_email" v-bind:onChangeValue="onChangeInputValue" propName='user_email'></InputText>
-            <InputText inputName="User Type" v-bind:inputValue="user.user_type" v-bind:onChangeValue="onChangeInputValue" propName='user_type'></InputText>
-            <div class="buttons-wrapper">
-                <Button buttonIcon="close" v-bind:buttonAction="cancelCrateUser">Cancel</button>
-                <Button buttonIcon="save" v-bind:buttonAction="createUser" style="margin-left: 10px;">Create</button>
+        <form
+            v-on:submit.prevent="noop">
+            <InputText
+                inputName="User First Name"
+                v-bind:inputValue="user.user_first_name"
+                v-bind:onChangeValue="onChangeInputValue"
+                propName="user_first_name">
+            </InputText>
+            <InputText
+                inputName="User Last Name"
+                v-bind:inputValue="user.user_last_name"
+                v-bind:onChangeValue="onChangeInputValue"
+                propName="user_last_name">
+            </InputText>
+            <InputText
+                inputName="User Name"
+                v-bind:inputValue="user.user_name"
+                v-bind:onChangeValue="onChangeInputValue"
+                propName="user_name">
+            </InputText>
+            <InputText
+                inputName="User New Password"
+                v-bind:inputValue="user.user_pass"
+                v-bind:onChangeValue="onChangeInputValue"
+                propName="user_pass">
+            </InputText>
+            <InputText
+                inputName="User Email"
+                v-bind:inputValue="user.user_email"
+                v-bind:onChangeValue="onChangeInputValue"
+                propName="user_email">
+            </InputText>
+            <InputText
+                inputName="User Type"
+                v-bind:inputValue="user.user_type"
+                v-bind:onChangeValue="onChangeInputValue"
+                propName="user_type">
+            </InputText>
+            <div
+                class="buttons-wrapper">
+                <Button
+                    buttonIcon="close"
+                    v-bind:buttonAction="cancelCrateUser">
+                    Cancel
+                </button>
+                <Button
+                    buttonIcon="save"
+                    v-bind:buttonAction="createUser"
+                    style="margin-left: 10px;">
+                    Create
+                </button>
             </div>
         </form>
     </BoxWrapper>
 </template>
-
 
 <script>
 import BoxWrapper from '../templates/box-wrapper.vue'
@@ -75,7 +118,6 @@ export default {
 }
 
 </script>
-
 
 <style scoped lang="css">
 

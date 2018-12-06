@@ -1,10 +1,16 @@
 <template lang="html">
-    <div v-bind:class="{'input-wrapper': true, 'focus': hasFocus, 'no-empty': hasText}">
-        <label>{{ inputName }}</label>
-        <input v-bind:type="inputType" v-on:focus="focus" v-on:blur="focus" v-model="value">
+    <div
+        v-bind:class="{'input-wrapper': true, 'focus': hasFocus, 'no-empty': hasText}">
+        <label>
+            {{ inputName }}
+        </label>
+        <input
+            v-bind:type="inputType"
+            v-on:focus="focus"
+            v-on:blur="focus"
+            v-model="value">
     </div>
 </template>
-
 
 <script>
 
@@ -41,7 +47,6 @@ export default {
 }
 
 </script>
-
 
 <style scoped lang="css">
 

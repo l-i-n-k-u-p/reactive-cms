@@ -1,12 +1,26 @@
 <template lang="html">
     <div>
-        <div id="menu" v-click-outside='closeMenu'>
-            <img class="logo" src="/assets/reactive-cms-logo.png">
-            <router-link v-for="(option) in options" v-bind:key="option.position" v-bind:class="option.class" :to="{ name: option.name, params: option.params}">
-                <i class="material-icons icon">{{ option.icon }}</i>{{ option.title }}
+        <div
+            id="menu"
+            v-click-outside='closeMenu'>
+            <img
+                class="logo"
+                src="/assets/reactive-cms-logo.png">
+            <router-link
+                v-for="(option) in options"
+                v-bind:key="option.position"
+                v-bind:class="option.class"
+                :to="{ name: option.name, params: option.params}">
+                <i
+                    class="material-icons icon">
+                    {{ option.icon }}
+                </i>
+                {{ option.title }}
             </router-link>
         </div>
-        <div class="shadow"></div>
+        <div
+            class="shadow">
+        </div>
     </div>
 </template>
 

@@ -1,6 +1,14 @@
 <template lang="html">
-    <div id="button-wrapper" v-on:click="buttonAction" v-bind:style="this.getColor()">
-        <i v-if="buttonIcon" class="material-icons icon">{{ buttonIcon }}</i><slot></slot>
+    <div
+        id="button-wrapper"
+        v-on:click="buttonAction"
+        v-bind:style="this.getColor()">
+        <i
+            v-if="buttonIcon"
+            class="material-icons icon">
+            {{ buttonIcon }}
+        </i>
+        <slot></slot>
     </div>
 </template>
 

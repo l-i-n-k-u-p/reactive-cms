@@ -1,15 +1,35 @@
 <template lang="html">
     <BoxWrapper>
         <div>
-            <div class="header">
+            <div
+                class="header">
                 <NavigationButtons/>
                 <h2>Posts</h2>
-                <div class="buttons-wrapper">
-                    <Dropdown style="margin-right: 10px;" label="Bulk Actions" v-bind:onSelectOption="onSelectOption" v-bind:selectOptions="selectOptions"></Dropdown>
-                    <Button buttonIcon="add" v-bind:buttonAction="openNewPostForm">Add Post</button>
+                <div
+                    class="buttons-wrapper">
+                    <Dropdown
+                        style="margin-right: 10px;"
+                        label="Bulk Actions"
+                        v-bind:onSelectOption="onSelectOption"
+                        v-bind:selectOptions="selectOptions">
+                    </Dropdown>
+                    <Button
+                        buttonIcon="add"
+                        v-bind:buttonAction="openNewPostForm">
+                        Add Post
+                    </button>
                 </div>
             </div>
-            <PostListTable v-if="posts.models.length" v-bind:collection="posts" v-bind:onClickRow="showPostDetail" v-bind:navigationBefore="navigationBefore" v-bind:navigationNext="navigationNext" v-bind:currentPage="currentPage" v-bind:totalPages="totalPages" v-bind:itemsSkipped="itemsSkipped" v-bind:totalItems="totalItems"/>
+            <PostListTable
+                v-if="posts.models.length"
+                v-bind:collection="posts"
+                v-bind:onClickRow="showPostDetail"
+                v-bind:navigationBefore="navigationBefore"
+                v-bind:navigationNext="navigationNext"
+                v-bind:currentPage="currentPage"
+                v-bind:totalPages="totalPages"
+                v-bind:itemsSkipped="itemsSkipped"
+                v-bind:totalItems="totalItems"/>
         </div>
     </BoxWrapper>
 </template>

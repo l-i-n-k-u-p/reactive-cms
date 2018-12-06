@@ -1,27 +1,79 @@
 <template lang="html">
-    <BoxWrapper style="padding: 0;">
-        <div class="page">
-            <div class="header">
-                <NavigationButtons buttonColor="#f0f0f0"/>
-                <h2>Create page</h2>
+    <BoxWrapper
+        style="padding: 0;">
+        <div
+            class="page">
+            <div
+                class="header">
+                <NavigationButtons
+                    buttonColor="#f0f0f0"/>
+                <h2>
+                    Create page
+                </h2>
             </div>
-            <div class="page-thumbnail" v-if="media.isImage()" v-bind:style="$getThumbnailURL(media.media_name)"></div>
-            <div class="page-thumbnail" v-if="!page.page_thumbnail" v-bind:style="$getHexColor(page.page_title)"></div>
-            <Button class="media-modal" buttonIcon="update" v-bind:buttonAction="openMediaModal" buttonColor="#f0f0f0">Update Image</Button>
-            <div class="content-wrapper">
-                <InputText class="input" inputName="Page Title" v-bind:inputValue="page.page_title" v-bind:onChangeValue="onChangeInputValue" propName='page_title'></InputText>
-                <editor v-bind:content="editorContent" v-bind:onChangeContent="onChangeContent"></editor>
-                <div class="buttons-wrapper">
-                    <DropdownSelect label="Status" initialIndexOption="0" v-bind:onSelectOption="onSelectOption" v-bind:selectOptions="selectOptions"></DropdownSelect>
-                    <Button style="margin-left: 10px;" buttonIcon="close" v-bind:buttonAction="cancelCrateUser">Cancel</button>
-                    <Button buttonIcon="save" v-bind:buttonAction="createPage" style="margin-left: 10px;">Create</button>
+            <div
+                class="page-thumbnail"
+                v-if="media.isImage()"
+                v-bind:style="$getThumbnailURL(media.media_name)">
+            </div>
+            <div
+                class="page-thumbnail"
+                v-if="!page.page_thumbnail"
+                v-bind:style="$getHexColor(page.page_title)">
+            </div>
+            <Button
+                class="media-modal"
+                buttonIcon="update"
+                v-bind:buttonAction="openMediaModal"
+                buttonColor="#f0f0f0">
+                Update Image
+            </Button>
+            <div
+                class="content-wrapper">
+                <InputText
+                    class="input"
+                    inputName="Page Title"
+                    v-bind:inputValue="page.page_title"
+                    v-bind:onChangeValue="onChangeInputValue"
+                    propName='page_title'>
+                </InputText>
+                <editor
+                    v-bind:content="editorContent"
+                    v-bind:onChangeContent="onChangeContent">
+                </editor>
+                <div
+                    class="buttons-wrapper">
+                    <DropdownSelect
+                        label="Status"
+                        initialIndexOption="0"
+                        v-bind:onSelectOption="onSelectOption"
+                        v-bind:selectOptions="selectOptions">
+                    </DropdownSelect>
+                    <Button
+                        style="margin-left: 10px;"
+                        buttonIcon="close"
+                        v-bind:buttonAction="cancelCrateUser">
+                        Cancel
+                    </button>
+                    <Button
+                        buttonIcon="save"
+                        v-bind:buttonAction="createPage"
+                        style="margin-left: 10px;">
+                        Create
+                    </button>
                 </div>
             </div>
-            <MediaModal v-if="showMediaModal" onlyImages="yes" modalTitle="Set Featured Image" modalDescription="Chose one image or upload new" v-bind:closeMediaModal="closeMediaModal" v-bind:onMediaSelect="onMediaSelect"></MediaModal>
+            <MediaModal
+                v-if="showMediaModal"
+                onlyImages="yes"
+                modalTitle="Set Featured Image"
+                modalDescription="Chose one image or upload new"
+                v-bind:closeMediaModal="closeMediaModal"
+                v-bind:onMediaSelect="onMediaSelect">
+            </MediaModal>
         </div>
     </BoxWrapper>
 </template>
-
 
 <script>
 import Editor from '../editor/editor.vue'
@@ -112,7 +164,6 @@ export default {
 }
 
 </script>
-
 
 <style scoped lang="css">
 
