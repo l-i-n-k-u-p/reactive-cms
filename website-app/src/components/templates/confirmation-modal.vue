@@ -106,13 +106,13 @@ export default {
     padding: 7px;
     display: block;
     text-transform: uppercase;
-    transition-duration: 150ms;
+    transition-duration: 100ms;
     color: #000;
     outline: none;
 }
 
 .buttons-wrapper .button:last-child {
-    color: #0088d4;
+    color: #006dad;
     margin-left: 10px;
 }
 

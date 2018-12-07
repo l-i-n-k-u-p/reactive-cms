@@ -63,14 +63,14 @@ export default {
     font-size: 13px;
     font-weight: 500;
     color: #616161;
-    transition-duration: 150ms;
+    transition-duration: 100ms;
     pointer-events: none;
 }
 
 .input-wrapper input {
     border: none;
     outline: none;
-    caret-color: #0088d4;
+    caret-color: #006dad;
     width: 100%;
     font-size: 13px;
     background: transparent;
@@ -83,12 +83,12 @@ export default {
 }
 
 .input-wrapper.focus label {
-    color: #0088d4;
+    color: #006dad;
     top: -15px;
 }
 
 .input-wrapper.focus input {
-    border-bottom: 1px solid #0088d4;
+    border-bottom: 1px solid #006dad;
 }
 
 .input-wrapper.no-empty label {

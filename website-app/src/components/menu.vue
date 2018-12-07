@@ -158,7 +158,7 @@ export default {
 }
 
 #menu .option:hover {
-    background-color: rgba(200, 200, 200, 0.3);
+    background-color: rgba(190, 190, 190, 0.2);
 }
 
 #menu .option .icon {

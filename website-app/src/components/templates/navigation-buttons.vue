@@ -71,14 +71,14 @@ export default {
     outline: none;
     position: relative;
     text-transform: uppercase;
-    transition-duration: 150ms;
+    transition-duration: 100ms;
     font-weight: 600;
     margin-top: 2px;
     margin-right: 5px;
 }
 
 #button-wrapper:hover {
-    background-color: rgba(200, 200, 200, 0.3);
+    background-color: rgba(190, 190, 190, 0.2);
 }
 
 #button-wrapper .icon {
