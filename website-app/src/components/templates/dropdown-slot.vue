@@ -72,7 +72,7 @@ export default {
     border-radius: 3px;
     cursor: pointer;
     padding: 7px;
-    transition-duration: 150ms;
+    transition-duration: 100ms;
     color: #616161;
     display: flex;
     align-self: center;
@@ -84,7 +84,7 @@ export default {
 }
 
 .select-wrapper:hover {
-    background-color: rgba(200, 200, 200, 0.3);
+    background-color: rgba(190, 190, 190, 0.2);
 }
 
 .items-wrapper {

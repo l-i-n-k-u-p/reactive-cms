@@ -198,7 +198,6 @@ h2 {
 
 .dropzone.dragover {
     background-color: #ccc;
-    /* border: 2px dashed #fefefe; */
 }
 
 .description {

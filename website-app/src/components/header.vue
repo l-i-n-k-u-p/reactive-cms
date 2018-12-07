@@ -253,7 +253,7 @@ export default {
 
 <style scoped lang="css">
 #header {
-    background-color: #036dad;
+    background-color: #006dad;
     color: white;
     display: flex;
     height: 48px;
@@ -261,13 +261,13 @@ export default {
     position: fixed;
     right: 0px;
     top: 0px;
-    transition-duration: 150ms;
+    transition-duration: 100ms;
     width: 100%;
     z-index: 3;
 }
 
 .background-extension-header {
-    background-color: #036dad;
+    background-color: #006dad;
     position: absolute;
     top: 0px;
     width: 100%;

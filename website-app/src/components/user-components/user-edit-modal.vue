@@ -157,7 +157,7 @@ export default {
     width: 100%;
     margin-bottom: 20px;
     position: relative;
-    transition-duration: 150ms;
+    transition-duration: 100ms;
 }
 
 .input-text label {
@@ -174,7 +174,7 @@ export default {
 .input-text input {
     border: none;
     outline: none;
-    caret-color: #0088d4;
+    caret-color: #006dad;
     width: 100%;
     padding: 10px;
     font-size: 13px;
@@ -184,11 +184,11 @@ export default {
 }
 
 .input-text.active {
-    border: 1px solid #0088d4;
+    border: 1px solid #006dad;
 }
 
 .input-text.active label {
-    color: #0088d4;
+    color: #006dad;
 }
 
 .buttons-wrapper {
@@ -212,13 +212,13 @@ export default {
     padding: 7px;
     display: block;
     text-transform: uppercase;
-    transition-duration: 150ms;
+    transition-duration: 100ms;
     color: #000;
     outline: none;
 }
 
 .buttons-wrapper .button:last-child {
-    color: #0088d4;
+    color: #006dad;
     margin-left: 10px;
 }
 
