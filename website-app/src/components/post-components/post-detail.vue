@@ -322,10 +322,9 @@ h2 {
     bottom: 0;
     left: 0;
     right: 0;
-    background-image: url(/assets/texture-bkg.png);
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
-    background-size: contain;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .content-wrapper {
