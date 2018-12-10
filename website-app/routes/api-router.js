@@ -157,7 +157,7 @@ router.put('/user/:id', session.isAuthenticated, async (req, res, next) => {
         try {
             delete req.body.user_pass
             let user = await modelUser.findOneAndUpdate({'_id': req.params.id}, req.body, {new: true})
-            let sessionFinished = await session.userSessionDataChanged(user, req)
+            let sessionFinished = await session.currentUserSessionDataChanged(user, req)
             let message = 'User updated'
             if(sessionFinished)
                 message = 'User updated and session finished'
@@ -180,8 +180,8 @@ router.put('/user/:id', session.isAuthenticated, async (req, res, next) => {
             let newPassword = await session.hashPassword(req.body.user_pass)
             req.body.user_pass = newPassword
             let user = await modelUser.findOneAndUpdate({'_id': req.params.id}, req.body, {new: true})
-            let sessionFinished = await session.userSessionDataChanged(user, req)
-            console.log('== sessionFinished ==', sessionFinished)
+            let sessionFinished = await session.currentUserSessionDataChanged(user, req)
+            session.removeUserSession(user._id)
             let message = 'User updated'
             if(sessionFinished)
                 message = 'User updated and session finished'
