@@ -2,6 +2,12 @@
     <div
         class="app-wrapper"
         v-on:scroll="onScroll">
+        <transition
+            name="autohide">
+            <SplashScreen
+                v-show="showSplashScreen"
+                />
+        </transition>
         <Header
             v-on:dashboard-toggle-menu="menuIsOpen"
             v-bind:scrollTop="scrollTop"
@@ -49,6 +55,7 @@ import Header from './components/header.vue'
 import RibbonError from './components/templates/ribbon-error.vue'
 import RibbonSuccess from './components/templates/ribbon-success.vue'
 import Menu from './components/menu.vue'
+import SplashScreen from './splash-screen.vue'
 // import DashboardTitle from './components/templates/dashboard-title.vue'
 
 export default {
@@ -58,6 +65,7 @@ export default {
         // DashboardTitle,
         RibbonError,
         RibbonSuccess,
+        SplashScreen,
     },
     data: function() {
         return {
@@ -67,7 +75,16 @@ export default {
             appErrorMessage: '',
             appSuccessMessage: '',
             scrollTop: 0,
+            showSplashScreen: true,
         }
+    },
+    watch: {
+        appErrorMessage: function(newVal, oldVal) {
+            setTimeout(this.hideRibbonErrorNotification, 4000)
+        },
+        appSuccessMessage: function(newVal, oldVal) {
+            setTimeout(this.hideRibbonSuccessNotification, 4000)
+        },
     },
     created() {
         this.$eventHub.$on('dashboard-app-page-title', (title) => {
@@ -91,11 +108,21 @@ export default {
                 this.pageWrapperClass = 'page-content-wrapper'
             }
         })
+        setTimeout(this.hideSplashScreen, 1000)
     },
     methods: {
         onScroll: function(el) {
             this.scrollTop = el.target.scrollTop
-        }
+        },
+        hideSplashScreen: function() {
+            this.showSplashScreen = false
+        },
+        hideRibbonSuccessNotification: function() {
+            this.appSuccessMessage = ''
+        },
+        hideRibbonErrorNotification: function() {
+            this.appErrorMessage = ''
+        },
     },
 }
 </script>
@@ -159,6 +186,14 @@ footer img {
 }
 
 .fade-enter, .fade-leave-to {
+    opacity: 0;
+}
+
+.autohide-enter-active, .autohide-leave-active {
+    transition: all 500ms ease;
+}
+
+.autohide-enter, .autohide-leave-to {
     opacity: 0;
 }
 

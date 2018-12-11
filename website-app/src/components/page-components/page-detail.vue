@@ -8,7 +8,7 @@
                 <NavigationButtons
                     buttonColor="#f0f0f0"/>
                 <h2>
-                    Create page
+                    Page Detail
                 </h2>
                 <div
                     class="header-action-buttons-wrapper">
