@@ -13,18 +13,7 @@
 <script>
 
 export default {
-    components: {
 
-    },
-    data: function() {
-
-    },
-    created() {
-
-    },
-    methods: {
-
-    },
 }
 </script>
 
