@@ -17,7 +17,6 @@ const sellerAppRouter = require('../seller-app/routes/router')
 const websiteAppApiRouter = require('../website-app/routes/api-router')
 
 
-
 // settings
 app.set('port', process.env.PORT || APP_CONFIG.port)
 app.set('views', [
@@ -29,10 +28,6 @@ app.engine('html', ejs.renderFile)
 // app.set('view engine', 'ejs')
 
 
-// mongodb connect
-const mongoDBInstance = mongodb.connect()
-
-
 // middlewares
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }))
@@ -40,15 +35,18 @@ app.use(bodyParser.json())
 app.use(cors())
 
 
-// mongo store session
-var store = new MongoDBStore({
+// mongodb connect
+const mongoDBInstance = mongodb.connect()
+
+let store = new MongoDBStore({
     uri: APP_CONFIG.mongoDBURI,
 })
 store.on('connected', () => {
-    store.client; // The underlying MongoClient object from the MongoDB driver
+    store.client // The underlying MongoClient object from the MongoDB driver
 })
 store.on('error', (error) => {
-    assert.ifError(error)
+    // assert.ifError(error)
+    console.log(APP_GLOBAL.logAppName, 'Store Error: ', error)
     assert.ok(false)
 })
 app.use(expressSession({
@@ -79,16 +77,16 @@ app.use(express.static(path.join(__dirname, '../site-static')))
 // handler for 500 and 404 pages
 app.use((req, res, next) => {
     res.status(404).render('404.html', {title: APP_GLOBAL.websiteName, status: 'Page not found!', error_message: 'Route: '+req.url+' Not found.'})
-});
+})
 
 app.use(function(err, req, res, next) {
     res.status(500).render('500.html', {title: APP_GLOBAL.websiteName, status: 'Error 500!', error_message: err})
-});
+})
 
 
 // server listener
 app.listen(app.get('port'), () => {
-    console.log(APP_GLOBAL.logAppName, 'Running on port 3000')
+    console.log(APP_GLOBAL.logAppName, 'Running on port '+APP_CONFIG.port)
 })
 
 
