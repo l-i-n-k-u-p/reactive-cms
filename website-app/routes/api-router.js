@@ -4,8 +4,8 @@ const router = express.Router()
 const dateTime = require('node-datetime')
 const slugify = require('slugify')
 
-const APP_GLOBAL = require('../../config/global.js')
-const DASHBOARD_ADMIN_CONFIG = require('../../config/dashboard-admin-config.js')
+const APP_GLOBAL = require('../../config/global')
+const DASHBOARD_ADMIN_CONFIG = require('../../config/dashboard-admin-config')
 const modelUser = require(path.join(APP_GLOBAL.appServerPath, '../models/user'))
 const modelPost = require(path.join(APP_GLOBAL.appServerPath, '../models/post'))
 const modelPage = require(path.join(APP_GLOBAL.appServerPath, '../models/page'))
@@ -613,6 +613,7 @@ router.put('/setting/', session.isAuthenticated, async (req, res) => {
     if(req.body)
         try {
             let settings = await modelSetting.findOneAndUpdate({'_id': req.body.id}, req.body, {new: true})
+            DASHBOARD_ADMIN_CONFIG.loadDashboardSettings()
             res.json({
                 status_code: 0,
                 status_msg: 'Settings updated',

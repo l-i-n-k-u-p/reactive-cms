@@ -17,7 +17,7 @@ const User = new Schema({
     collection: 'user'
 })
 
-User.virtual('model_name').get(function(){
+User.virtual('model_name').get(() => {
   return 'user'
 })
 

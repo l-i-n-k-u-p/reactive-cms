@@ -7,18 +7,78 @@ const APP_GLOBAL = require('../../config/global.js')
 const DASHBOARD_ADMIN_CONFIG = require('../../config/dashboard-admin-config.js')
 const session = require('../../lib/session')
 const modelUser = require(path.join(APP_GLOBAL.appServerPath, '../models/user'))
+const modelSetting = require(path.join(APP_GLOBAL.appServerPath, '../models/setting'))
+
+
+// start - website setup page
+
+router.get('/setup', async (req, res) => {
+    let totalUsers = await modelUser.countDocuments()
+    if(totalUsers)
+        return res.redirect('admin')
+
+    res.render('setup.html', {
+        title: 'SETUP',
+        error_message: ''
+    })
+})
+
+router.post('/setup', async (req, res) => {
+    let totalUsers = await modelUser.countDocuments()
+    if(totalUsers)
+        return res.redirect('admin')
+
+    let setup_site_name = req.body.setup_site_name
+    let setup_first_name = req.body.setup_first_name
+    let setup_user_email = req.body.setup_user_email
+    let setup_user_name = req.body.setup_user_name
+    let setup_user_pass = req.body.setup_user_pass
+    if(!setup_site_name && !setup_first_name && !setup_user_name && !setup_user_pass) {
+        res.render('setup.html', {title: 'SETUP', error_message: 'Complete the request data'})
+    } else {
+        let user = new modelUser()
+        let settings = new modelSetting()
+        try {
+            let userPassword = await session.hashPassword(setup_user_pass)
+            user.user_name = setup_user_name
+            user.user_pass = userPassword
+            user.user_email = setup_user_email
+            user.user_first_name = setup_first_name
+            user.user_type = 'admin'
+            user.user_registration_date = dateTime.create().format('Y-m-d H:M:S')
+            user.user_active = true
+            settings.setting_page_title = setup_site_name
+            settings.setting_items_peer_page = 20
+            let userSaved = await user.save()
+            let settingSaved = await settings.save()
+            res.redirect('admin')
+        } catch(err) {
+            res.render('setup.html', {title: 'SETUP', error_message: err.toString()})
+        }
+    }
+})
+
+// end - website setup page
 
 
 // start - website admin page login/out
 
-router.get('/admin', (req, res) => {
-    if(req.session.user && req.session.user.user_type === 'admin') {
-        res.redirect('dashboard-website')
-    } else
+router.get('/admin', async (req, res) => {
+    let totalUsers = await modelUser.countDocuments()
+    if(!totalUsers)
+        return res.redirect('setup')
+
+    if(req.session.user && req.session.user.user_type === 'admin')
+        res.redirect('dashboard')
+    else
         res.render('dashboard-website-login.html', {title: 'WEBSITE ADMIN LOGIN', error_message: ''})
 })
 
-router.post('/admin', (req, res) => {
+router.post('/admin', async (req, res) => {
+    let totalUsers = await modelUser.countDocuments()
+    if(!totalUsers)
+        return res.redirect('setup')
+
     const user_name = req.body.user_name
     const user_pass = req.body.user_pass
     modelUser.findOne({
@@ -38,6 +98,7 @@ router.post('/admin', (req, res) => {
                             user_name: user.user_name,
                             user_email: user.user_email,
                             user_pass: user.user_pass,
+                            user_type: user.user_type,
                         }
                         res.redirect('dashboard')
                     } else

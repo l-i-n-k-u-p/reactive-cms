@@ -10,7 +10,7 @@ const Setting = new Schema({
 })
 
 
-Setting.virtual('model_name').get(function(){
+Setting.virtual('model_name').get(() => {
   return 'setting'
 })
 
