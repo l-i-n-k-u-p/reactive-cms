@@ -358,7 +358,7 @@ export default {
     align-self: center;
     color: white;
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 300;
     text-transform: uppercase;
 }
 
@@ -430,7 +430,7 @@ export default {
     display: flex;
     align-self: center;
     outline: none;
-    font-weight: 500;
+    font-weight: 400;
 }
 
 .search-wrapper input::-webkit-input-placeholder {

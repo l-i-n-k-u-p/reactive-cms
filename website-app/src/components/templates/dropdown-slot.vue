@@ -76,6 +76,7 @@ export default {
     color: #616161;
     display: flex;
     align-self: center;
+    user-select: none;
 }
 
 .select-wrapper label {

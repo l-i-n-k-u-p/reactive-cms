@@ -6,7 +6,7 @@
             <NavigationButtons
                 buttonColor="#f0f0f0"/>
             <h2>
-                Create users
+                Create user
             </h2>
             <div
                 class="header-action-buttons-wrapper">
@@ -123,7 +123,7 @@
                     buttonIcon="save"
                     v-bind:buttonAction="createUser"
                     style="margin-left: 10px;">
-                    Save
+                    Create
                 </button>
             </div>
         </div>
