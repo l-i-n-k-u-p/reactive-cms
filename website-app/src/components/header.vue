@@ -330,7 +330,7 @@ export default {
     align-self: center;
     flex-grow: 0;
     font-weight: 500;
-    padding-left: 15px;
+    padding-left: 7px;
     padding-right: 15px;
     font-size: 14px;
 }
