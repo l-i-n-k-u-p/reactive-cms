@@ -145,9 +145,10 @@ router.post('/user/', session.isAuthenticated, async (req, res) => {
             data: user
         })
     } catch(err) {
+        console.log('== error ==', err)
         res.json({
             status_code: 1,
-            status_msg: 'Error at register user',
+            status_msg: err.toString(),
         })
     }
 })

@@ -12,6 +12,9 @@ const getHexColor = (str) => {
 }
 
 const getAvatarURL = (fileURL) => {
+    if(!fileURL)
+        return ''
+
     let fileNameArray = fileURL.split('.')
     let style = ''
     style += 'background-image: url('+'/uploads/sizes/'+fileNameArray[0]+'-150x150.'+fileNameArray[1]+');'
@@ -21,6 +24,9 @@ const getAvatarURL = (fileURL) => {
 }
 
 const getThumbnailURL = (fileURL) => {
+    if(!fileURL)
+        return ''
+
     let fileNameArray = fileURL.split('.')
     let style = ''
     style += 'background-image: url('+'/uploads/sizes/'+fileNameArray[0]+'-600x200.'+fileNameArray[1]+');'
