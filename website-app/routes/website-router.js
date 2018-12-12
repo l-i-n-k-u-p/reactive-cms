@@ -254,6 +254,7 @@ router.get('/logout', (req, res) => {
 // end - website login for other apps
 
 
+// NOTE: this is necessary for all dashboard sub-address 
 router.get('/dashboard*', session.isAuthenticated, (req, res) => {
     res.render('dashboard-website-index.html', {
         title: 'WEBSITE DASHBOARD',

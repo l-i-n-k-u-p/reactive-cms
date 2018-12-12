@@ -313,6 +313,7 @@ export default {
     flex-grow: 1;
     min-width: 250px;
     text-overflow: ellipsis;
+    user-select: none;
 }
 
 .right-wrapper {

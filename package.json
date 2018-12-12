@@ -12,12 +12,11 @@
     "pm2:global-logs": "node_modules/pm2/bin/pm2 logs",
     "webpack:website-watch": "webpack --config webpack-config-website.js -w --mode=development",
     "webpack:client-watch": "webpack --config webpack-config-client.js -w --mode=development",
-    "webpack:seller-watch": "webpack --config webpack-config-seller.js -w --mode=development",
     "build": "webpack --mode=development",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "CMS"
+    "Reactive CMS"
   ],
   "author": "https://www.reactive-web.com",
   "license": "ISC",
@@ -30,7 +29,6 @@
     "ejs": "^2.6.1",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
-    "fastify": "^1.12.1",
     "mongoose": "^5.3.10",
     "morgan": "^1.9.1",
     "multer": "^1.4.1",

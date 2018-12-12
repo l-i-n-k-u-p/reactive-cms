@@ -1,5 +1,3 @@
-const APP_CONFIG = require('../config/config')
-const APP_GLOBAL = require('../config/global')
 const mongodb = require('../db/mongodb')
 const path = require('path')
 const express = require('express')
@@ -11,10 +9,12 @@ const ejs = require('ejs')
 const assert = require('assert')
 const MongoDBStore = require('connect-mongodb-session')(expressSession)
 const app = express()
+
+const APP_CONFIG = require('../config/config')
+const APP_GLOBAL = require('../config/global')
 const websiteAppRouter = require('../website-app/routes/website-router')
-const clientAppRouter = require('../client-app/routes/router')
-const sellerAppRouter = require('../seller-app/routes/router')
 const websiteAppApiRouter = require('../website-app/routes/api-router')
+const clientAppRouter = require('../client-app/routes/router')
 
 
 // settings
@@ -22,7 +22,6 @@ app.set('port', process.env.PORT || APP_CONFIG.port)
 app.set('views', [
     path.join(__dirname, '../website-app/templates'),
     path.join(__dirname, '../client-app/templates'),
-    path.join(__dirname, '../seller-app/templates'),
 ])
 app.engine('html', ejs.renderFile)
 // app.set('view engine', 'ejs')
@@ -50,28 +49,26 @@ store.on('error', (error) => {
     assert.ok(false)
 })
 app.use(expressSession({
-    secret: 'E5OReactiveWeb2018',
+    secret: APP_CONFIG.appSecret,
     cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 3 // 3 days
     },
     resave: false,
     saveUninitialized: false,
-    store: store
+    store: store,
 }))
 
 
-// routes
+// index routers
 app.use('/', websiteAppRouter)
-app.use('/dashboard-client', clientAppRouter)
-app.use('/dashboard-seller', sellerAppRouter)
 app.use('/admin-website/api', websiteAppApiRouter)
+app.use('/client-dashboard', clientAppRouter)
 
 
 // static files
+app.use(express.static(path.join(__dirname, '../site-static')))
 app.use(express.static(path.join(__dirname, '../website-app/static')))
 app.use(express.static(path.join(__dirname, '../client-app/static')))
-app.use(express.static(path.join(__dirname, '../seller-app/static')))
-app.use(express.static(path.join(__dirname, '../site-static')))
 
 
 // handler for 500 and 404 pages
