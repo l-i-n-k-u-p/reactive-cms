@@ -89,12 +89,28 @@
                     <div
                         v-if="activeTab === 0"
                         class="media-file-info-wrapper">
-                        <p>
-                            Media title: {{ selectedMedia.get('media_title') }}
-                        </p>
-                        <p>
-                            Media original name: {{ selectedMedia.get('media_original_name') }}
-                        </p>
+                        <div
+                            class="avatar"
+                            v-if="selectedMedia.isImage()"
+                            v-bind:style="$getAvatarURL(selectedMedia.get('media_name'))">
+                        </div>
+                        <div
+                            class="avatar"
+                            v-if="!selectedMedia.isImage()"
+                            v-bind:style="$getHexColor(selectedMedia.get('media_title'))">
+                            <span>
+                                {{ selectedMedia.media_title[0] }}
+                            </span>
+                        </div>
+                        <div
+                            class="select-media-data-wrapper">
+                            <p>
+                                Media title: {{ selectedMedia.get('media_title') }}
+                            </p>
+                            <p>
+                                Media original name: {{ selectedMedia.get('media_original_name') }}
+                            </p>
+                        </div>
                     </div>
                     <div
                         class="buttons-wrapper">
@@ -377,6 +393,7 @@ export default {
     flex-wrap: wrap;
     align-content: flex-start;
     flex-flow: row wrap;
+    border-radius: 3px;
 }
 
 .image {
@@ -407,6 +424,7 @@ export default {
 
 .media-file-info-wrapper {
     position: absolute;
+    display: flex;
 }
 
 .media-file-info-wrapper p {
@@ -415,6 +433,28 @@ export default {
     position: relative;
     margin: 0;
     line-height: 16px;
+}
+
+.media-file-info-wrapper .avatar {
+    width: 30px;
+    height: 30px;
+    align-self: center;
+    border-radius: 3px;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.media-file-info-wrapper .avatar span {
+    font-weight: 300;
+    font-size: 16px;
+    align-self: center;
+    color: white;
+    text-transform: uppercase;
+}
+
+.select-media-data-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
 }
 
 .upload-wrapper {
