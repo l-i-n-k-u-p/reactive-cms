@@ -52,6 +52,7 @@ export default {
     text-transform: uppercase;
     transition-duration: 100ms;
     font-weight: 600;
+    user-select: none;
 }
 
 #button-wrapper:hover {

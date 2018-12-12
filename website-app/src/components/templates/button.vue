@@ -55,6 +55,7 @@ export default {
     display: flex;
     height: 14px;
     align-self: center;
+    user-select: none;
 }
 
 #button-wrapper:hover {

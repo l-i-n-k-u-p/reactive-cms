@@ -28,7 +28,7 @@
                         buttonIcon="save"
                         v-bind:buttonAction="saveSetting"
                         style="margin-left: 10px;">
-                            Save
+                            Update
                     </button>
                 </div>
             </div>

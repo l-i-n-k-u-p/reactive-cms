@@ -95,6 +95,9 @@
                 <div
                     class="username"
                     v-on:click="showUserMenu">
+                    <div class="name" v-bind:style="userFirstNameColorStyle">
+                        Hello {{ user.get('user_first_name') }}!
+                    </div>
                     <div
                         class="avatar"
                         v-if="user.get('user_avatar_media_name')"
@@ -108,15 +111,17 @@
                             {{ user.get('user_first_name')[0] }}
                         </span>
                     </div>
-                    <label>
-                        {{ user.get('user_first_name') }}
-                    </label>
                     <div
                         class="menu"
                         v-if="userMenuOpen"
                         v-click-outside="hideUserMenu">
                         <div
                             class="options-wrapper">
+                            <div
+                                class="option"
+                                v-on:click="showUserDetail(user)">
+                                User Profile
+                            </div>
                             <a
                                 class="option"
                                 href="/admin-logout">
@@ -147,6 +152,7 @@ export default {
             searchItems: new this.$models.SearchList(),
             user: new this.$models.User(),
             userMenuOpen: false,
+            userFirstNameColorStyle: 'color: white;',
         }
     },
     props: [
@@ -206,6 +212,7 @@ export default {
             this.resultsIsVisible = false
         },
         showUserDetail: function(user) {
+            console.log('== user ==', user)
             this.$router.push({ name: 'user-detail', params: { id: user.get('_id') }})
         },
         showPostDetail: function(post) {
@@ -218,9 +225,11 @@ export default {
             this.$router.push({ name: 'media-detail', params: { id: media.get('_id') }})
         },
         showUserMenu: function() {
+            this.userFirstNameColorStyle = 'color: #616161;'
             this.userMenuOpen = true
         },
         hideUserMenu: function() {
+            this.userFirstNameColorStyle = 'color: white;'
             this.userMenuOpen = false
         },
         getSessionUserData: function() {
@@ -249,7 +258,7 @@ export default {
             .then((data) => {
                 user.set('user_avatar_media_name', media.get('media_name'))
             })
-        }
+        },
     },
     directives: {
         'click-outside': {
@@ -321,7 +330,7 @@ export default {
     align-self: center;
     flex-grow: 0;
     font-weight: 500;
-    padding-left: 15px;
+    padding-left: 7px;
     padding-right: 15px;
     font-size: 14px;
 }
@@ -330,63 +339,77 @@ export default {
     align-self: center;
     cursor: pointer;
     display: flex;
-    padding-left: 15px;
     padding-right: 15px;
     position: relative;
+    max-width: 160px;
+    user-select: none;
 }
 
-.username label {
+.username .name {
     align-self: center;
     cursor: pointer;
     font-weight: 500;
-    padding-left: 10px;
     position: relative;
     text-transform: uppercase;
     font-size: 14px;
+    z-index: 1;
+    flex-grow: 1;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    line-height: 1;
+    white-space: nowrap;
+    text-align: right;
+    padding-right: 10px;
 }
 
 .avatar {
     align-self: center;
     border-radius: 100%;
     display: flex;
-    height: 28px;
+    height: 30px;
     justify-content: center;
-    width: 28px;
+    min-width: 30px;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
+    z-index: 1;
+    flex-grow: 0;
 }
 
 .avatar span {
     align-self: center;
     color: white;
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 300;
     text-transform: uppercase;
 }
 
 .username .menu {
-    background-color: transparent;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
     max-height: calc(100vh - 64px);
     position: absolute;
-    right: 15px;
+    right: 8px;
     padding-top: 35px;
-    width: 150px;
+    width: 100%;
+    background-color: white;
+    border-radius: 3px;
+    top: -3px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, .2), 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12);
 }
 
 .options-wrapper {
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, .2), 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12);
     background-color: white;
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
     box-sizing: border-box;
     overflow: hidden;
+    user-select: none;
 }
 
 .username .menu .option {
     color: #616161;
     font-size: 13px;
-    padding: 10px 20px 10px 32px;
+    padding: 10px 7px 10px 7px;
     text-decoration: none;
     text-transform: uppercase;
     font-weight: 500;
@@ -430,7 +453,7 @@ export default {
     display: flex;
     align-self: center;
     outline: none;
-    font-weight: 500;
+    font-weight: 400;
 }
 
 .search-wrapper input::-webkit-input-placeholder {

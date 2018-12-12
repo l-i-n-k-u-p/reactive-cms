@@ -227,7 +227,7 @@ export default {
 }
 
 .avatar span {
-    font-weight: 400;
+    font-weight: 300;
     font-size: 16px;
     align-self: center;
     color: white;

@@ -53,6 +53,7 @@ export default {
     z-index: 2;
     right: 20px;
     border-radius: 3px;
+    user-select: none;
 }
 
 p {

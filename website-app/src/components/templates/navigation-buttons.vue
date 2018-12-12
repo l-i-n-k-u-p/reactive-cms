@@ -57,6 +57,7 @@ export default {
 #navigation-buttons-wrapper {
     position: relative;
     margin-right: 10px;
+    user-select: none;
 }
 
 #button-wrapper {
