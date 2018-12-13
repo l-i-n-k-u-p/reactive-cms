@@ -1,4 +1,8 @@
-Reactive CMS using VENoM
+<div style="text-align: center">
+    <img align="center" width="300px" src="/ReadmeMDAssets/reactive-cms-logo.png">
+</div>
+
+VENoM
 -
 - VueJS
 - ExpressJS
@@ -44,13 +48,18 @@ If you don't edit nothing about default ports from config.js
 
 Now enter to: localhost:3000/setup
 
-
 For more check package.json file
+
+
+App running...
 -
+<img width="600px" src="/ReadmeMDAssets/Screen Shot 2018-12-12 at 5.49.42 PM.png">
 
-
-## Development by:
-[ReactiveWeb](https:www.reactive-web.com)
 
 ## Email:
 eduardobc.88@gmail.com
+
+## Development by:
+<a href="htts:www.reactive-web.com">
+    <img width="300px" src="/ReadmeMDAssets/reactive-web.png">
+</a>
