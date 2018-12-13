@@ -60,6 +60,6 @@ App running...
 eduardobc.88@gmail.com
 
 ## Development by:
-<a href="htts:www.reactive-web.com">
+<a href="https:www.reactive-web.com">
     <img width="300px" src="/ReadmeMDAssets/reactive-web.png">
 </a>
