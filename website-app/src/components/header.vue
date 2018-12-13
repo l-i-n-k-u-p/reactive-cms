@@ -314,6 +314,7 @@ export default {
     min-width: 250px;
     text-overflow: ellipsis;
     user-select: none;
+    -webkit-user-select: none;
 }
 
 .right-wrapper {
@@ -343,7 +344,6 @@ export default {
     padding-right: 15px;
     position: relative;
     max-width: 160px;
-    user-select: none;
 }
 
 .username .name {
@@ -404,7 +404,6 @@ export default {
     border-bottom-right-radius: 3px;
     box-sizing: border-box;
     overflow: hidden;
-    user-select: none;
 }
 
 .username .menu .option {

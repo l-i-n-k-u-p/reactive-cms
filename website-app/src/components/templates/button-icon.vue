@@ -53,6 +53,7 @@ export default {
     transition-duration: 100ms;
     font-weight: 600;
     user-select: none;
+    -webkit-user-select: none;
 }
 
 #button-wrapper:hover {

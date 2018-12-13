@@ -58,6 +58,7 @@ export default {
     position: relative;
     margin-right: 10px;
     user-select: none;
+    -webkit-user-select: none;
 }
 
 #button-wrapper {
