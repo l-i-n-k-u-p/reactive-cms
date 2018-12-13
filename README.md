@@ -1,6 +1,5 @@
-<div style="text-align: center">
-    <img align="center" width="300px" src="/ReadmeMDAssets/reactive-cms-logo.png">
-</div>
+
+![Alt-Text](/ReadmeMDAssets/reactive-cms-logo.png)
 
 VENoM
 -
@@ -60,6 +59,4 @@ App running...
 eduardobc.88@gmail.com
 
 ## Development by:
-<a href="https:www.reactive-web.com" target="_blank" rel="noopener noreferrer">
-    <img width="300px" src="/ReadmeMDAssets/reactive-web.png">
-</a>
+[![Alt-Text](/ReadmeMDAssets/reactive-web.png)](https:www.reactive-web.com)
