@@ -77,6 +77,7 @@ export default {
     display: flex;
     align-self: center;
     user-select: none;
+    -webkit-user-select: none;
 }
 
 .select-wrapper label {

@@ -54,6 +54,7 @@ export default {
     right: 20px;
     border-radius: 3px;
     user-select: none;
+    -webkit-user-select: none;
 }
 
 p {

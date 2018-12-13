@@ -34,6 +34,7 @@ export default {
     margin-right: 15px;
     padding: 15px;
     user-select: none;
+    -webkit-user-select: none;
 }
 
 </style>

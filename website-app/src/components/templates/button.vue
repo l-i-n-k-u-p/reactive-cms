@@ -56,6 +56,7 @@ export default {
     height: 14px;
     align-self: center;
     user-select: none;
+    -webkit-user-select: none;
 }
 
 #button-wrapper:hover {
