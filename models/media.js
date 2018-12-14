@@ -15,7 +15,7 @@ const Media = new Schema({
 })
 
 
-Media.virtual('model_name').get(function(){
+Media.virtual('model_name').get(() => {
     return 'media'
 })
 

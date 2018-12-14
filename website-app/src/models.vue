@@ -639,6 +639,78 @@ class Setting extends Model {
 }
 
 
+class Site extends Model {
+    constructor(props) {
+        super(props)
+        this.listenPushMessages()
+    }
+
+    listenPushMessages() {
+        this.getChannel().bind('put', (data) => {
+            if(this.get('_id') === data.data._id)
+                this.set(data.data)
+        })
+
+        this.getChannel().bind('delete', (data) => {
+            if(this.get('_id') === data.data._id) {
+                this.removeFromAllCollections()
+            }
+        })
+    }
+
+    getChannel() {
+        return pusher.subscribe('dashboard-site')
+    }
+
+    defaults() {
+        return {
+            site_name: '',
+            site_items_peer_page: '',
+        }
+    }
+
+    options() {
+        return {}
+    }
+
+    post() {
+        let method = 'POST'
+        let route = this.getRoute('post')
+        let url = this.getURL(route, this.getRouteParameters())
+        let data = this._attributes
+
+        return this.getRequest({method, url, data}).send()
+    }
+
+    put() {
+        let method = 'PUT'
+        let route = this.getRoute('put')
+        let url = this.getURL(route, this.getRouteParameters())
+        let data = this._attributes
+
+        return this.getRequest({method, url, data}).send()
+    }
+
+    delete() {
+        let method = 'DELETE'
+        let route = this.getRoute('delete')
+        let url = this.getURL(route, this.getRouteParameters())
+        let data = this._attributes
+
+        return this.getRequest({method, url, data}).send()
+    }
+
+    routes() {
+        return {
+            fetch: appApiBaseURL+'/site/',
+            post:  appApiBaseURL+'/site/',
+            put: appApiBaseURL+'/site/',
+            delete: appApiBaseURL+'/site/',
+        }
+    }
+}
+
+
 export default {
     User: User,
     UserList: UserList,
@@ -651,6 +723,7 @@ export default {
     MediaList: MediaList,
     SearchMediaList: SearchMediaList,
     Setting: Setting,
+    Site: Site,
 }
 
 </script>
