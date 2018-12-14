@@ -5,9 +5,15 @@ const dateTime = require('node-datetime')
 
 const APP_GLOBAL = require('../../config/global.js')
 const DASHBOARD_ADMIN_CONFIG = require('../../config/dashboard-admin-config.js')
+const SITE_CONFIG = require('../../config/site-config')
 const session = require('../../lib/session')
+
+const modelPost = require(path.join(APP_GLOBAL.appServerPath, '../models/post'))
+const modelPage = require(path.join(APP_GLOBAL.appServerPath, '../models/page'))
+const modelMedia = require(path.join(APP_GLOBAL.appServerPath, '../models/media'))
 const modelUser = require(path.join(APP_GLOBAL.appServerPath, '../models/user'))
 const modelSetting = require(path.join(APP_GLOBAL.appServerPath, '../models/setting'))
+const modelSite = require(path.join(APP_GLOBAL.appServerPath, '../models/site'))
 
 
 // start - website setup page
@@ -17,9 +23,9 @@ router.get('/setup', async (req, res) => {
     if(totalUsers)
         return res.redirect('admin')
 
-    res.render('setup.html', {
+    res.render('setup', {
         title: 'SETUP',
-        error_message: ''
+        error_message: '',
     })
 })
 
@@ -34,10 +40,14 @@ router.post('/setup', async (req, res) => {
     let setup_user_name = req.body.setup_user_name
     let setup_user_pass = req.body.setup_user_pass
     if(!setup_site_name && !setup_first_name && !setup_user_name && !setup_user_pass) {
-        res.render('setup.html', {title: 'SETUP', error_message: 'Complete the request data'})
+        res.render('setup', {
+            title: 'SETUP',
+            error_message: 'Complete the request data',
+        })
     } else {
         let user = new modelUser()
         let settings = new modelSetting()
+        let site = new modelSite()
         try {
             let userPassword = await session.hashPassword(setup_user_pass)
             user.user_name = setup_user_name
@@ -49,11 +59,16 @@ router.post('/setup', async (req, res) => {
             user.user_active = true
             settings.setting_page_title = setup_site_name
             settings.setting_items_peer_page = 20
+            site.site_name = setup_site_name
+            site.site_items_peer_page = 12
             let userSaved = await user.save()
             let settingSaved = await settings.save()
             res.redirect('admin')
         } catch(err) {
-            res.render('setup.html', {title: 'SETUP', error_message: err.toString()})
+            res.render('setup', {
+                title: 'SETUP',
+                error_message: err.toString(),
+            })
         }
     }
 })
@@ -71,7 +86,10 @@ router.get('/admin', async (req, res) => {
     if(req.session.user && req.session.user.user_type === 'admin')
         res.redirect('dashboard')
     else
-        res.render('dashboard-website-login.html', {title: 'WEBSITE ADMIN LOGIN', error_message: ''})
+        res.render('dashboard-website-login', {
+            title: 'WEBSITE ADMIN LOGIN',
+            error_message: '',
+        })
 })
 
 router.post('/admin', async (req, res) => {
@@ -81,116 +99,94 @@ router.post('/admin', async (req, res) => {
 
     const user_name = req.body.user_name
     const user_pass = req.body.user_pass
-    modelUser.findOne({
-        'user_name': user_name
-    })
-    .then(user => {
+    try {
+        let user = await modelUser.findOne({
+            'user_name': user_name,
+        })
         if(!user) {
-            res.render('dashboard-website-login.html', {title: APP_GLOBAL.websiteName, error_message: 'Usuario no valido'})
-        } else {
-            session.passwordIsEqual(user_pass, user.user_pass)
-            .then(result => {
-                if(result) {
-                    // redirect to dashboard page
-                    if(user.user_type === 'admin') {
-                        req.session.user = {
-                            user_id: user.id.toString(),
-                            user_name: user.user_name,
-                            user_email: user.user_email,
-                            user_pass: user.user_pass,
-                            user_type: user.user_type,
-                        }
-                        res.redirect('dashboard')
-                    } else
-                        res.render('dashboard-website-login.html', {title: 'WEBSITE ADMIN LOGIN', error_message:  'Not valid user'})
-                } else {
-                    // redirect to login page with message error
-                    res.render('dashboard-website-login.html', {title: 'WEBSITE ADMIN LOGIN', error_message: 'Not valid user'})
-                }
+            res.render('dashboard-website-login', {
+                title: APP_GLOBAL.websiteName,
+                error_message: 'Usuario no valido',
             })
-            .catch(err => {
-                // redirect to login page with message error
-                res.render('dashboard-website-login.html', {title: 'WEBSITE ADMIN LOGIN', error_message: err})
-            })
+            return
         }
-    })
-    .catch(err => {
-        res.render('dashboard-website-login.html', {title: 'WEBSITE ADMIN LOGIN', error_message: err})
-    })
+        let result = await session.passwordIsEqual(user_pass, user.user_pass)
+        if(!result) {
+            throw new Error('Not valid user')
+            return
+        }
+        if(user.user_type === 'admin') {
+            req.session.user = {
+                user_id: user.id.toString(),
+                user_name: user.user_name,
+                user_email: user.user_email,
+                user_pass: user.user_pass,
+                user_type: user.user_type,
+            }
+            res.redirect('dashboard')
+            return
+        }
+        throw new Error('Not valid user')
+    } catch(err) {
+        res.render('dashboard-website-login', {
+            title: 'WEBSITE ADMIN LOGIN',
+            error_message: err,
+        })
+    }
 })
 
 router.get('/admin-logout', (req, res) => {
-    if (req.session) {
-        // delete session object
+    if(req.session.user) {
+        let userID = req.session.user.user_id
         req.session.destroy((err) => {
-            if(err)
-                return next(err)
-            else
-                return res.redirect('admin')
+            session.removeUserSession(userID)
+            res.redirect('admin')
         })
     }
+    else
+        res.redirect('admin')
 })
 
 // end - website admin page login/out
 
 
-
 // start - website login for other apps
 
-router.get('/', (req, res) => {
-    res.render('index.html', {title: APP_GLOBAL.websiteName})
-})
-
 router.get('/login', (req, res) => {
-    if(req.session.user) {
-        if(req.session.user.user_type === 'client')
-            res.redirect('dashboard-client')
-        else
-            res.redirect('dashboard-seller')
-    } else
-        res.render('login.html', {title: APP_GLOBAL.websiteName, error_message: ''})
+    res.render('login', {
+        title: APP_GLOBAL.websiteName,
+        error_message: '',
+    })
 })
 
-router.post('/login', (req, res) => {
-    const user_name = req.body.user_name
-    const user_pass = req.body.user_pass
-    modelUser.findOne({
-        'user_name': user_name
-    })
-    .then(user => {
+router.post('/login', async (req, res) => {
+    try {
+        const user_name = req.body.user_name
+        const user_pass = req.body.user_pass
+        let user = await modelUser.findOne({
+            'user_name': user_name
+        })
         if(!user) {
-            res.render('login.html', {title: APP_GLOBAL.websiteName, error_message: 'Usuario no valido'})
-        } else {
-            session.passwordIsEqual(user_pass, user.user_pass, userValidation => {
-                if(userValidation.user_valid) {
-                    // redirect to page
-                    if(user.user_type === 'client') {
-                        // req.session.user = user
-                        req.session.user = {
-                            user_id: user.id.toString(),
-                            user_name: user.user_name,
-                            user_email: user.user_email,
-                        }
-                        res.redirect('dashboard-client')
-                    } else if(user.user_type === 'seller') {
-                        // req.session.user = user
-                        req.session.user = {
-                            user_id: user.id.toString(),
-                            user_name: user.user_name,
-                            user_email: user.user_email,
-                        }
-                        res.redirect('dashboard-seller')
-                    }
-                } else {
-                    // redirect to login page with message error
-                    res.render('login.html', {title: APP_GLOBAL.websiteName, error_message: 'Usuario no valido'})
-                }
-            })
+            throw new Error('Not valid user')
+            return
         }
-    })
-    .catch(err => {
-        res.render('login.html', {title: APP_GLOBAL.websiteName, error_message: err})
-    })
+        let userValidation = await session.passwordIsEqual(user_pass, user.user_pass)
+        if(userValidation.user_valid) {
+            req.session.user = {
+                user_id: user.id.toString(),
+                user_name: user.user_name,
+                user_email: user.user_email,
+            }
+            res.redirect('dashboard-client')
+            return
+        }
+        throw new Error('Not valid user')
+    } catch(err) {
+        res.render('login', {
+            title: APP_GLOBAL.websiteName,
+            error_message: err,
+        })
+    }
 })
 
 router.get('/register', (req, res) => {
@@ -200,7 +196,9 @@ router.get('/register', (req, res) => {
         else
             res.redirect('dashboard-seller')
     } else
-        res.render('register.html', {title: APP_GLOBAL.websiteName})
+        res.render('register', {
+            title: APP_GLOBAL.websiteName,
+        })
 })
 
 router.post('/register', (req, res) => {
@@ -219,19 +217,19 @@ router.post('/register', (req, res) => {
         })
         user.save()
         .then(user => {
-            res.status(200).json({
+            res.json({
                 status: 'User registered',
             })
         })
         .catch(err => {
-            res.status(400).send({
+            res.send({
                 status: 'Error at register user',
                 code: err,
             })
         })
     })
     .then(err => {
-        res.status(400).send({
+        res.send({
             status: 'Error at register user',
             code: 'Error creating the password',
             error_message: err,
@@ -241,7 +239,6 @@ router.post('/register', (req, res) => {
 
 router.get('/logout', (req, res) => {
     if (req.session) {
-        // delete session object
         req.session.destroy((err) => {
             if(err)
                 return next(err)
@@ -254,13 +251,112 @@ router.get('/logout', (req, res) => {
 // end - website login for other apps
 
 
-// NOTE: this is necessary for all dashboard sub-address 
+// NOTE: this is necessary for all dashboard sub-address and should be before of website basic routes
 router.get('/dashboard*', session.isAuthenticated, (req, res) => {
-    res.render('dashboard-website-index.html', {
+    res.render('dashboard-website-index', {
         title: 'WEBSITE DASHBOARD',
         user_id: req.session.user.user_id,
     })
 })
+
+
+// start - website basic template routes
+
+router.get('/', (req, res) => {
+    res.render('default/index', {
+        title: SITE_CONFIG.siteTitle,
+    })
+})
+
+router.get('/:slug', async (req, res) => {
+    try {
+        let pageSlug = req.params.slug
+        if(pageSlug === 'blog') {
+            req.next()
+            return
+        }
+        let page = await modelPage.findOne({
+            'page_slug': pageSlug,
+        })
+        if(!page) {
+            res.status(404).render('404', {
+                title: SITE_CONFIG.siteTitle,
+                status: 'Page not found',
+                error_message: 'Route: '+req.url+' Not found.',
+            })
+            return
+        }
+        res.render('default/page-detail', {
+            title: SITE_CONFIG.siteTitle,
+            page: page,
+        })
+    } catch(err) {
+        res.status(500).render('500', {
+            title: SITE_CONFIG.siteTitle,
+            status: 'Server error!',
+            error_message: 'Route: '+req.url+' Not found.',
+        })
+    }
+})
+
+router.get('/blog', (req, res) => {
+    res.redirect('/blog/page/1')
+    return
+})
+
+router.get('/blog/page/:page', async (req, res) => {
+    try {
+        let currentPage = req.params.page
+        let skipPosts = SITE_CONFIG.siteItemsPeerPage * (currentPage - 1)
+        let [totalItems, items] = await Promise.all([
+            modelPost.countDocuments(),
+            modelPost.find().skip(skipPosts).limit(SITE_CONFIG.siteItemsPeerPage).exec()
+        ])
+        if(!items.length) {
+            res.status(404).render('404', {
+                title: SITE_CONFIG.siteTitle,
+                status: 'Page not found',
+                error_message: 'Route: '+req.url+' Not found.',
+            })
+            return
+        }
+        res.render('default/post-list', {
+            title: SITE_CONFIG.siteTitle,
+            items: items,
+            total_pages: Math.ceil(totalItems/SITE_CONFIG.siteItemsPeerPage),
+            items_skipped: skipPosts,
+            total_items: totalItems,
+            current_page: currentPage,
+            items_peer_page: SITE_CONFIG.siteItemsPeerPage,
+            pagination_items: 2,
+        })
+    } catch(err) {
+        res.status(500).render('500', {
+            title: SITE_CONFIG.siteTitle,
+            status: 'Server error!',
+            error_message: 'Route: '+req.url+' Not found.',
+        })
+    }
+})
+
+router.get('/blog/:slug', async (req, res) => {
+    let postSlug = req.params.slug
+    try {
+        let post = await modelPost.findOne({'post_slug': postSlug})
+        res.render('default/post-detail', {
+            title: SITE_CONFIG.siteTitle,
+            post: post,
+        })
+    } catch(err) {
+        res.status(500).render('500', {
+            title: SITE_CONFIG.siteTitle,
+            status: 'Server error!',
+            error_message: 'Route: '+req.url+' Not found.',
+        })
+    }
+})
+
+// end - website basic template routes
 
 
 module.exports = router

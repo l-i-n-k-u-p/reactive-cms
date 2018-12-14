@@ -11,11 +11,11 @@ const Setting = new Schema({
 
 
 Setting.virtual('model_name').get(() => {
-  return 'setting'
+    return 'setting'
 })
 
 Setting.set('toJSON', {
-   virtuals: true
+    virtuals: true
 })
 
 

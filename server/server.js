@@ -24,7 +24,7 @@ app.set('views', [
     path.join(__dirname, '../client-app/templates'),
 ])
 app.engine('html', ejs.renderFile)
-// app.set('view engine', 'ejs')
+app.set('view engine', 'ejs')
 
 
 // middlewares
@@ -73,11 +73,19 @@ app.use(express.static(path.join(__dirname, '../client-app/static')))
 
 // handler for 500 and 404 pages
 app.use((req, res, next) => {
-    res.status(404).render('404.html', {title: APP_GLOBAL.websiteName, status: 'Page not found!', error_message: 'Route: '+req.url+' Not found.'})
+    res.status(404).render('404', {
+        title: APP_GLOBAL.websiteName,
+        status: 'Page not found!',
+        error_message: 'Route: '+req.url+' Not found.',
+    })
 })
 
-app.use(function(err, req, res, next) {
-    res.status(500).render('500.html', {title: APP_GLOBAL.websiteName, status: 'Error 500!', error_message: err})
+app.use((err, req, res, next) => {
+    res.status(500).render('500', {
+        title: APP_GLOBAL.websiteName,
+        status: 'Error 500!',
+        error_message: err,
+    })
 })
 
 

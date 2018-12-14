@@ -13,12 +13,12 @@ const Post = new Schema({
     collection: 'post'
 })
 
-Post.virtual('model_name').get(function(){
-  return 'post'
+Post.virtual('model_name').get(() => {
+    return 'post'
 })
 
 Post.set('toJSON', {
-   virtuals: true
+    virtuals: true
 })
 
 

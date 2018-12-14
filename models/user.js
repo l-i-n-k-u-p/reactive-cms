@@ -18,11 +18,11 @@ const User = new Schema({
 })
 
 User.virtual('model_name').get(() => {
-  return 'user'
+    return 'user'
 })
 
 User.set('toJSON', {
-   virtuals: true
+    virtuals: true
 })
 
 

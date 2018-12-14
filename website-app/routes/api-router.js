@@ -6,11 +6,13 @@ const slugify = require('slugify')
 
 const APP_GLOBAL = require('../../config/global')
 const DASHBOARD_ADMIN_CONFIG = require('../../config/dashboard-admin-config')
+const SITE_CONFIG = require('../../config/site-config')
 const modelUser = require(path.join(APP_GLOBAL.appServerPath, '../models/user'))
 const modelPost = require(path.join(APP_GLOBAL.appServerPath, '../models/post'))
 const modelPage = require(path.join(APP_GLOBAL.appServerPath, '../models/page'))
 const modelMedia = require(path.join(APP_GLOBAL.appServerPath, '../models/media'))
 const modelSetting = require(path.join(APP_GLOBAL.appServerPath, '../models/setting'))
+const modelSite = require(path.join(APP_GLOBAL.appServerPath, '../models/site'))
 const session = require('../../lib/session')
 const {
     generatePostSlug,
@@ -145,7 +147,6 @@ router.post('/user/', session.isAuthenticated, async (req, res) => {
             data: user
         })
     } catch(err) {
-        console.log('== error ==', err)
         res.json({
             status_code: 1,
             status_msg: err.toString(),
@@ -631,6 +632,43 @@ router.put('/setting/', session.isAuthenticated, async (req, res) => {
 })
 
 // end - setting
+
+
+// start - site
+
+router.get('/site/', session.isAuthenticated, async (req, res) => {
+    try {
+        let siteSettings = await modelSite.findOne()
+        res.json(siteSettings)
+    } catch(err) {
+        res.json({
+            status_code: 1,
+            status_msg: 'Site settings not found',
+        })
+    }
+})
+
+router.put('/site/', session.isAuthenticated, async (req, res) => {
+    if(req.body)
+        try {
+            let siteSettings = await modelSite.findOneAndUpdate({'_id': req.body.id}, req.body, {new: true})
+            SITE_CONFIG.loadSiteSettings()
+            res.json({
+                status_code: 0,
+                status_msg: 'Settings updated',
+            })
+            pushMessage.trigger('dashboard-site', 'put', {
+                data: siteSettings
+            })
+        } catch(err) {
+            res.json({
+                status_code: 1,
+                status_msg: 'It could not update the site settings',
+            })
+        }
+})
+
+// end - site
 
 
 module.exports = router

@@ -13,12 +13,12 @@ const Page = new Schema({
     collection: 'page'
 })
 
-Page.virtual('model_name').get(function(){
-  return 'page'
+Page.virtual('model_name').get(() => {
+    return 'page'
 })
 
 Page.set('toJSON', {
-   virtuals: true
+    virtuals: true
 })
 
 

@@ -9,17 +9,32 @@
             </div>
             <div
                 class="content-wrapper">
+                <h2>Dashboard</h2>
                 <InputText
-                    inputName="Website Title"
+                    inputName="Dashboard Title"
                     v-bind:inputValue="settings.get('setting_page_title')"
                     v-bind:onChangeValue="onChangeInputValue"
                     propName='setting_page_title'>
                 </InputText>
                 <InputText
-                    inputName="Dashboard"
+                    inputName="Dashboard Items Peer Page"
                     v-bind:inputValue="settings.get('setting_items_peer_page')"
                     v-bind:onChangeValue="onChangeInputValue"
                     propName='setting_items_peer_page'
+                    inputType="number">
+                </InputText>
+                <h2>Site</h2>
+                <InputText
+                    inputName="Site Title"
+                    v-bind:inputValue="site.get('site_name')"
+                    v-bind:onChangeValue="onChangeInputSiteValue"
+                    propName='site_name'>
+                </InputText>
+                <InputText
+                    inputName="Site Items Peer Page"
+                    v-bind:inputValue="site.get('site_items_peer_page')"
+                    v-bind:onChangeValue="onChangeInputSiteValue"
+                    propName='site_items_peer_page'
                     inputType="number">
                 </InputText>
                 <div
@@ -47,6 +62,7 @@ export default {
     data() {
         return {
             settings: new this.$models.Setting(),
+            site: new this.$models.Site(),
         }
     },
     components: {
@@ -57,6 +73,7 @@ export default {
     },
     created() {
         this.getSettingsData()
+        this.getSiteData()
     },
     methods: {
         getSettingsData: function() {
@@ -71,8 +88,23 @@ export default {
                 this.$eventHub.$emit('dashboard-app-error', err.message)
             })
         },
+        getSiteData: function() {
+            this.site.fetch()
+            .then(data => {
+                if(data.getData().status_code) {
+                    this.$eventHub.$emit('dashboard-app-error', data.getData().status_msg)
+                    return
+                }
+            })
+            .catch(err => {
+                this.$eventHub.$emit('dashboard-app-error', err.message)
+            })
+        },
         onChangeInputValue: function(propName, value) {
             this.settings.set(propName, value)
+        },
+        onChangeInputSiteValue: function(propName, value) {
+            this.site.set(propName, value)
         },
         saveSetting: function() {
             this.settings.put()
@@ -86,7 +118,21 @@ export default {
             .catch(err => {
                 this.$eventHub.$emit('dashboard-app-error', err.message)
             })
-        }
+            this.saveSite()
+        },
+        saveSite: function() {
+            this.site.put()
+            .then(data => {
+                if(data.getData().status_code) {
+                    this.$eventHub.$emit('dashboard-app-error', data.getData().status_msg)
+                    return
+                }
+                this.$eventHub.$emit('dashboard-app-success',  data.getData().status_msg)
+            })
+            .catch(err => {
+                this.$eventHub.$emit('dashboard-app-error', err.message)
+            })
+        },
     }
 }
 
