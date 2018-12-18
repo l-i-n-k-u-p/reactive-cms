@@ -37,6 +37,12 @@
                     propName='site_items_peer_page'
                     inputType="number">
                 </InputText>
+                <InputText
+                    inputName="Site URL"
+                    v-bind:inputValue="site.get('site_url')"
+                    v-bind:onChangeValue="onChangeInputSiteValue"
+                    propName='site_url'>
+                </InputText>
                 <div
                     class="buttons-wrapper">
                     <Button
