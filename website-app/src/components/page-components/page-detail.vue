@@ -40,6 +40,17 @@
             </div>
             <div
                 class="content-wrapper">
+                <div
+                    class="page-info-wrapper">
+                    <Link
+                        class="page-url-wrapper"
+                        linkColor="#f0f0f0"
+                        :linkURL="'/'+page.get('page_slug')"
+                        linkIcon="link"
+                        :linkLabel="'/'+page.get('page_slug')"
+                        linkTarget="_blank"
+                        />
+                </div>
                 <InputText
                     class="input"
                     inputName="Page Title"
@@ -51,6 +62,10 @@
                     v-bind:content="editorContent"
                     v-bind:onChangeContent="onChangeContent">
                 </editor>
+                <div
+                    class="date-wrapper">
+                    {{ pageDate }}
+                </div>
                 <div
                     class="buttons-wrapper">
                     <DropdownSelect
@@ -101,6 +116,7 @@ import DropdownSelect from '../templates/dropdown-select.vue'
 import ConfirmationModal from '../templates/confirmation-modal.vue'
 import NavigationButtons from '../templates/navigation-buttons.vue'
 import MediaModal from '../media-modal.vue'
+import Link from '../templates/link.vue'
 
 export default {
     data() {
@@ -125,6 +141,7 @@ export default {
             pageStatusIndex: 0,
             showMediaModal: false,
             media: new this.$models.Media(),
+            pageDate: '',
         }
     },
     components: {
@@ -136,6 +153,7 @@ export default {
         ConfirmationModal,
         NavigationButtons,
         MediaModal,
+        Link,
     },
     created() {
         this.page.setOption('hasUpdate', false)
@@ -146,6 +164,9 @@ export default {
         this.page.on('change', ({attribute, value}) => {
             if(attribute === 'page_thumbnail') {
                 this.setMediaIDAndFetchMedia(this.page.get('page_thumbnail'))
+            }
+            if(attribute === 'page_date') {
+                this.pageDate = moment(value).format('MMMM Do YYYY, h:mm:ss a')
             }
         })
     },
@@ -331,6 +352,7 @@ h2 {
 .content-wrapper {
     padding: 15px;
     box-sizing: content-box;
+    position: relative;
 }
 
 .input {
@@ -343,6 +365,23 @@ h2 {
     padding: 0px;
     display: flex;
     justify-content: flex-end;
+}
+
+.page-info-wrapper {
+    position: absolute;
+    display: flex;
+    top: -37px;
+    position: absolute;
+    right: 15px;
+}
+
+.date-wrapper {
+    display: block;
+    text-align: right;
+    font-size: 12px;
+    font-weight: 500;
+    color: #616161;
+    margin-top: 15px;
 }
 
 </style>
