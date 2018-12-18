@@ -40,6 +40,17 @@
             </div>
             <div
                 class="content-wrapper">
+                <div
+                    class="page-info-wrapper">
+                    <Link
+                        class="page-url-wrapper"
+                        linkColor="#f0f0f0"
+                        :linkURL="'/'+page.get('page_slug')"
+                        linkIcon="link"
+                        :linkLabel="'/'+page.get('page_slug')"
+                        linkTarget="_blank"
+                        />
+                </div>
                 <InputText
                     class="input"
                     inputName="Page Title"
@@ -101,6 +112,7 @@ import DropdownSelect from '../templates/dropdown-select.vue'
 import ConfirmationModal from '../templates/confirmation-modal.vue'
 import NavigationButtons from '../templates/navigation-buttons.vue'
 import MediaModal from '../media-modal.vue'
+import Link from '../templates/link.vue'
 
 export default {
     data() {
@@ -136,6 +148,7 @@ export default {
         ConfirmationModal,
         NavigationButtons,
         MediaModal,
+        Link,
     },
     created() {
         this.page.setOption('hasUpdate', false)
@@ -331,6 +344,7 @@ h2 {
 .content-wrapper {
     padding: 15px;
     box-sizing: content-box;
+    position: relative;
 }
 
 .input {
@@ -343,6 +357,14 @@ h2 {
     padding: 0px;
     display: flex;
     justify-content: flex-end;
+}
+
+.page-info-wrapper {
+    position: absolute;
+    display: flex;
+    top: -37px;
+    position: absolute;
+    right: 15px;
 }
 
 </style>

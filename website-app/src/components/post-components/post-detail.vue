@@ -40,6 +40,16 @@
             </div>
             <div
                 class="content-wrapper">
+                <div
+                    class="post-info-wrapper">
+                    <Link
+                        linkColor="#f0f0f0"
+                        :linkURL="'/blog/'+post.get('post_slug')"
+                        linkIcon="link"
+                        :linkLabel="'/blog/'+post.get('post_slug')"
+                        linkTarget="_blank"
+                        />
+                </div>
                 <InputText
                     class="input"
                     inputName="Post Title"
@@ -101,6 +111,7 @@ import DropdownSelect from '../templates/dropdown-select.vue'
 import ConfirmationModal from '../templates/confirmation-modal.vue'
 import NavigationButtons from '../templates/navigation-buttons.vue'
 import MediaModal from '../media-modal.vue'
+import Link from '../templates/link.vue'
 
 export default {
     data() {
@@ -136,6 +147,7 @@ export default {
         ConfirmationModal,
         NavigationButtons,
         MediaModal,
+        Link,
     },
     created() {
         this.post.setOption('hasUpdate', false)
@@ -330,6 +342,7 @@ h2 {
 .content-wrapper {
     padding: 15px;
     box-sizing: content-box;
+    position: relative;
 }
 
 .input {
@@ -342,6 +355,14 @@ h2 {
     padding: 0px;
     display: flex;
     justify-content: flex-end;
+}
+
+.post-info-wrapper {
+    position: absolute;
+    display: flex;
+    top: -37px;
+    position: absolute;
+    right: 15px;
 }
 
 </style>
