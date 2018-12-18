@@ -666,6 +666,7 @@ class Site extends Model {
         return {
             site_name: '',
             site_items_peer_page: '',
+            site_url: '',
         }
     }
 

@@ -35,11 +35,12 @@ router.post('/setup', async (req, res) => {
         return res.redirect('admin')
 
     let setup_site_name = req.body.setup_site_name
+    let setup_site_url = req.body.setup_site_url
     let setup_first_name = req.body.setup_first_name
     let setup_user_email = req.body.setup_user_email
     let setup_user_name = req.body.setup_user_name
     let setup_user_pass = req.body.setup_user_pass
-    if(!setup_site_name && !setup_first_name && !setup_user_name && !setup_user_pass) {
+    if(!setup_site_name && !setup_site_url && !setup_first_name && !setup_user_name && !setup_user_pass) {
         res.render('setup', {
             title: 'SETUP',
             error_message: 'Complete the request data',
@@ -61,6 +62,7 @@ router.post('/setup', async (req, res) => {
             settings.setting_items_peer_page = 20
             site.site_name = setup_site_name
             site.site_items_peer_page = 12
+            site.site_url = setup_site_url
             let userSaved = await user.save()
             let settingSaved = await settings.save()
             res.redirect('admin')
