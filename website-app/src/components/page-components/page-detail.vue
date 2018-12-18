@@ -63,6 +63,10 @@
                     v-bind:onChangeContent="onChangeContent">
                 </editor>
                 <div
+                    class="date-wrapper">
+                    {{ pageDate }}
+                </div>
+                <div
                     class="buttons-wrapper">
                     <DropdownSelect
                         label="Status"
@@ -137,6 +141,7 @@ export default {
             pageStatusIndex: 0,
             showMediaModal: false,
             media: new this.$models.Media(),
+            pageDate: '',
         }
     },
     components: {
@@ -159,6 +164,9 @@ export default {
         this.page.on('change', ({attribute, value}) => {
             if(attribute === 'page_thumbnail') {
                 this.setMediaIDAndFetchMedia(this.page.get('page_thumbnail'))
+            }
+            if(attribute === 'page_date') {
+                this.pageDate = moment(value).format('MMMM Do YYYY, h:mm:ss a')
             }
         })
     },
@@ -365,6 +373,15 @@ h2 {
     top: -37px;
     position: absolute;
     right: 15px;
+}
+
+.date-wrapper {
+    display: block;
+    text-align: right;
+    font-size: 12px;
+    font-weight: 500;
+    color: #616161;
+    margin-top: 15px;
 }
 
 </style>

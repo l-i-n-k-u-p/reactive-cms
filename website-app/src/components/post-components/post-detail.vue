@@ -62,6 +62,10 @@
                     v-bind:onChangeContent="onChangeContent">
                 </editor>
                 <div
+                    class="date-wrapper">
+                    {{ postDate }}
+                </div>
+                <div
                     class="buttons-wrapper">
                     <DropdownSelect
                         label="Status"
@@ -136,6 +140,7 @@ export default {
             postStatusIndex: 0,
             showMediaModal: false,
             media: new this.$models.Media(),
+            postDate: '',
         }
     },
     components: {
@@ -158,6 +163,9 @@ export default {
         this.post.on('change', ({attribute, value}) => {
             if(attribute === 'post_thumbnail') {
                 this.setMediaIDAndFetchMedia(this.post.get('post_thumbnail'))
+            }
+            if(attribute === 'post_date') {
+                this.postDate = moment(value).format('MMMM Do YYYY, h:mm:ss a')
             }
         })
     },
@@ -363,6 +371,15 @@ h2 {
     top: -37px;
     position: absolute;
     right: 15px;
+}
+
+.date-wrapper {
+    display: block;
+    text-align: right;
+    font-size: 12px;
+    font-weight: 500;
+    color: #616161;
+    margin-top: 15px;
 }
 
 </style>
