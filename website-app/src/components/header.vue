@@ -310,7 +310,6 @@ export default {
 
 .left-wrapper, .right-wrapper {
     display: flex;
-    flex-grow: 1;
     min-width: 250px;
     text-overflow: ellipsis;
     user-select: none;
@@ -423,12 +422,12 @@ export default {
 
 .search-wrapper {
     display: flex;
-    flex-grow: 1;
     width: 100%;
     position: relative;
     align-self: center;
     min-width: 150px;
     max-width: 1125px;
+    margin: auto;
 }
 
 .search-wrapper .icon {
