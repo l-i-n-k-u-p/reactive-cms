@@ -292,7 +292,7 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
-    padding: 15px;
+    padding: 10px;
     z-index: 1;
     width: 100%;
     box-sizing: border-box;
@@ -312,7 +312,7 @@ h2 {
     bottom: 0;
     right: 0;
     padding: 0px;
-    margin-top: 15px;
+    margin-top: 10px;
     display: flex;
     justify-content: flex-end;
 }
@@ -344,13 +344,11 @@ h2 {
     bottom: 0;
     left: 0;
     right: 0;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
     background-color: rgba(0, 0, 0, 0.5);
 }
 
 .content-wrapper {
-    padding: 15px;
+    padding: 10px;
     box-sizing: content-box;
     position: relative;
 }
@@ -372,7 +370,7 @@ h2 {
     display: flex;
     top: -37px;
     position: absolute;
-    right: 15px;
+    right: 10px;
 }
 
 .date-wrapper {

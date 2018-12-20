@@ -325,7 +325,7 @@ export default {
     align-self: center;
     cursor: pointer;
     flex-grow: 0;
-    padding-left: 15px;
+    padding-left: 10px;
 }
 
 .page-title {
@@ -333,7 +333,7 @@ export default {
     flex-grow: 0;
     font-weight: 500;
     padding-left: 7px;
-    padding-right: 15px;
+    padding-right: 10px;
     font-size: 14px;
 }
 
@@ -341,7 +341,7 @@ export default {
     align-self: center;
     cursor: pointer;
     display: flex;
-    padding-right: 15px;
+    padding-right: 10px;
     position: relative;
     max-width: 160px;
 }
@@ -428,12 +428,12 @@ export default {
     position: relative;
     align-self: center;
     min-width: 150px;
-    max-width: 1115px;
+    max-width: 1125px;
 }
 
 .search-wrapper .icon {
     position: absolute;
-    left: 15px;
+    left: 10px;
     display: flex;
     align-self: center;
     font-size: 20px;
@@ -449,7 +449,7 @@ export default {
     position: absolute;
     width: 100%;
     color: white;
-    padding-left: 45px;
+    padding-left: 35px;
     display: flex;
     align-self: center;
     outline: none;
@@ -502,7 +502,7 @@ export default {
 }
 
 .results-wrapper .item > div {
-    padding: 10px 15px 10px 15px;
+    padding: 10px;
     color: #616161;
     font-size: 13px;
     display: flex;
@@ -524,7 +524,7 @@ export default {
 .results-wrapper .item  > div .material-icons {
     align-self: center;
     font-size: 20px;
-    margin-right: 10px;
+    margin-right: 5px;
     pointer-events: none;
 }
 
@@ -534,7 +534,7 @@ export default {
 }
 
 .no-results {
-    padding: 10px 15px 10px 15px;
+    padding: 10px;
     color: #616161;
     font-size: 13px;
 }

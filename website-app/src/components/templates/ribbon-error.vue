@@ -51,7 +51,7 @@ export default {
     width: 300px;
     font-weight: bold;
     z-index: 2;
-    right: 20px;
+    right: 10px;
     border-radius: 3px;
     user-select: none;
     -webkit-user-select: none;

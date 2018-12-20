@@ -190,7 +190,7 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
-    padding: 15px;
+    padding: 10px;
     z-index: 1;
 }
 
@@ -205,14 +205,14 @@ h2 {
 }
 
 form {
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
 .buttons-wrapper {
     bottom: 0;
     right: 0;
     padding: 0px;
-    margin-top: 15px;
+    margin-top: 10px;
     display: flex;
     justify-content: flex-end;
 }
@@ -243,13 +243,11 @@ form {
     bottom: 0;
     left: 0;
     right: 0;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
     background-color: rgba(0, 0, 0, 0.5);
 }
 
 .content-wrapper {
-    padding: 15px;
+    padding: 10px;
     box-sizing: content-box;
 }
 
@@ -259,8 +257,8 @@ form {
 
 .media-download {
     position: absolute !important;
-    top: 15px;
-    right: 15px;
+    top: 10px;
+    right: 10px;
 }
 
 </style>

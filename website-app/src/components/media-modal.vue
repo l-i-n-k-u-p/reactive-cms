@@ -326,7 +326,7 @@ export default {
     position: relative;
     width: 100%;
     box-sizing: border-box;
-    padding: 15px;
+    padding: 10px;
 }
 
 .box-content {
@@ -335,7 +335,7 @@ export default {
     width: 100%;
     border-radius: 3px;
     margin: auto;
-    padding: 15px;
+    padding: 10px;
     box-shadow: 0 11px 15px -7px rgba(0, 0, 0, 0.2), 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12);
     box-sizing: border-box;
     height: 480px;
@@ -381,12 +381,12 @@ export default {
 }
 
 .search-input {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     margin-top: 25px;
 }
 
 .media-files-wrapper {
-    height: 260px;
+    height: 280px;
     width: 100%;
     display: flex;
     overflow: scroll;

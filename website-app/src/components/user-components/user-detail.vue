@@ -318,7 +318,7 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
-    padding: 15px;
+    padding: 10px;
     z-index: 1;
     width: 100%;
     box-sizing: border-box;
@@ -338,7 +338,7 @@ h2 {
     bottom: 0;
     right: 0;
     padding: 0px;
-    margin-top: 15px;
+    margin-top: 10px;
     display: flex;
     justify-content: flex-end;
 }
@@ -375,7 +375,7 @@ h2 {
 }
 
 .form-wrapper {
-    padding: 15px;
+    padding: 10px;
 }
 
 .header-action-buttons-wrapper {
@@ -390,7 +390,7 @@ h2 {
     position: relative;
     margin-bottom: 75px;
     max-width: 150px;
-    left: 15px;
+    left: 10px;
 }
 
 .user-avatar {
@@ -411,8 +411,6 @@ h2 {
     bottom: 0;
     left: 0;
     right: 0;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
     background-color: rgba(0, 0, 0, 0.5);
 }
 
