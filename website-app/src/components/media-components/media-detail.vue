@@ -38,6 +38,10 @@
                     propName='media_title'>
                 </InputText>
                 <div
+                    class="date-wrapper">
+                    {{ mediaDate }}
+                </div>
+                <div
                     class="buttons-wrapper">
                     <Button
                         buttonIcon="remove"
@@ -81,6 +85,7 @@ export default {
             modalTitle: '',
             modalDescription: '',
             mediaStatusIndex: 0,
+            mediaDate: '',
         }
     },
     components: {
@@ -91,26 +96,22 @@ export default {
         NavigationButtons,
     },
     created() {
-        this.media.setOption('hasUpdate', false)
         this.getMediaData()
         this.setOnChangeMedia()
     },
     methods: {
         setOnChangeMedia: function() {
             this.media.on('change', ({attribute, value}) => {
-                if(!this.media.getOption('hasUpdate'))
-                    return
-
-                this.media.setOption('hasUpdate', false)
-                if(attribute === 'media_content') {
+                if(attribute === 'media_content')
                     this.editorContent = value
-                }
                 if(attribute === 'media_status') {
                     if(value === 'pending')
                         this.mediaStatusIndex = 1
                     else
                         this.mediaStatusIndex = 0
                 }
+                if(attribute === 'media_date')
+                    this.mediaDate = moment(value).format('MMMM Do YYYY, h:mm:ss a')
             })
         },
         onChangeInputValue: function(propName, value) {
@@ -259,6 +260,15 @@ form {
     position: absolute !important;
     top: 10px;
     right: 10px;
+}
+
+.date-wrapper {
+    display: block;
+    text-align: right;
+    font-size: 12px;
+    font-weight: 500;
+    color: #616161;
+    margin-top: 15px;
 }
 
 </style>
