@@ -26,19 +26,19 @@
                         <Checkbox
                             style="margin-right: 10px;"
                             v-bind:onChangeValue="onChangeValue"
-                            v-bind:item="post._id">
+                            v-bind:item="post.get('_id')">
                         </Checkbox>
                     </td>
                     <td
                         v-on:click="onClickRow(post)">
                         <div
                             class="avatar"
-                            v-if="post.post_media_name"
-                            v-bind:style="$getAvatarURL(post.post_media_name)">
+                            v-if="post.get('post_media_name')"
+                            v-bind:style="$getAvatarURL(post.get('post_media_name'))">
                         </div>
                         <div
                             class="avatar"
-                            v-if="!post.post_media_name"
+                            v-if="!post.get('post_media_name')"
                             v-bind:style="getAvatarColor(post)">
                             <span>
                                 {{ post.get('post_title')[0] }}
@@ -51,7 +51,7 @@
                     </td>
                     <td
                         v-on:click="onClickRow(post)">
-                        {{ post.post_date }}
+                        {{ getMomentDate(post.get('post_date')) }}
                     </td>
                     <td
                         v-on:click="onClickRow(post)">
@@ -159,7 +159,10 @@ export default {
             .then((data) => {
                 post.set('post_media_name', media.get('media_name'))
             })
-        }
+        },
+        getMomentDate: function(date) {
+            return moment(date).format('MMMM Do YYYY, h:mm:ss a')
+        },
     }
 }
 

@@ -29,7 +29,7 @@
                         <Checkbox
                             style="margin-right: 10px;"
                             v-bind:onChangeValue="onChangeValue"
-                            v-bind:item="media._id">
+                            v-bind:item="media.get('_id')">
                         </Checkbox>
                     </td>
                     <td
@@ -37,28 +37,32 @@
                         <div
                             class="avatar"
                             v-if="media.isImage()"
-                            v-bind:style="$getAvatarURL(media.media_name)">
+                            v-bind:style="$getAvatarURL(media.get('media_name'))">
                         </div>
                         <div
                             class="avatar"
                             v-if="!media.isImage()"
-                            v-bind:style="$getHexColor(media.media_title)">
+                            v-bind:style="$getHexColor(media.get('media_title'))">
                             <span>
-                                {{ media.media_title[0] }}
+                                {{ media.get('media_title')[0] }}
                             </span>
                         </div>
                     </td>
                     <td
-                        v-on:click="onClickRow(media)">{{ media.media_title }}
+                        v-on:click="onClickRow(media)">
+                        {{ media.get('media_title') }}
                     </td>
                     <td
-                        v-on:click="onClickRow(media)">{{ media.media_original_name }}
+                        v-on:click="onClickRow(media)">
+                        {{ media.media_original_name }}
                     </td>
                     <td
-                        v-on:click="onClickRow(media)">{{ media.media_mime_type }}
+                        v-on:click="onClickRow(media)">
+                        {{ media.media_mime_type }}
                     </td>
                     <td
-                        v-on:click="onClickRow(media)">{{ media.media_date }}
+                        v-on:click="onClickRow(media)">
+                        {{ getMomentDate(media.get('media_date')) }}
                     </td>
                 </tr>
             </tbody>
@@ -147,6 +151,9 @@ export default {
             else
                 delete this.itemSelected[itemId]
             this.$eventHub.$emit('items-selected', this.itemSelected)
+        },
+        getMomentDate: function(date) {
+            return moment(date).format('MMMM Do YYYY, h:mm:ss a')
         },
     }
 }

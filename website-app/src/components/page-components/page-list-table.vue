@@ -46,10 +46,12 @@
                         </div>
                     </td>
                     <td
-                        v-on:click="onClickRow(page)">{{ page.get('page_title') }}
+                        v-on:click="onClickRow(page)">
+                        {{ page.get('page_title') }}
                     </td>
                     <td
-                        v-on:click="onClickRow(page)">{{ page.get('page_date') }}
+                        v-on:click="onClickRow(page)">
+                        {{ getMomentDate(page.get('page_date')) }}
                     </td>
                     <td
                         v-on:click="onClickRow(page)">{{ page.get('page_status') }}
@@ -156,7 +158,10 @@ export default {
             .then((data) => {
                 page.set('page_media_name', media.get('media_name'))
             })
-        }
+        },
+        getMomentDate: function(date) {
+            return moment(date).format('MMMM Do YYYY, h:mm:ss a')
+        },
     }
 }
 
