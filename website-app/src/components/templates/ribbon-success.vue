@@ -47,7 +47,7 @@ export default {
     line-height: 14px;
     text-align: center;
     position: fixed;
-    bottom: 20px;
+    bottom: 10px;
     width: 300px;
     font-weight: bold;
     z-index: 2;

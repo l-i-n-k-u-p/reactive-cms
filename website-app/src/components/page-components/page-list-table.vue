@@ -172,7 +172,6 @@ export default {
 }
 
 .table-wrapper thead tr td {
-    border-bottom: 1px solid #eee;
     font-size: 13px;
     font-weight: 500;
     padding-bottom: 5px;
@@ -190,7 +189,6 @@ export default {
 }
 
 .table-wrapper tbody tr td {
-    border-bottom: 1px solid #eee;
     cursor: pointer;
     font-size: 13px;
     padding-bottom: 5px;

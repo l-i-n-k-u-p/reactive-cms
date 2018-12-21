@@ -460,7 +460,7 @@ export default {
 }
 
 .search-wrapper .bkg {
-    background: rgba(255, 255, 255, .20);
+    background: rgba(0, 0, 0, .20);
     width: 100%;
     height: 36px;
     align-self: center;
