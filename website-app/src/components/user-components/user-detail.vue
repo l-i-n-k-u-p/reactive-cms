@@ -113,6 +113,10 @@
                 propName="user_type">
             </InputText>
             <div
+                class="date-wrapper">
+                {{ userDate }}
+            </div>
+            <div
                 class="buttons-wrapper">
                 <Button
                     buttonIcon="remove"
@@ -173,6 +177,7 @@ export default {
             media: new this.$models.Media(),
             mediaAvatar: new this.$models.Media(),
             showMediaAvatarModal: false,
+            userDate: '',
         }
     },
     components: {
@@ -186,16 +191,19 @@ export default {
     created() {
         this.$eventHub.$emit('dashboard-app-page-title', 'User')
         this.getUserData()
-    },
-    mounted() {
-        this.user.on('change', ({attribute, value}) => {
-            if(attribute === 'user_avatar')
-                this.setMediaAvatarIDAndFetchMedia(this.user.get('user_avatar'))
-            if(attribute === 'user_thumbnail')
-                this.setMediaIDAndFetchMedia(this.user.get('user_thumbnail'))
-        })
+        this.setOnChangeUser()
     },
     methods: {
+        setOnChangeUser: function() {
+            this.user.on('change', ({attribute, value}) => {
+                if(attribute === 'user_avatar')
+                    this.setMediaAvatarIDAndFetchMedia(this.user.get('user_avatar'))
+                if(attribute === 'user_thumbnail')
+                    this.setMediaIDAndFetchMedia(this.user.get('user_thumbnail'))
+                if(attribute === 'user_registration_date')
+                    this.userDate = moment(value).format('MMMM Do YYYY, h:mm:ss a')
+            })
+        },
         onSetNewPassword: function(propName, value) {
             this.newPassword = value
             this.user.set('user_pass', value)
@@ -447,6 +455,15 @@ h2 {
 .buttom-bottom {
     bottom: 15px;
     margin: auto;
+}
+
+.date-wrapper {
+    display: block;
+    text-align: right;
+    font-size: 12px;
+    font-weight: 500;
+    color: #616161;
+    margin-top: 15px;
 }
 
 </style>
