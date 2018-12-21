@@ -32,7 +32,7 @@
                         <Checkbox
                             style="margin-right: 10px;"
                             v-bind:onChangeValue="onChangeValue"
-                            v-bind:item="user._id">
+                            v-bind:item="user.get('_id')">
                         </Checkbox>
                     </td>
                     <td
@@ -53,23 +53,23 @@
                     </td>
                     <td
                         v-on:click="onClickRow(user)">
-                        {{ user.user_name }}
+                        {{ user.get('user_name') }}
                     </td>
                     <td
                         v-on:click="onClickRow(user)">
-                        {{ user.user_email }}
+                        {{ user.get('user_email') }}
                     </td>
                     <td
                         v-on:click="onClickRow(user)">
-                        {{ user.user_type }}
+                        {{ user.get('user_type') }}
                     </td>
                     <td
                         v-on:click="onClickRow(user)">
-                        {{ user.user_registration_date }}
+                        {{ getMomentDate(user.get('user_registration_date')) }}
                     </td>
                     <td
                         v-on:click="onClickRow(user)">
-                        {{ userIsActive(user.user_active) }}
+                        {{ userIsActive(user.get('user_active')) }}
                     </td>
                 </tr>
             </tbody>
@@ -184,7 +184,10 @@ export default {
             .then((data) => {
                 user.set('user_avatar_media_name', media.get('media_name'))
             })
-        }
+        },
+        getMomentDate: function(date) {
+            return moment(date).format('MMMM Do YYYY, h:mm:ss a')
+        },
     }
 }
 </script>
