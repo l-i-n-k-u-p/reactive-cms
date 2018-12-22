@@ -197,20 +197,20 @@ export default {
 }
 
 h2 {
+    color: #616161;
+    display: flex;
+    flex-grow: 1;
     font-size: 13px;
     font-weight: 500;
-    display: flex;
-    color: #616161;
-    flex-grow: 1;
-    text-transform: uppercase;
     margin-top: 7px;
+    text-transform: uppercase;
 }
 
 .buttons-wrapper {
     display: flex;
-    margin-bottom: 15px;
-    justify-content: flex-end;
     flex-grow: 1;
+    justify-content: flex-end;
+    margin-bottom: 15px;
 }
 
 </style>

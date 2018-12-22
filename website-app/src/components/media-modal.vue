@@ -306,41 +306,41 @@ export default {
 <style scoped lang="css">
 
 .modal-box-wrapper {
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    margin: auto;
     background: rgba(0, 0, 0, 0.32);
-    display: flex;
-    width: 100%;
-    height: 100%;
-    z-index: 5;
+    bottom: 0;
     box-sizing: border-box;
+    display: flex;
+    height: 100%;
+    left: 0;
+    margin: auto;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 5;
 }
 
 .position-wrapper {
+    box-sizing: border-box;
     margin: auto;
     max-width: 1145px;
+    padding: 10px;
     position: relative;
     width: 100%;
-    box-sizing: border-box;
-    padding: 10px;
 }
 
 .box-content {
-    position: relative;
     background-color: white;
-    width: 100%;
     border-radius: 3px;
-    margin: auto;
-    padding: 10px;
     box-shadow: 0 11px 15px -7px rgba(0, 0, 0, 0.2), 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12);
     box-sizing: border-box;
-    height: 480px;
     display: flex;
     flex-direction: column;
+    height: 480px;
+    margin: auto;
+    padding: 10px;
+    position: relative;
+    width: 100%;
 }
 
 .header, .footer {
@@ -348,8 +348,8 @@ export default {
 }
 
 .content {
-    flex-grow: 1;
     display: flex;
+    flex-grow: 1;
 }
 
 .modal-title {
@@ -386,36 +386,36 @@ export default {
 }
 
 .media-files-wrapper {
-    height: 280px;
-    width: 100%;
-    display: flex;
-    overflow: scroll;
-    flex-wrap: wrap;
     align-content: flex-start;
-    flex-flow: row wrap;
     border-radius: 3px;
+    display: flex;
+    flex-flow: row wrap;
+    flex-wrap: wrap;
+    height: 280px;
+    overflow: scroll;
+    width: 100%;
 }
 
 .image {
     background-color: #f0f0f0;
-    border: 1px solid white;
-    overflow: hidden;
-    width: 100px;
-    height: 100px;
-    flex: auto;
-    position: relative;
-    cursor: pointer;
     border-radius: 3px;
+    border: 1px solid white;
+    cursor: pointer;
+    flex: auto;
+    height: 100px;
+    overflow: hidden;
+    position: relative;
     transition-duration: 100ms;
+    width: 100px;
 }
 
 .image:after {
     content: "";
-    position: absolute;
-    width: 100%;
     height: 100%;
-    z-index: 1;
+    position: absolute;
     transition-duration: 100ms;
+    width: 100%;
+    z-index: 1;
 }
 
 .image:hover:after {
@@ -423,31 +423,31 @@ export default {
 }
 
 .media-file-info-wrapper {
-    position: absolute;
     display: flex;
+    position: absolute;
 }
 
 .media-file-info-wrapper p {
     color: #616161;
     font-size: 13px;
-    position: relative;
-    margin: 0;
     line-height: 16px;
+    margin: 0;
+    position: relative;
 }
 
 .media-file-info-wrapper .avatar {
-    width: 30px;
-    height: 30px;
     align-self: center;
     border-radius: 3px;
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
+    height: 30px;
+    width: 30px;
 }
 
 .media-file-info-wrapper .avatar span {
-    font-weight: 300;
-    font-size: 16px;
     align-self: center;
     color: white;
+    font-size: 16px;
+    font-weight: 300;
     text-transform: uppercase;
 }
 
@@ -458,29 +458,29 @@ export default {
 }
 
 .upload-wrapper {
-    position: relative;
     margin: auto;
+    position: relative;
     width: 100%;
 }
 
 .dropzone {
-    box-sizing: border-box;
-    top: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    width: 100%;
     background-color: #f8f8f8;
-    height: 260px;
-    z-index: 1;
-    position: relative;
-    pointer-events: none;
-    color: #616161;
-    padding: 10px;
-    border: 2px dashed #ccc;
-    transition-duration: 100ms;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
+    border: 2px dashed #ccc;
+    box-sizing: border-box;
+    color: #616161;
+    display: flex;
+    height: 260px;
+    left: 0;
+    padding: 10px;
+    pointer-events: none;
+    position: relative;
+    right: 0;
+    top: 0;
+    transition-duration: 100ms;
+    width: 100%;
+    z-index: 1;
 }
 
 .dropzone.dragover {
@@ -502,25 +502,25 @@ export default {
 }
 
 .dropzone div {
-    display: flex;
     align-self: center;
-    margin: auto;
+    display: flex;
     flex-direction: column;
+    margin: auto;
     text-align: center;
 }
 
 .file-input {
-    top: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    width: 100%;
     background-color: transparent;
-    height: 260px;
-    position: absolute;
-    z-index: 0;
-    outline: none;
     cursor: pointer;
+    display: flex;
+    height: 260px;
+    left: 0;
+    outline: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 0;
 }
 
 .upload-description {
@@ -539,28 +539,28 @@ export default {
 
 .buttons-wrapper {
     bottom: 0;
-    right: 0;
-    padding: 0px;
     display: flex;
     justify-content: flex-end;
+    padding: 0px;
+    right: 0;
 }
 
 .buttons-wrapper .button {
-    position: relative;
-    right: 0;
+    background: transparent;
+    border-radius: 3px;
+    border: none;
+    color: #000;
+    color: #444;
+    cursor: pointer;
+    display: block;
     font-size: 13px;
     font-weight: 500;
-    color: #444;
-    background: transparent;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
+    outline: none;
     padding: 7px;
-    display: block;
+    position: relative;
+    right: 0;
     text-transform: uppercase;
     transition-duration: 100ms;
-    color: #000;
-    outline: none;
 }
 
 .buttons-wrapper .button:last-child {

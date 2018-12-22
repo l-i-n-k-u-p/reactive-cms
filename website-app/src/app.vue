@@ -25,8 +25,6 @@
             class="content-wrapper">
             <div
                 v-bind:class="pageWrapperClass">
-                <!-- <DashboardTitle v-bind:title="pageTitle"/> -->
-                <!-- <router-view :key="$route.fullPath"/> if there is a problem when call the same route and not update the view use this -->
                 <router-view :key="$route.fullPath"/>
             </div>
         </div>
@@ -56,13 +54,11 @@ import RibbonError from './components/templates/ribbon-error.vue'
 import RibbonSuccess from './components/templates/ribbon-success.vue'
 import Menu from './components/menu.vue'
 import SplashScreen from './splash-screen.vue'
-// import DashboardTitle from './components/templates/dashboard-title.vue'
 
 export default {
     components: {
         Header,
         Menu,
-        // DashboardTitle,
         RibbonError,
         RibbonSuccess,
         SplashScreen,
@@ -177,8 +173,8 @@ footer img {
 }
 
 .left-menu-wrapper {
-    z-index: 4;
     position: relative;
+    z-index: 4;
 }
 
 .fade-enter-active, .fade-leave-active {

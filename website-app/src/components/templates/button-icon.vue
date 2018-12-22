@@ -37,6 +37,7 @@ export default {
 <style scoped lang="css">
 
 #button-wrapper {
+    -webkit-user-select: none;
     align-self: center;
     background: transparent;
     border-radius: 3px;
@@ -45,15 +46,14 @@ export default {
     display: block;
     display: flex;
     font-weight: 500;
+    font-weight: 600;
     height: 14px;
     outline: none;
     padding: 7px;
     position: relative;
     text-transform: uppercase;
     transition-duration: 100ms;
-    font-weight: 600;
     user-select: none;
-    -webkit-user-select: none;
 }
 
 #button-wrapper:hover {

@@ -21,11 +21,11 @@ export default {
 <style scoped lang="css">
 
 .splash-screen-wrapper {
+    background-color: white;
+    display: flex;
     height: 100%;
     position: fixed;
-    display: flex;
     width: 100%;
-    background-color: white;
     z-index: 99;
 }
 

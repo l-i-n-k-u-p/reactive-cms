@@ -52,34 +52,36 @@ export default {
 
 .input-wrapper {
     background-color: transparent;
-    position: relative;
     margin-top: 25px;
+    position: relative;
 }
 
 .input-wrapper label {
-    position: absolute;
-    top: 5px;
     background-color: transparent;
+    color: #616161;
     font-size: 13px;
     font-weight: 500;
-    color: #616161;
-    transition-duration: 100ms;
     pointer-events: none;
+    position: absolute;
+    top: 5px;
+    transition-duration: 100ms;
 }
 
 .input-wrapper input {
-    border: none;
-    outline: none;
-    caret-color: #006dad;
-    width: 100%;
-    font-size: 13px;
     background: transparent;
-    margin: 0;
-    color: #616161;
-    font-weight: 500;
     border-bottom: 1px solid #616161;
-    padding-bottom: 5px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
     box-sizing: border-box;
+    caret-color: #006dad;
+    color: #616161;
+    font-size: 13px;
+    font-weight: 500;
+    margin: 0;
+    outline: none;
+    padding-bottom: 5px;
+    width: 100%;
 }
 
 .input-wrapper.focus label {

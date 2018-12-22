@@ -38,23 +38,23 @@ export default {
 <style scoped lang="css">
 
 #ribbon-error-wrapper {
+    -webkit-user-select: none;
     background-color: #d32f2f;
+    border-radius: 3px;
+    bottom: 10px;
     box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0, 0, 0, .12), 0 2px 4px rgba(0,0,0,.24);
-    padding: 10px 0px 10px 0px;
-    font-size: 14px;
     color: white;
     display: flex;
-    line-height: 14px;
-    text-align: center;
-    position: fixed;
-    bottom: 10px;
-    width: 300px;
+    font-size: 14px;
     font-weight: bold;
-    z-index: 2;
+    line-height: 14px;
+    padding: 10px 0px 10px 0px;
+    position: fixed;
     right: 10px;
-    border-radius: 3px;
+    text-align: center;
     user-select: none;
-    -webkit-user-select: none;
+    width: 300px;
+    z-index: 2;
 }
 
 p {
@@ -71,11 +71,11 @@ p {
 }
 
 .fade-enter-active, .fade-leave-active {
-  transition: opacity 100ms;
+    transition: opacity 100ms;
 }
 
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
+    opacity: 0;
 }
 
 </style>

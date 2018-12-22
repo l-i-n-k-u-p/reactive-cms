@@ -150,50 +150,50 @@ export default {
 
 .header {
     display: flex;
-    position: absolute;
-    top: 0;
     left: 0;
     padding: 10px;
+    position: absolute;
+    top: 0;
     z-index: 2;
 }
 
 h2 {
+    color: #616161;
+    display: flex;
+    flex-grow: 1;
     font-size: 13px;
     font-weight: 500;
-    display: flex;
-    color: #616161;
-    flex-grow: 1;
-    text-transform: uppercase;
     margin-top: 7px;
+    text-transform: uppercase;
 }
 
 .buttons-wrapper {
     bottom: 0;
-    right: 0;
-    padding: 0px;
-    margin-top: 10px;
     display: flex;
     justify-content: flex-end;
+    margin-top: 10px;
+    padding: 0px;
+    right: 0;
 }
 
 .dropzone {
-    box-sizing: border-box;
-    top: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    width: 100%;
     background-color: #f8f8f8;
-    height: 200px;
-    z-index: 1;
-    position: relative;
-    pointer-events: none;
-    color: #616161;
-    padding: 10px;
-    border: 2px dashed #ccc;
-    transition-duration: 100ms;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
+    border: 2px dashed #ccc;
+    box-sizing: border-box;
+    color: #616161;
+    display: flex;
+    height: 200px;
+    left: 0;
+    padding: 10px;
+    pointer-events: none;
+    position: relative;
+    right: 0;
+    top: 0;
+    transition-duration: 100ms;
+    width: 100%;
+    z-index: 1;
 }
 
 .dropzone.dragover {
@@ -215,30 +215,30 @@ h2 {
 }
 
 .dropzone div {
-    display: flex;
     align-self: center;
-    margin: auto;
+    display: flex;
     flex-direction: column;
+    margin: auto;
     text-align: center;
 }
 
 .file-input {
-    top: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    width: 100%;
     background-color: transparent;
-    height: 200px;
-    position: absolute;
-    z-index: 0;
-    outline: none;
     cursor: pointer;
+    display: flex;
+    height: 200px;
+    left: 0;
+    outline: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 0;
 }
 
 .content-wrapper {
-    padding: 15px;
     box-sizing: content-box;
+    padding: 15px;
 }
 
 .input {

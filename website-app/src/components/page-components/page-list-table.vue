@@ -200,35 +200,35 @@ export default {
 }
 
 .navigation-wrapper {
-    display: flex;
-    justify-content: flex-end;
-    position: relative;
-    margin-top: 15px;
     color: #616161;
+    display: flex;
     font-weight: 500;
+    justify-content: flex-end;
+    margin-top: 15px;
+    position: relative;
 }
 
 .navigation-wrapper .data {
     align-self: center;
     font-size: 13px;
-    margin-right: 5px;
     margin-left: 5px;
+    margin-right: 5px;
 }
 
 .avatar {
     border-radius: 100%;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
     display: flex;
     height: 24px;
-    width: 24px;
     justify-content: center;
-    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
+    width: 24px;
 }
 
 .avatar span {
-    font-weight: 300;
-    font-size: 16px;
     align-self: center;
     color: white;
+    font-size: 16px;
+    font-weight: 300;
     text-transform: uppercase;
 }
 
