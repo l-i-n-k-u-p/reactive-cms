@@ -66,18 +66,18 @@ export default {
 <style scoped lang="css">
 
 .select-wrapper {
-    position: relative;
-    background: transparent;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    padding: 7px;
-    transition-duration: 100ms;
-    color: #616161;
-    display: flex;
-    align-self: center;
-    user-select: none;
     -webkit-user-select: none;
+    align-self: center;
+    background: transparent;
+    border-radius: 3px;
+    border: none;
+    color: #616161;
+    cursor: pointer;
+    display: flex;
+    padding: 7px;
+    position: relative;
+    transition-duration: 100ms;
+    user-select: none;
 }
 
 .select-wrapper label {
@@ -90,23 +90,23 @@ export default {
 }
 
 .items-wrapper {
-    border-radius: 3px;
-    overflow: hidden;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    left: -45px;
-    z-index: 999;
-    margin: 0;
-    padding: 0;
-    list-style: none;
     background-color: white;
-    flex-wrap: wrap;
-    display: flex;
-    min-width: 120px;
-    max-height: 200px;
-    overflow: scroll;
+    border-radius: 3px;
     box-shadow: 0 5px 5px -3px rgba(0, 0, 0, .2), 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12);
+    display: flex;
+    flex-wrap: wrap;
+    left: -45px;
+    list-style: none;
+    margin: 0;
+    max-height: 200px;
+    min-width: 120px;
+    overflow: hidden;
+    overflow: scroll;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    z-index: 999;
 }
 
 .icon {

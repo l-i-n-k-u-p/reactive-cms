@@ -89,22 +89,22 @@ export default {
 <style scoped lang="css">
 
 .select-wrapper {
-    position: relative;
+    -webkit-user-select: none;
+    align-self: center;
+    background: transparent;
+    border-radius: 3px;
+    border: none;
+    color: #616161;
+    cursor: pointer;
+    display: flex;
     font-size: 13px;
     font-weight: 500;
-    background: transparent;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    padding: 7px;
-    transition-duration: 100ms;
-    color: #616161;
-    outline: none;
-    display: flex;
     height: 14px;
-    align-self: center;
+    outline: none;
+    padding: 7px;
+    position: relative;
+    transition-duration: 100ms;
     user-select: none;
-    -webkit-user-select: none;
 }
 
 .select-wrapper label {
@@ -118,34 +118,34 @@ export default {
 
 .select-wrapper .icon {
     font-size: 20px;
-    margin-right: 5px;
     line-height: 1;
+    margin-right: 5px;
     position: relative;
     top: -2px;
 }
 
 
 .select-options {
-    border-radius: 3px;
-    overflow: hidden;
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 999;
-    margin: 0;
-    padding: 30px 0 0 0;
-    list-style: none;
     background-color: transparent;
-    min-width: 112px;
-    max-width: 280px;
+    border-radius: 3px;
     box-shadow: 0 5px 5px -3px rgba(0, 0, 0, .2), 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12);
+    left: 0;
+    list-style: none;
+    margin: 0;
+    max-width: 280px;
+    min-width: 112px;
+    overflow: hidden;
+    padding: 30px 0 0 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 999;
 }
 
 .select-options li {
+    background-color: white;
     padding: 10px 20px 10px 32px;
     text-transform: capitalize;
-    background-color: white;
     text-transform: uppercase;
 }
 

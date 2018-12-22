@@ -12,7 +12,7 @@
                 </i>
                 <label
                     class="page-title">
-                    DASHBOARD
+                    {{ settings.get('setting_page_title') }}
                 </label>
             </div>
             <div
@@ -96,7 +96,7 @@
                     class="username"
                     v-on:click="showUserMenu">
                     <div class="name" v-bind:style="userFirstNameColorStyle">
-                        Hello {{ user.get('user_first_name') }}!
+                        {{ user.get('user_first_name') }}
                     </div>
                     <div
                         class="avatar"
@@ -143,6 +143,10 @@
 <script>
 
 export default {
+    props: [
+        'scrollTop',
+        'pageTitle',
+    ],
     data() {
         return {
             backgroundHeightHeader: 'height: 140px',
@@ -153,12 +157,9 @@ export default {
             user: new this.$models.User(),
             userMenuOpen: false,
             userFirstNameColorStyle: 'color: white;',
+            settings: new this.$models.Setting(),
         }
     },
-    props: [
-        'scrollTop',
-        'pageTitle',
-    ],
     watch: {
         scrollTop: function(newVal, oldVal) {
             let height = (140 - (newVal))
@@ -174,6 +175,7 @@ export default {
     },
     created() {
         this.getSessionUserData()
+        this.getDashboardData()
     },
     methods: {
         toggleMenu: function() {
@@ -212,7 +214,6 @@ export default {
             this.resultsIsVisible = false
         },
         showUserDetail: function(user) {
-            console.log('== user ==', user)
             this.$router.push({ name: 'user-detail', params: { id: user.get('_id') }})
         },
         showPostDetail: function(post) {
@@ -237,6 +238,12 @@ export default {
             this.user.fetch()
             .catch(data => {
                 this.$eventHub.$emit('dashboard-app-error', data.message)
+            })
+        },
+        getDashboardData: function() {
+            this.settings.fetch()
+            .catch(err => {
+                this.$eventHub.$emit('dashboard-app-error', err.message)
             })
         },
         getAvatarColor: function(user) {
@@ -309,11 +316,11 @@ export default {
 }
 
 .left-wrapper, .right-wrapper {
+    -webkit-user-select: none;
     display: flex;
-    min-width: 250px;
+    min-width: 180px;
     text-overflow: ellipsis;
     user-select: none;
-    -webkit-user-select: none;
 }
 
 .right-wrapper {
@@ -330,48 +337,48 @@ export default {
 .page-title {
     align-self: center;
     flex-grow: 0;
+    font-size: 14px;
     font-weight: 500;
     padding-left: 7px;
     padding-right: 10px;
-    font-size: 14px;
 }
 
 .username {
     align-self: center;
     cursor: pointer;
     display: flex;
+    max-width: 160px;
     padding-right: 10px;
     position: relative;
-    max-width: 160px;
 }
 
 .username .name {
     align-self: center;
     cursor: pointer;
-    font-weight: 500;
-    position: relative;
-    text-transform: uppercase;
-    font-size: 14px;
-    z-index: 1;
     flex-grow: 1;
-    text-overflow: ellipsis;
-    overflow: hidden;
+    font-size: 14px;
+    font-weight: 500;
     line-height: 1;
-    white-space: nowrap;
-    text-align: right;
+    overflow: hidden;
     padding-right: 10px;
+    position: relative;
+    text-align: right;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+    z-index: 1;
 }
 
 .avatar {
     align-self: center;
     border-radius: 100%;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
     display: flex;
+    flex-grow: 0;
     height: 30px;
     justify-content: center;
     min-width: 30px;
-    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
     z-index: 1;
-    flex-grow: 0;
 }
 
 .avatar span {
@@ -383,18 +390,18 @@ export default {
 }
 
 .username .menu {
+    background-color: white;
+    border-radius: 3px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, .2), 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12);
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
     max-height: calc(100vh - 64px);
+    padding-top: 35px;
     position: absolute;
     right: 8px;
-    padding-top: 35px;
-    width: 100%;
-    background-color: white;
-    border-radius: 3px;
     top: -3px;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, .2), 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12);
+    width: 100%;
 }
 
 .options-wrapper {
@@ -407,13 +414,13 @@ export default {
 
 .username .menu .option {
     color: #616161;
+    display: flex;
     font-size: 13px;
+    font-weight: 500;
+    max-width: 100%;
     padding: 10px 7px 10px 7px;
     text-decoration: none;
     text-transform: uppercase;
-    font-weight: 500;
-    max-width: 100%;
-    display: flex;
 }
 
 .username .menu .option:hover {
@@ -421,38 +428,38 @@ export default {
 }
 
 .search-wrapper {
-    display: flex;
-    width: 100%;
-    position: relative;
     align-self: center;
-    min-width: 150px;
-    max-width: 1125px;
+    display: flex;
     margin: auto;
+    max-width: 1125px;
+    min-width: 150px;
+    position: relative;
+    width: 100%;
 }
 
 .search-wrapper .icon {
-    position: absolute;
-    left: 10px;
-    display: flex;
     align-self: center;
+    display: flex;
     font-size: 20px;
+    left: 10px;
+    position: absolute;
 }
 
 .search-wrapper input {
+    align-self: center;
     background: none;
     border: none;
     box-sizing: border-box;
+    color: white;
+    display: flex;
     font-size: 14px;
+    font-weight: 400;
     height: 36px;
+    outline: none;
+    padding-left: 35px;
     padding-right: 10px;
     position: absolute;
     width: 100%;
-    color: white;
-    padding-left: 35px;
-    display: flex;
-    align-self: center;
-    outline: none;
-    font-weight: 400;
 }
 
 .search-wrapper input::-webkit-input-placeholder {
@@ -460,11 +467,11 @@ export default {
 }
 
 .search-wrapper .bkg {
-    background: rgba(0, 0, 0, .20);
-    width: 100%;
-    height: 36px;
     align-self: center;
+    background: rgba(0, 0, 0, .20);
     border-radius: 3px;
+    height: 36px;
+    width: 100%;
 }
 
 .search-wrapper:hover .bkg {
@@ -473,9 +480,9 @@ export default {
 
 .search-wrapper.search-active .bkg {
     background: rgba(255, 255, 255, 1);
-    z-index: 1;
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
+    z-index: 1;
 }
 
 .search-wrapper.search-active input, .search-wrapper.search-active .icon {
@@ -484,16 +491,16 @@ export default {
 }
 
 .results-wrapper {
+    background-color: white;
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
-    background-color: white;
-    width: 100%;
-    top: 100%;
-    position: absolute;
-    max-height: 300px;
     box-shadow: 0 0px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12);
     color: #616161;
+    max-height: 300px;
     overflow: scroll;
+    position: absolute;
+    top: 100%;
+    width: 100%;
 }
 
 .results-wrapper .item {
@@ -501,13 +508,13 @@ export default {
 }
 
 .results-wrapper .item > div {
-    padding: 10px;
-    color: #616161;
-    font-size: 13px;
-    display: flex;
-    width: 100%;
-    height: auto;
     box-sizing: border-box;
+    color: #616161;
+    display: flex;
+    font-size: 13px;
+    height: auto;
+    padding: 10px;
+    width: 100%;
 }
 
 .results-wrapper .item:hover {
@@ -515,9 +522,9 @@ export default {
 }
 
 .results-wrapper .item > div {
-    margin: 0;
-    display: flex;
     align-self: center;
+    display: flex;
+    margin: 0;
 }
 
 .results-wrapper .item  > div .material-icons {
@@ -533,9 +540,9 @@ export default {
 }
 
 .no-results {
-    padding: 10px;
     color: #616161;
     font-size: 13px;
+    padding: 10px;
 }
 
 </style>

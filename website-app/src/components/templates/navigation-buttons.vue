@@ -55,10 +55,10 @@ export default {
 <style scoped lang="css">
 
 #navigation-buttons-wrapper {
-    position: relative;
-    margin-right: 10px;
-    user-select: none;
     -webkit-user-select: none;
+    margin-right: 10px;
+    position: relative;
+    user-select: none;
 }
 
 #button-wrapper {
@@ -69,14 +69,14 @@ export default {
     display: block;
     display: inline-flex;
     font-weight: 500;
+    font-weight: 600;
     height: 24px;
+    margin-right: 5px;
+    margin-top: 2px;
     outline: none;
     position: relative;
     text-transform: uppercase;
     transition-duration: 100ms;
-    font-weight: 600;
-    margin-top: 2px;
-    margin-right: 5px;
 }
 
 #button-wrapper:hover {

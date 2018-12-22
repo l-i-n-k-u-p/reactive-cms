@@ -49,22 +49,22 @@ export default {
 }
 
 h2 {
+    color: #616161;
+    display: flex;
+    flex-grow: 1;
     font-size: 13px;
     font-weight: 500;
-    display: flex;
-    color: #616161;
-    flex-grow: 1;
-    text-transform: uppercase;
     margin-top: 7px;
+    text-transform: uppercase;
 }
 
 .buttons-wrapper {
     bottom: 0;
-    right: 0;
-    padding: 0px;
-    margin-top: 15px;
     display: flex;
     justify-content: flex-end;
+    margin-top: 15px;
+    padding: 0px;
+    right: 0;
 }
 
 .content-wrapper {

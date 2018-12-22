@@ -43,29 +43,29 @@ export default {
 <style scoped lang="css">
 
 .modal-box-wrapper {
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    margin: auto;
     background: rgba(0, 0, 0, 0.32);
+    bottom: 0;
     display: flex;
-    width: 100%;
     height: 100%;
+    left: 0;
+    margin: auto;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
     z-index: 5;
 }
 
 .box-content {
-    position: relative;
-    background-color: white;
-    max-height: 300px;
-    width: 500px;
-    border-radius: 3px;
     align-self: center;
-    margin: auto;
-    padding: 15px;
+    background-color: white;
+    border-radius: 3px;
     box-shadow: 0 11px 15px -7px rgba(0, 0, 0, 0.2), 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12);
+    margin: auto;
+    max-height: 300px;
+    padding: 15px;
+    position: relative;
+    width: 500px;
 }
 
 .title {
@@ -87,28 +87,28 @@ export default {
 
 .buttons-wrapper {
     bottom: 0;
-    right: 0;
-    padding: 0px;
     display: flex;
     justify-content: flex-end;
+    padding: 0px;
+    right: 0;
 }
 
 .buttons-wrapper .button {
-    position: relative;
-    right: 0;
+    background: transparent;
+    border-radius: 3px;
+    border: none;
+    color: #000;
+    color: #444;
+    cursor: pointer;
+    display: block;
     font-size: 13px;
     font-weight: 500;
-    color: #444;
-    background: transparent;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
+    outline: none;
     padding: 7px;
-    display: block;
+    position: relative;
+    right: 0;
     text-transform: uppercase;
     transition-duration: 100ms;
-    color: #000;
-    outline: none;
 }
 
 .buttons-wrapper .button:last-child {

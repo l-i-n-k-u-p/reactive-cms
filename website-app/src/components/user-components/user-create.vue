@@ -265,64 +265,64 @@ export default {
 <style scoped lang="css">
 
 .header {
+    box-sizing: border-box;
     display: flex;
-    position: absolute;
-    top: 0;
     left: 0;
     padding: 10px;
-    z-index: 1;
+    position: absolute;
+    top: 0;
     width: 100%;
-    box-sizing: border-box;
+    z-index: 1;
 }
 
 h2 {
+    color: #f0f0f0;
+    display: flex;
+    flex-grow: 1;
     font-size: 13px;
     font-weight: 500;
-    display: flex;
-    color: #f0f0f0;
-    flex-grow: 1;
-    text-transform: uppercase;
     margin-top: 7px;
+    text-transform: uppercase;
 }
 
 .buttons-wrapper {
     bottom: 0;
-    right: 0;
-    padding: 0px;
-    margin-top: 10px;
     display: flex;
     justify-content: flex-end;
+    margin-top: 10px;
+    padding: 0px;
+    right: 0;
 }
 
 .user-thumbnail {
-    box-sizing: border-box;
-    top: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    width: 100%;
     background-color: #f8f8f8;
-    height: 200px;
-    z-index: 0;
-    position: relative;
-    pointer-events: none;
-    color: #616161;
-    padding: 10px;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
+    box-sizing: border-box;
+    color: #616161;
+    display: flex;
+    height: 200px;
+    left: 0;
     overflow: hidden;
+    padding: 10px;
+    pointer-events: none;
+    position: relative;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 0;
 }
 
 .user-thumbnail:after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
-    background-color: rgba(0, 0, 0, 0.5);
+    bottom: 0;
+    content: "";
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 
 .form-wrapper {
@@ -330,58 +330,58 @@ h2 {
 }
 
 .header-action-buttons-wrapper {
-    top: 0;
-    right: 0;
-    padding: 0px;
     display: flex;
     justify-content: flex-end;
+    padding: 0px;
+    right: 0;
+    top: 0;
 }
 
 .user-avatar-wrapper {
-    position: relative;
+    left: 10px;
     margin-bottom: 75px;
     max-width: 150px;
-    left: 10px;
+    position: relative;
 }
 
 .user-avatar {
-    position: absolute;
-    overflow: hidden;
-    width: 150px;
-    height: 150px;
     border-radius: 100%;
-    top: -75px;
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.5);
     display: flex;
+    height: 150px;
+    overflow: hidden;
+    position: absolute;
+    top: -75px;
+    width: 150px;
 }
 
 .user-avatar:after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
     background-color: rgba(0, 0, 0, 0.5);
+    bottom: 0;
+    content: "";
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 
 .user-letter {
+    align-self: center;
     color: white;
     font-size: 100px;
+    font-weight: 300;
     line-height: 1;
     margin: auto;
-    align-self: center;
-    font-weight: 300;
 }
 
 .avatar-buttons-wrapper {
+    bottom: 0;
     box-sizing: border-box;
     display: flex;
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    top: 0;
     flex-direction: column;
+    position: absolute;
+    top: 0;
+    width: 100%;
     z-index: 1;
 }
 
@@ -391,8 +391,8 @@ h2 {
 }
 
 .buttom-top {
-    top: 15px;
     margin: auto;
+    top: 15px;
 }
 
 .buttom-bottom {

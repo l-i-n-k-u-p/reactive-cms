@@ -27,6 +27,7 @@ export default {
 <style scoped lang="css">
 
 #box-wrapper {
+    -webkit-user-select: none;
     background-color: white;
     border-radius: 3px;
     box-shadow: 0 0px 0 #e0e0e0, 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.24);
@@ -34,7 +35,6 @@ export default {
     margin-right: 10px;
     padding: 10px;
     user-select: none;
-    -webkit-user-select: none;
 }
 
 </style>

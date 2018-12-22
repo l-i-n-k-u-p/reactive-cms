@@ -40,23 +40,23 @@ export default {
 <style scoped lang="css">
 
 #button-wrapper {
-    position: relative;
+    -webkit-user-select: none;
+    align-self: center;
+    background: transparent;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+    display: block;
+    display: flex;
     font-size: 13px;
     font-weight: 500;
-    background: transparent;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
+    height: 14px;
+    outline: none;
     padding: 7px;
-    display: block;
+    position: relative;
     text-transform: uppercase;
     transition-duration: 100ms;
-    outline: none;
-    display: flex;
-    height: 14px;
-    align-self: center;
     user-select: none;
-    -webkit-user-select: none;
 }
 
 #button-wrapper:hover {

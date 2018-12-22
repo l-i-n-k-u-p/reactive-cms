@@ -117,44 +117,44 @@ export default {
 
 <style scoped lang="css">
 #menu {
-    position: fixed;
+    background-color: #fff;
+    box-shadow: 0 0px 0 #e0e0e0, 0 0 2px rgba(0, 0, 0, .12), 0 2px 4px rgba(0, 0, 0, .24);
+    flex-grow: 0;
+    height: 100%;
     left: 0;
     min-width: 200px;
-    background-color: #fff;
-    z-index: 1;
+    position: fixed;
     top: 0px;
-    height: 100%;
-    flex-grow: 0;
-    box-shadow: 0 0px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24);
+    z-index: 1;
 }
 
 .logo {
-    max-width: 200px;
-    margin-top: 5px;
     margin-bottom: 5px;
+    margin-top: 5px;
+    max-width: 200px;
 }
 
 #menu .option {
-    display: flex;
-    height: 40px;
-    max-width: 100%;
-    flex-shrink: 0;
-    flex-direction: row;
     align-items: center;
     border-bottom: 0;
-    position: relative;
+    border-radius: 3px;
     border: 0;
     color: #616161;
-    font-size: 13px;
-    padding-left: 15px;
-    padding-right: 15px;
     cursor: pointer;
-    text-decoration: none;
-    border-radius: 3px;
-    z-index: 2;
-    text-transform: uppercase;
+    display: flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    font-size: 13px;
+    height: 40px;
     margin-left: 5px;
     margin-right: 5px;
+    max-width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+    position: relative;
+    text-decoration: none;
+    text-transform: uppercase;
+    z-index: 2;
 }
 
 #menu .option:hover {
@@ -162,18 +162,18 @@ export default {
 }
 
 #menu .option .icon {
-    margin-right: 10px;
     font-size: 16px;
+    margin-right: 10px;
 }
 
 .shadow {
-    width: 100%;
-    height: 100%;
-    top: 0;
     bottom: 0;
+    height: 100%;
     left: 0;
-    right: 0;
     position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
     z-index: 0;
 }
 

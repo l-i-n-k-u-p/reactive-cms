@@ -41,59 +41,59 @@ export default {
 <style scoped lang="css">
 
 .input-wrapper {
-    display: flex;
-    position: relative;
-    margin: auto;
-    cursor: pointer;
     -webkit-user-select: none;
+    align-self: center;
+    cursor: pointer;
+    display: flex;
+    height: 20px;
+    position: relative;
     user-select: none;
-    margin-bottom: 18px;
 }
 
 .input-wrapper label {
-    margin-left: 26px;
+    align-self: center;
     color: #616161;
     font-size: 13px;
     font-weight: bold;
-    align-self: center;
     line-height: 0;
-    top: 10px;
+    margin-left: 26px;
     position: relative;
+    top: 10px;
 }
 
 .input-wrapper input {
+    bottom: 0;
     cursor: pointer;
     height: 0;
+    left: 0;
     opacity: 0;
     position: absolute;
-    width: 0;
-    top: 0;
-    bottom: 0;
-    left: 0;
     right: 0;
+    top: 0;
+    width: 0;
 }
 
 .checkmark {
-    position: absolute;
-    height: 14px;
-    width: 14px;
     border-radius: 3px;
     border: 2px solid #616161;
-    top: 0;
     bottom: 0;
+    height: 14px;
     left: 0;
+    position: absolute;
     right: 0;
+    top: 0;
+    width: 14px;
 }
 
 .input-wrapper input:checked ~ .checkmark {
-    border: 2px solid #006dad;
     background-color: #006dad;
+    border: 2px solid #006dad;
 }
 
 .checkmark:after {
     content: "";
-    position: absolute;
     display: none;
+    position: absolute;
 }
 
 .input-wrapper input:checked ~ .checkmark:after {
@@ -101,18 +101,19 @@ export default {
 }
 
 .input-wrapper .checkmark:after {
-    top: -4px;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 3px;
-    height: 10px;
-    border: 2px solid white;
-    border-width: 0 2px 2px 0;
-    -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    border-color: white;
+    border-style: solid;
+    border-width: 0 2px 2px 0;
+    bottom: 0;
+    height: 10px;
+    left: 0;
     margin: auto;
+    right: 0;
+    top: -4px;
+    transform: rotate(45deg);
+    width: 3px;
 }
 
 </style>

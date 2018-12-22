@@ -47,22 +47,22 @@ export default {
 <style scoped lang="css">
 
 #link-wrapper {
-    position: relative;
+    -webkit-user-select: none;
+    align-self: center;
+    background: transparent;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+    display: flex;
     font-size: 13px;
     font-weight: 500;
-    background: transparent;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
+    height: 14px;
+    outline: none;
     padding: 7px;
+    position: relative;
     text-transform: uppercase;
     transition-duration: 100ms;
-    outline: none;
-    display: flex;
-    height: 14px;
-    align-self: center;
     user-select: none;
-    -webkit-user-select: none;
 }
 
 #link-wrapper:hover {
@@ -70,14 +70,14 @@ export default {
 }
 
 #link-wrapper .icon {
+    color: inherit;
     font-size: 16px;
     margin-right: 5px;
-    color: inherit;
 }
 
 .link-url {
-    text-decoration: none;
     color: inherit;
+    text-decoration: none;
 }
 
 .link-icon {

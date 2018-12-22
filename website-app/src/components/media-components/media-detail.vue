@@ -188,21 +188,21 @@ export default {
 
 .header {
     display: flex;
-    position: absolute;
-    top: 0;
     left: 0;
     padding: 10px;
+    position: absolute;
+    top: 0;
     z-index: 1;
 }
 
 h2 {
+    color: #f0f0f0;
+    display: flex;
+    flex-grow: 1;
     font-size: 13px;
     font-weight: 500;
-    display: flex;
-    color: #f0f0f0;
-    flex-grow: 1;
-    text-transform: uppercase;
     margin-top: 7px;
+    text-transform: uppercase;
 }
 
 form {
@@ -211,45 +211,45 @@ form {
 
 .buttons-wrapper {
     bottom: 0;
-    right: 0;
-    padding: 0px;
-    margin-top: 10px;
     display: flex;
     justify-content: flex-end;
+    margin-top: 10px;
+    padding: 0px;
+    right: 0;
 }
 
 .media-thumbnail {
-    box-sizing: border-box;
-    top: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    width: 100%;
     background-color: #f8f8f8;
-    height: 200px;
-    z-index: 0;
-    position: relative;
-    pointer-events: none;
-    color: #616161;
-    padding: 10px;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
+    box-sizing: border-box;
+    color: #616161;
+    display: flex;
+    height: 200px;
+    left: 0;
     overflow: hidden;
+    padding: 10px;
+    pointer-events: none;
+    position: relative;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 0;
 }
 
 .media-thumbnail:after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
     background-color: rgba(0, 0, 0, 0.5);
+    bottom: 0;
+    content: "";
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 
 .content-wrapper {
-    padding: 10px;
     box-sizing: content-box;
+    padding: 10px;
 }
 
 .input {
@@ -258,17 +258,17 @@ form {
 
 .media-download {
     position: absolute !important;
-    top: 10px;
     right: 10px;
+    top: 10px;
 }
 
 .date-wrapper {
+    color: #616161;
     display: block;
-    text-align: right;
     font-size: 12px;
     font-weight: 500;
-    color: #616161;
     margin-top: 15px;
+    text-align: right;
 }
 
 </style>
