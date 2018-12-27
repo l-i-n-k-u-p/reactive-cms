@@ -88,6 +88,7 @@ router.get('/users/:page', session.isAuthenticated, async (req, res) => {
                 'user_thumbnail',
                 'user_avatar',
             ])
+            .sort({'user_registration_date': 'desc'})
             .skip(skipUsers)
             .limit(DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST).exec(),
         ])
@@ -271,7 +272,11 @@ router.get('/posts/:page', session.isAuthenticated, async (req, res) => {
         let skipPosts = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
         let [totalItems, items] = await Promise.all([
             modelPost.countDocuments(),
-            modelPost.find().skip(skipPosts).limit(DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST).exec()
+            modelPost.find()
+            .skip(skipPosts)
+            .limit(DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST)
+            .sort({'post_date': 'desc'})
+            .exec()
         ])
         res.json({
             items: items,
@@ -393,7 +398,11 @@ router.get('/pages/:page', session.isAuthenticated, async (req, res) => {
         let skipPosts = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
         let [totalItems, items] = await Promise.all([
             modelPage.countDocuments(),
-            modelPage.find().skip(skipPosts).limit(DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST).exec()
+            modelPage.find()
+            .skip(skipPosts)
+            .limit(DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST)
+            .sort({'page_date': 'desc'})
+            .exec()
         ])
         res.json({
             items: items,
@@ -522,7 +531,11 @@ router.get('/media-files/:page', session.isAuthenticated, async (req, res) => {
     try {
         let skipPosts = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
         let totalItems = await modelMedia.countDocuments()
-        let items = await modelMedia.find().skip(skipPosts).limit(DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST).exec()
+        let items = await modelMedia.find()
+            .skip(skipPosts)
+            .limit(DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST)
+            .sort({'media_date': 'desc'})
+            .exec()
         res.json({
             items: items,
             total_pages: Math.ceil(totalItems/DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST),
@@ -680,7 +693,8 @@ router.get('/dashboard/', session.isAuthenticated, async (req, res) => {
             modelPost.countDocuments(),
             modelPage.countDocuments(),
             modelMedia.countDocuments(),
-            modelUser.find().select([
+            modelUser.find()
+            .select([
                 'user_first_name',
                 'user_last_name',
                 'user_name',
