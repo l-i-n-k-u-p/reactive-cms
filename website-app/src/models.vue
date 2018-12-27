@@ -423,7 +423,6 @@ class PageList extends Collection {
     }
 }
 
-
 class Media extends Model {
     constructor(props) {
         super(props)
@@ -566,7 +565,6 @@ class MediaList extends Collection {
     }
 }
 
-
 class Setting extends Model {
     constructor(props) {
         super(props)
@@ -637,7 +635,6 @@ class Setting extends Model {
         }
     }
 }
-
 
 class Site extends Model {
     constructor(props) {
@@ -711,6 +708,18 @@ class Site extends Model {
     }
 }
 
+class Dashboard extends Collection {
+    getModelsFromResponse (response) {
+        return response.getData().items
+    }
+
+    routes() {
+        return {
+            fetch: appApiBaseURL+'/dashboard/',
+        }
+    }
+}
+
 
 export default {
     User: User,
@@ -725,6 +734,7 @@ export default {
     SearchMediaList: SearchMediaList,
     Setting: Setting,
     Site: Site,
+    Dashboard: Dashboard,
 }
 
 </script>
