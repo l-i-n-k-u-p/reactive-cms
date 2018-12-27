@@ -671,4 +671,65 @@ router.put('/site/', session.isAuthenticated, async (req, res) => {
 // end - site
 
 
+// start - dashboard
+
+router.get('/dashboard/', session.isAuthenticated, async (req, res) => {
+    try {
+        let data = await Promise.all([
+            modelUser.countDocuments(),
+            modelPost.countDocuments(),
+            modelPage.countDocuments(),
+            modelMedia.countDocuments(),
+            modelUser.find().select([
+                'user_first_name',
+                'user_last_name',
+                'user_name',
+                'user_email',
+                'user_type',
+                'user_active',
+                'user_registration_date',
+                'user_thumbnail',
+                'user_avatar',
+            ]).sort({'user_registration_date': 'desc'}).limit(3),
+            modelPost.find().sort({'post_date': 'desc'}).limit(3),
+            modelPage.find().sort({'page_date': 'desc'}).limit(3),
+            modelMedia.find().sort({'media_date': 'desc'}).limit(3),
+        ])
+        res.json({
+            items: [
+                {
+                    model: 'user',
+                    total: data[0],
+                    last: data[4],
+                },
+                {
+                    model: 'post',
+                    total: data[1],
+                    last: data[5],
+                },
+                {
+                    model: 'page',
+                    total: data[2],
+                    last: data[6],
+                },
+                {
+                    model: 'media',
+                    total: data[3],
+                    last: data[7],
+                },
+            ],
+            status_code: 0,
+            status_msg: '',
+        })
+    } catch(err) {
+        res.json({
+            status_code: 1,
+            status_msg: 'Error loading Dashboard Info',
+        })
+    }
+})
+
+// end - dashboard
+
+
 module.exports = router
