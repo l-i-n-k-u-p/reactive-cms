@@ -6,6 +6,9 @@ const modelSetting = require(path.join(APP_GLOBAL.appServerPath, '../models/sett
 
 const loadDashboardSettings = async () => {
     let settings = await modelSetting.findOne()
+    if(!settings)
+        return
+
     DASBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST = settings.setting_items_peer_page
 }
 

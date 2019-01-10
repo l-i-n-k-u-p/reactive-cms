@@ -65,6 +65,7 @@ router.post('/setup', async (req, res) => {
             site.site_url = setup_site_url
             let userSaved = await user.save()
             let settingSaved = await settings.save()
+            let siteSaved = await site.save()
             res.redirect('admin')
         } catch(err) {
             res.render('setup', {
