@@ -15,6 +15,13 @@ const APP_GLOBAL = require('../config/global')
 const websiteAppRouter = require('../website-app/routes/website-router')
 const websiteAppApiRouter = require('../website-app/routes/api-router')
 const clientAppRouter = require('../client-app/routes/router')
+const directory = require('../lib/directory')
+
+
+// create static directory for uploads
+directory.createFolderFromPath(APP_CONFIG.uploadDirectory)
+// create static directory for upload image sizes
+directory.createFolderFromPath(APP_CONFIG.uploadDirectory + 'sizes/')
 
 
 // settings
