@@ -3,6 +3,7 @@ const APP_CONFIG = {
     mongoDBURI: 'mongodb://172.17.0.2:27017/venom',
     bcryptSaltRounds: 12,
     appSecret: 'E5OReactiveWeb2018',
+    uploadDirectory: 'site-static/uploads/',
 }
 
 
