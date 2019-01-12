@@ -15,8 +15,8 @@ Requeriments
 Installation
 -
 ```bash
-git clone https://gitlab.com/eduardobc88/VENoM.git
-cd VENoM
+git clone https://github.com/reactive-web/reactive-cms.git
+cd reactive-cms
 npm install
 ```
 
