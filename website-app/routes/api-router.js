@@ -484,8 +484,9 @@ router.delete('/page/:id', session.isAuthenticated, async (req, res, next) => {
 router.get('/media-file/:id', session.isAuthenticated, async (req, res) => {
     try {
         let media = await modelMedia.findById(req.params.id)
-        if(media)
-            res.json(media)
+        if(!media)
+            throw new Error('Media not found')
+        res.json(media)
     } catch(err) {
         res.json({
             status_code: 1,
