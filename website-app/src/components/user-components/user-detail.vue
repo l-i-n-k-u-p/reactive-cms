@@ -228,7 +228,6 @@ export default {
         deleteUser: function() {
             this.user.delete()
             .then(data => {
-                this.$router.push({ name: 'users', params: {page: 1}})
                 if(data.getData().status_code) {
                     this.$eventHub.$emit('dashboard-app-error', data.getData().status_msg)
                     return
@@ -238,7 +237,7 @@ export default {
             .catch(err => {
                 this.$eventHub.$emit('dashboard-app-error', data.message)
             })
-            this.$router.push({ name: 'users', params: {page: 1}})
+            this.$router.replace({ name: 'users', params: {page: 1}})
         },
         updateUser: function() {
             this.user.put()
