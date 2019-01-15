@@ -129,7 +129,7 @@ export default {
                     this.$eventHub.$emit('dashboard-app-error', data.getData().status_msg)
                     return
                 }
-                this.$router.push({ name: 'post-detail', params: { id: data.getData().data.id }})
+                this.$router.replace({ name: 'post-detail', params: { id: data.getData().data.id }})
                 this.$eventHub.$emit('dashboard-app-success', data.getData().status_msg)
             })
             .catch(err => {

@@ -99,7 +99,7 @@ export default {
             this.formData.append('media_title', this.mediaTitle)
             this.axios.post('/admin-website/api/media-file/', this.formData, {headers: {'Content-Type': 'multipart/form-data'}})
             .then(data => {
-                this.$router.push({ name: 'media-detail', params: { id: data.data.data.id }})
+                this.$router.replace({ name: 'media-detail', params: { id: data.data.data.id }})
                 this.$eventHub.$emit('dashboard-app-success', data.data.status_msg)
             })
             .catch(data => {
