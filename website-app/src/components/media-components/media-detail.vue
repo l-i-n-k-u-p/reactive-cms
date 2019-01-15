@@ -135,7 +135,6 @@ export default {
         deleteMedia: function() {
             this.media.delete()
             .then(data => {
-                this.$router.push({ name: 'medias', params: {media: 1}})
                 if(data.getData().status_code) {
                     this.$eventHub.$emit('dashboard-app-error', data.getData().status_msg)
                     return
@@ -145,7 +144,7 @@ export default {
             .catch(err => {
                 this.$eventHub.$emit('dashboard-app-error', err.message)
             })
-            this.$router.push({ name: 'medias', params: {media: 1}})
+            this.$router.replace({ name: 'media', params: {page: 1}})
         },
         updateMedia: function() {
             this.media.put()
