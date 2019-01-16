@@ -35,7 +35,7 @@
             </div>
             <div
                 class="page-thumbnail"
-                v-if="!page.page_thumbnail"
+                v-if="!media.isImage()"
                 v-bind:style="$getHexColor(page.page_title)">
             </div>
             <div
