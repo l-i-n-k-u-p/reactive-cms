@@ -9,19 +9,23 @@ const loadDashboardSettings = async () => {
     if(!settings)
         return
 
-    DASBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST = settings.setting_items_peer_page
+    DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST = settings.setting_items_peer_page
+    DASHBOARD_ADMIN_CONFIG.dashboardTitle = settings.setting_page_title
+    DASHBOARD_ADMIN_CONFIG.setupPassed = true
 }
 
-const DASBOARD_ADMIN_CONFIG = {
+const DASHBOARD_ADMIN_CONFIG = {
     MAX_PAGES_BY_REQUEST: 20,
     IMAGE_SIZES: [
             [600, 200],
             [150, 150],
         ],
+    dashboardTitle: 'Dashboard',
+    setupPassed: false,
     loadDashboardSettings,
 }
 
-DASBOARD_ADMIN_CONFIG.loadDashboardSettings()
+DASHBOARD_ADMIN_CONFIG.loadDashboardSettings()
 
 
-module.exports = DASBOARD_ADMIN_CONFIG
+module.exports = DASHBOARD_ADMIN_CONFIG

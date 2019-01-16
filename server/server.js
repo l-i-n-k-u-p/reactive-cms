@@ -12,10 +12,12 @@ const app = express()
 
 const APP_CONFIG = require('../config/config')
 const APP_GLOBAL = require('../config/global')
-const websiteAppRouter = require('../website-app/routes/website-router')
-const websiteAppApiRouter = require('../website-app/routes/api-router')
-const clientAppRouter = require('../client-app/routes/router')
+const websiteAppRouter = require('../website/routes/website-router')
+const websiteAppApiRouter = require('../website/routes/api-router')
 const directory = require('../lib/directory')
+
+const exampleAppRouter = require('../example/routes/example-router')
+const exampleAppApiRouter = require('../example/routes/api-router')
 
 
 // create static directory for uploads
@@ -27,8 +29,8 @@ directory.createFolderFromPath(APP_CONFIG.uploadDirectory + 'sizes/')
 // settings
 app.set('port', process.env.PORT || APP_CONFIG.port)
 app.set('views', [
-    path.join(__dirname, '../website-app/templates'),
-    path.join(__dirname, '../client-app/templates'),
+    path.join(__dirname, '../website/templates'),
+    path.join(__dirname, '../example/templates'),
 ])
 app.engine('html', ejs.renderFile)
 app.set('view engine', 'ejs')
@@ -66,16 +68,17 @@ app.use(expressSession({
 }))
 
 
-// index routers
-app.use('/', websiteAppRouter)
-app.use('/admin-website/api', websiteAppApiRouter)
-app.use('/client-dashboard', clientAppRouter)
-
-
 // static files
 app.use(express.static(path.join(__dirname, '../site-static')))
-app.use(express.static(path.join(__dirname, '../website-app/static')))
-app.use(express.static(path.join(__dirname, '../client-app/static')))
+app.use(express.static(path.join(__dirname, '../website/static')))
+app.use(express.static(path.join(__dirname, '../example/static')))
+
+
+// index routers
+app.use('/', websiteAppRouter)
+app.use('/dashboard/api', websiteAppApiRouter)
+app.use('/example', exampleAppRouter)
+app.use('/example/api', exampleAppApiRouter)
 
 
 // handler for 500 and 404 pages
@@ -100,6 +103,3 @@ app.use((err, req, res, next) => {
 app.listen(app.get('port'), () => {
     console.log(APP_GLOBAL.logAppName, 'Running on port '+APP_CONFIG.port)
 })
-
-
-// mongod --bind_ip_all

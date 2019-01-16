@@ -4,7 +4,7 @@
         <form v-on:submit.prevent="onSubmit">
             <input type="text" v-model="item.name" placeholder="Name">
             <br>
-            <input type="text" v-model="item.price" placeholder="Price">
+            <input type="number" v-model="item.price" placeholder="0">
             <br>
             <button type="submit">Add</button>
         </form>

@@ -6,25 +6,10 @@ const modelItem = require('../../models/item')
 
 
 router.get('/', (req, res) => {
-    res.render('dashboard-client-index.html', {
-        title: APP_GLOBAL.websiteName,
-    })
+    res.json('example api')
 })
 
-router.get('/create', (req, res) => {
-    res.render('dashboard-client-index.html', {
-        title: APP_GLOBAL.websiteName,
-    })
-})
-
-router.get('/edit/:id', (req, res) => {
-    res.render('dashboard-client-index.html', {
-        title: APP_GLOBAL.websiteName,
-    })
-})
-
-
-router.get('/api/items', (req, res) => {
+router.get('/items', (req, res) => {
     modelItem.find(function(err, data) {
         if(err) {
             throw err
@@ -35,7 +20,7 @@ router.get('/api/items', (req, res) => {
 })
 
 
-router.get('/api/item/:id', (req, res) => {
+router.get('/item/:id', (req, res) => {
     modelItem.findById(req.params.id, function(err, item) {
         if(err) {
             throw err
@@ -46,7 +31,7 @@ router.get('/api/item/:id', (req, res) => {
 })
 
 
-router.post('/api/item', (req, res) => {
+router.post('/item', (req, res) => {
     const item = new modelItem(req.body)
     item.save()
     .then(item => {
@@ -62,8 +47,7 @@ router.post('/api/item', (req, res) => {
 })
 
 
-router.put('/api/item/:id', (req, res, next) => {
-    console.log('== update item ==', req.params.id)
+router.put('/item/:id', (req, res, next) => {
     modelItem.findById(req.params.id, function(err, item) {
         if(!item) {
             return next(new Error('It cannot load item'))
@@ -82,7 +66,7 @@ router.put('/api/item/:id', (req, res, next) => {
 })
 
 
-router.delete('/api/item/:id', (req, res, next) => {
+router.delete('/item/:id', (req, res, next) => {
     modelItem.findByIdAndRemove(req.params.id, (err, item) => {
         if(err) {
             res.json(err)

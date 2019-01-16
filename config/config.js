@@ -4,6 +4,11 @@ const APP_CONFIG = {
     bcryptSaltRounds: 12,
     appSecret: 'E5OReactiveWeb2018',
     uploadDirectory: 'site-static/uploads/',
+    ignorePageSlug: [
+        'dashboard',
+        'blog',
+        'example',
+    ],
 }
 
 

@@ -13,7 +13,6 @@ body {
 
 .wrapper {
     flex-direction: column;
-    /* align-self: center; */
     margin: auto;
     position: relative;
     display: flex;

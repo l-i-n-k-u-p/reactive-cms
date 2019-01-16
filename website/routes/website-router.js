@@ -7,6 +7,7 @@ const APP_GLOBAL = require('../../config/global.js')
 const DASHBOARD_ADMIN_CONFIG = require('../../config/dashboard-admin-config.js')
 const SITE_CONFIG = require('../../config/site-config')
 const session = require('../../lib/session')
+const routerException = require('../../lib/router-exception')
 
 const modelPost = require(path.join(APP_GLOBAL.appServerPath, '../models/post'))
 const modelPage = require(path.join(APP_GLOBAL.appServerPath, '../models/page'))
@@ -17,6 +18,17 @@ const modelSite = require(path.join(APP_GLOBAL.appServerPath, '../models/site'))
 
 
 // start - website setup page
+
+// NOTE: force setup page
+router.get('*', (req, res) => {
+    if(DASHBOARD_ADMIN_CONFIG.setupPassed)
+        return req.next()
+
+    if(req.path.indexOf('setup') >= 0)
+        return req.next()
+
+    res.redirect('setup')
+})
 
 router.get('/setup', async (req, res) => {
     let totalUsers = await modelUser.countDocuments()
@@ -90,7 +102,7 @@ router.get('/admin', async (req, res) => {
         res.redirect('dashboard')
     else
         res.render('dashboard-website-login', {
-            title: 'WEBSITE ADMIN LOGIN',
+            title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
             error_message: '',
         })
 })
@@ -108,7 +120,7 @@ router.post('/admin', async (req, res) => {
         })
         if(!user) {
             res.render('dashboard-website-login', {
-                title: APP_GLOBAL.websiteName,
+                title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
                 error_message: 'Usuario no valido',
             })
             return
@@ -132,7 +144,7 @@ router.post('/admin', async (req, res) => {
         throw new Error('Not valid user')
     } catch(err) {
         res.render('dashboard-website-login', {
-            title: 'WEBSITE ADMIN LOGIN',
+            title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
             error_message: err,
         })
     }
@@ -157,7 +169,7 @@ router.get('/admin-logout', (req, res) => {
 
 router.get('/login', (req, res) => {
     res.render('login', {
-        title: APP_GLOBAL.websiteName,
+        title: SITE_CONFIG.siteTitle,
         error_message: '',
     })
 })
@@ -174,19 +186,19 @@ router.post('/login', async (req, res) => {
             return
         }
         let userValidation = await session.passwordIsEqual(user_pass, user.user_pass)
-        if(userValidation.user_valid) {
+        if(userValidation) {
             req.session.user = {
                 user_id: user.id.toString(),
                 user_name: user.user_name,
                 user_email: user.user_email,
             }
-            res.redirect('dashboard-client')
+            res.redirect('example')
             return
         }
         throw new Error('Not valid user')
     } catch(err) {
         res.render('login', {
-            title: APP_GLOBAL.websiteName,
+            title: SITE_CONFIG.siteTitle,
             error_message: err,
         })
     }
@@ -195,12 +207,12 @@ router.post('/login', async (req, res) => {
 router.get('/register', (req, res) => {
     if(req.session.user) {
         if(req.session.user.user_type === 'client')
-            res.redirect('dashboard-client')
+            res.redirect('example')
         else
             res.redirect('dashboard-seller')
     } else
         res.render('register', {
-            title: APP_GLOBAL.websiteName,
+            title: SITE_CONFIG.siteTitle,
         })
 })
 
@@ -254,15 +266,6 @@ router.get('/logout', (req, res) => {
 // end - website login for other apps
 
 
-// NOTE: this is necessary for all dashboard sub-address and should be before of website basic routes
-router.get('/dashboard*', session.isAuthenticated, (req, res) => {
-    res.render('dashboard-website-index', {
-        title: 'WEBSITE DASHBOARD',
-        user_id: req.session.user.user_id,
-    })
-})
-
-
 // start - website basic template routes
 
 router.get('/', (req, res) => {
@@ -271,13 +274,9 @@ router.get('/', (req, res) => {
     })
 })
 
-router.get('/:slug', async (req, res) => {
+router.get('/:slug', routerException.slugException, async (req, res) => {
     try {
         let pageSlug = req.params.slug
-        if(pageSlug === 'blog') {
-            req.next()
-            return
-        }
         let page = await modelPage.findOne({
             'page_slug': pageSlug,
         })
@@ -360,6 +359,20 @@ router.get('/blog/:slug', async (req, res) => {
 })
 
 // end - website basic template routes
+
+
+// NOTE: admin dashboard app slug
+router.get(['/:slugA', '/:slugA/:slugB*'], session.isAuthenticated, (req, res) => {
+    let slugA = req.params.slugA
+    let slugB = req.params.slugB
+    if(slugA !== 'dashboard' || slugB === 'api')
+        return req.next()
+
+    res.render('dashboard-website-index', {
+        title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
+        user_id: req.session.user.user_id,
+    })
+})
 
 
 module.exports = router

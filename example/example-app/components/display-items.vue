@@ -19,7 +19,6 @@
                         <router-link :to="{ name: 'edit-item', params: {id: item._id}}">
                             Edit
                         </router-link>
-                        <a href="#" style="color: #2222aa;">Update</a>
                         <a href="#" style="color: red;" v-on:click="deleteItem(item._id)">Delete</a>
                     </td>
                 </tr>

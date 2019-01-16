@@ -11,7 +11,7 @@
     "pm2:monit": "node_modules/pm2/bin/pm2 monit",
     "pm2:global-logs": "node_modules/pm2/bin/pm2 logs",
     "webpack:website-watch": "webpack --config webpack-config-website.js -w --mode=development",
-    "webpack:client-watch": "webpack --config webpack-config-client.js -w --mode=development",
+    "webpack:example-watch": "webpack --config webpack-config-example.js -w --mode=development",
     "build": "webpack --mode=development",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
