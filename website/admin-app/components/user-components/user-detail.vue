@@ -28,12 +28,12 @@
         </div>
         <div
             class="user-thumbnail"
-            v-if="user.get('user_thumbnail')"
+            v-if="media.isImage()"
             v-bind:style="$getThumbnailURL(media.get('media_name'))">
         </div>
         <div
             class="user-thumbnail"
-            v-if="!user.get('user_thumbnail')"
+            v-if="!media.isImage()"
             v-bind:style="$getHexColor(user.get('user_first_name'))">
         </div>
         <div
@@ -42,12 +42,12 @@
                 class="user-avatar">
                 <div
                     class="user-image-color"
-                    v-if="user.get('user_avatar')"
+                    v-if="mediaAvatar.isImage()"
                     v-bind:style="$getAvatarURL(mediaAvatar.get('media_name'))">
                 </div>
                 <div
                     class="user-image-color"
-                    v-if="!user.get('user_avatar')"
+                    v-if="!mediaAvatar.isImage()"
                     v-bind:style="$getHexColor(user.get('user_first_name'))">
                     <span
                         class="user-letter">
