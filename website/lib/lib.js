@@ -1,7 +1,7 @@
 const path = require('path')
-const APP_GLOBAL = require('../../config/global.js')
-const modelPost = require(path.join(APP_GLOBAL.appServerPath, '../models/post'))
-const modelPage = require(path.join(APP_GLOBAL.appServerPath, '../models/page'))
+const APP_GLOBAL = require('../../config/global')
+const modelPost = require('../model/post')
+const modelPage = require('../model/page')
 
 
 const generatePostSlug = (id, slug) => {

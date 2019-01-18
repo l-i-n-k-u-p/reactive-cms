@@ -1,18 +1,16 @@
 const path = require('path')
-const express = require('express')
-const router = express.Router()
 const dateTime = require('node-datetime')
 const slugify = require('slugify')
 
 const APP_GLOBAL = require('../../config/global')
 const DASHBOARD_ADMIN_CONFIG = require('../../config/dashboard-admin-config')
 const SITE_CONFIG = require('../../config/site-config')
-const modelUser = require(path.join(APP_GLOBAL.appServerPath, '../models/user'))
-const modelPost = require(path.join(APP_GLOBAL.appServerPath, '../models/post'))
-const modelPage = require(path.join(APP_GLOBAL.appServerPath, '../models/page'))
-const modelMedia = require(path.join(APP_GLOBAL.appServerPath, '../models/media'))
-const modelSetting = require(path.join(APP_GLOBAL.appServerPath, '../models/setting'))
-const modelSite = require(path.join(APP_GLOBAL.appServerPath, '../models/site'))
+const modelUser = require(path.join('../model/user'))
+const modelPost = require(path.join('../model/post'))
+const modelPage = require(path.join('../model/page'))
+const modelMedia = require(path.join('../model/media'))
+const modelSetting = require(path.join('../model/setting'))
+const modelSite = require(path.join('../model/site'))
 const session = require('../../lib/session')
 const {
     generatePostSlug,
@@ -22,9 +20,7 @@ const { pushMessage } = require('../../lib/push-message')
 const { mediaUpload } = require('../../lib/media-upload')
 
 
-// start - search
-
-router.get('/search/', session.isAuthenticated, async (req, res) => {
+exports.search = async (req, res) => {
     try {
         const searchRegex = new RegExp(req.query.search, 'i')
         let data = await Promise.all([
@@ -33,20 +29,20 @@ router.get('/search/', session.isAuthenticated, async (req, res) => {
             modelPage.find({'page_title': searchRegex}).select(['page_title']).exec(),
             modelMedia.find({'media_title': searchRegex}).select(['media_title']).exec(),
         ])
-        res.json({
+        res.send({
             items: data,
             status_code: 0,
             status_msg: '',
         })
     } catch(err) {
-        res.json({
+        res.send({
             status_code: 1,
             status_msg: 'Error searching',
         })
     }
-})
+}
 
-router.get('/search-media/', session.isAuthenticated, async (req, res) => {
+exports.searchMedia = async (req, res) => {
     try {
         const searchRegex = new RegExp(req.query.search, 'i')
         const mimetypeRegex = new RegExp(req.query.mimetype, 'i')
@@ -54,25 +50,20 @@ router.get('/search-media/', session.isAuthenticated, async (req, res) => {
             'media_title': searchRegex,
             'media_mime_type': mimetypeRegex
         }).exec()
-        res.json({
+        res.send({
             items: data,
             status_code: 0,
             status_msg: '',
         })
     } catch(err) {
-        res.json({
+        res.send({
             status_code: 1,
             status_msg: 'Error searching',
         })
     }
-})
+}
 
-// end - search
-
-
-// start - users
-
-router.get('/users/:page', session.isAuthenticated, async (req, res) => {
+exports.getUsersPaged = async (req, res) => {
     try {
         let skipUsers = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
         let [totalUsers, users] = await Promise.all([
@@ -92,7 +83,7 @@ router.get('/users/:page', session.isAuthenticated, async (req, res) => {
             .skip(skipUsers)
             .limit(DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST).exec(),
         ])
-        res.json({
+        res.send({
             items: users,
             total_pages: Math.ceil(totalUsers/DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST),
             items_skipped: skipUsers,
@@ -101,14 +92,14 @@ router.get('/users/:page', session.isAuthenticated, async (req, res) => {
             status_msg: '',
         })
     } catch(err) {
-        res.json({
+        res.send({
             status_code: 1,
             status_msg: 'Error loading users',
         })
     }
-})
+}
 
-router.get('/user/:id', session.isAuthenticated, async (req, res) => {
+exports.getUserByID = async (req, res) => {
     try {
         let user = await modelUser.findById(req.params.id, [
             'user_first_name',
@@ -121,23 +112,23 @@ router.get('/user/:id', session.isAuthenticated, async (req, res) => {
             'user_thumbnail',
             'user_avatar',
         ])
-        res.json(user)
+        res.send(user)
     } catch(err) {
-        res.json({
+        res.send({
             status_code: 1,
             status_msg: 'User not found',
         })
     }
-})
+}
 
-router.post('/user/', session.isAuthenticated, async (req, res) => {
+exports.addNewUser = async (req, res) => {
     try {
         let newUser = new modelUser(req.body)
         newUser.user_registration_date = dateTime.create().format('Y-m-d H:M:S')
         let newPassword = await session.hashPassword(newUser.user_pass)
         newUser.user_pass = newPassword
         let user = await newUser.save()
-        res.json({
+        res.send({
             status_code: 0,
             status_msg: 'New user registered',
             data: {
@@ -148,14 +139,14 @@ router.post('/user/', session.isAuthenticated, async (req, res) => {
             data: user
         })
     } catch(err) {
-        res.json({
+        res.send({
             status_code: 1,
             status_msg: err.toString(),
         })
     }
-})
+}
 
-router.put('/user/:id', session.isAuthenticated, async (req, res, next) => {
+exports.updaterUserByID = async (req, res) => {
     if(req.body.user_pass === '') {
         try {
             delete req.body.user_pass
@@ -164,7 +155,7 @@ router.put('/user/:id', session.isAuthenticated, async (req, res, next) => {
             let message = 'User updated'
             if(sessionFinished)
                 message = 'User updated and session finished'
-            res.json({
+            res.send({
                 status_code: 0,
                 status_msg: message,
             })
@@ -173,7 +164,7 @@ router.put('/user/:id', session.isAuthenticated, async (req, res, next) => {
                 data: user
             })
         } catch(err) {
-            res.json({
+            res.send({
                 status_code: 1,
                 status_msg: 'It could not update the user',
             })
@@ -184,11 +175,11 @@ router.put('/user/:id', session.isAuthenticated, async (req, res, next) => {
             req.body.user_pass = newPassword
             let user = await modelUser.findOneAndUpdate({'_id': req.params.id}, req.body, {new: true})
             let sessionFinished = await session.currentUserSessionDataChanged(user, req)
-            session.removeUserSession(user._id)
+            session.removeUserSessionOnDB(user._id)
             let message = 'User updated'
             if(sessionFinished)
                 message = 'User updated and session finished'
-            res.json({
+            res.send({
                 status_code: 0,
                 status_msg: message,
             })
@@ -197,19 +188,19 @@ router.put('/user/:id', session.isAuthenticated, async (req, res, next) => {
                 data: user
             })
         } catch(err) {
-            res.json({
+            res.send({
                 status_code: 1,
                 status_msg: 'It could not update the user',
             })
         }
     }
-})
+}
 
-router.delete('/user/:id', session.isAuthenticated, async (req, res, next) => {
+exports.deleteUserByID = async (req, res) => {
     try {
         let user = await modelUser.findByIdAndRemove(req.params.id)
-        session.removeUserSession(user._id)
-        res.json({
+        session.removeUserSessionOnDB(user._id)
+        res.send({
             status_code: 0,
             status_msg: 'User deleted',
         })
@@ -217,31 +208,26 @@ router.delete('/user/:id', session.isAuthenticated, async (req, res, next) => {
             data: user
         })
     } catch(err) {
-        res.json({
+        res.send({
             status_code: 1,
             status_msg: 'Error at delete user',
         })
     }
-})
+}
 
-// end - users
-
-
-// start - posts
-
-router.get('/post/:id', session.isAuthenticated, async (req, res) => {
+exports.getPostByID = async (req, res) => {
     try {
         let post = await modelPost.findById(req.params.id)
-        res.json(post)
+        res.send(post)
     } catch(err) {
-        res.json({
+        res.send({
             status_code: 1,
             status_msg: 'Post not found',
         })
     }
-})
+}
 
-router.post('/post/', session.isAuthenticated, async (req, res) => {
+exports.addNewPost = async (req, res) => {
     try {
         let newPost = new modelPost(req.body)
         let newPostSlug = slugify(req.body.post_title, {lower: true})
@@ -249,7 +235,7 @@ router.post('/post/', session.isAuthenticated, async (req, res) => {
         newPost.post_date = dateTime.create().format('Y-m-d H:M:S')
         newPost.post_slug = slug
         let post = await newPost.save()
-        res.json({
+        res.send({
             status_code: 0,
             status_msg: 'New post registered',
             data: {
@@ -260,14 +246,14 @@ router.post('/post/', session.isAuthenticated, async (req, res) => {
             data: post
         })
     } catch(err) {
-        res.json({
+        res.send({
             status_code: 1,
             status_msg: 'Error at create post',
         })
     }
-})
+}
 
-router.get('/posts/:page', session.isAuthenticated, async (req, res) => {
+exports.getPostsByPage = async (req, res) => {
     try {
         let skipPosts = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
         let [totalItems, items] = await Promise.all([
@@ -278,7 +264,7 @@ router.get('/posts/:page', session.isAuthenticated, async (req, res) => {
             .sort({'post_date': 'desc'})
             .exec()
         ])
-        res.json({
+        res.send({
             items: items,
             total_pages: Math.ceil(totalItems/DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST),
             items_skipped: skipPosts,
@@ -287,14 +273,14 @@ router.get('/posts/:page', session.isAuthenticated, async (req, res) => {
             status_msg: '',
         })
     } catch(err) {
-        res.json({
+        res.send({
             status_code: 1,
             status_msg: 'Error loading the posts',
         })
     }
-})
+}
 
-router.put('/post/:id', session.isAuthenticated, async (req, res, next) => {
+exports.updatePostByID = async (req, res) => {
     try {
         let post = await modelPost.findById(req.params.id)
         post.post_content = req.body.post_content
@@ -303,7 +289,7 @@ router.put('/post/:id', session.isAuthenticated, async (req, res, next) => {
         if(post.post_title === req.body.post_title) {
             post.post_title = req.body.post_title
             let postSaved = await post.save()
-            res.json({
+            res.send({
                 status_code: 0,
                 status_msg: 'Post updated',
             })
@@ -316,7 +302,7 @@ router.put('/post/:id', session.isAuthenticated, async (req, res, next) => {
             post.post_title = req.body.post_title
             post.post_slug = slug
             let postSaved = await post.save()
-            res.json({
+            res.send({
                 status_code: 0,
                 status_msg: 'Post updated',
             })
@@ -325,17 +311,17 @@ router.put('/post/:id', session.isAuthenticated, async (req, res, next) => {
             })
         }
     } catch(err) {
-        res.json({
+        res.send({
             status_code: 1,
             status_msg: 'It was not updated',
         })
     }
-})
+}
 
-router.delete('/post/:id', session.isAuthenticated, async (req, res, next) => {
+exports.deletePostByID = async (req, res) => {
     try {
         let post = await modelPost.findByIdAndRemove(req.params.id)
-        res.json({
+        res.send({
             status_code: 0,
             status_msg: 'Post deleted',
         })
@@ -343,31 +329,26 @@ router.delete('/post/:id', session.isAuthenticated, async (req, res, next) => {
             data: post
         })
     } catch(err) {
-        res.json({
+        res.send({
             status_code: 1,
             status_msg: 'Error at delete post',
         })
     }
-})
+}
 
-// end - posts
-
-
-// start - pages
-
-router.get('/page/:id', session.isAuthenticated, async (req, res) => {
+exports.getPageByID = async (req, res) => {
     try {
         let page = await modelPage.findById(req.params.id)
-        res.json(page)
+        res.send(page)
     } catch(err) {
-        res.json({
+        res.send({
             status_code: 1,
             status_msg: 'Page not found',
         })
     }
-})
+}
 
-router.post('/page/', session.isAuthenticated, async (req, res) => {
+exports.addNewPage = async (req, res) => {
     try {
         let newPost = new modelPage(req.body)
         let newPostSlug = slugify(req.body.page_title, {lower: true})
@@ -375,7 +356,7 @@ router.post('/page/', session.isAuthenticated, async (req, res) => {
         newPost.page_date = dateTime.create().format('Y-m-d H:M:S')
         newPost.page_slug = slug
         let page = await newPost.save()
-        res.json({
+        res.send({
             status_code: 0,
             status_msg: 'New page registered',
             data: {
@@ -386,14 +367,14 @@ router.post('/page/', session.isAuthenticated, async (req, res) => {
             data: page
         })
     } catch(err) {
-        res.json({
+        res.send({
             status_code: 1,
             status_msg: 'Error at create page',
         })
     }
-})
+}
 
-router.get('/pages/:page', session.isAuthenticated, async (req, res) => {
+exports.getPagesByPage = async (req, res) => {
     try {
         let skipPosts = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
         let [totalItems, items] = await Promise.all([
@@ -404,7 +385,7 @@ router.get('/pages/:page', session.isAuthenticated, async (req, res) => {
             .sort({'page_date': 'desc'})
             .exec()
         ])
-        res.json({
+        res.send({
             items: items,
             total_pages: Math.ceil(totalItems/DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST),
             items_skipped: skipPosts,
@@ -413,14 +394,14 @@ router.get('/pages/:page', session.isAuthenticated, async (req, res) => {
             status_msg: '',
         })
     } catch(err) {
-        res.json({
+        res.send({
             status_code: 1,
             status_msg: 'Error loading the pages',
         })
     }
-})
+}
 
-router.put('/page/:id', session.isAuthenticated, async (req, res, next) => {
+exports.updatePageByID = async (req, res) => {
     try {
         let page = await modelPage.findById(req.params.id)
         page.page_content = req.body.page_content
@@ -429,7 +410,7 @@ router.put('/page/:id', session.isAuthenticated, async (req, res, next) => {
         if(page.page_title === req.body.page_title) {
             page.page_title = req.body.page_title
             let pageSaved = await page.save()
-            res.json({
+            res.send({
                 status_code: 0,
                 status_msg: 'Post updated',
             })
@@ -442,7 +423,7 @@ router.put('/page/:id', session.isAuthenticated, async (req, res, next) => {
             page.page_title = req.body.page_title
             page.page_slug = slug
             let pageSaved = await page.save()
-            res.json({
+            res.send({
                 status_code: 0,
                 status_msg: 'Post updated',
             })
@@ -451,17 +432,17 @@ router.put('/page/:id', session.isAuthenticated, async (req, res, next) => {
             })
         }
     } catch(err) {
-        res.json({
+        res.send({
             status_code: 1,
             status_msg: 'It was not updated',
         })
     }
-})
+}
 
-router.delete('/page/:id', session.isAuthenticated, async (req, res, next) => {
+exports.deletePageByID = async (req, res) => {
     try {
         let page = await modelPage.findByIdAndRemove(req.params.id)
-        res.json({
+        res.send({
             status_code: 0,
             status_msg: 'Post deleted',
         })
@@ -469,33 +450,28 @@ router.delete('/page/:id', session.isAuthenticated, async (req, res, next) => {
             data: page
         })
     } catch(err) {
-        res.json({
+        res.send({
             status_code: 1,
             status_msg: 'Error at delete page',
         })
     }
-})
+}
 
-// end - pages
-
-
-// start - media
-
-router.get('/media-file/:id', session.isAuthenticated, async (req, res) => {
+exports.getMediaByID = async (req, res) => {
     try {
         let media = await modelMedia.findById(req.params.id)
         if(!media)
             throw new Error('Media not found')
-        res.json(media)
+        res.send(media)
     } catch(err) {
-        res.json({
+        res.send({
             status_code: 1,
             status_msg: 'Media not found',
         })
     }
-})
+}
 
-router.post('/media-file/', session.isAuthenticated, async (req, res) => {
+exports.addNewMedia = async (req, res) => {
     try {
         let resultUpload = await mediaUpload(req, res)
         if(!resultUpload.fileData)
@@ -510,7 +486,7 @@ router.post('/media-file/', session.isAuthenticated, async (req, res) => {
             media_date: dateTime.create().format('Y-m-d H:M:S'),
         })
         let media = await newMedia.save()
-        res.json({
+        res.send({
             status_code: 0,
             status_msg: 'New media added',
             data: {
@@ -521,14 +497,14 @@ router.post('/media-file/', session.isAuthenticated, async (req, res) => {
             data: media
         })
     } catch(err) {
-        res.json({
+        res.send({
             status_code: 1,
             status_msg: 'Error at upload media',
         })
     }
-})
+}
 
-router.get('/media-files/:page', session.isAuthenticated, async (req, res) => {
+exports.getMediaByPage = async (req, res) => {
     try {
         let skipPosts = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
         let totalItems = await modelMedia.countDocuments()
@@ -537,7 +513,7 @@ router.get('/media-files/:page', session.isAuthenticated, async (req, res) => {
             .limit(DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST)
             .sort({'media_date': 'desc'})
             .exec()
-        res.json({
+        res.send({
             items: items,
             total_pages: Math.ceil(totalItems/DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST),
             items_skipped: skipPosts,
@@ -546,14 +522,14 @@ router.get('/media-files/:page', session.isAuthenticated, async (req, res) => {
             status_msg: '',
         })
     } catch(err) {
-        res.json({
+        res.send({
             status_code: 1,
             status_msg: 'Error loading the media',
         })
     }
-})
+}
 
-router.put('/media-file/:id', session.isAuthenticated, async (req, res, next) => {
+exports.updateMediaByID = async (req, res) => {
     try {
         let media = await modelMedia.findById(req.params.id)
         media.media_content = req.body.media_content
@@ -561,7 +537,7 @@ router.put('/media-file/:id', session.isAuthenticated, async (req, res, next) =>
         if(media.media_title === req.body.media_title) {
             media.media_title = req.body.media_title
             let resMedia = await media.save()
-            res.json({
+            res.send({
                 status_code: 0,
                 status_msg: 'Post updated',
             })
@@ -574,7 +550,7 @@ router.put('/media-file/:id', session.isAuthenticated, async (req, res, next) =>
             media.media_title = req.body.media_title
             media.media_slug = slug
             let resMedia = await media.save()
-            res.json({
+            res.send({
                 status_code: 0,
                 status_msg: 'Post updated',
             })
@@ -583,17 +559,17 @@ router.put('/media-file/:id', session.isAuthenticated, async (req, res, next) =>
             })
         }
     } catch(err) {
-        res.json({
+        res.send({
             status_code: 1,
             status_msg: 'It was not updated',
         })
     }
-})
+}
 
-router.delete('/media-file/:id', session.isAuthenticated, async (req, res, next) => {
+exports.deleteMediaByID = async (req, res) => {
     try {
         let media = await modelMedia.findByIdAndRemove(req.params.id)
-        res.json({
+        res.send({
             status_code: 0,
             status_msg: 'Media deleted',
         })
@@ -601,36 +577,31 @@ router.delete('/media-file/:id', session.isAuthenticated, async (req, res, next)
             data: media
         })
     } catch(err) {
-        res.json({
+        res.send({
             status_code: 1,
             status_msg: 'Error at delete media',
         })
     }
-})
+}
 
-// end - media
-
-
-// start - setting
-
-router.get('/setting/', session.isAuthenticated, async (req, res) => {
+exports.getSettings = async (req, res) => {
     try {
         let settings = await modelSetting.findOne()
-        res.json(settings)
+        res.send(settings)
     } catch(err) {
-        res.json({
+        res.send({
             status_code: 1,
             status_msg: 'Settings not found',
         })
     }
-})
+}
 
-router.put('/setting/', session.isAuthenticated, async (req, res) => {
+exports.updateSettings = async (req, res) => {
     if(req.body)
         try {
             let settings = await modelSetting.findOneAndUpdate({'_id': req.body.id}, req.body, {new: true})
             DASHBOARD_ADMIN_CONFIG.loadDashboardSettings()
-            res.json({
+            res.send({
                 status_code: 0,
                 status_msg: 'Settings updated',
             })
@@ -638,36 +609,31 @@ router.put('/setting/', session.isAuthenticated, async (req, res) => {
                 data: settings
             })
         } catch(err) {
-            res.json({
+            res.send({
                 status_code: 1,
                 status_msg: 'It could not update the settings',
             })
         }
-})
+}
 
-// end - setting
-
-
-// start - site
-
-router.get('/site/', session.isAuthenticated, async (req, res) => {
+exports.getSiteSettings = async (req, res) => {
     try {
         let siteSettings = await modelSite.findOne()
-        res.json(siteSettings)
+        res.send(siteSettings)
     } catch(err) {
-        res.json({
+        res.send({
             status_code: 1,
             status_msg: 'Site settings not found',
         })
     }
-})
+}
 
-router.put('/site/', session.isAuthenticated, async (req, res) => {
+exports.updateSiteSettings = async (req, res) => {
     if(req.body)
         try {
             let siteSettings = await modelSite.findOneAndUpdate({'_id': req.body.id}, req.body, {new: true})
             SITE_CONFIG.loadSiteSettings()
-            res.json({
+            res.send({
                 status_code: 0,
                 status_msg: 'Settings updated',
             })
@@ -675,19 +641,14 @@ router.put('/site/', session.isAuthenticated, async (req, res) => {
                 data: siteSettings
             })
         } catch(err) {
-            res.json({
+            res.send({
                 status_code: 1,
                 status_msg: 'It could not update the site settings',
             })
         }
-})
+}
 
-// end - site
-
-
-// start - dashboard
-
-router.get('/dashboard/', session.isAuthenticated, async (req, res) => {
+exports.getDashboard = async (req, res) => {
     try {
         let data = await Promise.all([
             modelUser.countDocuments(),
@@ -710,7 +671,7 @@ router.get('/dashboard/', session.isAuthenticated, async (req, res) => {
             modelPage.find().sort({'page_date': 'desc'}).limit(3),
             modelMedia.find().sort({'media_date': 'desc'}).limit(3),
         ])
-        res.json({
+        res.send({
             items: [
                 {
                     model: 'user',
@@ -737,14 +698,9 @@ router.get('/dashboard/', session.isAuthenticated, async (req, res) => {
             status_msg: '',
         })
     } catch(err) {
-        res.json({
+        res.send({
             status_code: 1,
             status_msg: 'Error loading Dashboard Info',
         })
     }
-})
-
-// end - dashboard
-
-
-module.exports = router
+}

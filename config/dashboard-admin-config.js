@@ -1,7 +1,7 @@
 const path = require('path')
 
 const APP_GLOBAL = require('../config/global.js')
-const modelSetting = require(path.join(APP_GLOBAL.appServerPath, '../models/setting'))
+const modelSetting = require('../website/model/setting')
 
 
 const loadDashboardSettings = async () => {

@@ -5,7 +5,7 @@
             v-click-outside='closeMenu'>
             <img
                 class="logo"
-                src="/assets/reactive-cms-logo.png">
+                src="/website/assets/reactive-cms-logo.png">
             <router-link
                 v-for="(option) in options"
                 v-bind:key="option.position"

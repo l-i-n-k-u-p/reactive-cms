@@ -4,7 +4,7 @@
         <div class="content-wrapper">
             <img
                 class="logo"
-                src="/assets/reactive-cms-logo.png">
+                src="/website/assets/reactive-cms-logo.png">
         </div>
     </div>
 </template>
