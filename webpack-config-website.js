@@ -2,10 +2,10 @@ const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = {
-    entry: './website/admin-app/main.js',
+    entry: './website/dashboard-app/main.js',
     output: {
         path: path.join(__dirname, 'website/static/js'),
-        filename: 'admin-app-bundle.js'
+        filename: 'dashboard-app-bundle.js'
     },
     module: {
         rules: [

@@ -5,19 +5,20 @@ const slugify = require('slugify')
 const APP_GLOBAL = require('../../config/global')
 const DASHBOARD_ADMIN_CONFIG = require('../../config/dashboard-admin-config')
 const SITE_CONFIG = require('../../config/site-config')
+const { pushMessage } = require('../../lib/push-message')
+const { mediaUpload } = require('../../lib/media-upload')
+const session = require('../../lib/session')
+const {
+    generatePostSlug,
+    generatePageSlug,
+} = require('../lib/lib')
+
 const modelUser = require(path.join('../model/user'))
 const modelPost = require(path.join('../model/post'))
 const modelPage = require(path.join('../model/page'))
 const modelMedia = require(path.join('../model/media'))
 const modelSetting = require(path.join('../model/setting'))
 const modelSite = require(path.join('../model/site'))
-const session = require('../../lib/session')
-const {
-    generatePostSlug,
-    generatePageSlug,
-} = require('../lib/lib')
-const { pushMessage } = require('../../lib/push-message')
-const { mediaUpload } = require('../../lib/media-upload')
 
 
 exports.search = async (req, res) => {

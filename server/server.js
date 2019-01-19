@@ -1,4 +1,3 @@
-const mongodb = require('../db/mongodb')
 const path = require('path')
 const fastify = require('fastify')({logger: false})
 const pointOfView = require('point-of-view')
@@ -8,16 +7,15 @@ const fastifyCookie = require('fastify-cookie')
 const fastifyCaching = require('fastify-caching')
 const fastifyServerSession = require('fastify-server-session')
 const fastifyCors = require('fastify-cors')
-const resolve = require('path').resolve
-const ejs = require('ejs')
 const fastifyMultipart = require('fastify-multipart')
-
+const ejs = require('ejs')
 
 const APP_CONFIG = require('../config/config')
-const APP_GLOBAL = require('../config/global')
+// const APP_GLOBAL = require('../config/global')
+const mongodb = require('../db/mongodb')
+const directory = require('../lib/directory')
 const websiteRouter = require('../website/router/website-router')
 const websiteDashboardAPIRouter = require('../website/router/website-dashboard-api-router')
-const directory = require('../lib/directory')
 
 
 // create static directory for uploads
@@ -53,7 +51,7 @@ fastify.register(pointOfView, {
         ejs: ejs,
     },
     options: {
-        filename: resolve('website/view'),
+        filename: path.resolve('website/view'),
     },
     templates: 'website/view',
     includeViewExtension: true,
@@ -92,7 +90,7 @@ fastify.listen(APP_CONFIG.port, '0.0.0.0', (err, address) => {
         fastify.log.error(err)
         process.exit(1)
     }
-    fastify.log.info('server listening on port: ',address)
+    fastify.log.info('Server listening on port: ',address)
 })
 
 // TODO: finish session stored

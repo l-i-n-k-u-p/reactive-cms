@@ -1,5 +1,7 @@
 const path = require('path')
+
 const APP_GLOBAL = require('../../config/global')
+
 const modelPost = require('../model/post')
 const modelPage = require('../model/page')
 

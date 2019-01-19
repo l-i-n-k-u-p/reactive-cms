@@ -1,6 +1,7 @@
+const mongoose = require('mongoose')
+
 const APP_CONFIG = require('../config/config')
 const APP_GLOBAL = require('../config/global')
-const mongoose = require('mongoose')
 
 
 const connect = async () => {

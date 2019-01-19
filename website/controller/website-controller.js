@@ -5,7 +5,6 @@ const APP_GLOBAL = require('../../config/global')
 const DASHBOARD_ADMIN_CONFIG = require('../../config/dashboard-admin-config')
 const SITE_CONFIG = require('../../config/site-config')
 const session = require('../../lib/session')
-const routerException = require('../../lib/router-exception')
 
 const modelPost = require(path.join('../model/post'))
 const modelPage = require(path.join('../model/page'))
