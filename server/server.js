@@ -82,7 +82,7 @@ fastify.register(fastifyMultipart)
 fastify.register(websiteRouter)
 
 // router website dashboard api
-fastify.register(websiteDashboardAPIRouter, { prefix: '/dashboard/api' })
+fastify.register(websiteDashboardAPIRouter, { prefix: '/dashboard/api/v1/' })
 
 // listener
 fastify.listen(APP_CONFIG.port, '0.0.0.0', (err, address) => {

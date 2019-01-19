@@ -20,7 +20,7 @@ body {
 
 .wrapper:before {
     content: "";
-    background-color: #0088d4;
+    background-color: #006dad;
     width: 100%;
     height: 160px;
     position: absolute;
@@ -88,7 +88,7 @@ h2 {
 .input-text input {
     border: none;
     outline: none;
-    caret-color: #0088d4;
+    caret-color: #006dad;
     width: 100%;
     padding: 10px;
     font-size: 14px;

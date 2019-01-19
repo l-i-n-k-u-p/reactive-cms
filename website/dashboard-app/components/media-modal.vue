@@ -281,7 +281,7 @@ export default {
             })
         },
         createMedia: function() {
-            this.axios.post(this.$appBaseURL + '/api/media-file/', this.formData, {headers: {'Content-Type': 'multipart/form-data'}})
+            this.axios.post(this.$appBaseURL + '/api/v1/media-file/', this.formData, {headers: {'Content-Type': 'multipart/form-data'}})
             .then(data => {
                 this.activeTab = 0
                 this.resetLibraryData()

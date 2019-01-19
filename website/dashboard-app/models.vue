@@ -2,7 +2,7 @@
 import {Model, Collection} from 'vue-mc'
 
 
-const appApiBaseURL = '/dashboard/api'
+const appApiBaseURL = '/dashboard/api/v1'
 
 Pusher.logToConsole = true
 const pusher = new Pusher('c6e6a7cab15691ed1fab', {
