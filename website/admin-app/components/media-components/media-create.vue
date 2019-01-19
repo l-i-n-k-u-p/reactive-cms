@@ -97,7 +97,7 @@ export default {
         },
         createMedia: function() {
             this.formData.append('media_title', this.mediaTitle)
-            this.axios.post('/admin-website/api/media-file/', this.formData, {headers: {'Content-Type': 'multipart/form-data'}})
+            this.axios.post(this.$appBaseURL + '/api/media-file/', this.formData, {headers: {'Content-Type': 'multipart/form-data'}})
             .then(data => {
                 this.$router.replace({ name: 'media-detail', params: { id: data.data.data.id }})
                 this.$eventHub.$emit('dashboard-app-success', data.data.status_msg)

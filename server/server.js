@@ -1,6 +1,6 @@
 const mongodb = require('../db/mongodb')
 const path = require('path')
-const fastify = require('fastify')({logger: true})
+const fastify = require('fastify')({logger: false})
 const pointOfView = require('point-of-view')
 const fastifyStatic = require('fastify-static')
 const fastifyFormBody = require('fastify-formbody')
@@ -10,6 +10,8 @@ const fastifyServerSession = require('fastify-server-session')
 const fastifyCors = require('fastify-cors')
 const resolve = require('path').resolve
 const ejs = require('ejs')
+const fastifyMultipart = require('fastify-multipart')
+
 
 const APP_CONFIG = require('../config/config')
 const APP_GLOBAL = require('../config/global')
@@ -74,6 +76,9 @@ fastify.register((instance, opts, next) => {
     })
     next()
 })
+
+// multipart data for upload files
+fastify.register(fastifyMultipart)
 
 // router website
 fastify.register(websiteRouter)

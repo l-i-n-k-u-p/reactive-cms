@@ -477,10 +477,10 @@ exports.addNewMedia = async (req, res) => {
         if(!resultUpload.fileData)
             throw new Error('Error at upload file')
         let newMedia = new modelMedia({
-            media_original_name: resultUpload.fileData.originalname,
-            media_name: resultUpload.fileData.filename,
+            media_original_name: resultUpload.fileData.originalName,
+            media_name: resultUpload.fileData.fileName,
             media_title: resultUpload.postData.media_title,
-            media_mime_type: resultUpload.fileData.mimetype,
+            media_mime_type: resultUpload.fileData.mimeType,
             media_size: resultUpload.fileData.size,
             media_path: resultUpload.fileData.path,
             media_date: dateTime.create().format('Y-m-d H:M:S'),

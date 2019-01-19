@@ -508,7 +508,7 @@ class Media extends Model {
     }
 
     getMediaURL() {
-        return '/uploads/'+this.get('media_name')
+        return '/public/uploads/'+this.get('media_name')
     }
 }
 

@@ -1,6 +1,6 @@
 const path = require('path')
 
-const APP_GLOBAL = require('../config/global.js')
+const APP_GLOBAL = require('../config/global')
 const modelSetting = require('../website/model/setting')
 
 

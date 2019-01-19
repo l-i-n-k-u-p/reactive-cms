@@ -1,8 +1,8 @@
 const path = require('path')
 const dateTime = require('node-datetime')
 
-const APP_GLOBAL = require('../../config/global.js')
-const DASHBOARD_ADMIN_CONFIG = require('../../config/dashboard-admin-config.js')
+const APP_GLOBAL = require('../../config/global')
+const DASHBOARD_ADMIN_CONFIG = require('../../config/dashboard-admin-config')
 const SITE_CONFIG = require('../../config/site-config')
 const session = require('../../lib/session')
 const routerException = require('../../lib/router-exception')
@@ -160,7 +160,7 @@ exports.websitePageView = async (req, res) => {
             'page_slug': pageSlug,
         })
         if(!page) {
-            res.status(404).view('404', {
+            res.code(404).view('404', {
                 title: SITE_CONFIG.siteTitle,
                 status: 'Page not found',
                 error_message: 'Route: '+req.url+' Not found.',
@@ -172,7 +172,7 @@ exports.websitePageView = async (req, res) => {
             page: page,
         })
     } catch(err) {
-        res.status(500).view('500', {
+        res.code(500).view('500', {
             title: SITE_CONFIG.siteTitle,
             status: 'Server error!',
             error_message: 'Route: '+req.url+' Not found.',
@@ -193,7 +193,7 @@ exports.websiteBlogArchivePaginatedView = async (req, res) => {
             modelPost.find().skip(skipPosts).limit(SITE_CONFIG.siteItemsPeerPage).exec()
         ])
         if(!items.length) {
-            res.status(404).view('404', {
+            res.code(404).view('404', {
                 title: SITE_CONFIG.siteTitle,
                 status: 'Page not found',
                 error_message: 'Route: '+req.url+' Not found.',
@@ -211,7 +211,7 @@ exports.websiteBlogArchivePaginatedView = async (req, res) => {
             pagination_items: 2,
         })
     } catch(err) {
-        res.status(500).view('500', {
+        res.code(500).view('500', {
             title: SITE_CONFIG.siteTitle,
             status: 'Server error!',
             error_message: 'Route: '+req.url+' Not found.',
@@ -224,7 +224,7 @@ exports.websiteBlogSingleView = async (req, res) => {
     try {
         let post = await modelPost.findOne({'post_slug': postSlug})
         if(!post) {
-            res.status(404).view('404', {
+            res.code(404).view('404', {
                 title: SITE_CONFIG.siteTitle,
                 status: 'Error 404',
                 error_message: 'Page not found',
@@ -236,7 +236,7 @@ exports.websiteBlogSingleView = async (req, res) => {
             post: post,
         })
     } catch(err) {
-        res.status(500).view('500', {
+        res.code(500).view('500', {
             title: SITE_CONFIG.siteTitle,
             status: 'Server error!',
             error_message: 'Route: '+req.url+' Not found.',
