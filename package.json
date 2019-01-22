@@ -32,6 +32,7 @@
     "fastify-multipart": "^0.6.0",
     "fastify-server-session": "^2.0.0",
     "fastify-static": "^1.1.0",
+    "fastify-url-data": "^2.2.0",
     "fs": "0.0.1-security",
     "mongoose": "^5.3.10",
     "node-datetime": "^2.1.2",

@@ -8,6 +8,7 @@ const fastifyCaching = require('fastify-caching')
 const fastifyServerSession = require('fastify-server-session')
 const fastifyCors = require('fastify-cors')
 const fastifyMultipart = require('fastify-multipart')
+const fastifyURLData = require('fastify-url-data')
 const ejs = require('ejs')
 
 const APP_CONFIG = require('../config/config')
@@ -77,6 +78,9 @@ fastify.register((instance, opts, next) => {
 
 // multipart data for upload files
 fastify.register(fastifyMultipart)
+
+// support for getting raw URL information from the request
+fastify.register(fastifyURLData)
 
 // router website
 fastify.register(websiteRouter)
