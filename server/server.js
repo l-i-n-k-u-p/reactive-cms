@@ -12,6 +12,7 @@ const fastifyURLData = require('fastify-url-data')
 const ejs = require('ejs')
 
 const APP_CONFIG = require('../config/config')
+const SITE_CONFIG = require('../config/site-config')
 // const APP_GLOBAL = require('../config/global')
 const mongodb = require('../db/mongodb')
 const directory = require('../lib/directory')
@@ -87,6 +88,27 @@ fastify.register(websiteRouter)
 
 // router website dashboard api
 fastify.register(websiteDashboardAPIRouter, { prefix: '/dashboard/api/v1/' })
+
+// 500 global handler
+fastify.setErrorHandler((err, req, res) => {
+    req.log.warn(err)
+    let statusCode = err.statusCode >= 400 ? err.statusCode : 500
+    res.code(statusCode).view('500', {
+        title: SITE_CONFIG.siteTitle,
+        status: 'Server error!',
+        error_message: statusCode >= 500 ? 'Internal server error' : error.message,
+    })
+})
+
+// 404 global handler
+fastify.setNotFoundHandler((req, res) => {
+    const urlData = req.urlData()
+    res.code(404).view('404', {
+        title: SITE_CONFIG.siteTitle,
+        status: 'Page not found',
+        error_message: 'Route: '+urlData.path+' Not found.',
+    })
+})
 
 // listener
 fastify.listen(APP_CONFIG.port, '0.0.0.0', (err, address) => {

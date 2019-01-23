@@ -159,10 +159,11 @@ exports.websitePageView = async (req, res) => {
             'page_slug': pageSlug,
         })
         if(!page) {
+            const urlData = req.urlData()
             res.code(404).view('404', {
                 title: SITE_CONFIG.siteTitle,
                 status: 'Page not found',
-                error_message: 'Route: '+req.url+' Not found.',
+                error_message: 'Route: '+urlData.path+' Not found.',
             })
             return
         }
@@ -171,10 +172,12 @@ exports.websitePageView = async (req, res) => {
             page: page,
         })
     } catch(err) {
-        res.code(500).view('500', {
+        req.log.warn(err)
+        let statusCode = err.statusCode >= 400 ? err.statusCode : 500
+        res.code(statusCode).view('500', {
             title: SITE_CONFIG.siteTitle,
             status: 'Server error!',
-            error_message: 'Route: '+req.url+' Not found.',
+            error_message: statusCode >= 500 ? 'Internal server error' : error.message,
         })
     }
 }
@@ -192,10 +195,11 @@ exports.websiteBlogArchivePaginatedView = async (req, res) => {
             modelPost.find().skip(skipPosts).limit(SITE_CONFIG.siteItemsPeerPage).exec()
         ])
         if(!items.length) {
+            const urlData = req.urlData()
             res.code(404).view('404', {
                 title: SITE_CONFIG.siteTitle,
                 status: 'Page not found',
-                error_message: 'Route: '+req.url+' Not found.',
+                error_message: 'Route: '+urlData.path+' Not found.',
             })
             return
         }
@@ -210,10 +214,12 @@ exports.websiteBlogArchivePaginatedView = async (req, res) => {
             pagination_items: 2,
         })
     } catch(err) {
-        res.code(500).view('500', {
+        req.log.warn(err)
+        let statusCode = err.statusCode >= 400 ? err.statusCode : 500
+        res.code(statusCode).view('500', {
             title: SITE_CONFIG.siteTitle,
             status: 'Server error!',
-            error_message: 'Route: '+req.url+' Not found.',
+            error_message: statusCode >= 500 ? 'Internal server error' : error.message,
         })
     }
 }
@@ -223,10 +229,11 @@ exports.websiteBlogSingleView = async (req, res) => {
     try {
         let post = await modelPost.findOne({'post_slug': postSlug})
         if(!post) {
+            const urlData = req.urlData()
             res.code(404).view('404', {
                 title: SITE_CONFIG.siteTitle,
-                status: 'Error 404',
-                error_message: 'Page not found',
+                status: 'Page not found',
+                error_message: 'Route: '+urlData.path+' Not found.',
             })
             return
         }
@@ -235,10 +242,12 @@ exports.websiteBlogSingleView = async (req, res) => {
             post: post,
         })
     } catch(err) {
-        res.code(500).view('500', {
+        req.log.warn(err)
+        let statusCode = err.statusCode >= 400 ? err.statusCode : 500
+        res.code(statusCode).view('500', {
             title: SITE_CONFIG.siteTitle,
             status: 'Server error!',
-            error_message: 'Route: '+req.url+' Not found.',
+            error_message: statusCode >= 500 ? 'Internal server error' : error.message,
         })
     }
 }
