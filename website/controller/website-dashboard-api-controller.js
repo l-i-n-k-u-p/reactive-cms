@@ -21,6 +21,44 @@ const modelSetting = require(path.join('../model/setting'))
 const modelSite = require(path.join('../model/site'))
 
 
+
+exports.login = async (req, res) => {
+    const user_name = req.body.user_name
+    const user_pass = req.body.user_pass
+    try {
+        let user = await modelUser.findOne({
+            'user_name': user_name,
+        })
+        if(!user) {
+            throw new Error('Not valid user')
+            return
+        }
+        let result = await session.passwordIsEqual(user_pass, user.user_pass)
+        if(!result) {
+            throw new Error('Not valid user')
+            return
+        }
+        req.session.user = {
+            user_id: user.id.toString(),
+            user_name: user.user_name,
+            user_email: user.user_email,
+            user_pass: user.user_pass,
+            user_type: user.user_type,
+        }
+        // TODO: finish session stored
+        // session.saveSessionOnDB(req.cookies.sessionid, req.session.user)
+        if(user.user_type === 'admin')
+            res.send({
+                user_id: user.id.toString(),
+            })
+        throw new Error('Not valid user')
+    } catch(err) {
+        res.send({
+            error_message: err.toString(),
+        })
+    }
+}
+
 exports.search = async (req, res) => {
     try {
         const searchRegex = new RegExp(req.query.search, 'i')

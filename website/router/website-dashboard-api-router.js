@@ -5,6 +5,11 @@ const websiteDashboardAPIController = require('../controller/website-dashboard-a
 // NOTE: add {beforeHandler:} for auth route in each necessary route
 let routes = [
     {
+        method: 'POST',
+        url: '/login/',
+        handler: websiteDashboardAPIController.login,
+    },
+    {
         method: 'GET',
         url: '/search*',
         beforeHandler: session.isAuthenticated,

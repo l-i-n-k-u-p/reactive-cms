@@ -8,6 +8,9 @@
                 v-show="showSplashScreen"
                 />
         </transition>
+        <Login
+            v-show="showLogin">
+        </Login>
         <Header
             v-on:dashboard-toggle-menu="menuIsOpen"
             v-bind:scrollTop="scrollTop"
@@ -54,6 +57,7 @@ import RibbonError from './components/templates/ribbon-error.vue'
 import RibbonSuccess from './components/templates/ribbon-success.vue'
 import Menu from './components/menu.vue'
 import SplashScreen from './splash-screen.vue'
+import Login from './components/login.vue'
 
 export default {
     components: {
@@ -62,6 +66,7 @@ export default {
         RibbonError,
         RibbonSuccess,
         SplashScreen,
+        Login,
     },
     data: function() {
         return {
@@ -72,17 +77,20 @@ export default {
             appSuccessMessage: '',
             scrollTop: 0,
             showSplashScreen: true,
+            showLogin: false,
+            ribbonTimeOut: 5000,
         }
     },
     watch: {
         appErrorMessage: function(newVal, oldVal) {
-            setTimeout(this.hideRibbonErrorNotification, 4000)
+            setTimeout(this.hideRibbonErrorNotification, this.ribbonTimeOut)
         },
         appSuccessMessage: function(newVal, oldVal) {
-            setTimeout(this.hideRibbonSuccessNotification, 4000)
+            setTimeout(this.hideRibbonSuccessNotification, this.ribbonTimeOut)
         },
     },
     created() {
+        this.initAxiosListenEvent()
         this.$eventHub.$on('dashboard-app-page-title', (title) => {
             if(title)
                 this.pageTitle = ' - '+title
@@ -94,6 +102,9 @@ export default {
         })
         this.$eventHub.$on('dashboard-app-success', (successMessage) => {
             this.appSuccessMessage = successMessage
+        })
+        this.$eventHub.$on('dashboard-hide-login', () => {
+            this.showLogin = false
         })
         this.$eventHub.$on('dashboard-app-toggle-menu', () => {
             if(this.menuIsOpen === true) {
@@ -107,6 +118,19 @@ export default {
         setTimeout(this.hideSplashScreen, 1000)
     },
     methods: {
+        initAxiosListenEvent: function() {
+            this.axios.interceptors.response.use(
+                response => {
+                    let statusCode = response.data.status_code
+                    if(statusCode === 3)
+                        this.showLogin = true
+                    return response
+                },
+                error => {
+                    return Promise.reject(error)
+                }
+            )
+        },
         onScroll: function(el) {
             this.scrollTop = el.target.scrollTop
         },

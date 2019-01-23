@@ -3,16 +3,6 @@ import VueRouter from 'vue-router'
 import VueAxios from 'vue-axios'
 import axios from 'axios'
 
-
-Vue.use(VueRouter)
-Vue.use(VueAxios, axios)
-
-import {
-    getHexColor,
-    getAvatarURL,
-    getThumbnailURL,
-} from './lib'
-
 import App from './app.vue'
 import Models from './models.vue'
 import Dashboard from './components/dashboard.vue'
@@ -29,7 +19,16 @@ import PageDetail from './components/page-components/page-detail.vue'
 import PageCreate from './components/page-components/page-create.vue'
 import MediaDetail from './components/media-components/media-detail.vue'
 import MediaCreate from './components/media-components/media-create.vue'
+import Error from './components/error.vue'
 
+Vue.use(VueRouter)
+Vue.use(VueAxios, axios)
+
+import {
+    getHexColor,
+    getAvatarURL,
+    getThumbnailURL,
+} from './lib'
 
 const appBaseURL = '/dashboard'
 Vue.prototype.$eventHub = new Vue()
@@ -42,74 +41,79 @@ Vue.prototype.$getThumbnailURL = getThumbnailURL
 
 const routes = [
     {
+        name: 'error',
+        path: '*',
+        component: Error,
+    },
+    {
         name: 'dashboard',
         path: appBaseURL,
-        component: Dashboard
+        component: Dashboard,
     },
     {
         name: 'pages',
         path: appBaseURL+'/pages/:page',
-        component: Pages
+        component: Pages,
     },
     {
         name: 'posts',
         path: appBaseURL+'/posts/:page',
-        component: Posts
+        component: Posts,
     },
     {
         name: 'media',
         path: appBaseURL+'/media-files/:page',
-        component: Media
+        component: Media,
     },
     {
         name: 'users',
         path: appBaseURL+'/users/:page',
-        component: Users
+        component: Users,
     },
     {
         name: 'settings',
         path: appBaseURL+'/settings',
-        component: Settings
+        component: Settings,
     },
     {
         name: 'user-detail',
         path: appBaseURL+'/user/:id',
-        component: UserDetail
+        component: UserDetail,
     },
     {
         name: 'new-user',
         path: appBaseURL+'/new-user/',
-        component: UserCreate
+        component: UserCreate,
     },
     {
         name: 'post-detail',
         path: appBaseURL+'/post/:id',
-        component: PostDetail
+        component: PostDetail,
     },
     {
         name: 'new-post',
         path: appBaseURL+'/new-post/',
-        component: PostCreate
+        component: PostCreate,
     },
     {
         name: 'page-detail',
         path: appBaseURL+'/page/:id',
-        component: PageDetail
+        component: PageDetail,
     },
     {
         name: 'new-page',
         path: appBaseURL+'/new-page/',
-        component: PageCreate
+        component: PageCreate,
     },
     {
         name: 'media-detail',
         path: appBaseURL+'/media/:id',
-        component: MediaDetail
+        component: MediaDetail,
     },
     {
         name: 'new-media',
         path: appBaseURL+'/new-media/',
-        component: MediaCreate
+        component: MediaCreate,
     },
 ]
 
