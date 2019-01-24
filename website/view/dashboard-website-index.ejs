@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= title %></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,500i,700,900,900i" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <script src="https://js.pusher.com/4.3/pusher.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    </head>
+    <body style="margin: 0px;">
+        <style>
+            html {
+                height: 100%;
+                box-sizing: border-box;
+            }
+            body {
+                font-family: 'Roboto', sans-serif;
+                background-color: #f2f2f2;
+                height: 100%;
+                box-sizing: border-box;
+            }
+            ::selection {
+                background: #006dad;
+                color: white;
+            }
+            ::-moz-selection {
+                background: #006dad;
+                color: white;
+            }
+        </style>
+        <div id="app"></div>
+        <script>window.user_id = "<%= user_id %>";</script>
+        <script src='/website/js/dashboard-app-bundle.js' charset="utf-8"></script>
+    </body>
+</html>

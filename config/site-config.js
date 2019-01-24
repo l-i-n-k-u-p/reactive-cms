@@ -1,7 +1,4 @@
-const path = require('path')
-
-const APP_GLOBAL = require('../config/global.js')
-const modelSite = require(path.join(APP_GLOBAL.appServerPath, '../models/site'))
+const modelSite = require('../website/model/site')
 
 
 const loadSiteSettings = async () => {
@@ -14,7 +11,7 @@ const loadSiteSettings = async () => {
 }
 
 const SITE_CONFIG = {
-    siteTitle: 'Reactive CMS',
+    siteTitle: 'Reactive Web',
     siteItemsPeerPage: 12,
     loadSiteSettings,
 }

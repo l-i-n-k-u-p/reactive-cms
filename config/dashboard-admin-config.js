@@ -1,7 +1,5 @@
-const path = require('path')
-
-const APP_GLOBAL = require('../config/global.js')
-const modelSetting = require(path.join(APP_GLOBAL.appServerPath, '../models/setting'))
+const APP_GLOBAL = require('../config/global')
+const modelSetting = require('../website/model/setting')
 
 
 const loadDashboardSettings = async () => {
@@ -20,7 +18,7 @@ const DASHBOARD_ADMIN_CONFIG = {
             [600, 200],
             [150, 150],
         ],
-    dashboardTitle: 'Dashboard',
+    dashboardTitle: 'Reactive CMS',
     setupPassed: false,
     loadDashboardSettings,
 }

@@ -1,23 +1,23 @@
-const mongodb = require('../db/mongodb')
 const path = require('path')
-const express = require('express')
-const expressSession = require('express-session')
-const bodyParser = require('body-parser')
-const cookieParser = require('cookie-parser')
-const cors = require('cors')
+const fastify = require('fastify')({logger: false})
+const pointOfView = require('point-of-view')
+const fastifyStatic = require('fastify-static')
+const fastifyFormBody = require('fastify-formbody')
+const fastifyCookie = require('fastify-cookie')
+const fastifyCaching = require('fastify-caching')
+const fastifyServerSession = require('fastify-server-session')
+const fastifyCors = require('fastify-cors')
+const fastifyMultipart = require('fastify-multipart')
+const fastifyURLData = require('fastify-url-data')
 const ejs = require('ejs')
-const assert = require('assert')
-const MongoDBStore = require('connect-mongodb-session')(expressSession)
-const app = express()
 
 const APP_CONFIG = require('../config/config')
-const APP_GLOBAL = require('../config/global')
-const websiteAppRouter = require('../website/routes/website-router')
-const websiteAppApiRouter = require('../website/routes/api-router')
+const SITE_CONFIG = require('../config/site-config')
+// const APP_GLOBAL = require('../config/global')
+const mongodb = require('../db/mongodb')
 const directory = require('../lib/directory')
-
-const exampleAppRouter = require('../example/routes/example-router')
-const exampleAppApiRouter = require('../example/routes/api-router')
+const websiteRouter = require('../website/router/website-router')
+const websiteDashboardAPIRouter = require('../website/router/website-dashboard-api-router')
 
 
 // create static directory for uploads
@@ -25,81 +25,98 @@ directory.createFolderFromPath(APP_CONFIG.uploadDirectory)
 // create static directory for upload image sizes
 directory.createFolderFromPath(APP_CONFIG.uploadDirectory + 'sizes/')
 
-
-// settings
-app.set('port', process.env.PORT || APP_CONFIG.port)
-app.set('views', [
-    path.join(__dirname, '../website/templates'),
-    path.join(__dirname, '../example/templates'),
-])
-app.engine('html', ejs.renderFile)
-app.set('view engine', 'ejs')
-
-
-// middlewares
-app.use(cookieParser())
-app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }))
-app.use(bodyParser.json())
-app.use(cors())
-
-
 // mongodb connect
 const mongoDBInstance = mongodb.connect()
 
-let store = new MongoDBStore({
-    uri: APP_CONFIG.mongoDBURI,
+// body parse
+fastify.register(fastifyFormBody)
+
+// cors
+fastify.register(fastifyCors, {
+    origin: true,
 })
-store.on('connected', () => {
-    store.client // The underlying MongoClient object from the MongoDB driver
-})
-store.on('error', (error) => {
-    // assert.ifError(error)
-    console.log(APP_GLOBAL.logAppName, 'Store Error: ', error)
-    assert.ok(false)
-})
-app.use(expressSession({
-    secret: APP_CONFIG.appSecret,
+
+// session storage
+fastify.register(fastifyCookie)
+fastify.register(fastifyCaching)
+fastify.register(fastifyServerSession, {
+    secretKey: APP_CONFIG.appSecret,
+    sessionMaxAge: APP_CONFIG.sessionMaxAge,
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 3 // 3 days
+        domain: 'localhost',
     },
-    resave: false,
-    saveUninitialized: false,
-    store: store,
-}))
+})
 
+// template engine
+fastify.register(pointOfView, {
+    engine: {
+        ejs: ejs,
+    },
+    options: {
+        filename: path.resolve('website/view'),
+    },
+    templates: 'website/view',
+    includeViewExtension: true,
+})
 
-// static files
-app.use(express.static(path.join(__dirname, '../site-static')))
-app.use(express.static(path.join(__dirname, '../website/static')))
-app.use(express.static(path.join(__dirname, '../example/static')))
+// static directory
+fastify.register((instance, opts, next) => {
+    instance.register(fastifyStatic, {
+        root: path.join(__dirname, '../website/static'),
+        prefix: '/website',
+    })
+    next()
+})
 
+// static directory
+fastify.register((instance, opts, next) => {
+    instance.register(fastifyStatic, {
+        root: path.join(__dirname, '../site-static'),
+        prefix: '/public',
+    })
+    next()
+})
 
-// index routers
-app.use('/', websiteAppRouter)
-app.use('/dashboard/api', websiteAppApiRouter)
-app.use('/example', exampleAppRouter)
-app.use('/example/api', exampleAppApiRouter)
+// multipart data for upload files
+fastify.register(fastifyMultipart)
 
+// support for getting raw URL information from the request
+fastify.register(fastifyURLData)
 
-// handler for 500 and 404 pages
-app.use((req, res, next) => {
-    res.status(404).render('404', {
-        title: APP_GLOBAL.websiteName,
-        status: 'Page not found!',
-        error_message: 'Route: '+req.url+' Not found.',
+// router website
+fastify.register(websiteRouter)
+
+// router website dashboard api
+fastify.register(websiteDashboardAPIRouter, { prefix: '/dashboard/api/v1/' })
+
+// 500 global handler
+fastify.setErrorHandler((err, req, res) => {
+    req.log.warn(err)
+    let statusCode = err.statusCode >= 400 ? err.statusCode : 500
+    res.code(statusCode).view('500', {
+        title: SITE_CONFIG.siteTitle,
+        status: 'Server error!',
+        error_message: statusCode >= 500 ? 'Internal server error' : error.message,
     })
 })
 
-app.use((err, req, res, next) => {
-    res.status(500).render('500', {
-        title: APP_GLOBAL.websiteName,
-        status: 'Error 500!',
-        error_message: err,
+// 404 global handler
+fastify.setNotFoundHandler((req, res) => {
+    const urlData = req.urlData()
+    res.code(404).view('404', {
+        title: SITE_CONFIG.siteTitle,
+        status: 'Page not found',
+        error_message: 'Route: '+urlData.path+' Not found.',
     })
 })
 
-
-// server listener
-app.listen(app.get('port'), () => {
-    console.log(APP_GLOBAL.logAppName, 'Running on port '+APP_CONFIG.port)
+// listener
+fastify.listen(APP_CONFIG.port, '0.0.0.0', (err, address) => {
+    if(err) {
+        fastify.log.error(err)
+        process.exit(1)
+    }
+    fastify.log.info('Server listening on port: ',address)
 })
+
+// TODO: finish session stored
