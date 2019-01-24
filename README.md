@@ -1,9 +1,9 @@
 <div align="center">
     <img src="./ReadmeMDAssets/reactive-cms-logo.png" width="300" height="auto"/>
+    <br />
+    A simple CMS more to start your project!
 </div>
 
-
-A simple CMS more to start your project!
 
 Technologies and Design
 -
