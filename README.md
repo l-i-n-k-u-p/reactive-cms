@@ -63,29 +63,29 @@ App running...
 
 Setup page:
 
-<img width="400px" src="/ReadmeMDAssets/setup.png">
+<img width="400px" src="./ReadmeMDAssets/setup.png">
 
 
 Login page:
 
-<img width="400px" src="/ReadmeMDAssets/login.png">
+<img width="400px" src="./ReadmeMDAssets/login.png">
 
 
 Dashboard screens:
 
 | | | |
 |:-------------------------:|:-------------------------:|:-------------------------:|
-|<img width="200px" src="/ReadmeMDAssets/dashboard.png">|<img width="200px" src="/ReadmeMDAssets/pages.png">|<img width="200px" src="/ReadmeMDAssets/posts.png">|
-|<img width="200px" src="/ReadmeMDAssets/media.png">|<img width="200px" src="/ReadmeMDAssets/users.png">|<img width="200px" src="/ReadmeMDAssets/settings.png">|
-|<img width="200px" src="/ReadmeMDAssets/new-post.png">|<img width="200px" src="/ReadmeMDAssets/modal-media.png">|
+|<img width="200px" src="./ReadmeMDAssets/dashboard.png">|<img width="200px" src="./ReadmeMDAssets/pages.png">|<img width="200px" src="./ReadmeMDAssets/posts.png">|
+|<img width="200px" src="./ReadmeMDAssets/media.png">|<img width="200px" src="./ReadmeMDAssets/users.png">|<img width="200px" src="./ReadmeMDAssets/settings.png">|
+|<img width="200px" src="./ReadmeMDAssets/new-post.png">|<img width="200px" src="./ReadmeMDAssets/modal-media.png">|
 
 
 ## Email:
 eduardobc.88@gmail.com
 
 <div align="center">
-    Development by:
+    Development by:<br />
     <a href="https://www.reactive-web.com">
-        <img src="/ReadmeMDAssets/reactive-web.png" width="300" height="auto"/>
+        <img src="./ReadmeMDAssets/reactive-web.png" width="300" height="auto"/>
     </a>
 </div>
