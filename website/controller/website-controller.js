@@ -16,13 +16,22 @@ const modelSite = require(path.join('../model/site'))
 
 exports.websiteSetupView = async (req, res) => {
     let totalUsers = await modelUser.countDocuments()
-    if(totalUsers)
-        return res.redirect('admin')
-
+    if(totalUsers) {
+        DASHBOARD_ADMIN_CONFIG.setupPassed = true
+        return res.redirect('/admin')
+    }
+    DASHBOARD_ADMIN_CONFIG.setupPassed = false
     res.view('setup', {
         title: 'SETUP',
         error_message: '',
     })
+}
+
+exports.websiteSetupPassed = async (req, res, next) => {
+    if(!DASHBOARD_ADMIN_CONFIG.setupPassed)
+        return res.redirect('/setup')
+
+    next()
 }
 
 exports.websiteSetupSetInitialConfig = async (req, res) => {
@@ -62,6 +71,7 @@ exports.websiteSetupSetInitialConfig = async (req, res) => {
             let userSaved = await user.save()
             let settingSaved = await settings.save()
             let siteSaved = await site.save()
+            DASHBOARD_ADMIN_CONFIG.setupPasse = true
             res.redirect('admin')
         } catch(err) {
             res.view('setup', {

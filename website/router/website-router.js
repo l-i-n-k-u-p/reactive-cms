@@ -66,7 +66,6 @@ let routes = [
     {
         method: 'GET',
         url: '/dashboard*',
-        beforeHandler: session.isAuthenticated,
         handler: websiteController.websiteDashboardView,
     },
     {
@@ -96,8 +95,13 @@ let routes = [
     },
 ]
 
+// NOTE: improve the the beforeHandler for /setup and /dashboard
 let websiteRouter = async (fastify, opts, next) => {
     routes.forEach((route) => {
+        if(route.url.indexOf('/setup') < 0 && route.method.indexOf('POST') < 0)
+            route.beforeHandler = websiteController.websiteSetupPassed
+        if(route.url.indexOf('/dashboard') >= 0)
+            route.beforeHandler = session.isAuthenticated
         fastify.route(route)
     })
 }
