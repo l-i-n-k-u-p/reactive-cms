@@ -1,6 +1,3 @@
-const path = require('path')
-
-
 const APP_GLOBAL = {
 
 }

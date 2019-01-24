@@ -1,4 +1,3 @@
-const path = require('path')
 const dateTime = require('node-datetime')
 
 const APP_GLOBAL = require('../../config/global')
@@ -6,12 +5,12 @@ const DASHBOARD_ADMIN_CONFIG = require('../../config/dashboard-admin-config')
 const SITE_CONFIG = require('../../config/site-config')
 const session = require('../../lib/session')
 
-const modelPost = require(path.join('../model/post'))
-const modelPage = require(path.join('../model/page'))
-const modelMedia = require(path.join('../model/media'))
-const modelUser = require(path.join('../model/user'))
-const modelSetting = require(path.join('../model/setting'))
-const modelSite = require(path.join('../model/site'))
+const modelPost = require('../model/post')
+const modelPage = require('../model/page')
+const modelMedia = require('../model/media')
+const modelUser = require('../model/user')
+const modelSetting = require('../model/setting')
+const modelSite = require('../model/site')
 
 
 exports.websiteSetupView = async (req, res) => {
@@ -63,10 +62,10 @@ exports.websiteSetupSetInitialConfig = async (req, res) => {
             user.user_type = 'admin'
             user.user_registration_date = dateTime.create().format('Y-m-d H:M:S')
             user.user_active = true
-            settings.setting_page_title = setup_site_name
-            settings.setting_items_peer_page = 20
+            settings.setting_page_title = DASHBOARD_ADMIN_CONFIG.dashboardTitle
+            settings.setting_items_peer_page = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST
             site.site_name = setup_site_name
-            site.site_items_peer_page = 12
+            site.site_items_peer_page = SITE_CONFIG.siteItemsPeerPage
             site.site_url = setup_site_url
             let userSaved = await user.save()
             let settingSaved = await settings.save()
