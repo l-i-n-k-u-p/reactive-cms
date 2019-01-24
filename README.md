@@ -2,8 +2,8 @@
     <img src="./ReadmeMDAssets/reactive-cms-logo.png" width="300" height="auto"/>
     <br />
     A simple CMS more to start your project!
+    <br />
 </div>
-
 
 Technologies and Design
 -
@@ -84,7 +84,9 @@ Dashboard screens:
 eduardobc.88@gmail.com
 
 <div align="center">
-    Development by:<br />
+    <br />
+    Development by:
+    <br />
     <a href="https://www.reactive-web.com">
         <img src="./ReadmeMDAssets/reactive-web.png" width="300" height="auto"/>
     </a>
