@@ -14,6 +14,7 @@ Technologies and Design
 - VueJS
 - Vue-MC
 - Vue-Router
+- Tiptap
 - Material Design
 
 Requeriments
