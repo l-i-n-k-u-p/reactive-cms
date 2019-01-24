@@ -5,6 +5,8 @@ const APP_CONFIG = {
     appSecret: 'iCD5e@rx$3-9rR_QZwIW2Dg-Zn^h&heS', // 32 characters
     uploadDirectory: 'site-static/uploads/',
     sessionMaxAge: 10800000, // milliseconds
+    ipAddressToListen: '0.0.0.0', // 0.0.0.0 for docker container
+    domain: 'localhost', // localhost \ domain.com
 }
 
 

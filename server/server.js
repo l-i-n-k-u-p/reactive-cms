@@ -1,6 +1,4 @@
-const path = require('path')
 const fastify = require('fastify')({logger: false})
-const pointOfView = require('point-of-view')
 const fastifyStatic = require('fastify-static')
 const fastifyFormBody = require('fastify-formbody')
 const fastifyCookie = require('fastify-cookie')
@@ -9,6 +7,9 @@ const fastifyServerSession = require('fastify-server-session')
 const fastifyCors = require('fastify-cors')
 const fastifyMultipart = require('fastify-multipart')
 const fastifyURLData = require('fastify-url-data')
+const fastifyHelmet = require('fastify-helmet')
+const pointOfView = require('point-of-view')
+const path = require('path')
 const ejs = require('ejs')
 
 const APP_CONFIG = require('../config/config')
@@ -33,7 +34,14 @@ fastify.register(fastifyFormBody)
 
 // cors
 fastify.register(fastifyCors, {
-    origin: true,
+    origin: APP_CONFIG.domain,
+})
+
+// security headers
+fastify.register(fastifyHelmet,{
+    hidePoweredBy: {
+        setTo: 'Reactive CMS',
+    },
 })
 
 // session storage
@@ -43,7 +51,7 @@ fastify.register(fastifyServerSession, {
     secretKey: APP_CONFIG.appSecret,
     sessionMaxAge: APP_CONFIG.sessionMaxAge,
     cookie: {
-        domain: 'localhost',
+        domain: APP_CONFIG.domain,
     },
 })
 
@@ -111,7 +119,7 @@ fastify.setNotFoundHandler((req, res) => {
 })
 
 // listener
-fastify.listen(APP_CONFIG.port, '0.0.0.0', (err, address) => {
+fastify.listen(APP_CONFIG.port, APP_CONFIG.ipAddressToListen, (err, address) => {
     if(err) {
         fastify.log.error(err)
         process.exit(1)

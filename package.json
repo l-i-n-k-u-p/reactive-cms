@@ -29,6 +29,7 @@
     "fastify-cookie": "^2.1.5",
     "fastify-cors": "^1.0.0",
     "fastify-formbody": "^2.0.3",
+    "fastify-helmet": "^3.0.0",
     "fastify-multipart": "^0.6.0",
     "fastify-server-session": "^2.0.0",
     "fastify-static": "^1.1.0",
