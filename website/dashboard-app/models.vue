@@ -644,8 +644,10 @@ class Site extends Model {
 
     listenPushMessages() {
         this.getChannel().bind('put', (data) => {
-            if(this.get('_id') === data.data._id)
+            if(this.get('_id') === data.data._id) {
+                this.setOption('hasUpdate', true)
                 this.set(data.data)
+            }
         })
 
         this.getChannel().bind('delete', (data) => {
@@ -664,6 +666,7 @@ class Site extends Model {
             site_name: '',
             site_items_peer_page: '',
             site_url: '',
+            site_template_home: '',
         }
     }
 
@@ -720,6 +723,18 @@ class Dashboard extends Collection {
     }
 }
 
+class SettingPages extends Collection {
+    getModelsFromResponse (response) {
+        return response.getData().items
+    }
+
+    routes() {
+        return {
+            fetch: appApiBaseURL+'/setting/get-all-pages/',
+        }
+    }
+}
+
 
 export default {
     User: User,
@@ -735,6 +750,7 @@ export default {
     Setting: Setting,
     Site: Site,
     Dashboard: Dashboard,
+    SettingPages: SettingPages,
 }
 
 </script>
