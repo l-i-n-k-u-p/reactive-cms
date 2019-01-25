@@ -156,9 +156,26 @@ exports.websiteDashboardView = async (req, res) => {
 }
 
 exports.websiteIndexView = async (req, res) => {
-    res.view('default/index', {
-        title: SITE_CONFIG.siteTitle,
-    })
+    try {
+        let siteSettings = await modelSite.findOne()
+        let templateHomeID = siteSettings.site_template_home
+        if(templateHomeID) {
+            let page = await modelPage.findById(templateHomeID)
+            res.view('default/page-detail', {
+                title: SITE_CONFIG.siteTitle,
+                page: page,
+            })
+            return
+        }
+        res.view('default/index', {
+            title: SITE_CONFIG.siteTitle,
+        })
+    } catch(err) {
+        res.code(500).send({
+            status_code: 1,
+            status_msg: 'Page Not Found',
+        })
+    }
 }
 
 exports.websitePageView = async (req, res) => {

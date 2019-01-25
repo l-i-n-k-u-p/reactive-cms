@@ -2,12 +2,12 @@
     <div
         v-bind:class="{'select-wrapper': true, 'open': show}"
         v-on:click="showOptions">
-        <i
-            class="material-icons icon">
-            arrow_drop_down
-        </i>
+        <label
+            class="title">
+            {{ label + ":" }}
+        </label>
         <label>
-            {{ label + ": " + getOptionName() }}
+            {{ getOptionName() }}
         </label>
         <transition
             name="fade">
@@ -99,28 +99,28 @@ export default {
     -webkit-user-select: none;
     align-self: center;
     background: transparent;
-    border-radius: 3px;
-    border: none;
+    border-bottom: 1px solid #616161;
     color: #616161;
     cursor: pointer;
     display: flex;
     font-size: 13px;
     font-weight: 500;
     height: 14px;
-    outline: none;
-    padding: 7px;
+    padding-bottom: 7px;
+    padding-top: 7px;
     position: relative;
     transition-duration: 100ms;
     user-select: none;
 }
 
-.select-wrapper label {
+label {
     cursor: pointer;
-    text-transform: uppercase;
 }
 
-.select-wrapper:hover {
-    background-color: #eee;
+.select-wrapper .title {
+    transition-duration: 100ms;
+    margin-right: 5px;
+    text-transform: capitalize;
 }
 
 .select-wrapper .icon {
@@ -131,27 +131,26 @@ export default {
     top: -2px;
 }
 
-
 .select-options {
     background-color: transparent;
-    border-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
     box-shadow: 0 5px 5px -3px rgba(0, 0, 0, .2), 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12);
     left: 0;
     list-style: none;
     margin: 0;
     min-width: 112px;
     overflow: hidden;
-    padding: 30px 0 0 0;
+    padding: 0;
     position: absolute;
     right: 0;
-    top: 0;
+    top: calc(100% + 2px);
     z-index: 999;
 }
 
 .select-options li {
     background-color: white;
-    padding: 10px 20px 10px 32px;
-    text-transform: uppercase;
+    padding: 10px;
 }
 
 .select-options li:hover {
@@ -168,6 +167,11 @@ export default {
 
 .select-wrapper.open {
     background-color: white;
+    border-bottom: 1px solid #006dad;
+}
+
+.select-wrapper.open .title {
+    color: #006dad;
 }
 
 </style>

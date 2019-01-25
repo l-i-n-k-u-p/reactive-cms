@@ -743,3 +743,23 @@ exports.getDashboard = async (req, res) => {
         })
     }
 }
+
+exports.getSettingAllPages = async (req, res) => {
+    try {
+        let items = await modelPage.find()
+        .sort({'page_date': 'desc'})
+        .select([
+            'page_status',
+            'page_title',
+        ])
+        .exec()
+        res.send({
+            items: items,
+        })
+    } catch(err) {
+        res.send({
+            status_code: 1,
+            status_msg: 'Error loading the pages',
+        })
+    }
+}

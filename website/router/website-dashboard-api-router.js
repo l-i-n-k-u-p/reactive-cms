@@ -188,13 +188,18 @@ let routes = [
         url: '/site/',
         beforeHandler: session.isAuthenticated,
         handler: websiteDashboardAPIController.updateSiteSettings,
-
     },
     {
         method: 'GET',
         url: '/dashboard/',
         beforeHandler: session.isAuthenticated,
         handler: websiteDashboardAPIController.getDashboard,
+    },
+    {
+        method: 'GET',
+        url: '/setting/get-all-pages*',
+        beforeHandler: session.isAuthenticated,
+        handler: websiteDashboardAPIController.getSettingAllPages,
     },
 ]
 
