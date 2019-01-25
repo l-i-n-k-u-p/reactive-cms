@@ -735,6 +735,18 @@ class SettingPages extends Collection {
     }
 }
 
+class UserTypes extends Collection {
+    getModelsFromResponse (response) {
+        return response.getData().items
+    }
+
+    routes() {
+        return {
+            fetch: appApiBaseURL+'/user/user-types/',
+        }
+    }
+}
+
 
 export default {
     User: User,
@@ -751,6 +763,7 @@ export default {
     Site: Site,
     Dashboard: Dashboard,
     SettingPages: SettingPages,
+    UserTypes: UserTypes,
 }
 
 </script>
