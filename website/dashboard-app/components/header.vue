@@ -120,11 +120,19 @@
                             <div
                                 class="option"
                                 v-on:click="showUserDetail(user)">
+                                <i
+                                    class="material-icons option-icon">
+                                    person
+                                </i>
                                 User Profile
                             </div>
                             <a
                                 class="option"
                                 href="/admin-logout">
+                                <i
+                                    class="material-icons option-icon">
+                                    input
+                                </i>
                                 Sign Out
                             </a>
                         </div>
@@ -543,6 +551,11 @@ export default {
     color: #616161;
     font-size: 13px;
     padding: 10px;
+}
+
+.option-icon {
+    font-size: 16px;
+    margin-right: 10px;
 }
 
 </style>
