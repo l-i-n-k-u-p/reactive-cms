@@ -28,10 +28,10 @@
                     inputType="password">
                 </InputText>
                 <Button
-                    buttonIcon="done"
+                    buttonIcon="input"
                     v-bind:buttonAction="acceptAction"
                     class="button">
-                    Start
+                    enter
                 </button>
             </div>
         </div>

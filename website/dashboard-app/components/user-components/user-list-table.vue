@@ -219,10 +219,15 @@ export default {
 }
 
 .table-wrapper tbody tr td {
+    border-bottom: 1px solid #eee;
     cursor: pointer;
     font-size: 13px;
-    padding-bottom: 5px;
-    padding-top: 5px;
+    padding-bottom: 7px;
+    padding-top: 7px;
+}
+
+.table-wrapper tbody tr:first-child td {
+    border-top: 1px solid #eee;
 }
 
 .table-wrapper tbody tr:hover {
