@@ -5,6 +5,8 @@ const slugify = require('slugify')
 const APP_GLOBAL = require('../../config/global')
 const DASHBOARD_ADMIN_CONFIG = require('../../config/dashboard-admin-config')
 const SITE_CONFIG = require('../../config/site-config')
+const userTypes = require('../../config/user-types')
+const { validateUserType } = require('../../lib/validate')
 const { pushMessage } = require('../../lib/push-message')
 const { mediaUpload } = require('../../lib/media-upload')
 const session = require('../../lib/session')
@@ -186,9 +188,13 @@ exports.addNewUser = async (req, res) => {
 }
 
 exports.updaterUserByID = async (req, res) => {
+    // NOTE: improve this
     if(req.body.user_pass === '') {
         try {
             delete req.body.user_pass
+            let isUserTypeValid = validateUserType(req.body.user_type)
+            if(!isUserTypeValid)
+                delete req.body.user_type
             let user = await modelUser.findOneAndUpdate({'_id': req.params.id}, req.body, {new: true})
             let sessionFinished = await session.currentUserSessionDataChanged(user, req)
             let message = 'User updated'
@@ -210,6 +216,9 @@ exports.updaterUserByID = async (req, res) => {
         }
     } else {
         try {
+            let isUserTypeValid = validateUserType(req.body.user_type)
+            if(!isUserTypeValid)
+                delete req.body.user_type
             let newPassword = await session.hashPassword(req.body.user_pass)
             req.body.user_pass = newPassword
             let user = await modelUser.findOneAndUpdate({'_id': req.params.id}, req.body, {new: true})
@@ -762,4 +771,10 @@ exports.getSettingAllPages = async (req, res) => {
             status_msg: 'Error loading the pages',
         })
     }
+}
+
+exports.getUserTypes = async (req, res) => {
+    res.send({
+        items: userTypes,
+    })
 }

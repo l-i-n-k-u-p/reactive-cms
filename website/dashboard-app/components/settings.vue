@@ -199,7 +199,6 @@ export default {
             let pages = this.settingPages.models
             for(let index in pages) {
                 let pageID = pages[index].get('id')
-                console.log('== pageID ==', pageID, currentPageID)
                 if(pageID === currentPageID)
                     this.templateHomeIndex = index
             }

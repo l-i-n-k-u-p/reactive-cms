@@ -106,12 +106,13 @@
                 v-bind:onChangeValue="onChangeInputValue"
                 propName="user_email">
             </InputText>
-            <InputText
-                inputName="User Type"
-                v-bind:inputValue="user.user_type"
-                v-bind:onChangeValue="onChangeInputValue"
-                propName="user_type">
-            </InputText>
+            <FormDropdownSelect
+                class="dropdown-select"
+                label="User Type"
+                v-bind:initialIndexOption="userTypeIndex"
+                v-bind:onSelectOption="onSelectUserType"
+                v-bind:selectOptions="userTypeOptions">
+            </FormDropdownSelect>
             <div
                 class="date-wrapper">
                 {{ userDate }}
@@ -164,6 +165,7 @@ import Button from '../templates/button.vue'
 import InputText from '../templates/input-text.vue'
 import NavigationButtons from '../templates/navigation-buttons.vue'
 import MediaModal from '../media-modal.vue'
+import FormDropdownSelect from '../templates/form-dropdown-select.vue'
 
 export default {
     data() {
@@ -178,6 +180,9 @@ export default {
             mediaAvatar: new this.$models.Media(),
             showMediaAvatarModal: false,
             userDate: '',
+            userTypes: new this.$models.UserTypes(),
+            userTypeIndex: null,
+            userTypeOptions: [],
         }
     },
     components: {
@@ -187,11 +192,13 @@ export default {
         InputText,
         NavigationButtons,
         MediaModal,
+        FormDropdownSelect,
     },
     created() {
         this.$eventHub.$emit('dashboard-app-page-title', 'User')
         this.getUserData()
         this.setOnChangeUser()
+        this.getUserTypesData()
     },
     methods: {
         setOnChangeUser: function() {
@@ -202,6 +209,8 @@ export default {
                     this.setMediaIDAndFetchMedia(this.user.get('user_thumbnail'))
                 if(attribute === 'user_registration_date')
                     this.userDate = moment(value).format('MMMM Do YYYY, h:mm:ss a')
+                if(attribute === 'user_type')
+                    this.setInitialUserTypeIndex()
             })
         },
         onSetNewPassword: function(propName, value) {
@@ -220,9 +229,23 @@ export default {
                 }
                 this.setMediaIDAndFetchMedia(this.user.get('user_thumbnail'))
                 this.setMediaAvatarIDAndFetchMedia(this.user.get('user_avatar'))
+                this.setInitialUserTypeIndex()
             })
             .catch(err => {
                 this.$eventHub.$emit('dashboard-app-error', data.message)
+            })
+        },
+        getUserTypesData: function() {
+            this.userTypes.fetch()
+            .then(data => {
+                if(data.getData().status_code) {
+                    this.$eventHub.$emit('dashboard-app-error', data.getData().status_msg)
+                    return
+                }
+                this.setInitialUserTypes()
+            })
+            .catch(err => {
+                this.$eventHub.$emit('dashboard-app-error', err.toString())
             })
         },
         deleteUser: function() {
@@ -312,6 +335,30 @@ export default {
         removeMediaAvatar: function() {
             this.mediaAvatar.clear()
             this.user.set('user_avatar', '')
+        },
+        onSelectUserType: function(option) {
+            this.user.set('user_type', option.value)
+        },
+        setInitialUserTypes: function() {
+            this.userTypeOptions = []
+            for(let type of this.userTypes.models) {
+                let typeName = type.get('type_name')
+                this.userTypeOptions.push({
+                    name: typeName,
+                    value: typeName,
+                })
+            }
+            this.setInitialUserTypeIndex()
+        },
+        setInitialUserTypeIndex: function() {
+            let currentUserType = this.user.get('user_type')
+            let userTypes = this.userTypes.models
+            for(let index in userTypes) {
+                let typeID = userTypes[index].get('id')
+                let typeName = userTypes[index].get('type_name')
+                if(typeName === currentUserType)
+                    this.userTypeIndex = index
+            }
         },
     }
 }
@@ -463,6 +510,10 @@ h2 {
     font-weight: 500;
     margin-top: 15px;
     text-align: right;
+}
+
+.dropdown-select {
+    margin-top: 10px;
 }
 
 </style>

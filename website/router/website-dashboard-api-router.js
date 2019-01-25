@@ -201,6 +201,12 @@ let routes = [
         beforeHandler: session.isAuthenticated,
         handler: websiteDashboardAPIController.getSettingAllPages,
     },
+    {
+        method: 'GET',
+        url: '/user/user-types*',
+        beforeHandler: session.isAuthenticated,
+        handler: websiteDashboardAPIController.getUserTypes,
+    },
 ]
 
 let websiteDasboardAPIRouter = async (fastify, opts, next) => {
