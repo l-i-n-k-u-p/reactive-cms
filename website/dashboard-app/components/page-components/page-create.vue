@@ -44,6 +44,12 @@
                 <div
                     class="buttons-wrapper">
                     <DropdownSelect
+                        label="Template"
+                        v-bind:initialIndexOption="currentPageTemplateIndex"
+                        v-bind:onSelectOption="onSelectPageTemplateOption"
+                        v-bind:selectOptions="pageTemplateOptions">
+                    </DropdownSelect>
+                    <DropdownSelect
                         label="Status"
                         initialIndexOption="0"
                         v-bind:onSelectOption="onSelectOption"
@@ -104,6 +110,9 @@ export default {
             editorContent: '',
             showMediaModal: false,
             media: new this.$models.Media(),
+            pageTemplates: new this.$models.PageTemplates(),
+            pageTemplateOptions: [],
+            currentPageTemplateIndex: null,
         }
     },
     components: {
@@ -116,7 +125,7 @@ export default {
         MediaModal,
     },
     created() {
-
+        this.getPageTemplates()
     },
     methods: {
         onChangeInputValue: function(propName, value) {
@@ -159,6 +168,38 @@ export default {
         setMediaIDAndFetchMedia: function(mediaID) {
             this.media.set('_id', mediaID)
             this.media.fetch()
+        },
+        getPageTemplates: function() {
+            this.pageTemplates.fetch()
+            .then(data => {
+                if(data.getData().status_code) {
+                    this.$eventHub.$emit('dashboard-app-error', data.getData().status_msg)
+                    return
+                }
+                this.setPageTemplateOptions()
+            })
+            .catch(err => {
+                this.$eventHub.$emit('dashboard-app-error', data.message)
+            })
+        },
+        onSelectPageTemplateOption: function(option) {
+            this.page.set('page_template', option.value)
+        },
+        setPageTemplateOptions: function() {
+            let templates = this.pageTemplates.models
+            this.pageTemplateOptions.push({
+                name: 'none',
+                value: '',
+            })
+            for(let template of templates) {
+                let templateName = template.get('template_name')
+                let templateFullName = template.get('template_full_name')
+                this.pageTemplateOptions.push({
+                    name: templateName,
+                    value: templateFullName,
+                })
+            }
+            this.currentPageTemplateIndex = 0
         },
     }
 }

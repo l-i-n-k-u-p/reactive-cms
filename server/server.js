@@ -25,6 +25,8 @@ const websiteDashboardAPIRouter = require('../website/router/website-dashboard-a
 directory.createFolderFromPath(APP_CONFIG.uploadDirectory)
 // create static directory for upload image sizes
 directory.createFolderFromPath(APP_CONFIG.uploadDirectory + 'sizes/')
+// get template file names
+directory.generateTemplateFileNames(APP_CONFIG.websiteTemplatesPath)
 
 // mongodb connect
 const mongoDBInstance = mongodb.connect()

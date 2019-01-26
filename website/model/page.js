@@ -9,6 +9,7 @@ const Page = new Schema({
     page_slug: { type: String, trim: true, required: true },
     page_date: { type: String, required: true},
     page_status: { type: String, required: true },
+    page_template: { type: String, },
 }, {
     collection: 'page'
 })

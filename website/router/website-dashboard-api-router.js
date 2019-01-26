@@ -207,6 +207,12 @@ let routes = [
         beforeHandler: session.isAuthenticated,
         handler: websiteDashboardAPIController.getUserTypes,
     },
+    {
+        method: 'GET',
+        url: '/page/template-files*',
+        beforeHandler: session.isAuthenticated,
+        handler: websiteDashboardAPIController.getTemplateFileNames,
+    },
 ]
 
 let websiteDasboardAPIRouter = async (fastify, opts, next) => {
