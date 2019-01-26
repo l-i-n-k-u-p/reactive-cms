@@ -106,12 +106,13 @@
                 v-bind:onChangeValue="onChangeInputValue"
                 propName="user_email">
             </InputText>
-            <InputText
-                inputName="User Type"
-                v-bind:inputValue="user.user_type"
-                v-bind:onChangeValue="onChangeInputValue"
-                propName="user_type">
-            </InputText>
+            <FormDropdownSelect
+                class="dropdown-select"
+                label="User Type"
+                v-bind:initialIndexOption="userTypeIndex"
+                v-bind:onSelectOption="onSelectUserType"
+                v-bind:selectOptions="userTypeOptions">
+            </FormDropdownSelect>
             <div
                 class="buttons-wrapper">
                 <Button
@@ -152,6 +153,7 @@ import Button from '../templates/button.vue'
 import InputText from '../templates/input-text.vue'
 import NavigationButtons from '../templates/navigation-buttons.vue'
 import MediaModal from '../media-modal.vue'
+import FormDropdownSelect from '../templates/form-dropdown-select.vue'
 
 export default {
     data() {
@@ -164,6 +166,9 @@ export default {
             media: new this.$models.Media(),
             mediaAvatar: new this.$models.Media(),
             showMediaAvatarModal: false,
+            userTypes: new this.$models.UserTypes(),
+            userTypeIndex: 0,
+            userTypeOptions: [],
         }
     },
     components: {
@@ -172,9 +177,10 @@ export default {
         InputText,
         NavigationButtons,
         MediaModal,
+        FormDropdownSelect,
     },
     created() {
-
+        this.getUserTypesData()
     },
     mounted() {
         this.user.on('change', ({attribute, value}) => {
@@ -256,6 +262,32 @@ export default {
         removeMediaAvatar: function() {
             this.mediaAvatar.clear()
             this.user.set('user_avatar', '')
+        },
+        getUserTypesData: function() {
+            this.userTypes.fetch()
+            .then(data => {
+                if(data.getData().status_code) {
+                    this.$eventHub.$emit('dashboard-app-error', data.getData().status_msg)
+                    return
+                }
+                this.setInitialUserTypes()
+            })
+            .catch(err => {
+                this.$eventHub.$emit('dashboard-app-error', err.toString())
+            })
+        },
+        onSelectUserType: function(option) {
+            this.user.set('user_type', option.value)
+        },
+        setInitialUserTypes: function() {
+            this.userTypeOptions = []
+            for(let type of this.userTypes.models) {
+                let typeName = type.get('type_name')
+                this.userTypeOptions.push({
+                    name: typeName,
+                    value: typeName,
+                })
+            }
         },
     }
 }
@@ -398,6 +430,10 @@ h2 {
 .buttom-bottom {
     bottom: 15px;
     margin: auto;
+}
+
+.dropdown-select {
+    margin-top: 10px;
 }
 
 </style>
