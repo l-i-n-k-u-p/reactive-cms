@@ -69,6 +69,12 @@
                 <div
                     class="buttons-wrapper">
                     <DropdownSelect
+                        label="Template"
+                        v-bind:initialIndexOption="currentPageTemplateIndex"
+                        v-bind:onSelectOption="onSelectPageTemplateOption"
+                        v-bind:selectOptions="pageTemplateOptions">
+                    </DropdownSelect>
+                    <DropdownSelect
                         label="Status"
                         v-bind:initialIndexOption="pageStatusIndex"
                         v-bind:onSelectOption="onSelectOption"
@@ -142,6 +148,9 @@ export default {
             showMediaModal: false,
             media: new this.$models.Media(),
             pageDate: '',
+            pageTemplates: new this.$models.PageTemplates(),
+            pageTemplateOptions: [],
+            currentPageTemplateIndex: null,
         }
     },
     components: {
@@ -159,6 +168,7 @@ export default {
         this.page.setOption('hasUpdate', false)
         this.getPageData()
         this.setOnChangePage()
+        this.getPageTemplates()
     },
     mounted() {
         this.page.on('change', ({attribute, value}) => {
@@ -202,6 +212,7 @@ export default {
                 if(this.page.get('page_status') === 'pending')
                     this.pageStatusIndex = 1
                 this.setMediaIDAndFetchMedia(this.page.get('page_thumbnail'))
+                this.setPageTemplateIndex()
             })
             .catch(err => {
                 this.$eventHub.$emit('dashboard-app-error', err.message)
@@ -274,6 +285,53 @@ export default {
         removeMedia: function() {
             this.media.clear()
             this.page.set('page_thumbnail', '')
+        },
+        getPageTemplates: function() {
+            this.pageTemplates.fetch()
+            .then(data => {
+                if(data.getData().status_code) {
+                    this.$eventHub.$emit('dashboard-app-error', data.getData().status_msg)
+                    return
+                }
+                this.setPageTemplateOptions()
+            })
+            .catch(err => {
+                this.$eventHub.$emit('dashboard-app-error', data.message)
+            })
+        },
+        onSelectPageTemplateOption: function(option) {
+            this.page.set('page_template', option.value)
+        },
+        setPageTemplateIndex: function() {
+            if(!this.pageTemplateOptions)
+                return
+
+            let templates = this.pageTemplates.models
+            let pageTemplate = this.page.get('page_template')
+            this.currentPageTemplateIndex = 0
+            for(let index in this.pageTemplateOptions) {
+                let templateFullName = this.pageTemplateOptions[index].value
+                if(templateFullName === pageTemplate) {
+                    this.currentPageTemplateIndex = index
+                    return
+                }
+            }
+        },
+        setPageTemplateOptions: function() {
+            let templates = this.pageTemplates.models
+            this.pageTemplateOptions.push({
+                name: 'none',
+                value: '',
+            })
+            for(let template of templates) {
+                let templateName = template.get('template_name')
+                let templateFullName = template.get('template_full_name')
+                this.pageTemplateOptions.push({
+                    name: templateName,
+                    value: templateFullName,
+                })
+            }
+            this.setPageTemplateIndex()
         },
     }
 }

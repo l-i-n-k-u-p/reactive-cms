@@ -7,6 +7,7 @@ const APP_CONFIG = {
     sessionMaxAge: 10800000, // milliseconds
     ipAddressToListen: '0.0.0.0', // 0.0.0.0 for docker container
     domain: 'localhost', // localhost \ domain.com
+    websiteTemplatesPath: './website/view/template/', // change only if edit the structure website directory
 }
 
 

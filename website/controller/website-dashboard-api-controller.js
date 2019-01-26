@@ -5,6 +5,7 @@ const slugify = require('slugify')
 const APP_GLOBAL = require('../../config/global')
 const DASHBOARD_ADMIN_CONFIG = require('../../config/dashboard-admin-config')
 const SITE_CONFIG = require('../../config/site-config')
+const websiteTemplates = require('../../config/website-templates')
 const userTypes = require('../../config/user-types')
 const { validateUserType } = require('../../lib/validate')
 const { pushMessage } = require('../../lib/push-message')
@@ -455,6 +456,7 @@ exports.updatePageByID = async (req, res) => {
         page.page_content = req.body.page_content
         page.page_status = req.body.page_status
         page.page_thumbnail = req.body.page_thumbnail
+        page.page_template = req.body.page_template
         if(page.page_title === req.body.page_title) {
             page.page_title = req.body.page_title
             let pageSaved = await page.save()
@@ -776,5 +778,11 @@ exports.getSettingAllPages = async (req, res) => {
 exports.getUserTypes = async (req, res) => {
     res.send({
         items: userTypes,
+    })
+}
+
+exports.getTemplateFileNames = async (req, res) => {
+    res.send({
+        items: websiteTemplates.templates,
     })
 }

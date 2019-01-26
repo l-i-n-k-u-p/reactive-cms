@@ -326,6 +326,7 @@ class Page extends Model {
             page_slug: '',
             page_date: '',
             page_status: '',
+            page_template: '',
         }
     }
 
@@ -747,6 +748,18 @@ class UserTypes extends Collection {
     }
 }
 
+class PageTemplates extends Collection {
+    getModelsFromResponse (response) {
+        return response.getData().items
+    }
+
+    routes() {
+        return {
+            fetch: appApiBaseURL+'/page/template-files/',
+        }
+    }
+}
+
 
 export default {
     User: User,
@@ -764,6 +777,7 @@ export default {
     Dashboard: Dashboard,
     SettingPages: SettingPages,
     UserTypes: UserTypes,
+    PageTemplates: PageTemplates,
 }
 
 </script>
