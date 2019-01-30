@@ -5,10 +5,10 @@ const Schema = mongoose.Schema
 
 const Session = new Schema({
     _id: { type: String },
-    createdAt: { type: Date, expires: APP_CONFIG.sessionMaxAge },
-    session_user: { type: Object },
+    session: { type: Object },
+    expires: { type: Date },
 }, {
-    collection: 'sessions'
+    collection: 'session'
 })
 
 module.exports = mongoose.model('Session', Session)

@@ -61,7 +61,7 @@ let routes = [
     {
         method: 'GET',
         url: '/admin-logout',
-        handler: websiteController.websiteAdminLogout,
+        handler: websiteController.websiteDashboardLogout,
     },
     {
         method: 'GET',
