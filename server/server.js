@@ -1,9 +1,9 @@
 const fastify = require('fastify')({logger: false})
 const fastifyStatic = require('fastify-static')
 const fastifyFormBody = require('fastify-formbody')
+const fastifySession = require('fastify-session')
 const fastifyCookie = require('fastify-cookie')
-const fastifyCaching = require('fastify-caching')
-const fastifyServerSession = require('fastify-server-session')
+const MongoDBStore = require('connect-mongodb-session')(fastifySession)
 const fastifyCors = require('fastify-cors')
 const fastifyMultipart = require('fastify-multipart')
 const fastifyURLData = require('fastify-url-data')
@@ -46,15 +46,22 @@ fastify.register(fastifyHelmet,{
     },
 })
 
-// session storage
+// session store
+let mongoDBSessionStore = new MongoDBStore({
+    uri: APP_CONFIG.mongoDBURI,
+    collection: 'session',
+})
 fastify.register(fastifyCookie)
-fastify.register(fastifyCaching)
-fastify.register(fastifyServerSession, {
-    secretKey: APP_CONFIG.appSecret,
-    sessionMaxAge: APP_CONFIG.sessionMaxAge,
+fastify.register(fastifySession, {
+    secret: APP_CONFIG.appSecret,
     cookie: {
+        maxAge: APP_CONFIG.sessionMaxAge,
+        expires: APP_CONFIG.sessionMaxAge,
         domain: APP_CONFIG.domain,
+        secure: false,
     },
+    store: mongoDBSessionStore,
+    saveUninitialized: true,
 })
 
 // template engine

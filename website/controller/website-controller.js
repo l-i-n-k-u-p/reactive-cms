@@ -123,8 +123,6 @@ exports.websiteAdminValidateLoginAccess = async (req, res) => {
             user_pass: user.user_pass,
             user_type: user.user_type,
         }
-        // TODO: finish session stored
-        // session.saveSessionOnDB(req.cookies.sessionid, req.session.user)
         if(user.user_type === 'admin')
             return res.redirect('dashboard')
         throw new Error('Not valid user')
@@ -136,13 +134,11 @@ exports.websiteAdminValidateLoginAccess = async (req, res) => {
     }
 }
 
-exports.websiteAdminLogout = async (req, res) => {
+exports.websiteDashboardLogout = async (req, res) => {
     if(req.session.user) {
         let userID = req.session.user.user_id
         req.session = {}
-        // TODO: finish session stored
-        // session.removeUserSessionOnDB(userID)
-        res.redirect('admin')
+        session.removeUserSessionOnDB(userID)
     }
     else
         res.redirect('admin')
