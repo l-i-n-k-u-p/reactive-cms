@@ -1,8 +1,8 @@
 {
-  "name": "VENoM",
+  "name": "reactive-cms",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A simple CMS more to start your project!",
+  "main": "server/server.js",
   "scripts": {
     "start": "node server/server.js",
     "pm2:start": "node_modules/pm2/bin/pm2 start server/server.js -i 1 --name='VENoM'",
