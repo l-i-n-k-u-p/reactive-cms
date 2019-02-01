@@ -33,13 +33,13 @@
                         v-on:click="onClickRow(page)">
                         <div
                             class="avatar"
-                            v-if="page.get('page_media_name')"
-                            v-bind:style="$getAvatarURL(page.get('page_media_name'))">
+                            v-if="page.get('page_thumbnail')"
+                            v-bind:style="getCoverImage(page)">
                         </div>
                         <div
                             class="avatar"
-                            v-if="!page.get('page_media_name')"
-                            v-bind:style="getAvatarColor(page)">
+                            v-if="!page.get('page_thumbnail')"
+                            v-bind:style="getCoverColor(page)">
                             <span>
                                 {{ page.get('page_title')[0] }}
                             </span>
@@ -141,26 +141,14 @@ export default {
                 delete this.itemSelected[itemId]
             this.$eventHub.$emit('items-selected', this.itemSelected)
         },
-        getAvatarColor: function(page) {
-            this.getAvatarURL(page)
-            page.on('change', ({attribute, value}) => {
-                if(attribute === 'page_thumbnail')
-                    this.getAvatarURL(page)
-            })
-            return this.$getHexColor(page.get('page_title'))
-        },
-        getAvatarURL: function(page) {
-            if(!page.get('page_thumbnail'))
-                return
-
-            let media = new this.$models.Media({'_id': page.get('page_thumbnail')})
-            media.fetch()
-            .then((data) => {
-                page.set('page_media_name', media.get('media_name'))
-            })
-        },
         getMomentDate: function(date) {
             return moment(date).format('MMMM Do YYYY, h:mm:ss a')
+        },
+        getCoverImage: function(page) {
+            return this.$getThumbnailURL(page.get('page_thumbnail').media_file_name)
+        },
+        getCoverColor: function(page) {
+            return this.$getHexColor(page.get('page_title'))
         },
     }
 }

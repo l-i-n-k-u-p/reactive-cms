@@ -30,13 +30,13 @@
             </div>
             <div
                 class="page-thumbnail"
-                v-if="media.isImage()"
-                v-bind:style="$getThumbnailURL(media.media_name)">
+                v-if="page.get('page_thumbnail')"
+                v-bind:style="getCoverImage()">
             </div>
             <div
                 class="page-thumbnail"
-                v-if="!media.isImage()"
-                v-bind:style="$getHexColor(page.page_title)">
+                v-if="!page.get('page_thumbnail')"
+                v-bind:style="getCoverColor()">
             </div>
             <div
                 class="content-wrapper">
@@ -146,7 +146,6 @@ export default {
             modalDescription: '',
             pageStatusIndex: 0,
             showMediaModal: false,
-            media: new this.$models.Media(),
             pageDate: '',
             fileTemplates: new this.$models.FileTemplates(),
             pageTemplateOptions: [],
@@ -172,9 +171,6 @@ export default {
     },
     mounted() {
         this.page.on('change', ({attribute, value}) => {
-            if(attribute === 'page_thumbnail') {
-                this.setMediaIDAndFetchMedia(this.page.get('page_thumbnail'))
-            }
             if(attribute === 'page_date') {
                 this.pageDate = moment(value).format('MMMM Do YYYY, h:mm:ss a')
             }
@@ -211,7 +207,6 @@ export default {
                 this.editorContent = this.page.get('page_content')
                 if(this.page.get('page_status') === 'pending')
                     this.pageStatusIndex = 1
-                this.setMediaIDAndFetchMedia(this.page.get('page_thumbnail'))
                 this.setPageTemplateIndex()
             })
             .catch(err => {
@@ -269,21 +264,15 @@ export default {
             this.showMediaModal = false
         },
         onMediaSelect: function(media) {
-            this.page.set('page_thumbnail', media.get('id'))
-            this.setMediaIDAndFetchMedia(media.get('id'))
+            let mediaData = {
+                media_id: media.get('id'),
+                media_file_name: media.get('media_name'),
+                media_image: media.isImage(),
+            }
+            this.page.set('page_thumbnail', mediaData)
             this.closeMediaModal()
         },
-        setMediaIDAndFetchMedia: function(mediaID) {
-            if(!mediaID)
-                return
-
-            this.media.clear()
-            this.media = new this.$models.Media()
-            this.media.set('_id', mediaID)
-            this.media.fetch()
-        },
         removeMedia: function() {
-            this.media.clear()
             this.page.set('page_thumbnail', '')
         },
         getFileTemplates: function() {
@@ -332,6 +321,12 @@ export default {
                 })
             }
             this.setPageTemplateIndex()
+        },
+        getCoverImage: function() {
+            return this.$getThumbnailURL(this.page.get('page_thumbnail').media_file_name)
+        },
+        getCoverColor: function() {
+            return this.$getHexColor(this.page.get('page_title'))
         },
     }
 }

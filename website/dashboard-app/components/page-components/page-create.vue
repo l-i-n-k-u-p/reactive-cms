@@ -10,24 +10,33 @@
                 <h2>
                     Create page
                 </h2>
+                <div
+                    class="header-action-buttons-wrapper">
+                    <Button
+                        v-if="page.get('page_thumbnail')"
+                        buttonIcon="broken_image"
+                        v-bind:buttonAction="removeMedia"
+                        buttonColor="#f0f0f0">
+                        Remove Image
+                    </Button>
+                    <Button
+                        buttonIcon="update"
+                        v-bind:buttonAction="openMediaModal"
+                        buttonColor="#f0f0f0">
+                        Set Image
+                    </Button>
+                </div>
             </div>
             <div
                 class="page-thumbnail"
-                v-if="media.isImage()"
-                v-bind:style="$getThumbnailURL(media.media_name)">
+                v-if="page.get('page_thumbnail')"
+                v-bind:style="getCoverImage()">
             </div>
             <div
                 class="page-thumbnail"
-                v-if="!page.page_thumbnail"
-                v-bind:style="$getHexColor(page.page_title)">
+                v-if="!page.get('page_thumbnail')"
+                v-bind:style="getCoverColor()">
             </div>
-            <Button
-                class="media-modal"
-                buttonIcon="update"
-                v-bind:buttonAction="openMediaModal"
-                buttonColor="#f0f0f0">
-                Update Image
-            </Button>
             <div
                 class="content-wrapper">
                 <InputText
@@ -109,7 +118,6 @@ export default {
             ],
             editorContent: '',
             showMediaModal: false,
-            media: new this.$models.Media(),
             fileTemplates: new this.$models.FileTemplates(),
             pageTemplateOptions: [],
             currentPageTemplateIndex: null,
@@ -161,13 +169,13 @@ export default {
             this.showMediaModal = false
         },
         onMediaSelect: function(media) {
-            this.page.set('page_thumbnail', media.get('id'))
-            this.setMediaIDAndFetchMedia(media.get('id'))
+            let mediaData = {
+                media_id: media.get('id'),
+                media_file_name: media.get('media_name'),
+                media_image: media.isImage(),
+            }
+            this.page.set('page_thumbnail', mediaData)
             this.closeMediaModal()
-        },
-        setMediaIDAndFetchMedia: function(mediaID) {
-            this.media.set('_id', mediaID)
-            this.media.fetch()
         },
         getFileTemplates: function() {
             this.fileTemplates.fetch()
@@ -201,6 +209,15 @@ export default {
             }
             this.currentPageTemplateIndex = 0
         },
+        removeMedia: function() {
+            this.page.set('page_thumbnail', '')
+        },
+        getCoverImage: function() {
+            return this.$getThumbnailURL(this.page.get('page_thumbnail').media_file_name)
+        },
+        getCoverColor: function() {
+            return this.$getHexColor(this.page.get('page_title'))
+        },
     }
 }
 
@@ -213,11 +230,13 @@ export default {
 }
 
 .header {
+    box-sizing: border-box;
     display: flex;
     left: 0;
     padding: 10px;
     position: absolute;
     top: 0;
+    width: 100%;
     z-index: 1;
 }
 
@@ -279,10 +298,12 @@ h2 {
     margin-top: 15px;
 }
 
-.media-modal {
-    position: absolute !important;
-    right: 10px;
-    top: 10px;
+.header-action-buttons-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0px;
+    right: 0;
+    top: 0;
 }
 
 </style>
