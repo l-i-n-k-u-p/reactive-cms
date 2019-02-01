@@ -100,13 +100,13 @@
                     </div>
                     <div
                         class="avatar"
-                        v-if="user.get('user_avatar_media_name')"
-                        v-bind:style="$getAvatarURL(user.get('user_avatar_media_name'))">
+                        v-if="user.get('user_avatar')"
+                        v-bind:style="getCoverImage()">
                     </div>
                     <div
                         class="avatar"
-                        v-if="!user.get('user_avatar_media_name')"
-                        v-bind:style="getAvatarColor(user)">
+                        v-if="!user.get('user_avatar')"
+                        v-bind:style="getCoverColor()">
                         <span>
                             {{ user.get('user_first_name')[0] }}
                         </span>
@@ -254,25 +254,11 @@ export default {
                 this.$eventHub.$emit('dashboard-app-error', err.message)
             })
         },
-        getAvatarColor: function(user) {
-            this.getAvatarURL(user)
-            user.on('change', ({attribute, value}) => {
-                if(attribute === 'user_avatar')
-                    this.getAvatarURL(user)
-            })
-            return this.$getHexColor(user.get('user_first_name'))
+        getCoverImage: function() {
+            return this.$getAvatarURL(this.user.get('user_avatar').media_file_name)
         },
-        getAvatarURL: function(user) {
-            if(!user.get('user_avatar')) {
-                user.set('user_avatar_media_name', '')
-                return
-            }
-
-            let media = new this.$models.Media({'_id': user.get('user_avatar')})
-            media.fetch()
-            .then((data) => {
-                user.set('user_avatar_media_name', media.get('media_name'))
-            })
+        getCoverColor: function() {
+            return this.$getHexColor(this.user.get('user_first_name'))
         },
     },
     directives: {
