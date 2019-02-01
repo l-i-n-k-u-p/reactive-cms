@@ -33,13 +33,13 @@
                         v-on:click="onClickRow(post)">
                         <div
                             class="avatar"
-                            v-if="post.get('post_media_name')"
-                            v-bind:style="$getAvatarURL(post.get('post_media_name'))">
+                            v-if="post.get('post_thumbnail')"
+                            v-bind:style="getCoverImage(post)">
                         </div>
                         <div
                             class="avatar"
-                            v-if="!post.get('post_media_name')"
-                            v-bind:style="getAvatarColor(post)">
+                            v-if="!post.get('post_thumbnail')"
+                            v-bind:style="getCoverColor(post)">
                             <span>
                                 {{ post.get('post_title')[0] }}
                             </span>
@@ -142,26 +142,14 @@ export default {
                 delete this.itemSelected[itemId]
             this.$eventHub.$emit('items-selected', this.itemSelected)
         },
-        getAvatarColor: function(post) {
-            this.getAvatarURL(post)
-            post.on('change', ({attribute, value}) => {
-                if(attribute === 'post_thumbnail')
-                    this.getAvatarURL(post)
-            })
-            return this.$getHexColor(post.get('post_title'))
-        },
-        getAvatarURL: function(post) {
-            if(!post.get('post_thumbnail'))
-                return
-
-            let media = new this.$models.Media({'_id': post.get('post_thumbnail')})
-            media.fetch()
-            .then((data) => {
-                post.set('post_media_name', media.get('media_name'))
-            })
-        },
         getMomentDate: function(date) {
             return moment(date).format('MMMM Do YYYY, h:mm:ss a')
+        },
+        getCoverImage: function(post) {
+            return this.$getAvatarURL(post.get('post_thumbnail').media_file_name)
+        },
+        getCoverColor: function(post) {
+            return this.$getHexColor(post.get('post_title'))
         },
     }
 }

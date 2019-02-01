@@ -34,7 +34,7 @@
         <div
             class="user-thumbnail"
             v-if="!user.get('user_thumbnail')"
-            v-bind:style="getAvatarColor()">
+            v-bind:style="getCoverColor()">
         </div>
         <div
             class="user-avatar-wrapper">
@@ -48,7 +48,7 @@
                 <div
                     class="user-image-color"
                     v-if="!user.get('user_avatar')"
-                    v-bind:style="getAvatarColor()">
+                    v-bind:style="getCoverColor()">
                     <span
                         class="user-letter">
                         {{ user.get('user_first_name')[0] }}
@@ -273,7 +273,7 @@ export default {
         getAvatarImage: function() {
             return this.$getAvatarURL(this.user.get('user_avatar').media_file_name)
         },
-        getAvatarColor: function() {
+        getCoverColor: function() {
             return this.$getHexColor(this.user.get('user_first_name'))
         },
     }

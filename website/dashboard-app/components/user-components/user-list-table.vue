@@ -40,12 +40,12 @@
                         <div
                             class="avatar"
                             v-if="user.get('user_avatar')"
-                            v-bind:style="getAvatarImage(user)">
+                            v-bind:style="getCoverImage(user)">
                         </div>
                         <div
                             class="avatar"
                             v-if="!user.get('user_avatar')"
-                            v-bind:style="getAvatarColor(user)">
+                            v-bind:style="getCoverColor(user)">
                             <span>
                                 {{ user.get('user_first_name')[0] }}
                             </span>
@@ -165,10 +165,10 @@ export default {
         userIsActive: function(active) {
             return ((active)?'Yes':'No')
         },
-        getAvatarImage: function(user) {
+        getCoverImage: function(user) {
             return this.$getAvatarURL(user.get('user_avatar').media_file_name)
         },
-        getAvatarColor: function(user) {
+        getCoverColor: function(user) {
             return this.$getHexColor(user.get('user_first_name'))
         },
         getMomentDate: function(date) {

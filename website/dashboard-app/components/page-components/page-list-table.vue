@@ -145,7 +145,7 @@ export default {
             return moment(date).format('MMMM Do YYYY, h:mm:ss a')
         },
         getCoverImage: function(page) {
-            return this.$getThumbnailURL(page.get('page_thumbnail').media_file_name)
+            return this.$getAvatarURL(page.get('page_thumbnail').media_file_name)
         },
         getCoverColor: function(page) {
             return this.$getHexColor(page.get('page_title'))
