@@ -110,7 +110,7 @@ export default {
             editorContent: '',
             showMediaModal: false,
             media: new this.$models.Media(),
-            pageTemplates: new this.$models.PageTemplates(),
+            fileTemplates: new this.$models.FileTemplates(),
             pageTemplateOptions: [],
             currentPageTemplateIndex: null,
         }
@@ -125,7 +125,7 @@ export default {
         MediaModal,
     },
     created() {
-        this.getPageTemplates()
+        this.getFileTemplates()
     },
     methods: {
         onChangeInputValue: function(propName, value) {
@@ -169,8 +169,8 @@ export default {
             this.media.set('_id', mediaID)
             this.media.fetch()
         },
-        getPageTemplates: function() {
-            this.pageTemplates.fetch()
+        getFileTemplates: function() {
+            this.fileTemplates.fetch()
             .then(data => {
                 if(data.getData().status_code) {
                     this.$eventHub.$emit('dashboard-app-error', data.getData().status_msg)
@@ -186,7 +186,7 @@ export default {
             this.page.set('page_template', option.value)
         },
         setPageTemplateOptions: function() {
-            let templates = this.pageTemplates.models
+            let templates = this.fileTemplates.models
             this.pageTemplateOptions.push({
                 name: 'none',
                 value: '',

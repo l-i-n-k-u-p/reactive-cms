@@ -50,6 +50,13 @@
                     v-bind:onSelectOption="onSelectTemplateHome"
                     v-bind:selectOptions="templateHomeOptions">
                 </FormDropdownSelect>
+                <FormDropdownSelect
+                    class="dropdown-select"
+                    label="Listview Posts Template"
+                    v-bind:initialIndexOption="templatePostsIndex"
+                    v-bind:onSelectOption="onSelectPostsTemplate"
+                    v-bind:selectOptions="templateFileOptions">
+                </FormDropdownSelect>
                 <div
                     class="buttons-wrapper">
                     <Button
@@ -80,6 +87,9 @@ export default {
             settingPages: new this.$models.SettingPages(),
             templateHomeIndex: null,
             templateHomeOptions: [],
+            fileTemplates: new this.$models.FileTemplates(),
+            templatePostsIndex: null,
+            templateFileOptions: [],
         }
     },
     components: {
@@ -95,6 +105,7 @@ export default {
         this.getSiteData()
         this.getSettingPagesData()
         this.setOnChangeSetting()
+        this.getTemplateFilesData()
     },
     methods: {
         getSettingsData: function() {
@@ -117,6 +128,7 @@ export default {
                     return
                 }
                 this.setIndexPageTemplate()
+                this.setIndexPostsTemplate()
             })
             .catch(err => {
                 this.$eventHub.$emit('dashboard-app-error', err.message)
@@ -133,6 +145,19 @@ export default {
             })
             .catch(err => {
                 this.$eventHub.$emit('dashboard-app-error', err.message)
+            })
+        },
+        getTemplateFilesData: function() {
+            this.fileTemplates.fetch()
+            .then(data => {
+                if(data.getData().status_code) {
+                    this.$eventHub.$emit('dashboard-app-error', data.getData().status_msg)
+                    return
+                }
+                this.setInitialSelectPostsTemplates()
+            })
+            .catch(err => {
+                this.$eventHub.$emit('dashboard-app-error', data.message)
             })
         },
         onChangeInputValue: function(propName, value) {
@@ -180,13 +205,20 @@ export default {
                 if(attribute === 'site_template_home') {
                     this.setIndexPageTemplate()
                 }
+                if(attribute === 'site_template_posts') {
+                    this.setIndexPostsTemplate()
+                }
             })
         },
         setInitialSelectPages: function() {
-            this.templateHomeOptions = []
-            for(let page of this.settingPages.models) {
-                let pageID = page.get('id')
-                let pageTitle = page.get('page_title')
+            let templates = this.settingPages.models
+            this.templateHomeOptions.push({
+                name: 'none',
+                value: '',
+            })
+            for(let template of templates) {
+                let pageID = template.get('id')
+                let pageTitle = template.get('page_title')
                 this.templateHomeOptions.push({
                     name: pageTitle,
                     value: pageID,
@@ -195,12 +227,52 @@ export default {
             this.setIndexPageTemplate()
         },
         setIndexPageTemplate: function() {
-            let currentPageID = this.site.get('site_template_home')
-            let pages = this.settingPages.models
-            for(let index in pages) {
-                let pageID = pages[index].get('id')
-                if(pageID === currentPageID)
+            if(!this.templateHomeOptions)
+                return
+
+            let templates = this.settingPages.models
+            let pageTemplate = this.site.get('site_template_home')
+            this.templateHomeIndex = 0
+            for(let index in this.templateHomeOptions) {
+                let templateFullName = this.templateHomeOptions[index].value
+                if(templateFullName === pageTemplate) {
                     this.templateHomeIndex = index
+                    return
+                }
+            }
+        },
+        onSelectPostsTemplate: function(option) {
+            this.site.set('site_template_posts', option.value)
+        },
+        setInitialSelectPostsTemplates: function() {
+            let templates = this.fileTemplates.models
+            this.templateFileOptions.push({
+                name: 'none',
+                value: '',
+            })
+            for(let template of templates) {
+                let templateName = template.get('template_name')
+                let templateFullName = template.get('template_full_name')
+                this.templateFileOptions.push({
+                    name: templateName,
+                    value: templateFullName,
+                })
+            }
+            this.setIndexPostsTemplate()
+        },
+        setIndexPostsTemplate: function() {
+            if(!this.templateFileOptions)
+                return
+
+            let templates = this.fileTemplates.models
+            let pageTemplate = this.site.get('site_template_posts')
+            this.templatePostsIndex = 0
+            for(let index in this.templateFileOptions) {
+                let templateFullName = this.templateFileOptions[index].value
+                if(templateFullName === pageTemplate) {
+                    this.templatePostsIndex = index
+                    return
+                }
             }
         },
     }

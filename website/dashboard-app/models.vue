@@ -668,6 +668,7 @@ class Site extends Model {
             site_items_peer_page: '',
             site_url: '',
             site_template_home: '',
+            site_template_posts: '',
         }
     }
 
@@ -748,7 +749,7 @@ class UserTypes extends Collection {
     }
 }
 
-class PageTemplates extends Collection {
+class FileTemplates extends Collection {
     getModelsFromResponse (response) {
         return response.getData().items
     }
@@ -777,7 +778,7 @@ export default {
     Dashboard: Dashboard,
     SettingPages: SettingPages,
     UserTypes: UserTypes,
-    PageTemplates: PageTemplates,
+    FileTemplates: FileTemplates,
 }
 
 </script>

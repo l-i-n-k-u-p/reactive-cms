@@ -148,7 +148,7 @@ export default {
             showMediaModal: false,
             media: new this.$models.Media(),
             pageDate: '',
-            pageTemplates: new this.$models.PageTemplates(),
+            fileTemplates: new this.$models.FileTemplates(),
             pageTemplateOptions: [],
             currentPageTemplateIndex: null,
         }
@@ -168,7 +168,7 @@ export default {
         this.page.setOption('hasUpdate', false)
         this.getPageData()
         this.setOnChangePage()
-        this.getPageTemplates()
+        this.getFileTemplates()
     },
     mounted() {
         this.page.on('change', ({attribute, value}) => {
@@ -286,8 +286,8 @@ export default {
             this.media.clear()
             this.page.set('page_thumbnail', '')
         },
-        getPageTemplates: function() {
-            this.pageTemplates.fetch()
+        getFileTemplates: function() {
+            this.fileTemplates.fetch()
             .then(data => {
                 if(data.getData().status_code) {
                     this.$eventHub.$emit('dashboard-app-error', data.getData().status_msg)
@@ -306,7 +306,7 @@ export default {
             if(!this.pageTemplateOptions)
                 return
 
-            let templates = this.pageTemplates.models
+            let templates = this.fileTemplates.models
             let pageTemplate = this.page.get('page_template')
             this.currentPageTemplateIndex = 0
             for(let index in this.pageTemplateOptions) {
@@ -318,7 +318,7 @@ export default {
             }
         },
         setPageTemplateOptions: function() {
-            let templates = this.pageTemplates.models
+            let templates = this.fileTemplates.models
             this.pageTemplateOptions.push({
                 name: 'none',
                 value: '',
