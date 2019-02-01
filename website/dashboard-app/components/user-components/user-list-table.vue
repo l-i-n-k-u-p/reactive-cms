@@ -39,12 +39,12 @@
                         v-on:click="onClickRow(user)">
                         <div
                             class="avatar"
-                            v-if="user.get('user_avatar_media_name')"
-                            v-bind:style="$getAvatarURL(user.get('user_avatar_media_name'))">
+                            v-if="user.get('user_avatar')"
+                            v-bind:style="getAvatarImage(user)">
                         </div>
                         <div
                             class="avatar"
-                            v-if="!user.get('user_avatar_media_name')"
+                            v-if="!user.get('user_avatar')"
                             v-bind:style="getAvatarColor(user)">
                             <span>
                                 {{ user.get('user_first_name')[0] }}
@@ -165,25 +165,11 @@ export default {
         userIsActive: function(active) {
             return ((active)?'Yes':'No')
         },
-        getAvatarColor: function(user) {
-            this.getAvatarURL(user)
-            user.on('change', ({attribute, value}) => {
-                if(attribute === 'user_avatar')
-                    this.getAvatarURL(user)
-            })
-            return this.$getHexColor(user.get('user_first_name'))
+        getAvatarImage: function(user) {
+            return this.$getAvatarURL(user.get('user_avatar').media_file_name)
         },
-        getAvatarURL: function(user) {
-            if(!user.get('user_avatar')) {
-                user.set('user_avatar_media_name', '')
-                return
-            }
-
-            let media = new this.$models.Media({'_id': user.get('user_avatar')})
-            media.fetch()
-            .then((data) => {
-                user.set('user_avatar_media_name', media.get('media_name'))
-            })
+        getAvatarColor: function(user) {
+            return this.$getHexColor(user.get('user_first_name'))
         },
         getMomentDate: function(date) {
             return moment(date).format('MMMM Do YYYY, h:mm:ss a')

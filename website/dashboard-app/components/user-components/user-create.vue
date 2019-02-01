@@ -29,12 +29,12 @@
         <div
             class="user-thumbnail"
             v-if="user.get('user_thumbnail')"
-            v-bind:style="$getThumbnailURL(media.get('media_name'))">
+            v-bind:style="getCoverImage()">
         </div>
         <div
             class="user-thumbnail"
             v-if="!user.get('user_thumbnail')"
-            v-bind:style="$getHexColor(user.get('user_first_name'))">
+            v-bind:style="getAvatarColor()">
         </div>
         <div
             class="user-avatar-wrapper">
@@ -43,12 +43,12 @@
                 <div
                     class="user-image-color"
                     v-if="user.get('user_avatar')"
-                    v-bind:style="$getAvatarURL(mediaAvatar.get('media_name'))">
+                    v-bind:style="getAvatarImage()">
                 </div>
                 <div
                     class="user-image-color"
                     v-if="!user.get('user_avatar')"
-                    v-bind:style="$getHexColor(user.get('user_first_name'))">
+                    v-bind:style="getAvatarColor()">
                     <span
                         class="user-letter">
                         {{ user.get('user_first_name')[0] }}
@@ -163,8 +163,6 @@ export default {
             }),
             newPassword: '',
             showMediaModal: false,
-            media: new this.$models.Media(),
-            mediaAvatar: new this.$models.Media(),
             showMediaAvatarModal: false,
             userTypes: new this.$models.UserTypes(),
             userTypeIndex: 0,
@@ -181,14 +179,6 @@ export default {
     },
     created() {
         this.getUserTypesData()
-    },
-    mounted() {
-        this.user.on('change', ({attribute, value}) => {
-            if(attribute === 'user_avatar')
-                this.setMediaAvatarIDAndFetchMedia(this.user.get('user_avatar'))
-            if(attribute === 'user_thumbnail')
-                this.setMediaIDAndFetchMedia(this.user.get('user_thumbnail'))
-        })
     },
     methods: {
         onSetNewPassword: function(propName, value) {
@@ -213,24 +203,18 @@ export default {
             })
         },
         onMediaSelect: function(media) {
-            this.user.set('user_thumbnail', media.get('id'))
-            this.setMediaIDAndFetchMedia(media.get('id'))
+            let mediaData = {
+                media_id: media.get('id'),
+                media_file_name: media.get('media_name'),
+                media_image: media.isImage(),
+            }
+            this.user.set('user_thumbnail', mediaData)
             this.closeMediaModal()
         },
         cancelCreateUser: function() {
             this.$router.back()
         },
-        setMediaIDAndFetchMedia: function(mediaID) {
-            if(!mediaID)
-                return
-
-            this.media.clear()
-            this.media = new this.$models.Media()
-            this.media.set('_id', mediaID)
-            this.media.fetch()
-        },
         removeMedia: function() {
-            this.media.clear()
             this.user.set('user_thumbnail', '')
         },
         openMediaModal: function() {
@@ -240,8 +224,12 @@ export default {
             this.showMediaModal = false
         },
         onMediaAvatarSelect: function(media) {
-            this.user.set('user_avatar', media.get('id'))
-            this.setMediaAvatarIDAndFetchMedia(media.get('id'))
+            let mediaData = {
+                media_id: media.get('id'),
+                media_file_name: media.get('media_name'),
+                media_image: media.isImage(),
+            }
+            this.user.set('user_avatar', mediaData)
             this.closeMediaAvatarModal()
         },
         openMediaAvatarModal: function() {
@@ -250,17 +238,7 @@ export default {
         closeMediaAvatarModal: function() {
             this.showMediaAvatarModal = false
         },
-        setMediaAvatarIDAndFetchMedia: function(mediaID) {
-            if(!mediaID)
-                return
-
-            this.mediaAvatar.clear()
-            this.mediaAvatar = new this.$models.Media()
-            this.mediaAvatar.set('_id', mediaID)
-            this.mediaAvatar.fetch()
-        },
         removeMediaAvatar: function() {
-            this.mediaAvatar.clear()
             this.user.set('user_avatar', '')
         },
         getUserTypesData: function() {
@@ -288,6 +266,15 @@ export default {
                     value: typeName,
                 })
             }
+        },
+        getCoverImage: function() {
+            return this.$getThumbnailURL(this.user.get('user_thumbnail').media_file_name)
+        },
+        getAvatarImage: function() {
+            return this.$getAvatarURL(this.user.get('user_avatar').media_file_name)
+        },
+        getAvatarColor: function() {
+            return this.$getHexColor(this.user.get('user_first_name'))
         },
     }
 }
