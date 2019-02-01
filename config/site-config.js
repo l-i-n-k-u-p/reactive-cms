@@ -15,6 +15,7 @@ const loadSiteSettings = async () => {
 const SITE_CONFIG = {
     siteTitle: 'Reactive Web',
     siteItemsPeerPage: 12,
+    siteTemplateHome: '',
     siteTemplatePosts: '',
     loadSiteSettings,
 }

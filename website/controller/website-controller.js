@@ -169,7 +169,6 @@ exports.websiteIndexView = async (req, res) => {
         res.code(500).send({
             status_code: 1,
             status_msg: 'Page Not Found',
-            err: err.toString(),
         })
     }
 }
