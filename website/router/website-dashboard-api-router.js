@@ -67,7 +67,7 @@ let routes = [
         method: 'PUT',
         url: '/user/:id',
         beforeHandler: session.isAuthenticated,
-        handler: websiteDashboardAPIController.updaterUserByID,
+        handler: websiteDashboardAPIController.updateUserByID,
     },
     {
         method: 'DELETE',

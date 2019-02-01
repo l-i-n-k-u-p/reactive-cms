@@ -153,18 +153,17 @@ exports.websiteDashboardView = async (req, res) => {
 
 exports.websiteIndexView = async (req, res) => {
     try {
-        let siteSettings = await modelSite.findOne()
-        let templateHomeID = siteSettings.site_template_home
+        let page = null
+        let pageView = 'default/index'
+        let templateHomeID = SITE_CONFIG.siteTemplateHome
         if(templateHomeID) {
-            let page = await modelPage.findById(templateHomeID)
-            res.view('default/page-detail', {
-                title: SITE_CONFIG.siteTitle,
-                page: page,
-            })
-            return
+            page = await modelPage.findById(templateHomeID)
+            if(page.page_template)
+                pageView = 'template/' + page.page_template
         }
-        res.view('default/index', {
+        res.view(pageView, {
             title: SITE_CONFIG.siteTitle,
+            page: page,
         })
     } catch(err) {
         res.code(500).send({
@@ -177,6 +176,7 @@ exports.websiteIndexView = async (req, res) => {
 exports.websitePageView = async (req, res) => {
     try {
         let pageSlug = req.params.slug
+        let pageView = 'default/page-detail'
         let page = await modelPage.findOne({
             'page_slug': pageSlug,
         })
@@ -185,11 +185,13 @@ exports.websitePageView = async (req, res) => {
             res.code(404).view('404', {
                 title: SITE_CONFIG.siteTitle,
                 status: 'Page not found',
-                error_message: 'Route: '+urlData.path+' Not found.',
+                error_message: 'Route: ' + urlData.path + ' Not found.',
             })
             return
         }
-        res.view('default/page-detail', {
+        if(page.page_template)
+            pageView = 'template/' + page.page_template
+        res.view(pageView, {
             title: SITE_CONFIG.siteTitle,
             page: page,
         })
@@ -221,11 +223,14 @@ exports.websiteBlogArchivePaginatedView = async (req, res) => {
             res.code(404).view('404', {
                 title: SITE_CONFIG.siteTitle,
                 status: 'Page not found',
-                error_message: 'Route: '+urlData.path+' Not found.',
+                error_message: 'Route: ' + urlData.path + ' Not found.',
             })
             return
         }
-        res.view('default/post-list', {
+        let view = 'default/post-list'
+        if(SITE_CONFIG.siteTemplatePosts)
+            view = 'template/' + SITE_CONFIG.siteTemplatePosts
+        res.view(view, {
             title: SITE_CONFIG.siteTitle,
             items: items,
             total_pages: Math.ceil(totalItems/SITE_CONFIG.siteItemsPeerPage),
@@ -255,7 +260,7 @@ exports.websiteBlogSingleView = async (req, res) => {
             res.code(404).view('404', {
                 title: SITE_CONFIG.siteTitle,
                 status: 'Page not found',
-                error_message: 'Route: '+urlData.path+' Not found.',
+                error_message: 'Route: ' + urlData.path + ' Not found.',
             })
             return
         }

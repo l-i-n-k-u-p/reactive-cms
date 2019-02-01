@@ -188,7 +188,7 @@ exports.addNewUser = async (req, res) => {
     }
 }
 
-exports.updaterUserByID = async (req, res) => {
+exports.updateUserByID = async (req, res) => {
     // NOTE: improve this
     if(req.body.user_pass === '') {
         try {
