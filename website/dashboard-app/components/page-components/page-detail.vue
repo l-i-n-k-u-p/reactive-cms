@@ -183,9 +183,8 @@ export default {
                     return
 
                 this.page.setOption('hasUpdate', false)
-                if(attribute === 'page_content') {
+                if(attribute === 'page_content')
                     this.editorContent = value
-                }
                 if(attribute === 'page_status') {
                     if(value === 'pending')
                         this.pageStatusIndex = 1

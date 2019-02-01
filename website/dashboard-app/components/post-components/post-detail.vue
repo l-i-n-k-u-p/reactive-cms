@@ -171,9 +171,8 @@ export default {
                     return
 
                 this.post.setOption('hasUpdate', false)
-                if(attribute === 'post_content') {
+                if(attribute === 'post_content')
                     this.editorContent = value
-                }
                 if(attribute === 'post_status') {
                     if(value === 'pending')
                         this.postStatusIndex = 1
