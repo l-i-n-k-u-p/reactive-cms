@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 const Post = new Schema({
     post_title: { type: String, trim: true, required: true },
     post_content: { type: String, trim: true, required: true },
-    post_thumbnail: { type: String, trim: true },
+    post_thumbnail: { type: Object },
     post_slug: { type: String, trim: true, required: true },
     post_date: { type: String, required: true},
     post_status: { type: String, required: true },

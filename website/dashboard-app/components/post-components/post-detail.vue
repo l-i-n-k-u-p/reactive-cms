@@ -30,13 +30,13 @@
             </div>
             <div
                 class="post-thumbnail"
-                v-if="media.isImage()"
-                v-bind:style="$getThumbnailURL(media.media_name)">
+                v-if="post.get('post_thumbnail')"
+                v-bind:style="getCoverImage()">
             </div>
             <div
                 class="post-thumbnail"
-                v-if="!media.isImage()"
-                v-bind:style="$getHexColor(post.post_title)">
+                v-if="!post.get('post_thumbnail')"
+                v-bind:style="getCoverColor()">
             </div>
             <div
                 class="content-wrapper">
@@ -139,7 +139,6 @@ export default {
             modalDescription: '',
             postStatusIndex: 0,
             showMediaModal: false,
-            media: new this.$models.Media(),
             postDate: '',
         }
     },
@@ -161,12 +160,8 @@ export default {
     },
     mounted() {
         this.post.on('change', ({attribute, value}) => {
-            if(attribute === 'post_thumbnail') {
-                this.setMediaIDAndFetchMedia(this.post.get('post_thumbnail'))
-            }
-            if(attribute === 'post_date') {
+            if(attribute === 'post_date')
                 this.postDate = moment(value).format('MMMM Do YYYY, h:mm:ss a')
-            }
         })
     },
     methods: {
@@ -176,9 +171,8 @@ export default {
                     return
 
                 this.post.setOption('hasUpdate', false)
-                if(attribute === 'post_content') {
+                if(attribute === 'post_content')
                     this.editorContent = value
-                }
                 if(attribute === 'post_status') {
                     if(value === 'pending')
                         this.postStatusIndex = 1
@@ -200,7 +194,6 @@ export default {
                 this.editorContent = this.post.get('post_content')
                 if(this.post.get('post_status') === 'pending')
                     this.postStatusIndex = 1
-                this.setMediaIDAndFetchMedia(this.post.get('post_thumbnail'))
             })
             .catch(err => {
                 this.$eventHub.$emit('dashboard-app-error', err.message)
@@ -257,22 +250,22 @@ export default {
             this.showMediaModal = false
         },
         onMediaSelect: function(media) {
-            this.post.set('post_thumbnail', media.get('id'))
-            this.setMediaIDAndFetchMedia(media.get('id'))
+            let mediaData = {
+                media_id: media.get('id'),
+                media_file_name: media.get('media_name'),
+                media_image: media.isImage(),
+            }
+            this.post.set('post_thumbnail', mediaData)
             this.closeMediaModal()
         },
-        setMediaIDAndFetchMedia: function(mediaID) {
-            if(!mediaID)
-                return
-
-            this.media.clear()
-            this.media = new this.$models.Media()
-            this.media.set('_id', mediaID)
-            this.media.fetch()
-        },
         removeMedia: function() {
-            this.media.clear()
             this.post.set('post_thumbnail', '')
+        },
+        getCoverImage: function() {
+            return this.$getThumbnailURL(this.post.get('post_thumbnail').media_file_name)
+        },
+        getCoverColor: function() {
+            return this.$getHexColor(this.post.get('post_title'))
         },
     }
 }

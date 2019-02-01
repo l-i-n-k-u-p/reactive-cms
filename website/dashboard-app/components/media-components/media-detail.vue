@@ -14,12 +14,12 @@
             <div
                 class="media-thumbnail"
                 v-if="media.isImage()"
-                v-bind:style="$getThumbnailURL(media.media_name)">
+                v-bind:style="getCoverImage()">
             </div>
             <div
                 class="media-thumbnail"
                 v-if="!media.isImage()"
-                v-bind:style="$getHexColor(media.media_title)">
+                v-bind:style="getCoverColor()">
             </div>
             <Button
                 class="media-download"
@@ -173,6 +173,12 @@ export default {
         openMediaFile: function() {
             let mediaURL = this.media.getMediaURL()
             window.open(mediaURL, '_blank')
+        },
+        getCoverImage: function() {
+            return this.$getAvatarURL(this.media.get('media_name'))
+        },
+        getCoverColor: function() {
+            return this.$getHexColor(this.media.get('media_title'))
         },
     }
 }
