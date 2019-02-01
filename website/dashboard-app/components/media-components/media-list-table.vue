@@ -29,7 +29,7 @@
                         <Checkbox
                             style="margin-right: 10px;"
                             v-bind:onChangeValue="onChangeValue"
-                            v-bind:item="media.get('_id')">
+                            v-bind:item="media.get('id')">
                         </Checkbox>
                     </td>
                     <td
@@ -37,12 +37,12 @@
                         <div
                             class="avatar"
                             v-if="media.isImage()"
-                            v-bind:style="$getAvatarURL(media.get('media_name'))">
+                            v-bind:style="getCoverImage(media)">
                         </div>
                         <div
                             class="avatar"
                             v-if="!media.isImage()"
-                            v-bind:style="$getHexColor(media.get('media_title'))">
+                            v-bind:style="getCoverColor(media)">
                             <span>
                                 {{ media.get('media_title')[0] }}
                             </span>
@@ -54,11 +54,11 @@
                     </td>
                     <td
                         v-on:click="onClickRow(media)">
-                        {{ media.media_original_name }}
+                        {{ media.get('media_original_name') }}
                     </td>
                     <td
                         v-on:click="onClickRow(media)">
-                        {{ media.media_mime_type }}
+                        {{ media.get('media_mime_type') }}
                     </td>
                     <td
                         v-on:click="onClickRow(media)">
@@ -154,6 +154,12 @@ export default {
         },
         getMomentDate: function(date) {
             return moment(date).format('MMMM Do YYYY, h:mm:ss a')
+        },
+        getCoverImage: function(media) {
+            return this.$getAvatarURL(media.get('media_name'))
+        },
+        getCoverColor: function(media) {
+            return this.$getHexColor(media.get('media_title'))
         },
     }
 }
