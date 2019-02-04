@@ -3,6 +3,7 @@ const dateTime = require('node-datetime')
 const APP_GLOBAL = require('../../config/global')
 const DASHBOARD_ADMIN_CONFIG = require('../../config/dashboard-admin-config')
 const SITE_CONFIG = require('../../config/site-config')
+const VIEW_FUNCTIONS = require('../../lib/view-functions')
 const session = require('../../lib/session')
 
 const modelPost = require('../model/post')
@@ -162,6 +163,7 @@ exports.websiteIndexView = async (req, res) => {
                 pageView = 'template/' + page.page_template
         }
         res.view(pageView, {
+            viewFunctions: VIEW_FUNCTIONS,
             title: SITE_CONFIG.siteTitle,
             page: page,
         })

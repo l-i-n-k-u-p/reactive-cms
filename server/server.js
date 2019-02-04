@@ -79,8 +79,8 @@ fastify.register(pointOfView, {
 // static directory
 fastify.register((instance, opts, next) => {
     instance.register(fastifyStatic, {
-        root: path.join(__dirname, '../website/static'),
-        prefix: '/website',
+        root: path.join(__dirname, '../' + APP_CONFIG.staticFilesPath),
+        prefix: APP_CONFIG.staticFilesPrefix,
     })
     next()
 })
@@ -88,8 +88,8 @@ fastify.register((instance, opts, next) => {
 // static directory
 fastify.register((instance, opts, next) => {
     instance.register(fastifyStatic, {
-        root: path.join(__dirname, '../site-static'),
-        prefix: '/public',
+        root: path.join(__dirname, '../' + APP_CONFIG.staticUploadPath),
+        prefix: APP_CONFIG.staticUploadPrefix,
     })
     next()
 })
