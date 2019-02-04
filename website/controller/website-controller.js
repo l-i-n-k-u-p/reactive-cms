@@ -3,6 +3,7 @@ const dateTime = require('node-datetime')
 const APP_GLOBAL = require('../../config/global')
 const DASHBOARD_ADMIN_CONFIG = require('../../config/dashboard-admin-config')
 const SITE_CONFIG = require('../../config/site-config')
+const VIEW_FUNCTIONS = require('../../lib/view-functions')
 const session = require('../../lib/session')
 
 const modelPost = require('../model/post')
@@ -21,6 +22,7 @@ exports.websiteSetupView = async (req, res) => {
     }
     DASHBOARD_ADMIN_CONFIG.setupPassed = false
     res.view('setup', {
+        viewFunctions: VIEW_FUNCTIONS,
         title: 'SETUP',
         error_message: '',
     })
@@ -108,6 +110,7 @@ exports.websiteAdminValidateLoginAccess = async (req, res) => {
         })
         if(!user) {
             res.view('dashboard-website-login', {
+                viewFunctions: VIEW_FUNCTIONS,
                 title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
                 error_message: 'Not valid user',
             })
@@ -146,6 +149,7 @@ exports.websiteDashboardLogout = async (req, res) => {
 
 exports.websiteDashboardView = async (req, res) => {
     res.view('dashboard-website-index', {
+        viewFunctions: VIEW_FUNCTIONS,
         title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
         user_id: req.session.user.user_id,
     })
@@ -162,6 +166,7 @@ exports.websiteIndexView = async (req, res) => {
                 pageView = 'template/' + page.page_template
         }
         res.view(pageView, {
+            viewFunctions: VIEW_FUNCTIONS,
             title: SITE_CONFIG.siteTitle,
             page: page,
         })
@@ -192,6 +197,7 @@ exports.websitePageView = async (req, res) => {
         if(page.page_template)
             pageView = 'template/' + page.page_template
         res.view(pageView, {
+            viewFunctions: VIEW_FUNCTIONS,
             title: SITE_CONFIG.siteTitle,
             page: page,
         })
@@ -231,6 +237,7 @@ exports.websiteBlogArchivePaginatedView = async (req, res) => {
         if(SITE_CONFIG.siteTemplatePosts)
             view = 'template/' + SITE_CONFIG.siteTemplatePosts
         res.view(view, {
+            viewFunctions: VIEW_FUNCTIONS,
             title: SITE_CONFIG.siteTitle,
             items: items,
             total_pages: Math.ceil(totalItems/SITE_CONFIG.siteItemsPeerPage),
@@ -265,6 +272,7 @@ exports.websiteBlogSingleView = async (req, res) => {
             return
         }
         res.view('default/post-detail', {
+            viewFunctions: VIEW_FUNCTIONS,
             title: SITE_CONFIG.siteTitle,
             post: post,
         })
