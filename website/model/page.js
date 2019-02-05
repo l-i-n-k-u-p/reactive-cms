@@ -10,6 +10,7 @@ const Page = new Schema({
     page_date: { type: String, required: true},
     page_status: { type: String, required: true },
     page_template: { type: String, },
+    page_gallery: { type: Array, },
 }, {
     collection: 'page'
 })

@@ -62,6 +62,14 @@
                     v-bind:content="editorContent"
                     v-bind:onChangeContent="onChangeContent">
                 </editor>
+                <Gallery
+                    title="Gallery"
+                    description="Gallery description"
+                    v-bind:onAddItem="galleryOnAddItem"
+                    v-bind:items="page.get('page_gallery')"
+                    v-bind:onClickItem="galleryOnClickItem"
+                    onlyImages="yes">
+                </Gallery>
                 <div
                     class="date-wrapper">
                     {{ pageDate }}
@@ -110,6 +118,14 @@
             v-bind:closeMediaModal="closeMediaModal"
             v-bind:onMediaSelect="onMediaSelect">
         </MediaModal>
+        <PreviewMediaModal
+            v-if="previewFile"
+            v-bind:onClose="closePreviewMediaModal"
+            v-bind:onRemove="removePreviewMediaModal"
+            v-bind:onSave="savePreviewMediaModal"
+            v-bind:metaFields="previewMediaMetaFields"
+            v-bind:file="previewFile">
+        </PreviewMediaModal>
     </BoxWrapper>
 </template>
 
@@ -123,6 +139,8 @@ import ConfirmationModal from '../templates/confirmation-modal.vue'
 import NavigationButtons from '../templates/navigation-buttons.vue'
 import MediaModal from '../media-modal.vue'
 import Link from '../templates/link.vue'
+import Gallery from '../templates/gallery.vue'
+import PreviewMediaModal from '../templates/preview-media-modal.vue'
 
 export default {
     data() {
@@ -150,6 +168,8 @@ export default {
             fileTemplates: new this.$models.FileTemplates(),
             pageTemplateOptions: [],
             currentPageTemplateIndex: null,
+            previewFile: null,
+            previewMediaMetaFields: [],
         }
     },
     components: {
@@ -162,6 +182,8 @@ export default {
         NavigationButtons,
         MediaModal,
         Link,
+        Gallery,
+        PreviewMediaModal,
     },
     created() {
         this.page.setOption('hasUpdate', false)
@@ -326,6 +348,60 @@ export default {
         },
         getCoverColor: function() {
             return this.$getHexColor(this.page.get('page_title'))
+        },
+        galleryOnAddItem: function(item) {
+            let gallery = this.page.get('page_gallery')
+            gallery.push(item)
+            this.page.set('page_gallery', gallery)
+        },
+        galleryOnClickItem: function(item) {
+            this.previewMediaMetaFields = []
+            if(item.meta_fields)
+                for(let metaField of item.meta_fields) {
+                    this.previewMediaMetaFields.push(metaField)
+                }
+            else
+                this.setGalleryItemMetaFields()
+            this.previewFile = item
+        },
+        setGalleryItemMetaFields: function() {
+            this.previewMediaMetaFields = [
+                {
+                    'meta_title': 'Title',
+                    'meta_name': 'media_title',
+                    'meta_value': '',
+                },
+                {
+                    'meta_title': 'Description',
+                    'meta_name': 'media_description',
+                    'meta_value': '',
+                },
+            ]
+        },
+        closePreviewMediaModal: function() {
+            this.previewFile = null
+        },
+        removePreviewMediaModal: function(item) {
+            let pageGallery = this.page.get('page_gallery')
+            let mediaIndex = null
+            for(let index in pageGallery) {
+                if(pageGallery[index].media_id === item.media_id)
+                    mediaIndex = index
+            }
+            pageGallery.splice(mediaIndex, 1)
+            this.page.set('page_gallery', pageGallery)
+            this.closePreviewMediaModal()
+        },
+        savePreviewMediaModal: function(item, metaFields) {
+            item.meta_fields = metaFields
+            let pageGallery = this.page.get('page_gallery')
+            let mediaIndex = null
+            for(let index in pageGallery) {
+                if(pageGallery[index].media_id === item.media_id)
+                    mediaIndex = index
+            }
+            pageGallery[mediaIndex] = item
+            this.closePreviewMediaModal()
         },
     }
 }

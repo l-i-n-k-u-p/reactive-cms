@@ -457,6 +457,7 @@ exports.updatePageByID = async (req, res) => {
         page.page_status = req.body.page_status
         page.page_thumbnail = req.body.page_thumbnail
         page.page_template = req.body.page_template
+        page.page_gallery = req.body.page_gallery
         if(page.page_title === req.body.page_title) {
             page.page_title = req.body.page_title
             let pageSaved = await page.save()
