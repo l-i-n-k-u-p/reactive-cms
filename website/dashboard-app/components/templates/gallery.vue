@@ -23,6 +23,7 @@
             </div>
             <div
                 id="add-item-button"
+                v-if="showAddItem"
                 class="item"
                 v-on:click="openMediaModal">
                 <i
@@ -56,11 +57,16 @@ export default {
         'onClickItem',
         'onlyImages',
         'items',
+        'maxItems',
     ],
     data() {
         return {
             showMediaModal: false,
+            showAddItem: true,
         }
+    },
+    updated: function() {
+        this.showAddItem = this.isMaxItems()
     },
     components: {
         Button,
@@ -89,6 +95,12 @@ export default {
                 return this.$getAvatarURL(image.media_file_name)
             else
                 return this.$getHexColor(image.media_file_name)
+        },
+        isMaxItems: function() {
+            if(this.items.length < parseInt(this.maxItems))
+                return true
+
+            return false
         },
     }
 }
