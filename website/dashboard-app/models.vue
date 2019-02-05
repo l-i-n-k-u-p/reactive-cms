@@ -327,6 +327,7 @@ class Page extends Model {
             page_date: '',
             page_status: '',
             page_template: '',
+            page_gallery: [],
         }
     }
 
