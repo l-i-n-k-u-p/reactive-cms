@@ -68,7 +68,8 @@
                     v-bind:onAddItem="galleryOnAddItem"
                     v-bind:items="page.get('page_gallery')"
                     v-bind:onClickItem="galleryOnClickItem"
-                    onlyImages="yes">
+                    onlyImages="yes"
+                    maxItems="3">
                 </Gallery>
                 <div
                     class="date-wrapper">
