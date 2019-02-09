@@ -175,7 +175,7 @@ export default {
             window.open(mediaURL, '_blank')
         },
         getCoverImage: function() {
-            return this.$getAvatarURL(this.media.get('media_name'))
+            return this.$getThumbnailURL(this.media.get('media_name'))
         },
         getCoverColor: function() {
             return this.$getHexColor(this.media.get('media_title'))

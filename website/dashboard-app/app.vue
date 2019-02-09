@@ -1,7 +1,28 @@
 <template lang="html">
     <div
-        class="app-wrapper"
-        v-on:scroll="onScroll">
+        class="app-wrapper">
+        <Header
+            v-on:dashboard-toggle-menu="menuIsOpen"
+            v-bind:scrollTop="scrollTop"
+            v-bind:pageTitle="pageTitle">
+        </Header>
+        <transition
+            name="fade">
+            <Menu
+                class="left-menu-wrapper"
+                v-if="menuIsOpen">
+            </Menu>
+        </transition>
+        <div
+            id="overflow"
+            v-on:scroll="onScroll">
+            <div id="content">
+                <div
+                    v-bind:class="pageWrapperClass">
+                    <router-view :key="$route.fullPath"/>
+                </div>
+            </div>
+        </div>
         <transition
             name="autohide">
             <SplashScreen
@@ -11,11 +32,6 @@
         <Login
             v-show="showLogin">
         </Login>
-        <Header
-            v-on:dashboard-toggle-menu="menuIsOpen"
-            v-bind:scrollTop="scrollTop"
-            v-bind:pageTitle="pageTitle">
-        </Header>
         <RibbonError
             v-if="appErrorMessage">
             <slot>{{ appErrorMessage }}</slot>
@@ -24,20 +40,6 @@
             v-if="appSuccessMessage">
             <slot>{{ appSuccessMessage }}</slot>
         </RibbonSuccess>
-        <div
-            class="content-wrapper">
-            <div
-                v-bind:class="pageWrapperClass">
-                <router-view :key="$route.fullPath"/>
-            </div>
-        </div>
-        <transition
-            name="fade">
-            <Menu
-                class="left-menu-wrapper"
-                v-if="menuIsOpen">
-            </Menu>
-        </transition>
         <footer>
             <span>Development by</span>
             <a
@@ -151,22 +153,33 @@ export default {
 <style scoped lang="css">
 
 .app-wrapper {
+    display: flex;
     height: 100%;
-    overflow-y: auto;
+    overflow: hidden;
     position: relative;
+    width: 100%;
 }
 
-.content-wrapper {
-    min-height: 100%;
+#overflow {
+    height: 100%;
+    margin-top: 48px;
+    min-width: 720px;
+    overflow: scroll;
     position: relative;
+    width: 100%;
+}
+
+#content {
+    max-width: 1145px;
+    position: relative;
+    z-index: 1;
+    margin: auto auto 100px auto;
 }
 
 .page-content-wrapper {
+    margin-top: 15px;
     margin: auto;
-    max-width: 1145px;
-    padding-bottom: 60px;
     position: relative;
-    top: 50px;
 }
 
 .page-content-wrapper.closed {
@@ -177,9 +190,11 @@ footer {
     bottom: 10px;
     display: flex;
     justify-content: center;
-    position: fixed;
+    position: absolute;
     width: 100%;
-    z-index: -1;
+    z-index: 0;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 footer span {
