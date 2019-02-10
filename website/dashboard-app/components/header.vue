@@ -171,11 +171,13 @@ export default {
     watch: {
         scrollTop: function(newVal, oldVal) {
             let height = (140 - (newVal))
-            if(height < 95)
+            if(height <= 48) {
                 this.boxShadowHeader = 'box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 3px -2px rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12);'
-            else
+                this.backgroundHeightHeader = 'height: 48px'
+            } else {
                 this.boxShadowHeader = ''
-            this.backgroundHeightHeader = 'height: '+height+'px'
+                this.backgroundHeightHeader = 'height: '+height+'px'
+            }
         },
         searchValue: function(newVal, oldVal) {
             this.onChangeSearchValue()
@@ -289,14 +291,14 @@ export default {
 
 <style scoped lang="css">
 #header {
-    background-color: #006dad;
     color: white;
     display: flex;
     height: 48px;
     left: 0px;
-    position: fixed;
+    min-width: 720px;
+    position: absolute;
     right: 0px;
-    top: 0px;
+    top: 0;
     transition-duration: 100ms;
     width: 100%;
     z-index: 3;
