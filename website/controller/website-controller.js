@@ -138,13 +138,12 @@ exports.websiteAdminValidateLoginAccess = async (req, res) => {
 }
 
 exports.websiteDashboardLogout = async (req, res) => {
-    if(req.session.user) {
+    if(req.session && req.session.user) {
         let userID = req.session.user.user_id
-        req.session = {}
-        session.removeUserSessionOnDB(userID)
+        await session.removeUserSessionOnDB(userID)
+        req.session = null
     }
-    else
-        res.redirect('admin')
+    res.redirect('admin')
 }
 
 exports.websiteDashboardView = async (req, res) => {
