@@ -23,7 +23,7 @@
                         buttonIcon="image"
                         v-bind:buttonAction="openMediaModal"
                         buttonColor="#f0f0f0"
-                        style="margin-left: 10px;">
+                        style="margin-left: 5px;">
                         Set Image
                     </Button>
                 </div>
@@ -76,13 +76,13 @@
                     <Button
                         buttonIcon="remove"
                         v-bind:buttonAction="showConfirmationModal"
-                        style="margin-left: 10px;">
+                        style="margin-left: 5px;">
                         Delete
                     </button>
                     <Button
                         buttonIcon="save"
                         v-bind:buttonAction="updatePost"
-                        style="margin-left: 10px;">
+                        style="margin-left: 5px;">
                         Update
                     </button>
                 </div>

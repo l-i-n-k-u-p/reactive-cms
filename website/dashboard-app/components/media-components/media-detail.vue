@@ -45,14 +45,13 @@
                     class="buttons-wrapper">
                     <Button
                         buttonIcon="remove"
-                        v-bind:buttonAction="showConfirmationModal"
-                        style="margin-left: 10px;">
+                        v-bind:buttonAction="showConfirmationModal">
                         Delete
                     </Button>
                     <Button
                         buttonIcon="save"
                         v-bind:buttonAction="updateMedia"
-                        style="margin-left: 10px;">
+                        style="margin-left: 5px;">
                         Update
                     </Button>
                 </div>

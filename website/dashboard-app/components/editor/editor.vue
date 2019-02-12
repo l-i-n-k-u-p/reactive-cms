@@ -1,5 +1,6 @@
 <template lang="html">
-    <div>
+    <div
+        id="editor">
         <editor-menu-bar
             :editor="editor">
         <div
@@ -271,6 +272,10 @@ export default {
 
 <style scoped lang="css">
 
+#editor {
+    margin-top: 10px;
+}
+
 .editor-button-wrapper {
     display: flex;
     flex-wrap: wrap;
@@ -289,8 +294,8 @@ button {
     font-size: 13px;
     font-weight: 500;
     justify-content: center;
-    margin-left: 5px;
-    margin-right: 5px;
+    margin-left: 3px;
+    margin-right: 3px;
     outline: none;
     padding: 7px;
     position: relative;

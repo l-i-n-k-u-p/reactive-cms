@@ -123,7 +123,7 @@
                 <Button
                     buttonIcon="save"
                     v-bind:buttonAction="createUser"
-                    style="margin-left: 10px;">
+                    style="margin-left: 5px;">
                     Create
                 </button>
             </div>
@@ -351,7 +351,7 @@ h2 {
 .header-action-buttons-wrapper {
     display: flex;
     justify-content: flex-end;
-    padding: 0px;
+    padding: 0;
     right: 0;
     top: 0;
 }

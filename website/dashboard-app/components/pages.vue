@@ -8,14 +8,14 @@
                 <div
                     class="buttons-wrapper">
                     <Dropdown
-                        style="margin-right: 10px;"
                         label="Bulk Actions"
                         v-bind:onSelectOption="onSelectOption"
                         v-bind:selectOptions="selectOptions">
                     </Dropdown>
                     <Button
                         buttonIcon="add"
-                        v-bind:buttonAction="openNewPageForm">
+                        v-bind:buttonAction="openNewPageForm"
+                        style="margin-left: 5px;">
                         Add Page
                     </button>
                 </div>

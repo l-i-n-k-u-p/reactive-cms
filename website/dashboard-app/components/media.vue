@@ -8,14 +8,14 @@
                 <div
                     class="buttons-wrapper">
                     <Dropdown
-                        style="margin-right: 10px;"
                         label="Bulk Actions"
                         v-bind:onSelectOption="onSelectOption"
                         v-bind:selectOptions="selectOptions">
                     </Dropdown>
                     <Button
                         buttonIcon="add"
-                        v-bind:buttonAction="openNewMediaForm">
+                        v-bind:buttonAction="openNewMediaForm"
+                        style="margin-left: 5px;">
                         Add Media
                     </button>
                 </div>

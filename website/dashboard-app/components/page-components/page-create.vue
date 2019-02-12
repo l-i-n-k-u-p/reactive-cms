@@ -62,10 +62,11 @@
                         label="Status"
                         initialIndexOption="0"
                         v-bind:onSelectOption="onSelectOption"
-                        v-bind:selectOptions="selectOptions">
+                        v-bind:selectOptions="selectOptions"
+                        style="margin-left: 5px;">
                     </DropdownSelect>
                     <Button
-                        style="margin-left: 10px;"
+                        style="margin-left: 5px;"
                         buttonIcon="close"
                         v-bind:buttonAction="cancelCrateUser">
                         Cancel
@@ -73,7 +74,7 @@
                     <Button
                         buttonIcon="save"
                         v-bind:buttonAction="createPage"
-                        style="margin-left: 10px;">
+                        style="margin-left: 5px;">
                         Create
                     </button>
                 </div>
