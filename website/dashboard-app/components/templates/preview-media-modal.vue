@@ -38,13 +38,13 @@
                 <Button
                     buttonIcon="delete"
                     v-bind:buttonAction="onClickRemove"
-                    style="margin-left: 10px;">
+                    style="margin-left: 5px;">
                     Remove
                 </button>
                 <Button
                     buttonIcon="done"
                     v-bind:buttonAction="onClickSave"
-                    style="margin-left: 10px;">
+                    style="margin-left: 5px;">
                     Accept
                 </button>
             </div>

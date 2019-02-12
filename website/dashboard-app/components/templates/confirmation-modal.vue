@@ -20,7 +20,7 @@
                 <Button
                     buttonIcon="done"
                     v-bind:buttonAction="acceptAction"
-                    style="margin-left: 10px;">
+                    style="margin-left: 5px;">
                     Accept
                 </button>
             </div>

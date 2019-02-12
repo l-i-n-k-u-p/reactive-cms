@@ -8,10 +8,10 @@
                 <div
                     class="buttons-wrapper">
                     <Dropdown
-                        style="margin-right: 10px;"
                         label="Bulk Actions"
                         v-bind:onSelectOption="onSelectOption"
-                        v-bind:selectOptions="selectOptions">
+                        v-bind:selectOptions="selectOptions"
+                        style="margin-left: 5px;">
                     </Dropdown>
                     <Button
                         buttonIcon="add"

@@ -123,7 +123,7 @@
                             v-if="activeTab === 0"
                             buttonIcon="done"
                             v-bind:buttonAction="selectMedia"
-                            style="margin-left: 10px;">
+                            style="margin-left: 5px;">
                             Accept
                         </Button>
                     </div>

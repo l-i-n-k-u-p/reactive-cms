@@ -23,7 +23,7 @@
                         buttonIcon="image"
                         v-bind:buttonAction="openMediaModal"
                         buttonColor="#f0f0f0"
-                        style="margin-left: 10px;">
+                        style="margin-left: 5px;">
                         Set Image
                     </Button>
                 </div>
@@ -87,18 +87,19 @@
                         label="Status"
                         v-bind:initialIndexOption="pageStatusIndex"
                         v-bind:onSelectOption="onSelectOption"
-                        v-bind:selectOptions="selectOptions">
+                        v-bind:selectOptions="selectOptions"
+                        style="margin-left: 5px;">
                     </DropdownSelect>
                     <Button
                         buttonIcon="remove"
                         v-bind:buttonAction="showConfirmationModal"
-                        style="margin-left: 10px;">
+                        style="margin-left: 5px;">
                         Delete
                     </button>
                     <Button
                         buttonIcon="save"
                         v-bind:buttonAction="updatePage"
-                        style="margin-left: 10px;">
+                        style="margin-left: 5px;">
                         Update
                     </button>
                 </div>

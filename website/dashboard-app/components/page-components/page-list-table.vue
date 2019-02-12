@@ -91,12 +91,12 @@
             </div>
             <ButtonIcon
                 buttonIcon="navigate_before"
-                v-bind:buttonAction="navigationBefore"
-                style="margin-left: 10px; margin-right: 10px;">
+                v-bind:buttonAction="navigationBefore">
             </ButtonIcon>
             <ButtonIcon
                 buttonIcon="navigate_next"
-                v-bind:buttonAction="navigationNext">
+                v-bind:buttonAction="navigationNext"
+                style="margin-left: 5px;">
             </ButtonIcon>
         </div>
     </div>

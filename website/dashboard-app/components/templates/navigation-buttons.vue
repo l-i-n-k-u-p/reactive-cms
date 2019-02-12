@@ -56,7 +56,7 @@ export default {
 
 #navigation-buttons-wrapper {
     -webkit-user-select: none;
-    margin-right: 10px;
+    margin-right: 5px;
     position: relative;
     user-select: none;
 }
@@ -71,7 +71,6 @@ export default {
     font-weight: 500;
     font-weight: 600;
     height: 24px;
-    margin-right: 5px;
     margin-top: 2px;
     outline: none;
     position: relative;

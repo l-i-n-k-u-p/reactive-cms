@@ -50,7 +50,6 @@
                 <div
                     class="buttons-wrapper">
                     <Button
-                        style="margin-left: 10px;"
                         buttonIcon="close"
                         v-bind:buttonAction="cancelCreateMedia">
                         Cancel
@@ -58,7 +57,7 @@
                     <Button
                         buttonIcon="save"
                         v-bind:buttonAction="createMedia"
-                        style="margin-left: 10px;">
+                        style="margin-left: 5px;">
                         Create
                     </button>
                 </div>
@@ -238,7 +237,7 @@ h2 {
 
 .content-wrapper {
     box-sizing: content-box;
-    padding: 15px;
+    padding: 10px;
 }
 
 .input {

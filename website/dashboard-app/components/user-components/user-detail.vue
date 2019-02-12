@@ -127,7 +127,7 @@
                 <Button
                     buttonIcon="save"
                     v-bind:buttonAction="updateUser"
-                    style="margin-left: 10px;">
+                    style="margin-left: 5px;">
                     Update
                 </button>
             </div>

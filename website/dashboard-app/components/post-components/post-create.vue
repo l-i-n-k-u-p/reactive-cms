@@ -59,7 +59,7 @@
                         v-bind:selectOptions="selectOptions">
                     </DropdownSelect>
                     <Button
-                        style="margin-left: 10px;"
+                        style="margin-left: 5px;"
                         buttonIcon="close"
                         v-bind:buttonAction="cancelCrateUser">
                         Cancel
@@ -67,7 +67,7 @@
                     <Button
                         buttonIcon="save"
                         v-bind:buttonAction="createPost"
-                        style="margin-left: 10px;">
+                        style="margin-left: 5px;">
                         Create
                     </button>
                 </div>
