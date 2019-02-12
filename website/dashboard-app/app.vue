@@ -49,6 +49,29 @@
             </a>
             <span>Version 1.0.0</span>
         </footer>
+        <MediaModal
+            v-if="mediaModalData"
+            v-bind:onlyImages="mediaModalData.onlyImages"
+            v-bind:modalTitle="mediaModalData.modalTitle"
+            v-bind:modalDescription="mediaModalData.modalDescription"
+            v-bind:closeMediaModal="mediaModalData.closeMediaModal"
+            v-bind:onMediaSelect="mediaModalData.onMediaSelect">
+        </MediaModal>
+        <ConfirmationModal
+            v-if="confirmationModalData"
+            v-bind:modalTitle="confirmationModalData.modalTitle"
+            v-bind:modalDescription="confirmationModalData.modalDescription"
+            v-bind:cancelAction="confirmationModalData.cancelAction"
+            v-bind:acceptAction="confirmationModalData.acceptAction">
+        </ConfirmationModal>
+        <PreviewMediaModal
+            v-if="previewMediaModalData"
+            v-bind:onClose="previewMediaModalData.onClose"
+            v-bind:onRemove="previewMediaModalData.onRemove"
+            v-bind:onSave="previewMediaModalData.onSave"
+            v-bind:metaFields="previewMediaModalData.metaFields"
+            v-bind:file="previewMediaModalData.file">
+        </PreviewMediaModal>
     </div>
 </template>
 
@@ -60,6 +83,9 @@ import RibbonSuccess from './components/templates/ribbon-success.vue'
 import Menu from './components/menu.vue'
 import SplashScreen from './splash-screen.vue'
 import Login from './components/login.vue'
+import MediaModal from './components/media-modal.vue'
+import ConfirmationModal from './components/templates/confirmation-modal.vue'
+import PreviewMediaModal from './components/templates/preview-media-modal.vue'
 
 export default {
     components: {
@@ -69,6 +95,9 @@ export default {
         RibbonSuccess,
         SplashScreen,
         Login,
+        ConfirmationModal,
+        MediaModal,
+        PreviewMediaModal,
     },
     data: function() {
         return {
@@ -81,6 +110,9 @@ export default {
             showSplashScreen: true,
             showLogin: false,
             ribbonTimeOut: 5000,
+            confirmationModalData: null,
+            mediaModalData: null,
+            previewMediaModalData: null,
         }
     },
     watch: {
@@ -116,6 +148,15 @@ export default {
                 this.menuIsOpen = true
                 this.pageWrapperClass = 'page-content-wrapper'
             }
+        })
+        this.$eventHub.$on('confirmation-modal', (ObjectData) => {
+            this.confirmationModalData = ObjectData
+        })
+        this.$eventHub.$on('media-modal', (ObjectData) => {
+            this.mediaModalData = ObjectData
+        })
+        this.$eventHub.$on('preview-media-modal', (ObjectData) => {
+            this.previewMediaModalData = ObjectData
         })
         setTimeout(this.hideSplashScreen, 1000)
     },

@@ -199,16 +199,15 @@ export default {
                 this.getMedia()
         },
         showThisMedia: function(media) {
-            if(this.onlyImages === 'yes')
-                if(media.isImage())
-                    return true
-                else
-                    return false
-            return true
+            if(this.onlyImages === media.isImage())
+                return true
+
+            return false
         },
         getPreview: function(media) {
             if(media.isImage())
                 return this.$getAvatarURL(media.get('media_name'))
+
             return this.$getHexColor(media.get('media_title'))
         },
         resetLibraryData: function() {

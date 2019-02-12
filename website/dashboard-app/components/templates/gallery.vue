@@ -33,21 +33,12 @@
                 </i>
             </div>
         </div>
-        <MediaModal
-            v-if="showMediaModal"
-            v-bind:onlyImages="onlyImages"
-            modalTitle="Select a image for add to gallery"
-            modalDescription="Chose one image or upload new"
-            v-bind:closeMediaModal="closeMediaModal"
-            v-bind:onMediaSelect="onMediaSelect">
-        </MediaModal>
     </div>
 </template>
 
 <script>
 import Button from './button.vue'
 import InputText from './input-text.vue'
-import MediaModal from '../media-modal.vue'
 
 export default {
     props: [
@@ -61,8 +52,14 @@ export default {
     ],
     data() {
         return {
-            showMediaModal: false,
             showAddItem: true,
+            mediaModalData: {
+                onlyImages: true,
+                modalTitle: 'Set Featured Image',
+                modalDescription: 'Chose one image or upload new',
+                closeMediaModal: this.closeMediaModal,
+                onMediaSelect: this.onMediaSelect,
+            },
         }
     },
     updated: function() {
@@ -71,14 +68,13 @@ export default {
     components: {
         Button,
         InputText,
-        MediaModal,
     },
     methods: {
         openMediaModal: function() {
-            this.showMediaModal = true
+            this.$eventHub.$emit('media-modal', this.mediaModalData)
         },
         closeMediaModal: function() {
-            this.showMediaModal = false
+            this.$eventHub.$emit('media-modal', null)
         },
         onMediaSelect: function(media) {
             let mediaData = {

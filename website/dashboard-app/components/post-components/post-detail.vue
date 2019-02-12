@@ -88,21 +88,6 @@
                 </div>
             </div>
         </div>
-        <ConfirmationModal
-            v-if="showModal"
-            v-bind:modalTitle="modalTitle"
-            v-bind:modalDescription="modalDescription"
-            v-bind:cancelAction="cancelAction"
-            v-bind:acceptAction="acceptAction">
-        </ConfirmationModal>
-        <MediaModal
-            v-if="showMediaModal"
-            onlyImages="yes"
-            modalTitle="Set Featured Image"
-            modalDescription="Chose one image or upload new"
-            v-bind:closeMediaModal="closeMediaModal"
-            v-bind:onMediaSelect="onMediaSelect">
-        </MediaModal>
     </BoxWrapper>
 </template>
 
@@ -112,9 +97,7 @@ import BoxWrapper from '../templates/box-wrapper.vue'
 import Button from '../templates/button.vue'
 import InputText from '../templates/input-text.vue'
 import DropdownSelect from '../templates/dropdown-select.vue'
-import ConfirmationModal from '../templates/confirmation-modal.vue'
 import NavigationButtons from '../templates/navigation-buttons.vue'
-import MediaModal from '../media-modal.vue'
 import Link from '../templates/link.vue'
 
 export default {
@@ -134,12 +117,21 @@ export default {
                     value: 'pending',
                 },
             ],
-            showModal: false,
-            modalTitle: '',
-            modalDescription: '',
             postStatusIndex: 0,
-            showMediaModal: false,
             postDate: '',
+            confirmationModalData: {
+                modalTitle: 'Do you want delete this post?',
+                modalDescription: 'This action will delete this post',
+                cancelAction: this.cancelAction,
+                acceptAction: this.acceptAction,
+            },
+            mediaModalData: {
+                onlyImages: true,
+                modalTitle: 'Set Featured Image',
+                modalDescription: 'Chose one image or upload new',
+                closeMediaModal: this.closeMediaModal,
+                onMediaSelect: this.onMediaSelect,
+            },
         }
     },
     components: {
@@ -148,9 +140,7 @@ export default {
         BoxWrapper,
         Button,
         InputText,
-        ConfirmationModal,
         NavigationButtons,
-        MediaModal,
         Link,
     },
     created() {
@@ -227,14 +217,13 @@ export default {
             })
         },
         showConfirmationModal: function() {
-            this.modalTitle = 'Do you want delete this post?'
-            this.modalDescription = 'This action will delete this post'
-            this.showModal = true
+            this.$eventHub.$emit('confirmation-modal', this.confirmationModalData)
         },
         cancelAction: function() {
-            this.showModal = false
+            this.$eventHub.$emit('confirmation-modal', null)
         },
         acceptAction: function() {
+            this.$eventHub.$emit('confirmation-modal', null)
             this.deletePost()
         },
         onSelectOption: function(option) {
@@ -244,10 +233,10 @@ export default {
             this.post.set('post_content', getHTML())
         },
         openMediaModal: function() {
-            this.showMediaModal = true
+            this.$eventHub.$emit('media-modal', this.mediaModalData)
         },
         closeMediaModal: function() {
-            this.showMediaModal = false
+            this.$eventHub.$emit('media-modal', null)
         },
         onMediaSelect: function(media) {
             let mediaData = {

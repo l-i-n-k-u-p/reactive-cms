@@ -57,13 +57,6 @@
                 </div>
             </div>
         </div>
-        <ConfirmationModal
-            v-if="showModal"
-            v-bind:modalTitle="modalTitle"
-            v-bind:modalDescription="modalDescription"
-            v-bind:cancelAction="cancelAction"
-            v-bind:acceptAction="acceptAction">
-        </ConfirmationModal>
     </BoxWrapper>
 </template>
 
@@ -71,7 +64,6 @@
 import BoxWrapper from '../templates/box-wrapper.vue'
 import Button from '../templates/button.vue'
 import InputText from '../templates/input-text.vue'
-import ConfirmationModal from '../templates/confirmation-modal.vue'
 import NavigationButtons from '../templates/navigation-buttons.vue'
 
 export default {
@@ -80,18 +72,20 @@ export default {
             media: new this.$models.Media({
                 '_id': this.$route.params.id,
             }),
-            showModal: false,
-            modalTitle: '',
-            modalDescription: '',
             mediaStatusIndex: 0,
             mediaDate: '',
+            confirmationModalData: {
+                modalTitle: 'Do you want delete this media?',
+                modalDescription: 'This action will delete this media',
+                cancelAction: this.cancelAction,
+                acceptAction: this.acceptAction,
+            },
         }
     },
     components: {
         BoxWrapper,
         Button,
         InputText,
-        ConfirmationModal,
         NavigationButtons,
     },
     created() {
@@ -159,14 +153,13 @@ export default {
             })
         },
         showConfirmationModal: function() {
-            this.modalTitle = 'Do you want delete this media?'
-            this.modalDescription = 'This action will delete this media'
-            this.showModal = true
+            this.$eventHub.$emit('confirmation-modal', this.confirmationModalData)
         },
         cancelAction: function() {
-            this.showModal = false
+            this.$eventHub.$emit('confirmation-modal', null)
         },
         acceptAction: function() {
+            this.$eventHub.$emit('confirmation-modal', null)
             this.deleteMedia()
         },
         openMediaFile: function() {
