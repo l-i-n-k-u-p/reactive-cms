@@ -2,15 +2,18 @@
     <div>
         <div
             id="header"
-            v-bind:style="boxShadowHeader">
+            v-bind:style="boxShadowHeader"
+            v-window-resize="onResizeWindow">
             <div
-                class="left-wrapper">
+                class="left-wrapper"
+                v-bind:style="headerLeftRightStyle">
                 <i
                     class="material-icons menu-icon"
                     v-on:click="toggleMenu">
                     menu
                 </i>
                 <label
+                    v-if="isDesktopScreen"
                     class="page-title">
                     {{ settings.get('setting_page_title') }}
                 </label>
@@ -91,11 +94,15 @@
                 </div>
             </div>
             <div
-                class="right-wrapper">
+                class="right-wrapper"
+                v-bind:style="headerLeftRightStyle">
                 <div
                     class="username"
                     v-on:click="showUserMenu">
-                    <div class="name" v-bind:style="userFirstNameColorStyle">
+                    <div
+                        v-if="isDesktopScreen"
+                        class="name"
+                        v-bind:style="userFirstNameColorStyle">
                         {{ user.get('user_first_name') }}
                     </div>
                     <div
@@ -166,6 +173,8 @@ export default {
             userMenuOpen: false,
             userFirstNameColorStyle: 'color: white;',
             settings: new this.$models.Setting(),
+            isDesktopScreen: true,
+            headerLeftRightStyle: '',
         }
     },
     watch: {
@@ -187,7 +196,19 @@ export default {
         this.getSessionUserData()
         this.getDashboardData()
     },
+    mounted: function() {
+        this.onResizeWindow()
+    },
     methods: {
+        onResizeWindow: function() {
+            if(window.innerWidth <= 640) {
+                this.isDesktopScreen = false
+                this.headerLeftRightStyle = 'min-width: 50px;'
+            } else {
+                this.isDesktopScreen = true
+                this.headerLeftRightStyle = 'min-width: 180px;'
+            }
+        },
         toggleMenu: function() {
             this.$eventHub.$emit('dashboard-app-toggle-menu', '')
         },
@@ -282,7 +303,17 @@ export default {
                 document.removeEventListener('click', el.__vueClickOutside__)
                 el.__vueClickOutside__ = null
             }
-        }
+        },
+        'window-resize': {
+            bind: (el, binding, vnode) => {
+                el.__vueResize__ = _.throttle(binding.value, 500)
+                window.addEventListener('resize', el.__vueResize__)
+            },
+            unbind: (el, binding) => {
+                window.removeEventListener('click', el.__vueResize__)
+                el.__vueResize__ = null
+            },
+        },
     },
 }
 
@@ -295,13 +326,12 @@ export default {
     display: flex;
     height: 48px;
     left: 0px;
-    min-width: 720px;
     position: absolute;
     right: 0px;
     top: 0;
     transition-duration: 100ms;
     width: 100%;
-    z-index: 3;
+    z-index: 2;
 }
 
 .background-extension-header {
@@ -398,6 +428,7 @@ export default {
     right: 8px;
     top: -3px;
     width: 100%;
+    min-width: 150px;
 }
 
 .options-wrapper {
