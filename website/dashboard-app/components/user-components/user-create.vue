@@ -21,7 +21,7 @@
                     buttonIcon="image"
                     v-bind:buttonAction="openMediaModal"
                     buttonColor="#f0f0f0"
-                    style="margin-left: 10px;">
+                    style="margin-left: 5px;">
                     Set Image
                 </Button>
             </div>
@@ -128,22 +128,6 @@
                 </button>
             </div>
         </div>
-        <MediaModal
-            v-if="showMediaModal"
-            onlyImages="yes"
-            modalTitle="Set Featured Image"
-            modalDescription="Chose one image or upload new"
-            v-bind:closeMediaModal="closeMediaModal"
-            v-bind:onMediaSelect="onMediaSelect">
-        </MediaModal>
-        <MediaModal
-            v-if="showMediaAvatarModal"
-            onlyImages="yes"
-            modalTitle="Set Avatar Image"
-            modalDescription="Chose one image or upload new"
-            v-bind:closeMediaModal="closeMediaAvatarModal"
-            v-bind:onMediaSelect="onMediaAvatarSelect">
-        </MediaModal>
     </BoxWrapper>
 </template>
 
@@ -152,7 +136,7 @@ import BoxWrapper from '../templates/box-wrapper.vue'
 import Button from '../templates/button.vue'
 import InputText from '../templates/input-text.vue'
 import NavigationButtons from '../templates/navigation-buttons.vue'
-import MediaModal from '../media-modal.vue'
+// import MediaModal from '../media-modal.vue'
 import FormDropdownSelect from '../templates/form-dropdown-select.vue'
 
 export default {
@@ -162,11 +146,23 @@ export default {
                 user_active: true,
             }),
             newPassword: '',
-            showMediaModal: false,
-            showMediaAvatarModal: false,
             userTypes: new this.$models.UserTypes(),
             userTypeIndex: 0,
             userTypeOptions: [],
+            mediaModalData: {
+                onlyImages: true,
+                modalTitle: 'Set Featured Image',
+                modalDescription: 'Chose one image or upload new',
+                closeMediaModal: this.closeMediaModal,
+                onMediaSelect: this.onMediaSelect,
+            },
+            mediaModalAvatarData: {
+                onlyImages: true,
+                modalTitle: 'Set Avatar Image',
+                modalDescription: 'Chose one image or upload new',
+                closeMediaModal: this.closeMediaAvatarModal,
+                onMediaSelect: this.onMediaAvatarSelect,
+            },
         }
     },
     components: {
@@ -174,7 +170,6 @@ export default {
         Button,
         InputText,
         NavigationButtons,
-        MediaModal,
         FormDropdownSelect,
     },
     created() {
@@ -218,10 +213,10 @@ export default {
             this.user.set('user_thumbnail', '')
         },
         openMediaModal: function() {
-            this.showMediaModal = true
+            this.$eventHub.$emit('media-modal', this.mediaModalData)
         },
         closeMediaModal: function() {
-            this.showMediaModal = false
+            this.$eventHub.$emit('media-modal', null)
         },
         onMediaAvatarSelect: function(media) {
             let mediaData = {
@@ -233,10 +228,10 @@ export default {
             this.closeMediaAvatarModal()
         },
         openMediaAvatarModal: function() {
-            this.showMediaAvatarModal = true
+            this.$eventHub.$emit('media-modal', this.mediaModalAvatarData)
         },
         closeMediaAvatarModal: function() {
-            this.showMediaAvatarModal = false
+            this.$eventHub.$emit('media-modal', null)
         },
         removeMediaAvatar: function() {
             this.user.set('user_avatar', '')

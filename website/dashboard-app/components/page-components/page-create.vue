@@ -22,7 +22,8 @@
                     <Button
                         buttonIcon="update"
                         v-bind:buttonAction="openMediaModal"
-                        buttonColor="#f0f0f0">
+                        buttonColor="#f0f0f0"
+                        style="margin-left: 5px;">
                         Set Image
                     </Button>
                 </div>
@@ -79,14 +80,6 @@
                     </button>
                 </div>
             </div>
-            <MediaModal
-                v-if="showMediaModal"
-                onlyImages="yes"
-                modalTitle="Set Featured Image"
-                modalDescription="Chose one image or upload new"
-                v-bind:closeMediaModal="closeMediaModal"
-                v-bind:onMediaSelect="onMediaSelect">
-            </MediaModal>
         </div>
     </BoxWrapper>
 </template>
@@ -98,7 +91,6 @@ import Button from '../templates/button.vue'
 import InputText from '../templates/input-text.vue'
 import DropdownSelect from '../templates/dropdown-select.vue'
 import NavigationButtons from '../templates/navigation-buttons.vue'
-import MediaModal from '../media-modal.vue'
 
 export default {
     data() {
@@ -118,10 +110,16 @@ export default {
                 },
             ],
             editorContent: '',
-            showMediaModal: false,
             fileTemplates: new this.$models.FileTemplates(),
             pageTemplateOptions: [],
             currentPageTemplateIndex: null,
+            mediaModalData: {
+                onlyImages: true,
+                modalTitle: 'Set Featured Image',
+                modalDescription: 'Chose one image or upload new',
+                closeMediaModal: this.closeMediaModal,
+                onMediaSelect: this.onMediaSelect,
+            },
         }
     },
     components: {
@@ -131,7 +129,6 @@ export default {
         Button,
         InputText,
         NavigationButtons,
-        MediaModal,
     },
     created() {
         this.getFileTemplates()
@@ -164,10 +161,10 @@ export default {
             this.page.set('page_content', getHTML())
         },
         openMediaModal: function() {
-            this.showMediaModal = true
+            this.$eventHub.$emit('media-modal', this.mediaModalData)
         },
         closeMediaModal: function() {
-            this.showMediaModal = false
+            this.$eventHub.$emit('media-modal', null)
         },
         onMediaSelect: function(media) {
             let mediaData = {

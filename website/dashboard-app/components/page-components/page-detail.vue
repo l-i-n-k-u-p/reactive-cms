@@ -105,29 +105,6 @@
                 </div>
             </div>
         </div>
-        <ConfirmationModal
-            v-if="showModal"
-            v-bind:modalTitle="modalTitle"
-            v-bind:modalDescription="modalDescription"
-            v-bind:cancelAction="cancelAction"
-            v-bind:acceptAction="acceptAction">
-        </ConfirmationModal>
-        <MediaModal
-            v-if="showMediaModal"
-            onlyImages="yes"
-            modalTitle="Set Featured Image"
-            modalDescription="Chose one image or upload new"
-            v-bind:closeMediaModal="closeMediaModal"
-            v-bind:onMediaSelect="onMediaSelect">
-        </MediaModal>
-        <PreviewMediaModal
-            v-if="previewFile"
-            v-bind:onClose="closePreviewMediaModal"
-            v-bind:onRemove="removePreviewMediaModal"
-            v-bind:onSave="savePreviewMediaModal"
-            v-bind:metaFields="previewMediaMetaFields"
-            v-bind:file="previewFile">
-        </PreviewMediaModal>
     </BoxWrapper>
 </template>
 
@@ -137,12 +114,9 @@ import BoxWrapper from '../templates/box-wrapper.vue'
 import Button from '../templates/button.vue'
 import InputText from '../templates/input-text.vue'
 import DropdownSelect from '../templates/dropdown-select.vue'
-import ConfirmationModal from '../templates/confirmation-modal.vue'
 import NavigationButtons from '../templates/navigation-buttons.vue'
-import MediaModal from '../media-modal.vue'
 import Link from '../templates/link.vue'
 import Gallery from '../templates/gallery.vue'
-import PreviewMediaModal from '../templates/preview-media-modal.vue'
 
 export default {
     data() {
@@ -161,17 +135,32 @@ export default {
                     value: 'pending',
                 },
             ],
-            showModal: false,
-            modalTitle: '',
-            modalDescription: '',
             pageStatusIndex: 0,
-            showMediaModal: false,
             pageDate: '',
             fileTemplates: new this.$models.FileTemplates(),
             pageTemplateOptions: [],
             currentPageTemplateIndex: null,
-            previewFile: null,
             previewMediaMetaFields: [],
+            confirmationModalData: {
+                modalTitle: 'Do you want delete this page?',
+                modalDescription: 'This action will delete this page',
+                cancelAction: this.cancelAction,
+                acceptAction: this.acceptAction,
+            },
+            mediaModalData: {
+                onlyImages: true,
+                modalTitle: 'Set Featured Image',
+                modalDescription: 'Chose one image or upload new',
+                closeMediaModal: this.closeMediaModal,
+                onMediaSelect: this.onMediaSelect,
+            },
+            previewMediaModalData: {
+                onClose: this.closePreviewMediaModal,
+                onRemove: this.removePreviewMediaModal,
+                onSave: this.savePreviewMediaModal,
+                metaFields: this.previewMediaMetaFields,
+                file: this.previewFile,
+            },
         }
     },
     components: {
@@ -180,12 +169,9 @@ export default {
         BoxWrapper,
         Button,
         InputText,
-        ConfirmationModal,
         NavigationButtons,
-        MediaModal,
         Link,
         Gallery,
-        PreviewMediaModal,
     },
     created() {
         this.page.setOption('hasUpdate', false)
@@ -264,14 +250,13 @@ export default {
             })
         },
         showConfirmationModal: function() {
-            this.modalTitle = 'Do you want delete this page?'
-            this.modalDescription = 'This action will delete this page'
-            this.showModal = true
+            this.$eventHub.$emit('confirmation-modal', this.confirmationModalData)
         },
         cancelAction: function() {
-            this.showModal = false
+            this.$eventHub.$emit('confirmation-modal', null)
         },
         acceptAction: function() {
+            this.$eventHub.$emit('confirmation-modal', null)
             this.deletePage()
         },
         onSelectOption: function(option) {
@@ -281,10 +266,10 @@ export default {
             this.page.set('page_content', getHTML())
         },
         openMediaModal: function() {
-            this.showMediaModal = true
+            this.$eventHub.$emit('media-modal', this.mediaModalData)
         },
         closeMediaModal: function() {
-            this.showMediaModal = false
+            this.$eventHub.$emit('media-modal', null)
         },
         onMediaSelect: function(media) {
             let mediaData = {
@@ -364,7 +349,9 @@ export default {
                 }
             else
                 this.setGalleryItemMetaFields()
-            this.previewFile = item
+            this.previewMediaModalData.file = item
+            this.previewMediaModalData.metaFields = this.previewMediaMetaFields
+            this.$eventHub.$emit('preview-media-modal', this.previewMediaModalData)
         },
         setGalleryItemMetaFields: function() {
             this.previewMediaMetaFields = [
@@ -381,7 +368,7 @@ export default {
             ]
         },
         closePreviewMediaModal: function() {
-            this.previewFile = null
+            this.$eventHub.$emit('preview-media-modal', null)
         },
         removePreviewMediaModal: function(item) {
             let pageGallery = this.page.get('page_gallery')
