@@ -1,81 +1,84 @@
 <template lang="html">
     <div>
-        <table
-            class="table-wrapper">
-            <thead>
-                <tr>
-                    <td></td>
-                    <td>
-                        Thumbnail
-                    </td>
-                    <td>
-                        Page Title
-                    </td>
-                    <td>
-                        Page Date
-                    </td>
-                    <td>
-                        Page Status
-                    </td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr
-                    v-for="(page) in collectionItems">
-                    <td>
-                        <Checkbox
-                            style="margin-right: 10px;"
-                            v-bind:onChangeValue="onChangeValue"
-                            v-bind:item="page._id">
-                        </Checkbox>
-                    </td>
-                    <td
-                        v-on:click="onClickRow(page)">
-                        <div
-                            class="avatar"
-                            v-if="page.get('page_thumbnail')"
-                            v-bind:style="getCoverImage(page)">
-                        </div>
-                        <div
-                            class="avatar"
-                            v-if="!page.get('page_thumbnail')"
-                            v-bind:style="getCoverColor(page)">
-                            <span>
-                                {{ page.get('page_title')[0] }}
-                            </span>
-                        </div>
-                    </td>
-                    <td
-                        v-on:click="onClickRow(page)">
-                        {{ page.get('page_title') }}
-                    </td>
-                    <td
-                        v-on:click="onClickRow(page)">
-                        {{ getMomentDate(page.get('page_date')) }}
-                    </td>
-                    <td
-                        v-on:click="onClickRow(page)">{{ page.get('page_status') }}
-                    </td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td></td>
-                    <td>
-                        Thumbnail
-                    </td>
-                    <td>
-                        Page Title
-                    </td>
-                    <td>
-                        Page Date
-                    </td>
-                    <td>
-                        Page Status
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
+        <div
+            class="overflow-x-scroll">
+            <table
+                class="table-wrapper">
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td>
+                            Thumbnail
+                        </td>
+                        <td>
+                            Page Title
+                        </td>
+                        <td>
+                            Page Date
+                        </td>
+                        <td>
+                            Page Status
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        v-for="(page) in collectionItems">
+                        <td>
+                            <Checkbox
+                                style="margin-right: 10px;"
+                                v-bind:onChangeValue="onChangeValue"
+                                v-bind:item="page._id">
+                            </Checkbox>
+                        </td>
+                        <td
+                            v-on:click="onClickRow(page)">
+                            <div
+                                class="avatar"
+                                v-if="page.get('page_thumbnail')"
+                                v-bind:style="getCoverImage(page)">
+                            </div>
+                            <div
+                                class="avatar"
+                                v-if="!page.get('page_thumbnail')"
+                                v-bind:style="getCoverColor(page)">
+                                <span>
+                                    {{ page.get('page_title')[0] }}
+                                </span>
+                            </div>
+                        </td>
+                        <td
+                            v-on:click="onClickRow(page)">
+                            {{ page.get('page_title') }}
+                        </td>
+                        <td
+                            v-on:click="onClickRow(page)">
+                            {{ getMomentDate(page.get('page_date')) }}
+                        </td>
+                        <td
+                            v-on:click="onClickRow(page)">{{ page.get('page_status') }}
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td>
+                            Thumbnail
+                        </td>
+                        <td>
+                            Page Title
+                        </td>
+                        <td>
+                            Page Date
+                        </td>
+                        <td>
+                            Page Status
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
         <div
             class="navigation-wrapper">
             <div
@@ -161,7 +164,18 @@ export default {
     border-collapse: collapse;
     border-spacing: 0;
     color: #616161;
+    min-width: 720px;
     width: 100%;
+}
+
+.overflow-x-scroll {
+    overflow-x: scroll;
+    position: relative;
+    width: 100%;
+}
+
+.table-wrapper table tr td {
+    word-break: break-all;
 }
 
 .table-wrapper thead tr td {

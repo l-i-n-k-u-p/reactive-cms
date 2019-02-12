@@ -1,82 +1,85 @@
 <template lang="html">
     <div>
-        <table
-            class="table-wrapper">
-            <thead>
-                <tr>
-                    <td></td>
-                    <td>
-                        Thumbnail
-                    </td>
-                    <td>
-                        Post Title
-                    </td>
-                    <td>
-                        Post Date
-                    </td>
-                    <td>
-                        Post Status
-                    </td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr
-                    v-for="(post) in collectionItems">
-                    <td>
-                        <Checkbox
-                            style="margin-right: 10px;"
-                            v-bind:onChangeValue="onChangeValue"
-                            v-bind:item="post.get('_id')">
-                        </Checkbox>
-                    </td>
-                    <td
-                        v-on:click="onClickRow(post)">
-                        <div
-                            class="avatar"
-                            v-if="post.get('post_thumbnail')"
-                            v-bind:style="getCoverImage(post)">
-                        </div>
-                        <div
-                            class="avatar"
-                            v-if="!post.get('post_thumbnail')"
-                            v-bind:style="getCoverColor(post)">
-                            <span>
-                                {{ post.get('post_title')[0] }}
-                            </span>
-                        </div>
-                    </td>
-                    <td
-                        v-on:click="onClickRow(post)">
-                        {{ post.post_title }}
-                    </td>
-                    <td
-                        v-on:click="onClickRow(post)">
-                        {{ getMomentDate(post.get('post_date')) }}
-                    </td>
-                    <td
-                        v-on:click="onClickRow(post)">
-                        {{ post.post_status }}
-                    </td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td></td>
-                    <td>
-                        Thumbnail
-                    </td>
-                    <td>
-                        Post Title
-                    </td>
-                    <td>
-                        Post Date
-                    </td>
-                    <td>
-                        Post Status
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
+        <div
+            class="overflow-x-scroll">
+            <table
+                class="table-wrapper">
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td>
+                            Thumbnail
+                        </td>
+                        <td>
+                            Post Title
+                        </td>
+                        <td>
+                            Post Date
+                        </td>
+                        <td>
+                            Post Status
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        v-for="(post) in collectionItems">
+                        <td>
+                            <Checkbox
+                                style="margin-right: 10px;"
+                                v-bind:onChangeValue="onChangeValue"
+                                v-bind:item="post.get('_id')">
+                            </Checkbox>
+                        </td>
+                        <td
+                            v-on:click="onClickRow(post)">
+                            <div
+                                class="avatar"
+                                v-if="post.get('post_thumbnail')"
+                                v-bind:style="getCoverImage(post)">
+                            </div>
+                            <div
+                                class="avatar"
+                                v-if="!post.get('post_thumbnail')"
+                                v-bind:style="getCoverColor(post)">
+                                <span>
+                                    {{ post.get('post_title')[0] }}
+                                </span>
+                            </div>
+                        </td>
+                        <td
+                            v-on:click="onClickRow(post)">
+                            {{ post.post_title }}
+                        </td>
+                        <td
+                            v-on:click="onClickRow(post)">
+                            {{ getMomentDate(post.get('post_date')) }}
+                        </td>
+                        <td
+                            v-on:click="onClickRow(post)">
+                            {{ post.post_status }}
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td>
+                            Thumbnail
+                        </td>
+                        <td>
+                            Post Title
+                        </td>
+                        <td>
+                            Post Date
+                        </td>
+                        <td>
+                            Post Status
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
         <div
             class="navigation-wrapper">
             <div
@@ -162,7 +165,18 @@ export default {
     border-collapse: collapse;
     border-spacing: 0;
     color: #616161;
+    min-width: 720px;
     width: 100%;
+}
+
+.overflow-x-scroll {
+    overflow-x: scroll;
+    position: relative;
+    width: 100%;
+}
+
+.table-wrapper table tr td {
+    word-break: break-all;
 }
 
 .table-wrapper thead tr td {

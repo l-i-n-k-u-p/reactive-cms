@@ -26,11 +26,11 @@
         <transition
             name="autohide">
             <SplashScreen
-                v-show="showSplashScreen"
+                v-if="showSplashScreen"
                 />
         </transition>
         <Login
-            v-show="showLogin">
+            v-if="showLogin">
         </Login>
         <RibbonError
             v-if="appErrorMessage">
@@ -161,10 +161,9 @@ export default {
 }
 
 #overflow {
-    height: 100%;
     margin-top: 48px;
-    min-width: 720px;
-    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: scroll;
     position: relative;
     width: 100%;
 }
