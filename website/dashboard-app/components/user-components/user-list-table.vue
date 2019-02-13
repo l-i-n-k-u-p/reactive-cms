@@ -1,102 +1,105 @@
 <template lang="html">
     <div>
-        <table
-            class="table-wrapper">
-            <thead>
-                <tr>
-                    <td></td>
-                    <td>
-                        Avatar
-                    </td>
-                    <td>
-                        User Name
-                    </td>
-                    <td>
-                        User Email
-                    </td>
-                    <td>
-                        User Type
-                    </td>
-                    <td>
-                        User Registered
-                    </td>
-                    <td>
-                        User Active
-                    </td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr
-                    v-for="(user) in userListItems">
-                    <td>
-                        <Checkbox
-                            style="margin-right: 10px;"
-                            v-bind:onChangeValue="onChangeValue"
-                            v-bind:item="user.get('_id')">
-                        </Checkbox>
-                    </td>
-                    <td
-                        v-on:click="onClickRow(user)">
-                        <div
-                            class="avatar"
-                            v-if="user.get('user_avatar')"
-                            v-bind:style="getCoverImage(user)">
-                        </div>
-                        <div
-                            class="avatar"
-                            v-if="!user.get('user_avatar')"
-                            v-bind:style="getCoverColor(user)">
-                            <span>
-                                {{ user.get('user_first_name')[0] }}
-                            </span>
-                        </div>
-                    </td>
-                    <td
-                        v-on:click="onClickRow(user)">
-                        {{ user.get('user_name') }}
-                    </td>
-                    <td
-                        v-on:click="onClickRow(user)">
-                        {{ user.get('user_email') }}
-                    </td>
-                    <td
-                        v-on:click="onClickRow(user)">
-                        {{ user.get('user_type') }}
-                    </td>
-                    <td
-                        v-on:click="onClickRow(user)">
-                        {{ getMomentDate(user.get('user_registration_date')) }}
-                    </td>
-                    <td
-                        v-on:click="onClickRow(user)">
-                        {{ userIsActive(user.get('user_active')) }}
-                    </td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td></td>
-                    <td>
-                        Avatar
-                    </td>
-                    <td>
-                        User Name
-                    </td>
-                    <td>
-                        User Email
-                    </td>
-                    <td>
-                        User Type
-                    </td>
-                    <td>
-                        User Registered
-                    </td>
-                    <td>
-                        User Active
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
+        <div
+            class="overflow-x-scroll">
+            <table
+                class="table-wrapper">
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td>
+                            Avatar
+                        </td>
+                        <td>
+                            User Name
+                        </td>
+                        <td>
+                            User Email
+                        </td>
+                        <td>
+                            User Type
+                        </td>
+                        <td>
+                            User Registered
+                        </td>
+                        <td>
+                            User Active
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        v-for="(user) in userListItems">
+                        <td>
+                            <Checkbox
+                                style="margin-right: 10px;"
+                                v-bind:onChangeValue="onChangeValue"
+                                v-bind:item="user.get('_id')">
+                            </Checkbox>
+                        </td>
+                        <td
+                            v-on:click="onClickRow(user)">
+                            <div
+                                class="avatar"
+                                v-if="user.get('user_avatar')"
+                                v-bind:style="getCoverImage(user)">
+                            </div>
+                            <div
+                                class="avatar"
+                                v-if="!user.get('user_avatar')"
+                                v-bind:style="getCoverColor(user)">
+                                <span>
+                                    {{ user.get('user_first_name')[0] }}
+                                </span>
+                            </div>
+                        </td>
+                        <td
+                            v-on:click="onClickRow(user)">
+                            {{ user.get('user_name') }}
+                        </td>
+                        <td
+                            v-on:click="onClickRow(user)">
+                            {{ user.get('user_email') }}
+                        </td>
+                        <td
+                            v-on:click="onClickRow(user)">
+                            {{ user.get('user_type') }}
+                        </td>
+                        <td
+                            v-on:click="onClickRow(user)">
+                            {{ getMomentDate(user.get('user_registration_date')) }}
+                        </td>
+                        <td
+                            v-on:click="onClickRow(user)">
+                            {{ userIsActive(user.get('user_active')) }}
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td>
+                            Avatar
+                        </td>
+                        <td>
+                            User Name
+                        </td>
+                        <td>
+                            User Email
+                        </td>
+                        <td>
+                            User Type
+                        </td>
+                        <td>
+                            User Registered
+                        </td>
+                        <td>
+                            User Active
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
         <div
             class="navigation-wrapper">
             <div
@@ -184,7 +187,18 @@ export default {
     border-collapse: collapse;
     border-spacing: 0;
     color: #616161;
+    min-width: 720px;
     width: 100%;
+}
+
+.overflow-x-scroll {
+    overflow-x: scroll;
+    position: relative;
+    width: 100%;
+}
+
+.table-wrapper table tr td {
+    word-break: break-all;
 }
 
 .table-wrapper thead tr td {
