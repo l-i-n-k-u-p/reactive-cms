@@ -1,160 +1,153 @@
 <template lang="html">
-    <div
-        v-bind:class="{'select-wrapper': true, 'open': show}"
-        v-on:click="showOptions">
-        <label
-            class="title">
-            {{ label + ":" }}
-        </label>
-        <label>
-            {{ getOptionName() }}
-        </label>
-        <transition
-            name="fade">
-            <ul
-                class="select-options"
-                v-if="show"
-                v-click-outside="clickOutsite">
-                <li
-                    v-for="(option, index) in selectOptions"
-                    v-on:click="onSelect(index)">
-                    {{ option.name }}
-                </li>
-            </ul>
-        </transition>
-    </div>
+  <div
+    v-bind:class="{ 'select-wrapper': true, open: show }"
+    v-on:click="showOptions"
+  >
+    <label class="title">
+      {{ label + ':' }}
+    </label>
+    <label>
+      {{ getOptionName() }}
+    </label>
+    <transition name="fade">
+      <ul class="select-options" v-if="show" v-click-outside="clickOutsite">
+        <li
+          v-for="(option, index) in selectOptions"
+          v-on:click="onSelect(index)"
+        >
+          {{ option.name }}
+        </li>
+      </ul>
+    </transition>
+  </div>
 </template>
 
 <script>
-
 export default {
-    props: [
-        'onSelectOption',
-        'selectOptions',
-        'initialIndexOption',
-        'label',
-    ],
-    data() {
-        return {
-            currentIndex: 0,
-            show: false,
-            currentOptionLabel: '',
-        }
+  props: [
+    'onSelectOption',
+    'selectOptions',
+    'initialIndexOption',
+    'label',
+  ],
+  data() {
+    return {
+      currentIndex: 0,
+      show: false,
+      currentOptionLabel: '',
+    }
+  },
+  watch: {
+    initialIndexOption: function(newVal, oldVal) {
+      this.currentIndex = newVal
     },
-    watch: {
-        'initialIndexOption': function(newVal, oldVal) {
-            this.currentIndex = newVal
-        },
+  },
+  created() {
+    this.currentIndex = this.initialIndexOption
+  },
+  methods: {
+    showOptions: function() {
+      this.show = !this.show
     },
-    created() {
-        this.currentIndex = this.initialIndexOption
+    onSelect: function(index) {
+      this.currentIndex = index
+      this.onSelectOption(this.selectOptions[index])
     },
-    methods: {
-        showOptions: function() {
-            this.show = !this.show
-        },
-        onSelect: function(index) {
-            this.currentIndex = index
-            this.onSelectOption(this.selectOptions[index])
-        },
-        clickOutsite: function(event) {
-            this.show = false
-        },
-        getOptionName: function() {
-            let option = this.selectOptions[this.currentIndex]
-            if(!option)
-                return ''
+    clickOutsite: function(event) {
+      this.show = false
+    },
+    getOptionName: function() {
+      let option = this.selectOptions[this.currentIndex]
+      if (!option) return ''
 
-            return option.name
-        },
+      return option.name
     },
-    directives: {
-        'click-outside': {
-            bind: function(el, binding, vNode) {
-                // Define Handler and cache it on the element
-                const bubble = binding.modifiers.bubble
-                const handler = (e) => {
-                    if (bubble || (!el.contains(e.target) && el !== e.target)) {
-                        binding.value(e)
-                    }
-                }
-                el.__vueClickOutside__ = handler
-                // add Event Listeners
-                document.addEventListener('click', handler)
-            },
-            unbind: function(el, binding) {
-                // Remove Event Listeners
-                document.removeEventListener('click', el.__vueClickOutside__)
-                el.__vueClickOutside__ = null
-            }
+  },
+  directives: {
+    'click-outside': {
+      bind: function(el, binding, vNode) {
+        // Define Handler and cache it on the element
+        const bubble = binding.modifiers.bubble
+        const handler = e => {
+          if (bubble || (!el.contains(e.target) && el !== e.target)) {
+            binding.value(e)
+          }
         }
+        el.__vueClickOutside__ = handler
+        // add Event Listeners
+        document.addEventListener('click', handler)
+      },
+      unbind: function(el, binding) {
+        // Remove Event Listeners
+        document.removeEventListener('click', el.__vueClickOutside__)
+        el.__vueClickOutside__ = null
+      },
     },
+  },
 }
-
 </script>
 
 <style scoped lang="css">
-
 .select-wrapper {
-    -webkit-user-select: none;
-    align-self: center;
-    background: transparent;
-    border-bottom: 1px solid #616161;
-    color: #616161;
-    cursor: pointer;
-    display: flex;
-    font-size: 13px;
-    font-weight: 500;
-    height: 14px;
-    padding-bottom: 7px;
-    padding-top: 7px;
-    position: relative;
-    transition-duration: 100ms;
-    user-select: none;
+  -webkit-user-select: none;
+  align-self: center;
+  background: transparent;
+  border-bottom: 1px solid #616161;
+  color: #616161;
+  cursor: pointer;
+  display: flex;
+  font-size: 13px;
+  font-weight: 500;
+  height: 14px;
+  padding-bottom: 7px;
+  padding-top: 7px;
+  position: relative;
+  transition-duration: 100ms;
+  user-select: none;
 }
 
 label {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .select-wrapper .title {
-    transition-duration: 100ms;
-    margin-right: 5px;
-    text-transform: capitalize;
+  transition-duration: 100ms;
+  margin-right: 5px;
+  text-transform: capitalize;
 }
 
 .select-wrapper .icon {
-    font-size: 20px;
-    line-height: 1;
-    margin-right: 5px;
-    position: relative;
-    top: -2px;
+  font-size: 20px;
+  line-height: 1;
+  margin-right: 5px;
+  position: relative;
+  top: -2px;
 }
 
 .select-options {
-    background-color: transparent;
-    border-bottom-left-radius: 3px;
-    border-bottom-right-radius: 3px;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, .2), 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12);
-    left: 0;
-    list-style: none;
-    margin: 0;
-    min-width: 112px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    right: 0;
-    top: calc(100% + 2px);
-    z-index: 999;
+  background-color: transparent;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, .2), 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12);
+  left: 0;
+  list-style: none;
+  margin: 0;
+  min-width: 112px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 2px);
+  z-index: 999;
 }
 
 .select-options li {
-    background-color: white;
-    padding: 10px;
+  background-color: white;
+  padding: 10px;
 }
 
 .select-options li:hover {
-    background-color: #eee;
+  background-color: #eee;
 }
 
 .fade-enter-active, .fade-leave-active {
@@ -166,12 +159,11 @@ label {
 }
 
 .select-wrapper.open {
-    background-color: white;
-    border-bottom: 1px solid #006dad;
+  background-color: white;
+  border-bottom: 1px solid #006dad;
 }
 
 .select-wrapper.open .title {
-    color: #006dad;
+  color: #006dad;
 }
-
 </style>

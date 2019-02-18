@@ -1,76 +1,79 @@
 <template lang="html">
-    <BoxWrapper>
-        <div
-            class="settings-wrapper">
-            <div
-                class="header">
-                <NavigationButtons />
-                <h2>Settings</h2>
-            </div>
-            <div
-                class="content-wrapper">
-                <h2>Dashboard</h2>
-                <InputText
-                    inputName="Dashboard Title"
-                    v-bind:inputValue="settings.get('setting_page_title')"
-                    v-bind:onChangeValue="onChangeInputValue"
-                    propName='setting_page_title'>
-                </InputText>
-                <InputText
-                    inputName="Dashboard Items Peer Page"
-                    v-bind:inputValue="settings.get('setting_items_peer_page')"
-                    v-bind:onChangeValue="onChangeInputValue"
-                    propName='setting_items_peer_page'
-                    inputType="number">
-                </InputText>
-                <h2>Site</h2>
-                <InputText
-                    inputName="Site Title"
-                    v-bind:inputValue="site.get('site_name')"
-                    v-bind:onChangeValue="onChangeInputSiteValue"
-                    propName='site_name'>
-                </InputText>
-                <InputText
-                    inputName="Site Items Peer Page"
-                    v-bind:inputValue="site.get('site_items_peer_page')"
-                    v-bind:onChangeValue="onChangeInputSiteValue"
-                    propName='site_items_peer_page'
-                    inputType="number">
-                </InputText>
-                <InputText
-                    inputName="Site URL"
-                    v-bind:inputValue="site.get('site_url')"
-                    v-bind:onChangeValue="onChangeInputSiteValue"
-                    propName='site_url'>
-                </InputText>
-                <FormDropdownSelect
-                    class="dropdown-select"
-                    label="Home page template"
-                    v-bind:initialIndexOption="templateHomeIndex"
-                    v-bind:onSelectOption="onSelectTemplateHome"
-                    v-bind:selectOptions="templateHomeOptions">
-                </FormDropdownSelect>
-                <FormDropdownSelect
-                    class="dropdown-select"
-                    label="Listview Posts Template"
-                    v-bind:initialIndexOption="templatePostsIndex"
-                    v-bind:onSelectOption="onSelectPostsTemplate"
-                    v-bind:selectOptions="templateFileOptions">
-                </FormDropdownSelect>
-                <div
-                    class="buttons-wrapper">
-                    <Button
-                        buttonIcon="save"
-                        v-bind:buttonAction="saveSetting"
-                        style="margin-left: 10px;">
-                            Update
-                    </button>
-                </div>
-            </div>
+  <BoxWrapper>
+    <div class="settings-wrapper">
+      <div class="header">
+        <NavigationButtons />
+        <h2>Settings</h2>
+      </div>
+      <div class="content-wrapper">
+        <h2>Dashboard</h2>
+        <InputText
+          inputName="Dashboard Title"
+          v-bind:inputValue="settings.get('setting_page_title')"
+          v-bind:onChangeValue="onChangeInputValue"
+          propName="setting_page_title"
+        >
+        </InputText>
+        <InputText
+          inputName="Dashboard Items Peer Page"
+          v-bind:inputValue="settings.get('setting_items_peer_page')"
+          v-bind:onChangeValue="onChangeInputValue"
+          propName="setting_items_peer_page"
+          inputType="number"
+        >
+        </InputText>
+        <h2>Site</h2>
+        <InputText
+          inputName="Site Title"
+          v-bind:inputValue="site.get('site_name')"
+          v-bind:onChangeValue="onChangeInputSiteValue"
+          propName="site_name"
+        >
+        </InputText>
+        <InputText
+          inputName="Site Items Peer Page"
+          v-bind:inputValue="site.get('site_items_peer_page')"
+          v-bind:onChangeValue="onChangeInputSiteValue"
+          propName="site_items_peer_page"
+          inputType="number"
+        >
+        </InputText>
+        <InputText
+          inputName="Site URL"
+          v-bind:inputValue="site.get('site_url')"
+          v-bind:onChangeValue="onChangeInputSiteValue"
+          propName="site_url"
+        >
+        </InputText>
+        <FormDropdownSelect
+          class="dropdown-select"
+          label="Home page template"
+          v-bind:initialIndexOption="templateHomeIndex"
+          v-bind:onSelectOption="onSelectTemplateHome"
+          v-bind:selectOptions="templateHomeOptions"
+        >
+        </FormDropdownSelect>
+        <FormDropdownSelect
+          class="dropdown-select"
+          label="Listview Posts Template"
+          v-bind:initialIndexOption="templatePostsIndex"
+          v-bind:onSelectOption="onSelectPostsTemplate"
+          v-bind:selectOptions="templateFileOptions"
+        >
+        </FormDropdownSelect>
+        <div class="buttons-wrapper">
+          <Button
+            buttonIcon="save"
+            v-bind:buttonAction="saveSetting"
+            style="margin-left: 10px;"
+          >
+            Update
+          </Button>
         </div>
-    </BoxWrapper>
+      </div>
+    </div>
+  </BoxWrapper>
 </template>
-
 
 <script>
 import BoxWrapper from './templates/box-wrapper.vue'
@@ -80,242 +83,265 @@ import NavigationButtons from './templates/navigation-buttons.vue'
 import FormDropdownSelect from './templates/form-dropdown-select.vue'
 
 export default {
-    data() {
-        return {
-            settings: new this.$models.Setting(),
-            site: new this.$models.Site(),
-            settingPages: new this.$models.SettingPages(),
-            templateHomeIndex: null,
-            templateHomeOptions: [],
-            fileTemplates: new this.$models.FileTemplates(),
-            templatePostsIndex: null,
-            templateFileOptions: [],
-        }
-    },
-    components: {
-        BoxWrapper,
-        Button,
-        InputText,
-        NavigationButtons,
-        FormDropdownSelect,
-    },
-    created() {
-        this.site.setOption('hasUpdate', false)
-        this.getSettingsData()
-        this.getSiteData()
-        this.getSettingPagesData()
-        this.setOnChangeSetting()
-        this.getTemplateFilesData()
-    },
-    methods: {
-        getSettingsData: function() {
-            this.settings.fetch()
-            .then(data => {
-                if(data.getData().status_code) {
-                    this.$eventHub.$emit('dashboard-app-error', data.getData().status_msg)
-                    return
-                }
-            })
-            .catch(err => {
-                this.$eventHub.$emit('dashboard-app-error', err.message)
-            })
-        },
-        getSiteData: function() {
-            this.site.fetch()
-            .then(data => {
-                if(data.getData().status_code) {
-                    this.$eventHub.$emit('dashboard-app-error', data.getData().status_msg)
-                    return
-                }
-                this.setIndexPageTemplate()
-                this.setIndexPostsTemplate()
-            })
-            .catch(err => {
-                this.$eventHub.$emit('dashboard-app-error', err.message)
-            })
-        },
-        getSettingPagesData: function() {
-            this.settingPages.fetch()
-            .then(data => {
-                if(data.getData().status_code) {
-                    this.$eventHub.$emit('dashboard-app-error', data.getData().status_msg)
-                    return
-                }
-                this.setInitialSelectPages()
-            })
-            .catch(err => {
-                this.$eventHub.$emit('dashboard-app-error', err.message)
-            })
-        },
-        getTemplateFilesData: function() {
-            this.fileTemplates.fetch()
-            .then(data => {
-                if(data.getData().status_code) {
-                    this.$eventHub.$emit('dashboard-app-error', data.getData().status_msg)
-                    return
-                }
-                this.setInitialSelectPostsTemplates()
-            })
-            .catch(err => {
-                this.$eventHub.$emit('dashboard-app-error', data.message)
-            })
-        },
-        onChangeInputValue: function(propName, value) {
-            this.settings.set(propName, value)
-        },
-        onChangeInputSiteValue: function(propName, value) {
-            this.site.set(propName, value)
-        },
-        saveSetting: function() {
-            this.settings.put()
-            .then(data => {
-                if(data.getData().status_code) {
-                    this.$eventHub.$emit('dashboard-app-error', data.getData().status_msg)
-                    return
-                }
-                this.$eventHub.$emit('dashboard-app-success',  data.getData().status_msg)
-            })
-            .catch(err => {
-                this.$eventHub.$emit('dashboard-app-error', err.message)
-            })
-            this.saveSite()
-        },
-        saveSite: function() {
-            this.site.put()
-            .then(data => {
-                if(data.getData().status_code) {
-                    this.$eventHub.$emit('dashboard-app-error', data.getData().status_msg)
-                    return
-                }
-                this.$eventHub.$emit('dashboard-app-success',  data.getData().status_msg)
-            })
-            .catch(err => {
-                this.$eventHub.$emit('dashboard-app-error', err.message)
-            })
-        },
-        onSelectTemplateHome: function(option) {
-            this.site.set('site_template_home', option.value)
-        },
-        setOnChangeSetting: function() {
-            this.site.on('change', ({attribute, value}) => {
-                if(!this.site.getOption('hasUpdate'))
-                    return
-
-                this.site.setOption('hasUpdate', false)
-                if(attribute === 'site_template_home') {
-                    this.setIndexPageTemplate()
-                }
-                if(attribute === 'site_template_posts') {
-                    this.setIndexPostsTemplate()
-                }
-            })
-        },
-        setInitialSelectPages: function() {
-            let templates = this.settingPages.models
-            this.templateHomeOptions.push({
-                name: 'none',
-                value: '',
-            })
-            for(let template of templates) {
-                let pageID = template.get('id')
-                let pageTitle = template.get('page_title')
-                this.templateHomeOptions.push({
-                    name: pageTitle,
-                    value: pageID,
-                })
-            }
-            this.setIndexPageTemplate()
-        },
-        setIndexPageTemplate: function() {
-            if(!this.templateHomeOptions)
-                return
-
-            let templates = this.settingPages.models
-            let pageTemplate = this.site.get('site_template_home')
-            this.templateHomeIndex = 0
-            for(let index in this.templateHomeOptions) {
-                let templateFullName = this.templateHomeOptions[index].value
-                if(templateFullName === pageTemplate) {
-                    this.templateHomeIndex = index
-                    return
-                }
-            }
-        },
-        onSelectPostsTemplate: function(option) {
-            this.site.set('site_template_posts', option.value)
-        },
-        setInitialSelectPostsTemplates: function() {
-            let templates = this.fileTemplates.models
-            this.templateFileOptions.push({
-                name: 'none',
-                value: '',
-            })
-            for(let template of templates) {
-                let templateName = template.get('template_name')
-                let templateFullName = template.get('template_full_name')
-                this.templateFileOptions.push({
-                    name: templateName,
-                    value: templateFullName,
-                })
-            }
-            this.setIndexPostsTemplate()
-        },
-        setIndexPostsTemplate: function() {
-            if(!this.templateFileOptions)
-                return
-
-            let templates = this.fileTemplates.models
-            let pageTemplate = this.site.get('site_template_posts')
-            this.templatePostsIndex = 0
-            for(let index in this.templateFileOptions) {
-                let templateFullName = this.templateFileOptions[index].value
-                if(templateFullName === pageTemplate) {
-                    this.templatePostsIndex = index
-                    return
-                }
-            }
-        },
+  data() {
+    return {
+      settings: new this.$models.Setting(),
+      site: new this.$models.Site(),
+      settingPages: new this.$models.SettingPages(),
+      templateHomeIndex: null,
+      templateHomeOptions: [],
+      fileTemplates: new this.$models.FileTemplates(),
+      templatePostsIndex: null,
+      templateFileOptions: [],
     }
-}
+  },
+  components: {
+    BoxWrapper,
+    Button,
+    InputText,
+    NavigationButtons,
+    FormDropdownSelect,
+  },
+  created() {
+    this.site.setOption('hasUpdate', false)
+    this.getSettingsData()
+    this.getSiteData()
+    this.getSettingPagesData()
+    this.setOnChangeSetting()
+    this.getTemplateFilesData()
+  },
+  methods: {
+    getSettingsData: function() {
+      this.settings
+        .fetch()
+        .then(data => {
+          if (data.getData().status_code) {
+            this.$eventHub.$emit(
+              'dashboard-app-error',
+              data.getData().status_msg,
+            )
+            return
+          }
+        })
+        .catch(err => {
+          this.$eventHub.$emit('dashboard-app-error', err.message)
+        })
+    },
+    getSiteData: function() {
+      this.site
+        .fetch()
+        .then(data => {
+          if (data.getData().status_code) {
+            this.$eventHub.$emit(
+              'dashboard-app-error',
+              data.getData().status_msg,
+            )
+            return
+          }
+          this.setIndexPageTemplate()
+          this.setIndexPostsTemplate()
+        })
+        .catch(err => {
+          this.$eventHub.$emit('dashboard-app-error', err.message)
+        })
+    },
+    getSettingPagesData: function() {
+      this.settingPages
+        .fetch()
+        .then(data => {
+          if (data.getData().status_code) {
+            this.$eventHub.$emit(
+              'dashboard-app-error',
+              data.getData().status_msg,
+            )
+            return
+          }
+          this.setInitialSelectPages()
+        })
+        .catch(err => {
+          this.$eventHub.$emit('dashboard-app-error', err.message)
+        })
+    },
+    getTemplateFilesData: function() {
+      this.fileTemplates
+        .fetch()
+        .then(data => {
+          if (data.getData().status_code) {
+            this.$eventHub.$emit(
+              'dashboard-app-error',
+              data.getData().status_msg,
+            )
+            return
+          }
+          this.setInitialSelectPostsTemplates()
+        })
+        .catch(err => {
+          this.$eventHub.$emit('dashboard-app-error', data.message)
+        })
+    },
+    onChangeInputValue: function(propName, value) {
+      this.settings.set(propName, value)
+    },
+    onChangeInputSiteValue: function(propName, value) {
+      this.site.set(propName, value)
+    },
+    saveSetting: function() {
+      this.settings
+        .put()
+        .then(data => {
+          if (data.getData().status_code) {
+            this.$eventHub.$emit(
+              'dashboard-app-error',
+              data.getData().status_msg,
+            )
+            return
+          }
+          this.$eventHub.$emit(
+            'dashboard-app-success',
+            data.getData().status_msg,
+          )
+        })
+        .catch(err => {
+          this.$eventHub.$emit('dashboard-app-error', err.message)
+        })
+      this.saveSite()
+    },
+    saveSite: function() {
+      this.site
+        .put()
+        .then(data => {
+          if (data.getData().status_code) {
+            this.$eventHub.$emit(
+              'dashboard-app-error',
+              data.getData().status_msg,
+            )
+            return
+          }
+          this.$eventHub.$emit(
+            'dashboard-app-success',
+            data.getData().status_msg,
+          )
+        })
+        .catch(err => {
+          this.$eventHub.$emit('dashboard-app-error', err.message)
+        })
+    },
+    onSelectTemplateHome: function(option) {
+      this.site.set('site_template_home', option.value)
+    },
+    setOnChangeSetting: function() {
+      this.site.on('change', ({ attribute, value }) => {
+        if (!this.site.getOption('hasUpdate')) return
 
+        this.site.setOption('hasUpdate', false)
+        if (attribute === 'site_template_home') {
+          this.setIndexPageTemplate()
+        }
+        if (attribute === 'site_template_posts') {
+          this.setIndexPostsTemplate()
+        }
+      })
+    },
+    setInitialSelectPages: function() {
+      let templates = this.settingPages.models
+      this.templateHomeOptions.push({
+        name: 'none',
+        value: '',
+      })
+      for (let template of templates) {
+        let pageID = template.get('id')
+        let pageTitle = template.get('page_title')
+        this.templateHomeOptions.push({
+          name: pageTitle,
+          value: pageID,
+        })
+      }
+      this.setIndexPageTemplate()
+    },
+    setIndexPageTemplate: function() {
+      if (!this.templateHomeOptions) return
+
+      let templates = this.settingPages.models
+      let pageTemplate = this.site.get('site_template_home')
+      this.templateHomeIndex = 0
+      for (let index in this.templateHomeOptions) {
+        let templateFullName = this.templateHomeOptions[index].value
+        if (templateFullName === pageTemplate) {
+          this.templateHomeIndex = index
+          return
+        }
+      }
+    },
+    onSelectPostsTemplate: function(option) {
+      this.site.set('site_template_posts', option.value)
+    },
+    setInitialSelectPostsTemplates: function() {
+      let templates = this.fileTemplates.models
+      this.templateFileOptions.push({
+        name: 'none',
+        value: '',
+      })
+      for (let template of templates) {
+        let templateName = template.get('template_name')
+        let templateFullName = template.get('template_full_name')
+        this.templateFileOptions.push({
+          name: templateName,
+          value: templateFullName,
+        })
+      }
+      this.setIndexPostsTemplate()
+    },
+    setIndexPostsTemplate: function() {
+      if (!this.templateFileOptions) return
+
+      let templates = this.fileTemplates.models
+      let pageTemplate = this.site.get('site_template_posts')
+      this.templatePostsIndex = 0
+      for (let index in this.templateFileOptions) {
+        let templateFullName = this.templateFileOptions[index].value
+        if (templateFullName === pageTemplate) {
+          this.templatePostsIndex = index
+          return
+        }
+      }
+    },
+  },
+}
 </script>
 
-
 <style scoped lang="css">
-
 .settings-wrapper {
-    position: relative;
+  position: relative;
 }
 
 .header {
-    display: flex;
+  display: flex;
 }
 
 h2 {
-    color: #616161;
-    display: flex;
-    flex-grow: 1;
-    font-size: 13px;
-    font-weight: 500;
-    margin-top: 7px;
-    text-transform: uppercase;
+  color: #616161;
+  display: flex;
+  flex-grow: 1;
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 7px;
+  text-transform: uppercase;
 }
 
 .buttons-wrapper {
-    bottom: 0;
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 10px;
-    padding: 0px;
-    right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  padding: 0px;
+  right: 0;
 }
 
 .content-wrapper {
-    box-sizing: content-box;
+  box-sizing: content-box;
 }
 
 .dropdown-select {
-    margin-top: 10px;
+  margin-top: 10px;
 }
-
 </style>

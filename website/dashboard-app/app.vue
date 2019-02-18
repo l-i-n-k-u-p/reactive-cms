@@ -1,80 +1,66 @@
 <template lang="html">
-    <div
-        class="app-wrapper">
-        <Header
-            v-on:dashboard-toggle-menu="menuIsOpen"
-            v-bind:scrollTop="scrollTop"
-            v-bind:pageTitle="pageTitle">
-        </Header>
-        <transition
-            name="fade">
-            <Menu
-                class="left-menu-wrapper"
-                v-if="menuIsOpen">
-            </Menu>
-        </transition>
-        <div
-            id="overflow"
-            v-on:scroll="onScroll">
-            <div id="content">
-                <div
-                    v-bind:class="pageWrapperClass">
-                    <router-view :key="$route.fullPath"/>
-                </div>
-            </div>
+  <div class="app-wrapper">
+    <Header
+      v-on:dashboard-toggle-menu="menuIsOpen"
+      v-bind:scrollTop="scrollTop"
+      v-bind:pageTitle="pageTitle"
+    >
+    </Header>
+    <transition name="fade">
+      <Menu class="left-menu-wrapper" v-if="menuIsOpen"> </Menu>
+    </transition>
+    <div id="overflow" v-on:scroll="onScroll">
+      <div id="content">
+        <div v-bind:class="pageWrapperClass">
+          <router-view :key="$route.fullPath" />
         </div>
-        <transition
-            name="autohide">
-            <SplashScreen
-                v-if="showSplashScreen"
-                />
-        </transition>
-        <Login
-            v-if="showLogin">
-        </Login>
-        <RibbonError
-            v-if="appErrorMessage">
-            <slot>{{ appErrorMessage }}</slot>
-        </RibbonError>
-        <RibbonSuccess
-            v-if="appSuccessMessage">
-            <slot>{{ appSuccessMessage }}</slot>
-        </RibbonSuccess>
-        <footer>
-            <span>Development by</span>
-            <a
-                href="https://reactive-web.com"
-                target="_blank">
-                <img src="/website/assets/reactive-web.png">
-            </a>
-            <span>Version 1.0.0</span>
-        </footer>
-        <MediaModal
-            v-if="mediaModalData"
-            v-bind:onlyImages="mediaModalData.onlyImages"
-            v-bind:modalTitle="mediaModalData.modalTitle"
-            v-bind:modalDescription="mediaModalData.modalDescription"
-            v-bind:closeMediaModal="mediaModalData.closeMediaModal"
-            v-bind:onMediaSelect="mediaModalData.onMediaSelect">
-        </MediaModal>
-        <ConfirmationModal
-            v-if="confirmationModalData"
-            v-bind:modalTitle="confirmationModalData.modalTitle"
-            v-bind:modalDescription="confirmationModalData.modalDescription"
-            v-bind:cancelAction="confirmationModalData.cancelAction"
-            v-bind:acceptAction="confirmationModalData.acceptAction">
-        </ConfirmationModal>
-        <PreviewMediaModal
-            v-if="previewMediaModalData"
-            v-bind:onClose="previewMediaModalData.onClose"
-            v-bind:onRemove="previewMediaModalData.onRemove"
-            v-bind:onSave="previewMediaModalData.onSave"
-            v-bind:metaFields="previewMediaModalData.metaFields"
-            v-bind:file="previewMediaModalData.file">
-        </PreviewMediaModal>
+      </div>
     </div>
+    <transition name="autohide">
+      <SplashScreen v-if="showSplashScreen" />
+    </transition>
+    <Login v-if="showLogin"> </Login>
+    <RibbonError v-if="appErrorMessage">
+      <slot>{{ appErrorMessage }}</slot>
+    </RibbonError>
+    <RibbonSuccess v-if="appSuccessMessage">
+      <slot>{{ appSuccessMessage }}</slot>
+    </RibbonSuccess>
+    <footer>
+      <span>Development by</span>
+      <a href="https://reactive-web.com" target="_blank">
+        <img src="/website/assets/reactive-web.png" />
+      </a>
+      <span>Version 1.0.0</span>
+    </footer>
+    <MediaModal
+      v-if="mediaModalData"
+      v-bind:onlyImages="mediaModalData.onlyImages"
+      v-bind:modalTitle="mediaModalData.modalTitle"
+      v-bind:modalDescription="mediaModalData.modalDescription"
+      v-bind:closeMediaModal="mediaModalData.closeMediaModal"
+      v-bind:onMediaSelect="mediaModalData.onMediaSelect"
+    >
+    </MediaModal>
+    <ConfirmationModal
+      v-if="confirmationModalData"
+      v-bind:modalTitle="confirmationModalData.modalTitle"
+      v-bind:modalDescription="confirmationModalData.modalDescription"
+      v-bind:cancelAction="confirmationModalData.cancelAction"
+      v-bind:acceptAction="confirmationModalData.acceptAction"
+    >
+    </ConfirmationModal>
+    <PreviewMediaModal
+      v-if="previewMediaModalData"
+      v-bind:onClose="previewMediaModalData.onClose"
+      v-bind:onRemove="previewMediaModalData.onRemove"
+      v-bind:onSave="previewMediaModalData.onSave"
+      v-bind:metaFields="previewMediaModalData.metaFields"
+      v-bind:file="previewMediaModalData.file"
+    >
+    </PreviewMediaModal>
+  </div>
 </template>
-
 
 <script>
 import Header from './components/header.vue'
@@ -88,108 +74,104 @@ import ConfirmationModal from './components/templates/confirmation-modal.vue'
 import PreviewMediaModal from './components/templates/preview-media-modal.vue'
 
 export default {
-    components: {
-        Header,
-        Menu,
-        RibbonError,
-        RibbonSuccess,
-        SplashScreen,
-        Login,
-        ConfirmationModal,
-        MediaModal,
-        PreviewMediaModal,
+  components: {
+    Header,
+    Menu,
+    RibbonError,
+    RibbonSuccess,
+    SplashScreen,
+    Login,
+    ConfirmationModal,
+    MediaModal,
+    PreviewMediaModal,
+  },
+  data: function() {
+    return {
+      pageWrapperClass: 'page-content-wrapper closed',
+      menuIsOpen: false,
+      pageTitle: '',
+      appErrorMessage: '',
+      appSuccessMessage: '',
+      scrollTop: 0,
+      showSplashScreen: true,
+      showLogin: false,
+      ribbonTimeOut: 5000,
+      confirmationModalData: null,
+      mediaModalData: null,
+      previewMediaModalData: null,
+    }
+  },
+  watch: {
+    appErrorMessage: function(newVal, oldVal) {
+      setTimeout(this.hideRibbonErrorNotification, this.ribbonTimeOut)
     },
-    data: function() {
-        return {
-            pageWrapperClass: 'page-content-wrapper closed',
-            menuIsOpen: false,
-            pageTitle: '',
-            appErrorMessage: '',
-            appSuccessMessage: '',
-            scrollTop: 0,
-            showSplashScreen: true,
-            showLogin: false,
-            ribbonTimeOut: 5000,
-            confirmationModalData: null,
-            mediaModalData: null,
-            previewMediaModalData: null,
-        }
+    appSuccessMessage: function(newVal, oldVal) {
+      setTimeout(this.hideRibbonSuccessNotification, this.ribbonTimeOut)
     },
-    watch: {
-        appErrorMessage: function(newVal, oldVal) {
-            setTimeout(this.hideRibbonErrorNotification, this.ribbonTimeOut)
+  },
+  created() {
+    this.initAxiosListenEvent()
+    this.$eventHub.$on('dashboard-app-page-title', title => {
+      if (title) this.pageTitle = ' - ' + title
+      else this.pageTitle = title
+    })
+    this.$eventHub.$on('dashboard-app-error', errorMessage => {
+      this.appErrorMessage = errorMessage
+    })
+    this.$eventHub.$on('dashboard-app-success', successMessage => {
+      this.appSuccessMessage = successMessage
+    })
+    this.$eventHub.$on('dashboard-hide-login', () => {
+      this.showLogin = false
+    })
+    this.$eventHub.$on('dashboard-app-toggle-menu', () => {
+      if (this.menuIsOpen === true) {
+        this.menuIsOpen = false
+        this.pageWrapperClass = 'page-content-wrapper closed'
+      } else {
+        this.menuIsOpen = true
+        this.pageWrapperClass = 'page-content-wrapper'
+      }
+    })
+    this.$eventHub.$on('confirmation-modal', ObjectData => {
+      this.confirmationModalData = ObjectData
+    })
+    this.$eventHub.$on('media-modal', ObjectData => {
+      this.mediaModalData = ObjectData
+    })
+    this.$eventHub.$on('preview-media-modal', ObjectData => {
+      this.previewMediaModalData = ObjectData
+    })
+    setTimeout(this.hideSplashScreen, 1000)
+  },
+  methods: {
+    initAxiosListenEvent: function() {
+      this.axios.interceptors.response.use(
+        response => {
+          let statusCode = response.data.status_code
+          if (statusCode === 3) this.showLogin = true
+          return response
         },
-        appSuccessMessage: function(newVal, oldVal) {
-            setTimeout(this.hideRibbonSuccessNotification, this.ribbonTimeOut)
+        error => {
+          return Promise.reject(error)
         },
+      )
     },
-    created() {
-        this.initAxiosListenEvent()
-        this.$eventHub.$on('dashboard-app-page-title', (title) => {
-            if(title)
-                this.pageTitle = ' - '+title
-            else
-                this.pageTitle = title
-        })
-        this.$eventHub.$on('dashboard-app-error', (errorMessage) => {
-            this.appErrorMessage = errorMessage
-        })
-        this.$eventHub.$on('dashboard-app-success', (successMessage) => {
-            this.appSuccessMessage = successMessage
-        })
-        this.$eventHub.$on('dashboard-hide-login', () => {
-            this.showLogin = false
-        })
-        this.$eventHub.$on('dashboard-app-toggle-menu', () => {
-            if(this.menuIsOpen === true) {
-                this.menuIsOpen = false
-                this.pageWrapperClass = 'page-content-wrapper closed'
-            } else {
-                this.menuIsOpen = true
-                this.pageWrapperClass = 'page-content-wrapper'
-            }
-        })
-        this.$eventHub.$on('confirmation-modal', (ObjectData) => {
-            this.confirmationModalData = ObjectData
-        })
-        this.$eventHub.$on('media-modal', (ObjectData) => {
-            this.mediaModalData = ObjectData
-        })
-        this.$eventHub.$on('preview-media-modal', (ObjectData) => {
-            this.previewMediaModalData = ObjectData
-        })
-        setTimeout(this.hideSplashScreen, 1000)
+    onScroll: function(el) {
+      this.scrollTop = el.target.scrollTop
     },
-    methods: {
-        initAxiosListenEvent: function() {
-            this.axios.interceptors.response.use(
-                response => {
-                    let statusCode = response.data.status_code
-                    if(statusCode === 3)
-                        this.showLogin = true
-                    return response
-                },
-                error => {
-                    return Promise.reject(error)
-                }
-            )
-        },
-        onScroll: function(el) {
-            this.scrollTop = el.target.scrollTop
-        },
-        hideSplashScreen: function() {
-            this.showSplashScreen = false
-        },
-        hideRibbonSuccessNotification: function() {
-            this.appSuccessMessage = ''
-        },
-        hideRibbonErrorNotification: function() {
-            this.appErrorMessage = ''
-        },
+    hideSplashScreen: function() {
+      this.showSplashScreen = false
     },
+    hideRibbonSuccessNotification: function() {
+      this.appSuccessMessage = ''
+    },
+    hideRibbonErrorNotification: function() {
+      this.appErrorMessage = ''
+    },
+  },
 }
 </script>
-
 
 <style scoped lang="css">
 
@@ -271,5 +253,4 @@ footer img {
 .autohide-enter, .autohide-leave-to {
     opacity: 0;
 }
-
 </style>

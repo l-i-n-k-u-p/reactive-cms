@@ -1,6 +1,5 @@
 const websiteTemplates = {
-    templates: [],
+  templates: [],
 }
-
 
 module.exports = websiteTemplates
