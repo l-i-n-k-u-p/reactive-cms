@@ -21,14 +21,15 @@ import MediaDetail from './components/media-components/media-detail.vue'
 import MediaCreate from './components/media-components/media-create.vue'
 import Error from './components/error.vue'
 
+import {
+  getHexColor,
+  getAvatarURL,
+  getThumbnailURL,
+} from './lib'
+
+
 Vue.use(VueRouter)
 Vue.use(VueAxios, axios)
-
-import {
-    getHexColor,
-    getAvatarURL,
-    getThumbnailURL,
-} from './lib'
 
 const appBaseURL = '/dashboard'
 Vue.prototype.$eventHub = new Vue()
@@ -38,85 +39,84 @@ Vue.prototype.$getHexColor = getHexColor
 Vue.prototype.$getAvatarURL = getAvatarURL
 Vue.prototype.$getThumbnailURL = getThumbnailURL
 
-
 const routes = [
-    {
-        name: 'error',
-        path: '*',
-        component: Error,
-    },
-    {
-        name: 'dashboard',
-        path: appBaseURL,
-        component: Dashboard,
-    },
-    {
-        name: 'pages',
-        path: appBaseURL+'/pages/:page',
-        component: Pages,
-    },
-    {
-        name: 'posts',
-        path: appBaseURL+'/posts/:page',
-        component: Posts,
-    },
-    {
-        name: 'media',
-        path: appBaseURL+'/media-files/:page',
-        component: Media,
-    },
-    {
-        name: 'users',
-        path: appBaseURL+'/users/:page',
-        component: Users,
-    },
-    {
-        name: 'settings',
-        path: appBaseURL+'/settings',
-        component: Settings,
-    },
-    {
-        name: 'user-detail',
-        path: appBaseURL+'/user/:id',
-        component: UserDetail,
-    },
-    {
-        name: 'new-user',
-        path: appBaseURL+'/new-user/',
-        component: UserCreate,
-    },
-    {
-        name: 'post-detail',
-        path: appBaseURL+'/post/:id',
-        component: PostDetail,
-    },
-    {
-        name: 'new-post',
-        path: appBaseURL+'/new-post/',
-        component: PostCreate,
-    },
-    {
-        name: 'page-detail',
-        path: appBaseURL+'/page/:id',
-        component: PageDetail,
-    },
-    {
-        name: 'new-page',
-        path: appBaseURL+'/new-page/',
-        component: PageCreate,
-    },
-    {
-        name: 'media-detail',
-        path: appBaseURL+'/media/:id',
-        component: MediaDetail,
-    },
-    {
-        name: 'new-media',
-        path: appBaseURL+'/new-media/',
-        component: MediaCreate,
-    },
+  {
+    name: 'error',
+    path: '*',
+    component: Error,
+  },
+  {
+    name: 'dashboard',
+    path: appBaseURL,
+    component: Dashboard,
+  },
+  {
+    name: 'pages',
+    path: appBaseURL + '/pages/:page',
+    component: Pages,
+  },
+  {
+    name: 'posts',
+    path: appBaseURL + '/posts/:page',
+    component: Posts,
+  },
+  {
+    name: 'media',
+    path: appBaseURL + '/media-files/:page',
+    component: Media,
+  },
+  {
+    name: 'users',
+    path: appBaseURL + '/users/:page',
+    component: Users,
+  },
+  {
+    name: 'settings',
+    path: appBaseURL + '/settings',
+    component: Settings,
+  },
+  {
+    name: 'user-detail',
+    path: appBaseURL + '/user/:id',
+    component: UserDetail,
+  },
+  {
+    name: 'new-user',
+    path: appBaseURL + '/new-user/',
+    component: UserCreate,
+  },
+  {
+    name: 'post-detail',
+    path: appBaseURL + '/post/:id',
+    component: PostDetail,
+  },
+  {
+    name: 'new-post',
+    path: appBaseURL + '/new-post/',
+    component: PostCreate,
+  },
+  {
+    name: 'page-detail',
+    path: appBaseURL + '/page/:id',
+    component: PageDetail,
+  },
+  {
+    name: 'new-page',
+    path: appBaseURL + '/new-page/',
+    component: PageCreate,
+  },
+  {
+    name: 'media-detail',
+    path: appBaseURL + '/media/:id',
+    component: MediaDetail,
+  },
+  {
+    name: 'new-media',
+    path: appBaseURL + '/new-media/',
+    component: MediaCreate,
+  },
 ]
 
-const router = new VueRouter({mode: 'history', routes: routes})
+const router = new VueRouter({ mode: 'history', routes: routes })
 
-new Vue(Vue.util.extend({router}, App)).$mount('#app')
+new Vue(Vue.util.extend({ router }, App)).$mount('#app')

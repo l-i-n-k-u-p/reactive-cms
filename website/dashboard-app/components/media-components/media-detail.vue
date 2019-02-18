@@ -108,7 +108,7 @@ export default {
             })
         },
         onChangeInputValue: function(propName, value) {
-            this.media[propName] = value
+            this.media.set(propName, value)
         },
         getMediaData: function() {
             this.media.fetch()
