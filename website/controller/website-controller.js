@@ -29,8 +29,6 @@ exports.websiteSetupView = async (req, res) => {
 exports.websiteSetupPassed = async (req, res, next) => {
   if (!DASHBOARD_ADMIN_CONFIG.setupPassed)
     return res.redirect('/setup')
-
-  next()
 }
 
 exports.websiteSetupSetInitialConfig = async (req, res) => {
