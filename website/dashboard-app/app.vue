@@ -99,6 +99,7 @@ export default {
       confirmationModalData: null,
       mediaModalData: null,
       previewMediaModalData: null,
+      throttleToggleMenu: _.throttle(this.toggleMenu, 100, { 'trailing': false }),
     }
   },
   watch: {
@@ -125,13 +126,7 @@ export default {
       this.showLogin = false
     })
     this.$eventHub.$on('dashboard-app-toggle-menu', () => {
-      if (this.menuIsOpen === true) {
-        this.menuIsOpen = false
-        this.pageWrapperClass = 'page-content-wrapper closed'
-      } else {
-        this.menuIsOpen = true
-        this.pageWrapperClass = 'page-content-wrapper'
-      }
+      this.throttleToggleMenu()
     })
     this.$eventHub.$on('confirmation-modal', ObjectData => {
       this.confirmationModalData = ObjectData
@@ -168,6 +163,16 @@ export default {
     },
     hideRibbonErrorNotification: function() {
       this.appErrorMessage = ''
+    },
+    toggleMenu: function() {
+      console.log('== toggleMenu ==', this.menuIsOpen)
+      if (this.menuIsOpen === true) {
+        this.menuIsOpen = false
+        this.pageWrapperClass = 'page-content-wrapper closed'
+      } else {
+        this.menuIsOpen = true
+        this.pageWrapperClass = 'page-content-wrapper'
+      }
     },
   },
 }

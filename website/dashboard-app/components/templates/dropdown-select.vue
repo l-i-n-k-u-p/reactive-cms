@@ -2,6 +2,7 @@
   <div
     v-bind:class="{ 'select-wrapper': true, open: show }"
     v-on:click="showOptions"
+    v-click-outside="clickOutsite"
   >
     <i class="material-icons icon">
       arrow_drop_down
@@ -10,7 +11,7 @@
       {{ label + ': ' + getOptionName() }}
     </label>
     <transition name="fade">
-      <ul class="select-options" v-if="show" v-click-outside="clickOutsite">
+      <ul class="select-options" v-if="show">
         <li
           v-for="(option, index) in selectOptions"
           v-on:click="onSelect(index)"

@@ -85,11 +85,10 @@
         </div>
       </div>
       <div class="right-wrapper" v-bind:style="headerLeftRightStyle">
-        <div class="username" v-on:click="showUserMenu">
+        <div class="username" v-on:click="showUserMenu" v-click-outside="hideUserMenu">
           <div
             v-if="isDesktopScreen"
             class="name"
-            v-bind:style="userFirstNameColorStyle"
           >
             {{ user.get('user_first_name') }}
           </div>
@@ -107,7 +106,7 @@
               {{ getUserFirstLetter(user) }}
             </span>
           </div>
-          <div class="menu" v-if="userMenuOpen" v-click-outside="hideUserMenu">
+          <div class="menu" v-if="userMenuOpen">
             <div class="options-wrapper">
               <div class="option" v-on:click="showUserDetail(user)">
                 <i class="material-icons option-icon">
@@ -148,7 +147,6 @@ export default {
       searchItems: new this.$models.SearchList(),
       user: new this.$models.User(),
       userMenuOpen: false,
-      userFirstNameColorStyle: 'color: white;',
       settings: new this.$models.Setting(),
       isDesktopScreen: true,
       headerLeftRightStyle: '',
@@ -187,7 +185,8 @@ export default {
         this.headerLeftRightStyle = 'min-width: 180px;'
       }
     },
-    toggleMenu: function() {
+    toggleMenu: function(e) {
+      e.preventDefault()
       this.$eventHub.$emit('dashboard-app-toggle-menu', '')
     },
     onChangeSearchValue: function() {
@@ -251,11 +250,9 @@ export default {
       })
     },
     showUserMenu: function() {
-      this.userFirstNameColorStyle = 'color: #616161;'
       this.userMenuOpen = true
     },
     hideUserMenu: function() {
-      this.userFirstNameColorStyle = 'color: white;'
       this.userMenuOpen = false
     },
     getSessionUserData: function() {
@@ -375,6 +372,7 @@ export default {
 
 .username .name {
   align-self: center;
+  color: white;
   cursor: pointer;
   flex-grow: 1;
   font-size: 14px;
@@ -418,18 +416,16 @@ export default {
   flex-direction: column;
   flex-wrap: nowrap;
   max-height: calc(100vh - 64px);
-  padding-top: 35px;
-  position: absolute;
-  right: 8px;
-  top: -3px;
-  width: 100%;
   min-width: 150px;
+  position: absolute;
+  right: 10px;
+  top: 39px;
+  width: 100%;
 }
 
 .options-wrapper {
   background-color: white;
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
+  border-radius: 3px;
   box-sizing: border-box;
   overflow: hidden;
 }
