@@ -165,7 +165,6 @@ export default {
       this.appErrorMessage = ''
     },
     toggleMenu: function() {
-      console.log('== toggleMenu ==', this.menuIsOpen)
       if (this.menuIsOpen === true) {
         this.menuIsOpen = false
         this.pageWrapperClass = 'page-content-wrapper closed'
