@@ -11,14 +11,15 @@ const fastifyHelmet = require('fastify-helmet')
 const pointOfView = require('point-of-view')
 const path = require('path')
 const ejs = require('ejs')
+const io = require('socket.io')(fastify.server)
 
 const APP_CONFIG = require('../config/config')
 const SITE_CONFIG = require('../config/site-config')
-// const APP_GLOBAL = require('../config/global')
 const mongodb = require('../db/mongodb')
 const directory = require('../lib/directory')
 const websiteRouter = require('../website/router/website-router')
 const websiteDashboardAPIRouter = require('../website/router/website-dashboard-api-router')
+const SocketIO = require('../lib/socket-io')
 
 
 // create static directory for uploads
@@ -92,6 +93,12 @@ fastify.register((instance, opts, next) => {
     prefix: APP_CONFIG.staticUploadPrefix,
   })
   next()
+})
+
+// socket.io instance
+const socketIO = new SocketIO(io)
+fastify.decorateRequest('pushBroadcastMessage', (data) => {
+  socketIO.pushBroadcastMessage(data)
 })
 
 // multipart data for upload files

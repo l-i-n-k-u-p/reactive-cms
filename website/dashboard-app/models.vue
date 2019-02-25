@@ -1,35 +1,35 @@
 <script>
-import {Model, Collection} from 'vue-mc'
-
-
+import {
+  Model,
+  Collection,
+} from 'vue-mc'
+import SocketIO from './socket-io'
 const appApiBaseURL = '/dashboard/api/v1'
+let socketIO = new SocketIO()
 
-Pusher.logToConsole = true
-const pusher = new Pusher('c6e6a7cab15691ed1fab', {
-  cluster: 'us2',
-  forceTLS: true,
-})
 
 class User extends Model {
   constructor (props) {
     super(props)
     this.listenPushMessages()
   }
-  listenPushMessages  () {
-    this.getChannel().bind('put', (data) => {
-      if (this.get('_id') === data.data._id)
-        this.set(data.data)
-    })
-    this.getChannel().bind('delete', (data) => {
-      if (this.get('_id') === data.data._id) {
-        this.removeFromAllCollections()
+  listenPushMessages () {
+    socketIO.registerEvent(
+      'user-put',
+      (data) => {
+        if (this.get('_id') === data.data._id)
+          this.set(data.data)
       }
-    })
+    )
+    socketIO.registerEvent(
+      'user-delete',
+      (data) => {
+        if (this.get('_id') === data.data._id)
+          this.removeFromAllCollections()
+      }
+    )
   }
-  getChannel  () {
-    return pusher.subscribe('dashboard-user')
-  }
-  default  () {
+  default () {
     return {
       user_first_name: '',
       user_last_name: '',
@@ -40,31 +40,31 @@ class User extends Model {
       user_registration_date: '',
     }
   }
-  options  () {
+  options () {
     return {}
   }
-  post  () {
+  post () {
     let method = 'POST'
     let route = this.getRoute('post')
     let url = this.getURL(route, this.getRouteParameters())
     let data = this._attributes
     return this.getRequest({ method, url, data }).send()
   }
-  put  () {
+  put () {
     let method = 'PUT'
     let route = this.getRoute('put')
     let url = this.getURL(route, this.getRouteParameters())
     let data = this._attributes
     return this.getRequest({ method, url, data }).send()
   }
-  delete  () {
+  delete () {
     let method = 'DELETE'
     let route = this.getRoute('delete')
     let url = this.getURL(route, this.getRouteParameters())
     let data = this._attributes
     return this.getRequest({ method, url, data }).send()
   }
-  routes  () {
+  routes () {
     return {
       fetch: appApiBaseURL + '/user/{_id}',
       // get: appApiBaseURL + '/user/{_id}',
@@ -80,16 +80,19 @@ class UserList extends Collection {
     super(props)
     this.listenPushMessages()
   }
-  listenPushMessages  () {
-    this.getChannel().bind('post', (data) => {
-      if (this.models.length < 20)
-        this.add(data.data)
-    })
+  listenPushMessages () {
+    socketIO.registerEvent(
+      'user-post',
+      (data) => {
+        if (this.models.length < 20) {
+          this.add(data.data)
+          let lastModel = this.models.pop()
+          this.models.unshift(lastModel)
+        }
+      }
+    )
   }
-  getChannel  () {
-    return pusher.subscribe('dashboard-user')
-  }
-  model  () {
+  model () {
     return User
   }
   getModelsFromResponse (response) {
@@ -111,7 +114,7 @@ class UserList extends Collection {
     let data = params
     return this.getRequest({ method, url, data }).send()
   }
-  routes  () {
+  routes () {
     return {
       fetch: appApiBaseURL + '/users/{page}',
       bulkDelete: appApiBaseURL + '/users/',
@@ -124,7 +127,7 @@ class SearchList extends Collection {
   getModelsFromResponse (response) {
     return response.getData().items
   }
-  routes  () {
+  routes () {
     return {
       fetch: appApiBaseURL + '/search/',
     }
@@ -135,7 +138,7 @@ class SearchMediaList extends Collection {
   getModelsFromResponse (response) {
     return response.getData().items
   }
-  routes  () {
+  routes () {
     return {
       fetch: appApiBaseURL + '/search-media/',
     }
@@ -147,23 +150,25 @@ class Post extends Model {
     super(props)
     this.listenPushMessages()
   }
-  listenPushMessages  () {
-    this.getChannel().bind('put', (data) => {
-      if (this.get('_id') === data.data._id) {
-        this.setOption('hasUpdate', true)
-        this.set(data.data)
+  listenPushMessages () {
+    socketIO.registerEvent(
+      'post-put',
+      (data) => {
+        if (this.get('_id') === data.data._id) {
+          this.setOption('hasUpdate', true)
+          this.set(data.data)
+        }
       }
-    })
-    this.getChannel().bind('delete', (data) => {
-      if (this.get('_id') === data.data._id) {
-        this.removeFromAllCollections()
+    )
+    socketIO.registerEvent(
+      'post-delete',
+      (data) => {
+        if (this.get('_id') === data.data._id)
+          this.removeFromAllCollections()
       }
-    })
+    )
   }
-  getChannel  () {
-    return pusher.subscribe('dashboard-post')
-  }
-  defaults  () {
+  defaults () {
     return {
       post_title: '',
       post_content: '',
@@ -172,31 +177,31 @@ class Post extends Model {
       post_status: '',
     }
   }
-  options  () {
+  options () {
     return {}
   }
-  post  () {
+  post () {
     let method = 'POST'
     let route = this.getRoute('post')
     let url = this.getURL(route, this.getRouteParameters())
     let data = this._attributes
     return this.getRequest({ method, url, data }).send()
   }
-  put  () {
+  put () {
     let method = 'PUT'
     let route = this.getRoute('put')
     let url = this.getURL(route, this.getRouteParameters())
     let data = this._attributes
     return this.getRequest({ method, url, data }).send()
   }
-  delete  () {
+  delete () {
     let method = 'DELETE'
     let route = this.getRoute('delete')
     let url = this.getURL(route, this.getRouteParameters())
     let data = this._attributes
     return this.getRequest({ method, url, data }).send()
   }
-  routes  () {
+  routes () {
     return {
       fetch: appApiBaseURL + '/post/{_id}',
       post: appApiBaseURL + '/post/',
@@ -211,16 +216,19 @@ class PostList extends Collection {
     super(props)
     this.listenPushMessages()
   }
-  listenPushMessages  () {
-    this.getChannel().bind('post', (data) => {
-      if (this.models.length < 20)
-        this.add(data.data)
-    })
+  listenPushMessages () {
+    socketIO.registerEvent(
+      'post-post',
+      (data) => {
+        if (this.models.length < 60) {
+          this.add(data.data)
+          let lastModel = this.models.pop()
+          this.models.unshift(lastModel)
+        }
+      }
+    )
   }
-  getChannel  () {
-    return pusher.subscribe('dashboard-post')
-  }
-  model  () {
+  model () {
     return Post
   }
   getModelsFromResponse (response) {
@@ -241,7 +249,7 @@ class PostList extends Collection {
     let data = params
     return this.getRequest({ method, url, data }).send()
   }
-  routes  () {
+  routes () {
     return {
       fetch: appApiBaseURL + '/posts/{page}',
       bulkDelete: appApiBaseURL + '/posts/',
@@ -255,23 +263,25 @@ class Page extends Model {
     super(props)
     this.listenPushMessages()
   }
-  listenPushMessages  () {
-    this.getChannel().bind('put', (data) => {
-      if (this.get('_id') === data.data._id) {
-        this.setOption('hasUpdate', true)
-        this.set(data.data)
+  listenPushMessages () {
+    socketIO.registerEvent(
+      'page-put',
+      (data) => {
+        if (this.get('_id') === data.data._id) {
+          this.setOption('hasUpdate', true)
+          this.set(data.data)
+        }
       }
-    })
-    this.getChannel().bind('delete', (data) => {
-      if (this.get('_id') === data.data._id) {
-        this.removeFromAllCollections()
+    )
+    socketIO.registerEvent(
+      'page-delete',
+      (data) => {
+        if (this.get('_id') === data.data._id)
+          this.removeFromAllCollections()
       }
-    })
+    )
   }
-  getChannel  () {
-    return pusher.subscribe('dashboard-page')
-  }
-  defaults  () {
+  defaults () {
     return {
       page_title: '',
       page_content: '',
@@ -282,31 +292,31 @@ class Page extends Model {
       page_gallery: [],
     }
   }
-  options  () {
+  options () {
     return {}
   }
-  post  () {
+  post () {
     let method = 'POST'
     let route = this.getRoute('post')
     let url = this.getURL(route, this.getRouteParameters())
     let data = this._attributes
     return this.getRequest({ method, url, data }).send()
   }
-  put  () {
+  put () {
     let method = 'PUT'
     let route = this.getRoute('put')
     let url = this.getURL(route, this.getRouteParameters())
     let data = this._attributes
     return this.getRequest({ method, url, data }).send()
   }
-  delete  () {
+  delete () {
     let method = 'DELETE'
     let route = this.getRoute('delete')
     let url = this.getURL(route, this.getRouteParameters())
     let data = this._attributes
     return this.getRequest({ method, url, data }).send()
   }
-  routes  () {
+  routes () {
     return {
       fetch: appApiBaseURL + '/page/{_id}',
       post: appApiBaseURL + '/page/',
@@ -321,16 +331,19 @@ class PageList extends Collection {
     super(props)
     this.listenPushMessages()
   }
-  listenPushMessages  () {
-    this.getChannel().bind('post', (data) => {
-      if (this.models.length < 20)
-        this.add(data.data)
-    })
+  listenPushMessages () {
+    socketIO.registerEvent(
+      'page-post',
+      (data) => {
+        if (this.models.length < 20) {
+          this.add(data.data)
+          let lastModel = this.models.pop()
+          this.models.unshift(lastModel)
+        }
+      }
+    )
   }
-  getChannel  () {
-    return pusher.subscribe('dashboard-page')
-  }
-  model  () {
+  model () {
     return Page
   }
   getModelsFromResponse (response) {
@@ -351,7 +364,7 @@ class PageList extends Collection {
     let data = params
     return this.getRequest({ method, url, data }).send()
   }
-  routes  () {
+  routes () {
     return {
       fetch: appApiBaseURL + '/pages/{page}',
       bulkDelete: appApiBaseURL + '/pages/',
@@ -365,23 +378,25 @@ class Media extends Model {
     super(props)
     this.listenPushMessages()
   }
-  listenPushMessages  () {
-    this.getChannel().bind('put', (data) => {
-      if (this.get('_id') === data.data._id) {
-        this.setOption('hasUpdate', true)
-        this.set(data.data)
+  listenPushMessages () {
+    socketIO.registerEvent(
+      'media-put',
+      (data) => {
+        if (this.get('_id') === data.data._id) {
+          this.setOption('hasUpdate', true)
+          this.set(data.data)
+        }
       }
-    })
-    this.getChannel().bind('delete', (data) => {
-      if (this.get('_id') === data.data._id) {
-        this.removeFromAllCollections()
+    )
+    socketIO.registerEvent(
+      'media-delete',
+      (data) => {
+        if (this.get('_id') === data.data._id)
+          this.removeFromAllCollections()
       }
-    })
+    )
   }
-  getChannel  () {
-    return pusher.subscribe('dashboard-media')
-  }
-  defaults  () {
+  defaults () {
     return {
       media_original_name: '',
       media_name: '',
@@ -392,31 +407,31 @@ class Media extends Model {
       media_date: '',
     }
   }
-  options  () {
+  options () {
     return {}
   }
-  post  () {
+  post () {
     let method = 'POST'
     let route = this.getRoute('post')
     let url = this.getURL(route, this.getRouteParameters())
     let data = this._attributes
     return this.getRequest({ method, url, data }).send()
   }
-  put  () {
+  put () {
     let method = 'PUT'
     let route = this.getRoute('put')
     let url = this.getURL(route, this.getRouteParameters())
     let data = this._attributes
     return this.getRequest({ method, url, data }).send()
   }
-  delete  () {
+  delete () {
     let method = 'DELETE'
     let route = this.getRoute('delete')
     let url = this.getURL(route, this.getRouteParameters())
     let data = this._attributes
     return this.getRequest({ method, url, data }).send()
   }
-  routes  () {
+  routes () {
     return {
       fetch: appApiBaseURL + '/media-file/{_id}',
       post: appApiBaseURL + '/media-file/',
@@ -424,14 +439,14 @@ class Media extends Model {
       delete: appApiBaseURL + '/media-file/{_id}',
     }
   }
-  isImage  () {
+  isImage () {
     let mimetype = this.get('media_mime_type')
     if (mimetype === 'image/jpeg' || mimetype === 'image/png')
     return true
 
     return false
   }
-  getMediaURL  () {
+  getMediaURL () {
     return '/public/uploads/' + this.get('media_name')
   }
 }
@@ -442,13 +457,16 @@ class MediaList extends Collection {
     this.listenPushMessages()
   }
   listenPushMessages () {
-    this.getChannel().bind('post', (data) => {
-      if (this.models.length < 20)
-        this.add(data.data)
-    })
-  }
-  getChannel () {
-    return pusher.subscribe('dashboard-media')
+    socketIO.registerEvent(
+      'media-post',
+      (data) => {
+        if (this.models.length < 20) {
+          this.add(data.data)
+          let lastModel = this.models.pop()
+          this.models.unshift(lastModel)
+        }
+      }
+    )
   }
   model () {
     return Media
@@ -486,18 +504,20 @@ class Setting extends Model {
     this.listenPushMessages()
   }
   listenPushMessages () {
-    this.getChannel().bind('put', (data) => {
-      if (this.get('_id') === data.data._id)
-        this.set(data.data)
-    })
-    this.getChannel().bind('delete', (data) => {
-      if (this.get('_id') === data.data._id) {
-        this.removeFromAllCollections()
+    socketIO.registerEvent(
+      'settings-put',
+      (data) => {
+        if (this.get('_id') === data.data._id)
+          this.set(data.data)
       }
-    })
-  }
-  getChannel () {
-    return pusher.subscribe('dashboard-setting')
+    )
+    socketIO.registerEvent(
+      'settings-delete',
+      (data) => {
+        if (this.get('_id') === data.data._id)
+          this.removeFromAllCollections()
+      }
+    )
   }
   defaults () {
     return {
@@ -545,20 +565,22 @@ class Site extends Model {
     this.listenPushMessages()
   }
   listenPushMessages () {
-    this.getChannel().bind('put', (data) => {
-      if (this.get('_id') === data.data._id) {
-        this.setOption('hasUpdate', true)
-        this.set(data.data)
+    socketIO.registerEvent(
+      'site-settings-put',
+      (data) => {
+        if (this.get('_id') === data.data._id) {
+          this.setOption('hasUpdate', true)
+          this.set(data.data)
+        }
       }
-    })
-    this.getChannel().bind('delete', (data) => {
-      if (this.get('_id') === data.data._id) {
-        this.removeFromAllCollections()
+    )
+    socketIO.registerEvent(
+      'site-settings-put',
+      (data) => {
+        if (this.get('_id') === data.data._id)
+          this.removeFromAllCollections()
       }
-    })
-  }
-  getChannel () {
-    return pusher.subscribe('dashboard-site')
+    )
   }
   defaults () {
     return {
