@@ -154,10 +154,8 @@ class Post extends Model {
     socketIO.registerEvent(
       'post-put',
       (data) => {
-        if (this.get('_id') === data.data._id) {
-          this.setOption('hasUpdate', true)
+        if (this.get('_id') === data.data._id)
           this.set(data.data)
-        }
       }
     )
     socketIO.registerEvent(
@@ -267,10 +265,8 @@ class Page extends Model {
     socketIO.registerEvent(
       'page-put',
       (data) => {
-        if (this.get('_id') === data.data._id) {
-          this.setOption('hasUpdate', true)
+        if (this.get('_id') === data.data._id)
           this.set(data.data)
-        }
       }
     )
     socketIO.registerEvent(
@@ -382,10 +378,8 @@ class Media extends Model {
     socketIO.registerEvent(
       'media-put',
       (data) => {
-        if (this.get('_id') === data.data._id) {
-          this.setOption('hasUpdate', true)
+        if (this.get('_id') === data.data._id)
           this.set(data.data)
-        }
       }
     )
     socketIO.registerEvent(
@@ -568,10 +562,8 @@ class Site extends Model {
     socketIO.registerEvent(
       'site-settings-put',
       (data) => {
-        if (this.get('_id') === data.data._id) {
-          this.setOption('hasUpdate', true)
+        if (this.get('_id') === data.data._id)
           this.set(data.data)
-        }
       }
     )
     socketIO.registerEvent(

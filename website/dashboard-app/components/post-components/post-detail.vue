@@ -142,7 +142,6 @@ export default {
     Link,
   },
   created() {
-    this.post.setOption('hasUpdate', false)
     this.getPostData()
     this.setOnChangePost()
   },
@@ -155,9 +154,6 @@ export default {
   methods: {
     setOnChangePost: function() {
       this.post.on('change', ({ attribute, value }) => {
-        if (!this.post.getOption('hasUpdate')) return
-
-        this.post.setOption('hasUpdate', false)
         if (attribute === 'post_content') this.editorContent = value
         if (attribute === 'post_status') {
           if (value === 'pending') this.postStatusIndex = 1
