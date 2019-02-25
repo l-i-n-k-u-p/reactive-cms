@@ -103,7 +103,6 @@ export default {
     FormDropdownSelect,
   },
   created() {
-    this.site.setOption('hasUpdate', false)
     this.getSettingsData()
     this.getSiteData()
     this.getSettingPagesData()
@@ -231,9 +230,6 @@ export default {
     },
     setOnChangeSetting: function() {
       this.site.on('change', ({ attribute, value }) => {
-        if (!this.site.getOption('hasUpdate')) return
-
-        this.site.setOption('hasUpdate', false)
         if (attribute === 'site_template_home') {
           this.setIndexPageTemplate()
         }

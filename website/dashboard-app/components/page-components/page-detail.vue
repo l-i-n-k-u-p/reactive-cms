@@ -174,7 +174,6 @@ export default {
     Gallery,
   },
   created() {
-    this.page.setOption('hasUpdate', false)
     this.getPageData()
     this.setOnChangePage()
     this.getFileTemplates()
@@ -189,9 +188,6 @@ export default {
   methods: {
     setOnChangePage: function() {
       this.page.on('change', ({ attribute, value }) => {
-        if (!this.page.getOption('hasUpdate')) return
-
-        this.page.setOption('hasUpdate', false)
         if (attribute === 'page_content') this.editorContent = value
         if (attribute === 'page_status') {
           if (value === 'pending') this.pageStatusIndex = 1
