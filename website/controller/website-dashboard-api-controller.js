@@ -7,7 +7,6 @@ const SITE_CONFIG = require('../../config/site-config')
 const websiteTemplates = require('../../config/website-templates')
 const userTypes = require('../../config/user-types')
 const { validateUserType } = require('../../lib/validate')
-const { pushMessage } = require('../../lib/push-message')
 const { mediaUpload } = require('../../lib/media-upload')
 const session = require('../../lib/session')
 const {
@@ -30,15 +29,11 @@ exports.login = async (req, res) => {
     let user = await ModelUser.findOne({
       'user_name': user_name,
     })
-    if (!user) {
+    if (!user)
       throw new Error('Not valid user')
-      return
-    }
     let result = await session.passwordIsEqual(user_pass, user.user_pass)
-    if (!result) {
+    if (!result)
       throw new Error('Not valid user')
-      return
-    }
     req.session.user = {
       user_id: user.id.toString(),
       user_name: user.user_name,
@@ -175,8 +170,9 @@ exports.addNewUser = async (req, res) => {
         id: newUser.id
       }
     })
-    pushMessage.trigger('dashboard-user', 'post', {
-      data: user
+    req.pushBroadcastMessage({
+      channel: 'user-post',
+      data: { data: user },
     })
   } catch (err) {
     res.send({
@@ -204,8 +200,9 @@ exports.updateUserByID = async (req, res) => {
         status_msg: message,
       })
       user.user_pass = ''
-      pushMessage.trigger('dashboard-user', 'put', {
-        data: user
+      req.pushBroadcastMessage({
+        channel: 'user-put',
+        data: { data: user },
       })
     } catch (err) {
       res.send({
@@ -231,8 +228,9 @@ exports.updateUserByID = async (req, res) => {
         status_msg: message,
       })
       user.user_pass = ''
-      pushMessage.trigger('dashboard-user', 'put', {
-        data: user
+      req.pushBroadcastMessage({
+        channel: 'user-put',
+        data: { data: user },
       })
     } catch (err) {
       res.send({
@@ -251,8 +249,9 @@ exports.deleteUserByID = async (req, res) => {
       status_code: 0,
       status_msg: 'User deleted',
     })
-    pushMessage.trigger('dashboard-user', 'delete', {
-      data: user
+    req.pushBroadcastMessage({
+      channel: 'user-delete',
+      data: { data: user },
     })
   } catch (err) {
     res.send({
@@ -289,8 +288,9 @@ exports.addNewPost = async (req, res) => {
         id: post.id
       },
     })
-    pushMessage.trigger('dashboard-post', 'post', {
-      data: post
+    req.pushBroadcastMessage({
+      channel: 'post-post',
+      data: { data: post },
     })
   } catch (err) {
     res.send({
@@ -330,33 +330,32 @@ exports.getPostsByPage = async (req, res) => {
 exports.updatePostByID = async (req, res) => {
   try {
     let post = await ModelPost.findById(req.params.id)
+    let postSaved = null
     post.post_content = req.body.post_content
     post.post_status = req.body.post_status
     post.post_thumbnail = req.body.post_thumbnail
     if (post.post_title === req.body.post_title) {
       post.post_title = req.body.post_title
-      let postSaved = await post.save()
+      postSaved = await post.save()
       res.send({
         status_code: 0,
         status_msg: 'Post updated',
-      })
-      pushMessage.trigger('dashboard-post', 'put', {
-        data: postSaved
       })
     } else {
       let newPostSlug = slugify(req.body.post_title, { lower: true })
       let slug = await generatePostSlug(post._id, newPostSlug)
       post.post_title = req.body.post_title
       post.post_slug = slug
-      let postSaved = await post.save()
+      postSaved = await post.save()
       res.send({
         status_code: 0,
         status_msg: 'Post updated',
       })
-      pushMessage.trigger('dashboard-post', 'put', {
-        data: postSaved
-      })
     }
+    req.pushBroadcastMessage({
+      channel: 'post-put',
+      data: { data: postSaved },
+    })
   } catch (err) {
     res.send({
       status_code: 1,
@@ -372,8 +371,9 @@ exports.deletePostByID = async (req, res) => {
       status_code: 0,
       status_msg: 'Post deleted',
     })
-    pushMessage.trigger('dashboard-post', 'delete', {
-      data: post
+    req.pushBroadcastMessage({
+      channel: 'post-delete',
+      data: { data: post },
     })
   } catch (err) {
     res.send({
@@ -410,8 +410,9 @@ exports.addNewPage = async (req, res) => {
         id: page.id
       },
     })
-    pushMessage.trigger('dashboard-page', 'post', {
-      data: page
+    req.pushBroadcastMessage({
+      channel: 'page-post',
+      data: { data: page },
     })
   } catch (err) {
     res.send({
@@ -451,6 +452,7 @@ exports.getPagesByPage = async (req, res) => {
 exports.updatePageByID = async (req, res) => {
   try {
     let page = await ModelPage.findById(req.params.id)
+    let pageSaved = null
     page.page_content = req.body.page_content
     page.page_status = req.body.page_status
     page.page_thumbnail = req.body.page_thumbnail
@@ -458,28 +460,26 @@ exports.updatePageByID = async (req, res) => {
     page.page_gallery = req.body.page_gallery
     if (page.page_title === req.body.page_title) {
       page.page_title = req.body.page_title
-      let pageSaved = await page.save()
+      pageSaved = await page.save()
       res.send({
         status_code: 0,
         status_msg: 'Post updated',
-      })
-      pushMessage.trigger('dashboard-page', 'put', {
-        data: pageSaved
       })
     } else {
       let newPostSlug = slugify(req.body.page_title, { lower: true })
       let slug = await generatePageSlug(page._id, newPostSlug)
       page.page_title = req.body.page_title
       page.page_slug = slug
-      let pageSaved = await page.save()
+      pageSaved = await page.save()
       res.send({
         status_code: 0,
         status_msg: 'Post updated',
       })
-      pushMessage.trigger('dashboard-page', 'put', {
-        data: pageSaved
-      })
     }
+    req.pushBroadcastMessage({
+      channel: 'page-put',
+      data: { data: pageSaved },
+    })
   } catch (err) {
     res.send({
       status_code: 1,
@@ -495,8 +495,9 @@ exports.deletePageByID = async (req, res) => {
       status_code: 0,
       status_msg: 'Post deleted',
     })
-    pushMessage.trigger('dashboard-page', 'delete', {
-      data: page
+    req.pushBroadcastMessage({
+      channel: 'page-delete',
+      data: { data: page },
     })
   } catch (err) {
     res.send({
@@ -542,8 +543,9 @@ exports.addNewMedia = async (req, res) => {
         id: media.id
       },
     })
-    pushMessage.trigger('dashboard-media', 'post', {
-      data: media
+    req.pushBroadcastMessage({
+      channel: 'media-post',
+      data: { data: media },
     })
   } catch (err) {
     res.send({
@@ -581,32 +583,31 @@ exports.getMediaByPage = async (req, res) => {
 exports.updateMediaByID = async (req, res) => {
   try {
     let media = await ModelMedia.findById(req.params.id)
+    let resMedia = null
     media.media_content = req.body.media_content
     media.media_status = req.body.media_status
     if (media.media_title === req.body.media_title) {
       media.media_title = req.body.media_title
-      let resMedia = await media.save()
+      resMedia = await media.save()
       res.send({
         status_code: 0,
         status_msg: 'Post updated',
-      })
-      pushMessage.trigger('dashboard-media', 'put', {
-        data: resMedia
       })
     } else {
       let newMediaSlug = slugify(req.body.media_title, { lower: true })
       let slug = await generatePageSlug(media._id, newMediaSlug)
       media.media_title = req.body.media_title
       media.media_slug = slug
-      let resMedia = await media.save()
+      resMedia = await media.save()
       res.send({
         status_code: 0,
         status_msg: 'Post updated',
       })
-      pushMessage.trigger('dashboard-media', 'put', {
-        data: resMedia
-      })
     }
+    req.pushBroadcastMessage({
+      channel: 'media-put',
+      data: { data: resMedia },
+    })
   } catch (err) {
     res.send({
       status_code: 1,
@@ -622,8 +623,9 @@ exports.deleteMediaByID = async (req, res) => {
       status_code: 0,
       status_msg: 'Media deleted',
     })
-    pushMessage.trigger('dashboard-media', 'delete', {
-      data: media
+    req.pushBroadcastMessage({
+      channel: 'media-delete',
+      data: { data: media },
     })
   } catch (err) {
     res.send({
@@ -654,8 +656,9 @@ exports.updateSettings = async (req, res) => {
         status_code: 0,
         status_msg: 'Settings updated',
       })
-      pushMessage.trigger('dashboard-setting', 'put', {
-        data: settings
+      req.pushBroadcastMessage({
+        channel: 'settings-put',
+        data: { data: settings },
       })
     } catch (err) {
       res.send({
@@ -686,8 +689,9 @@ exports.updateSiteSettings = async (req, res) => {
         status_code: 0,
         status_msg: 'Settings updated',
       })
-      pushMessage.trigger('dashboard-site', 'put', {
-        data: siteSettings
+      req.pushBroadcastMessage({
+        channel: 'site-settings-put',
+        data: { data: siteSettings },
       })
     } catch (err) {
       res.send({
