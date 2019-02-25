@@ -73,7 +73,6 @@ export default {
       ],
     }
   },
-  created() {},
   methods: {
     closeMenu: function() {
       this.$eventHub.$emit('dashboard-app-toggle-menu', '')
