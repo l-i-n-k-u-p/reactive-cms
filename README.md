@@ -15,6 +15,8 @@ Technologies and Design
 - Vue-MC
 - Vue-Router
 - Tiptap
+- SocketIO
+- PM2
 - Material Design
 
 Requeriments
@@ -35,50 +37,39 @@ Initial Configuration
 - Edit config/config.js file with your preferences
 ```javascript
 const APP_CONFIG = {
-    port: 3000,
-    mongoDBURI: 'mongodb://172.17.0.2:27017/reactivecms',
-    bcryptSaltRounds: 12,
-    appSecret: 'iCD5e@rx$3-9rR_QZwIW2Dg-Zn^h&heS', // 32 characters
-    uploadDirectory: 'site-static/uploads/',
-    sessionMaxAge: 10800000, // milliseconds
+  port: 3000,
+  mongoDBURI: 'mongodb://172.17.0.2:27017/reactivecms',
+  bcryptSaltRounds: 12,
+  appSecret: 'iCD5e@rx$3-9rR_QZwIW2Dg-Zn^h&heS', // 32 characters
+  staticUploadPath: 'site-static',
+  staticUploadPrefix: 'public', // use '/public/' instead of '/site-static/'
+  uploadDirectory: 'site-static/uploads/',
+  staticFilesPath: 'static',
+  staticFilesPrefix: 'website',
+  sessionMaxAge: 1000 * 60 * 60 * 24 * 3, // 3 days
+  ipAddressToListen: '0.0.0.0', // 0.0.0.0 for docker container
+  domain: 'localhost', // localhost \ domain.com
+  websiteTemplatesPath: 'server-app/view/template/', // change only if edit the structure website directory
 }
 ```
 
 Running App
 -
 ```bash
-npm run pm2:start-watch # 'development mode for compile NodeJS app'
-npm run webpack:website-watch # 'development mode for compile Vue app'
-npm run pm2:global-logs # 'development mode check NodeJS app logs'
+npm run start # compile dashboard and run server in production mode
+npm run server-production # only run server in production mode
+npm run server-development # run server in development mode and watch for file changes
+npm run server-logs # show all server logs
+npm run server-stop # stop all server instances
+npm run dashboard-development # compile dashboard in development mode and watch for file changes
+npm run dashboard-production # compile dashboard in production mode
 ```
-For more check package.json file
 
 Test
 -
 If you don't edit nothing about default ports from config.js
 
 Now enter to: localhost:3000 and fill the setup form.
-
-App running...
--
-
-Setup page:
-
-<img width="400px" src="./ReadmeMDAssets/setup.png">
-
-
-Login page:
-
-<img width="400px" src="./ReadmeMDAssets/login.png">
-
-
-Dashboard screens:
-
-| | | |
-|:-------------------------:|:-------------------------:|:-------------------------:|
-|<img width="200px" src="./ReadmeMDAssets/dashboard.png">|<img width="200px" src="./ReadmeMDAssets/pages.png">|<img width="200px" src="./ReadmeMDAssets/posts.png">|
-|<img width="200px" src="./ReadmeMDAssets/media.png">|<img width="200px" src="./ReadmeMDAssets/users.png">|<img width="200px" src="./ReadmeMDAssets/settings.png">|
-|<img width="200px" src="./ReadmeMDAssets/new-post.png">|<img width="200px" src="./ReadmeMDAssets/modal-media.png">|
 
 
 ## Email:

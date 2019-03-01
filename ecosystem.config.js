@@ -1,23 +1,23 @@
 module.exports = {
-  apps : [{
-    name   : "VENoM",
-    script : "./server/server.js",
-    instances  : 1,
-    exec_mode  : "cluster",
+  apps: [{
+    name: 'REACTIVE-WEB',
+    script: './server-app/server.js',
+    instances: 1,
+    exec_mode: 'cluster',
     env: {
-      "NODE_ENV": "development",
+      'NODE_ENV': 'development',
     },
-    env_production : {
-       "NODE_ENV": "production"
+    env_production: {
+      'NODE_ENV': 'production',
     },
-    watch  : true,
-    ignore_watch : [
-        "node_modules",
-        "site-static/uploads",
-        "website-app/static",
+    ignore_watch: [
+      'node_modules',
+      'site-static/uploads',
+      'dashboard-app/static',
+      'server-app/static',
     ],
     watch_options: {
-        followSymlinks: false
+      followSymlinks: false
     }
   }]
 }
