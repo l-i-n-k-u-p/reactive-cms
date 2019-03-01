@@ -78,4 +78,4 @@ typings/
 
 # VENoM static
 site-static/uploads/
-website/static/js/dashboard-app-bundle.js
+server-app/static/js/dashboard-app-bundle.js
