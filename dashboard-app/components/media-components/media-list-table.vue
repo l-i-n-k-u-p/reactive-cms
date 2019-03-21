@@ -20,7 +20,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="media in collectionItems">
+          <tr
+            v-for="media in collectionItems"
+            :key="$uuid.v1()"
+            >
             <td>
               <Checkbox
                 style="margin-right: 10px;"

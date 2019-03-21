@@ -165,6 +165,7 @@ export default {
         .catch(data => {
           this.$eventHub.$emit('dashboard-app-error', data.message)
         })
+      this.itemsSelected = {}
     },
   },
 }
