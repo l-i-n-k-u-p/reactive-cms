@@ -20,7 +20,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="post in collectionItems">
+          <tr
+            v-for="post in collectionItems"
+            :key="$uuid.v1()"
+            >
             <td>
               <Checkbox
                 style="margin-right: 10px;"
@@ -131,8 +134,10 @@ export default {
   },
   methods: {
     onChangeValue: function(isChecked, itemId) {
-      if (isChecked) this.itemSelected[itemId] = itemId
-      else delete this.itemSelected[itemId]
+      if (isChecked)
+        this.itemSelected[itemId] = itemId
+      else
+        delete this.itemSelected[itemId]
       this.$eventHub.$emit('items-selected', this.itemSelected)
     },
     getMomentDate: function(date) {

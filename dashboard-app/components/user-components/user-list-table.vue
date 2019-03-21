@@ -26,7 +26,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="user in userListItems">
+          <tr
+            v-for="user in userListItems"
+            :key="$uuid.v1()"
+            >
             <td>
               <Checkbox
                 style="margin-right: 10px;"

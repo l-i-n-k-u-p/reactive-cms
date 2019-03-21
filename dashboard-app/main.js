@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueAxios from 'vue-axios'
+import UUID from 'vue-uuid'
 import axios from 'axios'
+
 
 import App from './app.vue'
 import Models from './models.vue'
@@ -30,6 +32,7 @@ import {
 
 Vue.use(VueRouter)
 Vue.use(VueAxios, axios)
+Vue.use(UUID)
 
 const appBaseURL = '/dashboard'
 Vue.prototype.$eventHub = new Vue()
