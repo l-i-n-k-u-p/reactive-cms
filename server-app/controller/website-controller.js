@@ -136,6 +136,7 @@ exports.websiteAdminValidateLoginAccess = async (req, res) => {
 exports.websiteDashboardLogout = async (req, res) => {
   if (req.session && req.session.user) {
     let userID = req.session.user.user_id
+    req.sessionStore.destroy(req.session.sessionId)
     await session.removeUserSessionOnDB(userID)
     req.session = null
   }
