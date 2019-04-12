@@ -4,7 +4,12 @@ import VueAxios from 'vue-axios'
 import UUID from 'vue-uuid'
 import axios from 'axios'
 
-
+import {
+  getHexColor,
+  getAvatarURL,
+  getThumbnailURL,
+} from './lib'
+import GLOBAL_DIRECTIVES from './global-directives.vue'
 import App from './app.vue'
 import Models from './models.vue'
 import Dashboard from './components/dashboard.vue'
@@ -23,11 +28,10 @@ import MediaDetail from './components/media-components/media-detail.vue'
 import MediaCreate from './components/media-components/media-create.vue'
 import Error from './components/error.vue'
 
-import {
-  getHexColor,
-  getAvatarURL,
-  getThumbnailURL,
-} from './lib'
+
+for (let directive of GLOBAL_DIRECTIVES.directives) {
+  Vue.directive(directive.name, directive.action)
+}
 
 
 Vue.use(VueRouter)
