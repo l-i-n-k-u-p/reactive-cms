@@ -2,7 +2,6 @@ const path = require('path')
 const fs = require('fs')
 let websiteTemplates = require('../config/website-templates')
 
-
 let createFolderFromPath = (path) => {
   let arrDir = path.split('/')
   if (!arrDir)
@@ -14,6 +13,8 @@ let createFolderFromPath = (path) => {
       dirPath = arrDir[index]
     else
       dirPath = dirPath + '/' + arrDir[index]
+    if (dirPath[0] === '/')
+      dirPath = dirPath.substring(1)
     if (!fs.existsSync(dirPath)) {
       try {
         fs.mkdirSync(dirPath)
