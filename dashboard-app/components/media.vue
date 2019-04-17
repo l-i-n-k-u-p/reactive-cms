@@ -1,25 +1,25 @@
 <template lang="html">
-  <BoxWrapper>
-    <div>
-      <div class="header">
-        <NavigationButtons />
-        <h2>Media</h2>
-        <div class="buttons-wrapper">
-          <Dropdown
-            label="Bulk Actions"
-            v-bind:onSelectOption="onSelectOption"
-            v-bind:selectOptions="selectOptions"
-          >
-          </Dropdown>
-          <Button
-            buttonIcon="add"
-            v-bind:buttonAction="openNewMediaForm"
-            style="margin-left: 5px;"
-          >
-            Add Media
-          </Button>
-        </div>
+  <div>
+    <div class="header">
+      <NavigationButtons />
+      <h2>Media</h2>
+      <div class="buttons-wrapper">
+        <Dropdown
+          label="Bulk Actions"
+          v-bind:onSelectOption="onSelectOption"
+          v-bind:selectOptions="selectOptions"
+        >
+        </Dropdown>
+        <Button
+          buttonIcon="add"
+          v-bind:buttonAction="openNewMediaForm"
+          style="margin-left: 5px;"
+        >
+          Add Media
+        </Button>
       </div>
+    </div>
+    <BoxWrapper>
       <MediaListTable
         v-if="mediaFiles.models.length"
         v-bind:collection="mediaFiles"
@@ -31,8 +31,8 @@
         v-bind:itemsSkipped="itemsSkipped"
         v-bind:totalItems="totalItems"
       />
-    </div>
-  </BoxWrapper>
+    </BoxWrapper>
+  </div>
 </template>
 
 <script>
@@ -149,6 +149,7 @@ export default {
 <style scoped lang="css">
 .header {
   display: flex;
+  margin: 0 20px;
 }
 
 h2 {
@@ -157,7 +158,6 @@ h2 {
   flex-grow: 1;
   font-size: 13px;
   font-weight: 500;
-  margin-top: 7px;
   text-transform: uppercase;
 }
 
@@ -165,6 +165,5 @@ h2 {
   display: flex;
   flex-grow: 1;
   justify-content: flex-end;
-  margin-bottom: 15px;
 }
 </style>
