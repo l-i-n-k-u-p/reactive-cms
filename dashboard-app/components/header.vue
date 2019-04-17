@@ -424,7 +424,6 @@ export default {
   box-shadow: 0px 0px 5px -1px rgba(0, 0, 0, 0.4);
   display: flex;
   margin: auto;
-  max-width: 1125px;
   min-width: 150px;
   position: relative;
   width: 100%;
