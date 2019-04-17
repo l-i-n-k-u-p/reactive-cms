@@ -175,6 +175,12 @@ export default {
       }
     },
     onResizeWindow: function() {
+      if (this.isMenuSticky && window.innerWidth >= 1485)
+        return
+
+      if (!this.isMenuSticky && window.innerWidth < 1485)
+        return
+
       if (window.innerWidth >= 1485) {
         this.menuIsOpen = true
         this.isMenuSticky = true

@@ -390,11 +390,10 @@ export default {
   flex-direction: column;
   flex-wrap: nowrap;
   max-height: calc(100vh - 64px);
-  min-width: 150px;
   position: absolute;
   right: 10px;
   top: 39px;
-  width: 100%;
+  width: 160px;
 }
 
 .options-wrapper {

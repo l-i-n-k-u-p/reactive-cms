@@ -105,7 +105,7 @@ export default {
 #menu {
   flex-grow: 0;
   left: 0;
-  min-width: 180px;
+  min-width: 170px;
   position: fixed;
   z-index: 1;
 }
@@ -125,7 +125,7 @@ export default {
 .logo {
   margin-bottom: 5px;
   margin-top: 5px;
-  max-width: 200px;
+  max-width: 170px;
 }
 
 #menu .option {
