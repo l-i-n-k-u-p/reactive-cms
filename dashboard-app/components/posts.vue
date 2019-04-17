@@ -20,19 +20,17 @@
       </div>
     </div>
     <BoxWrapper>
-      <div>
-        <PostListTable
-          v-if="posts.models.length"
-          v-bind:collection="posts"
-          v-bind:onClickRow="showPostDetail"
-          v-bind:navigationBefore="navigationBefore"
-          v-bind:navigationNext="navigationNext"
-          v-bind:currentPage="currentPage"
-          v-bind:totalPages="totalPages"
-          v-bind:itemsSkipped="itemsSkipped"
-          v-bind:totalItems="totalItems"
-        />
-      </div>
+      <PostListTable
+        v-if="posts.models.length"
+        v-bind:collection="posts"
+        v-bind:onClickRow="showPostDetail"
+        v-bind:navigationBefore="navigationBefore"
+        v-bind:navigationNext="navigationNext"
+        v-bind:currentPage="currentPage"
+        v-bind:totalPages="totalPages"
+        v-bind:itemsSkipped="itemsSkipped"
+        v-bind:totalItems="totalItems"
+      />
     </BoxWrapper>
   </div>
 </template>
