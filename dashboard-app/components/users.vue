@@ -1,22 +1,22 @@
 <template lang="html">
-  <BoxWrapper>
-    <div>
-      <div class="header">
-        <NavigationButtons />
-        <h2>Users</h2>
-        <div class="buttons-wrapper">
-          <Dropdown
-            label="Bulk Actions"
-            v-bind:onSelectOption="onSelectOption"
-            v-bind:selectOptions="selectOptions"
-            style="margin-left: 5px;"
-          >
-          </Dropdown>
-          <Button buttonIcon="add" v-bind:buttonAction="openNewUserForm">
-            Add User
-          </Button>
-        </div>
+  <div>
+    <div class="header">
+      <NavigationButtons />
+      <h2>Users</h2>
+      <div class="buttons-wrapper">
+        <Dropdown
+          label="Bulk Actions"
+          v-bind:onSelectOption="onSelectOption"
+          v-bind:selectOptions="selectOptions"
+          style="margin-left: 5px;"
+        >
+        </Dropdown>
+        <Button buttonIcon="add" v-bind:buttonAction="openNewUserForm">
+          Add User
+        </Button>
       </div>
+    </div>
+    <BoxWrapper>
       <UserListTable
         v-if="users.models.length"
         v-bind:userList="users"
@@ -28,8 +28,8 @@
         v-bind:itemsSkipped="itemsSkipped"
         v-bind:totalUsers="totalUsers"
       />
-    </div>
-  </BoxWrapper>
+    </BoxWrapper>
+  </div>
 </template>
 
 <script>
@@ -212,6 +212,7 @@ export default {
 <style scoped lang="css">
 .header {
   display: flex;
+  margin: 0 20px;
 }
 
 h2 {
@@ -220,7 +221,6 @@ h2 {
   flex-grow: 1;
   font-size: 13px;
   font-weight: 500;
-  margin-top: 7px;
   text-transform: uppercase;
 }
 
@@ -228,6 +228,5 @@ h2 {
   display: flex;
   flex-grow: 1;
   justify-content: flex-end;
-  margin-bottom: 15px;
 }
 </style>
