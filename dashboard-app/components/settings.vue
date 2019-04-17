@@ -1,10 +1,10 @@
 <template lang="html">
-  <BoxWrapper>
-    <div class="settings-wrapper">
-      <div class="header">
-        <NavigationButtons />
-        <h2>Settings</h2>
-      </div>
+  <div class="settings-wrapper">
+    <div class="header">
+      <NavigationButtons />
+      <h2>Settings</h2>
+    </div>
+    <BoxWrapper>
       <div class="content-wrapper">
         <h2>Dashboard</h2>
         <InputText
@@ -71,8 +71,8 @@
           </Button>
         </div>
       </div>
-    </div>
-  </BoxWrapper>
+    </BoxWrapper>
+  </div>
 </template>
 
 <script>
@@ -312,6 +312,7 @@ export default {
 
 .header {
   display: flex;
+  margin: 0 20px;
 }
 
 h2 {
@@ -320,17 +321,13 @@ h2 {
   flex-grow: 1;
   font-size: 13px;
   font-weight: 500;
-  margin-top: 7px;
   text-transform: uppercase;
 }
 
 .buttons-wrapper {
-  bottom: 0;
   display: flex;
+  flex-grow: 1;
   justify-content: flex-end;
-  margin-top: 10px;
-  padding: 0px;
-  right: 0;
 }
 
 .content-wrapper {
