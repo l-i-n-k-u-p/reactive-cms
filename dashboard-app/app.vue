@@ -2,18 +2,15 @@
   <div class="app-wrapper">
     <Header
       v-on:dashboard-toggle-menu="menuIsOpen"
-      v-bind:scrollTop="scrollTop"
       v-bind:pageTitle="pageTitle"
     >
     </Header>
     <transition name="fade">
       <Menu class="left-menu-wrapper" v-if="menuIsOpen"> </Menu>
     </transition>
-    <div id="overflow" v-on:scroll="onScroll">
-      <div id="content">
-        <div v-bind:class="pageWrapperClass">
-          <router-view :key="$route.fullPath" />
-        </div>
+    <div id="content">
+      <div v-bind:class="pageWrapperClass">
+        <router-view :key="$route.fullPath" />
       </div>
     </div>
     <transition name="autohide">
@@ -92,7 +89,6 @@ export default {
       pageTitle: '',
       appErrorMessage: '',
       appSuccessMessage: '',
-      scrollTop: 0,
       showSplashScreen: true,
       showLogin: false,
       ribbonTimeOut: 5000,
@@ -152,9 +148,6 @@ export default {
         },
       )
     },
-    onScroll: function(el) {
-      this.scrollTop = el.target.scrollTop
-    },
     hideSplashScreen: function() {
       this.showSplashScreen = false
     },
@@ -187,19 +180,12 @@ export default {
     width: 100%;
 }
 
-#overflow {
-    margin-top: 48px;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    position: relative;
-    width: 100%;
-}
-
 #content {
+    margin: 50px auto 100px auto;
     max-width: 1145px;
     position: relative;
+    width: 100%;
     z-index: 1;
-    margin: auto auto 100px auto;
 }
 
 .page-content-wrapper {
@@ -213,7 +199,7 @@ export default {
 }
 
 footer {
-    bottom: 10px;
+    bottom: 4px;
     display: flex;
     justify-content: center;
     position: absolute;

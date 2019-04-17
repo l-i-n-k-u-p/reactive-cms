@@ -2,7 +2,6 @@
   <div>
     <div
       id="header"
-      v-bind:style="boxShadowHeader"
       v-window-resize="onResizeWindow"
     >
       <div class="left-wrapper" v-bind:style="headerLeftRightStyle">
@@ -125,23 +124,16 @@
         </div>
       </div>
     </div>
-    <div
-      class="background-extension-header"
-      v-bind:style="backgroundHeightHeader"
-    ></div>
   </div>
 </template>
 
 <script>
 export default {
   props: [
-    'scrollTop',
     'pageTitle',
   ],
   data() {
     return {
-      backgroundHeightHeader: 'height: 140px',
-      boxShadowHeader: '',
       searchValue: '',
       resultsIsVisible: false,
       searchItems: new this.$models.SearchList(),
@@ -153,17 +145,6 @@ export default {
     }
   },
   watch: {
-    scrollTop: function(newVal, oldVal) {
-      let height = 140 - newVal
-      if (height <= 48) {
-        this.boxShadowHeader =
-          'box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 3px -2px rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12);'
-        this.backgroundHeightHeader = 'height: 48px'
-      } else {
-        this.boxShadowHeader = ''
-        this.backgroundHeightHeader = 'height: ' + height + 'px'
-      }
-    },
     searchValue: function(newVal, oldVal) {
       this.onChangeSearchValue()
     },
@@ -283,7 +264,7 @@ export default {
 
 <style scoped lang="css">
 #header {
-  color: white;
+  color: #616161;
   display: flex;
   height: 48px;
   left: 0px;
@@ -293,13 +274,6 @@ export default {
   transition-duration: 100ms;
   width: 100%;
   z-index: 2;
-}
-
-.background-extension-header {
-  background-color: #006dad;
-  position: absolute;
-  top: 0px;
-  width: 100%;
 }
 
 .left-wrapper, .right-wrapper {
@@ -341,7 +315,7 @@ export default {
 
 .username .name {
   align-self: center;
-  color: white;
+  color: #616161;
   cursor: pointer;
   flex-grow: 1;
   font-size: 14px;
@@ -380,7 +354,7 @@ export default {
 .username .menu {
   background-color: white;
   border-radius: 3px;
-  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, .2), 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12);
+  box-shadow: 0px 0px 5px -1px rgba(0, 0, 0, 0.4);
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -416,6 +390,8 @@ export default {
 
 .search-wrapper {
   align-self: center;
+  border-radius: 3px;
+  box-shadow: 0px 0px 5px -1px rgba(0, 0, 0, 0.4);
   display: flex;
   margin: auto;
   max-width: 1125px;
@@ -437,7 +413,7 @@ export default {
   background: none;
   border: none;
   box-sizing: border-box;
-  color: white;
+  color: #616161;
   display: flex;
   font-size: 14px;
   font-weight: 400;
@@ -450,19 +426,19 @@ export default {
 }
 
 .search-wrapper input::-webkit-input-placeholder {
-  color: white;
+  color: #616161;
 }
 
 .search-wrapper .bkg {
   align-self: center;
-  background: rgba(0, 0, 0, .20);
+  background: white;
   border-radius: 3px;
   height: 36px;
   width: 100%;
 }
 
 .search-wrapper:hover .bkg {
-  background: rgba(255, 255, 255, .30);
+
 }
 
 .search-wrapper.search-active .bkg {
@@ -481,7 +457,7 @@ export default {
   background-color: white;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
-  box-shadow: 0 0px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12);
+  box-shadow: 0px 0px 5px -1px rgba(0, 0, 0, 0.4);
   color: #616161;
   max-height: 300px;
   overflow: scroll;
