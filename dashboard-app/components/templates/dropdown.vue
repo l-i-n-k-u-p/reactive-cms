@@ -10,13 +10,11 @@
     <label>
       {{ label }}
     </label>
-    <transition name="fade">
-      <ul class="select-options" v-if="show">
-        <li v-for="option in selectOptions" v-on:click="onSelect(option.value)">
-          {{ option.name }}
-        </li>
-      </ul>
-    </transition>
+    <ul class="select-options" v-if="show">
+      <li v-for="option in selectOptions" v-on:click="onSelect(option.value)">
+        {{ option.name }}
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -111,14 +109,6 @@ export default {
 
 .select-options li:hover {
   background-color: #eee;
-}
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 100ms;
-}
-
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
 }
 
 .select-wrapper.open {

@@ -4,11 +4,20 @@
       id="header"
       v-window-resize="onResizeWindow"
     >
-      <div class="left-wrapper" v-bind:style="headerLeftRightStyle">
-        <i class="material-icons menu-icon" v-on:click="toggleMenu">
+      <div
+        class="left-wrapper"
+        v-bind:style="headerLeftRightStyle"
+        >
+        <i
+          class="material-icons menu-icon"
+          v-on:click="toggleMenu"
+          >
           menu
         </i>
-        <label v-if="isDesktopScreen" class="page-title">
+        <label
+          v-if="isDesktopScreen"
+          class="page-title"
+          >
           {{ settings.get('setting_page_title') }}
         </label>
       </div>
@@ -27,8 +36,14 @@
           v-on:focus="onChangeSearchValue"
         />
         <div class="bkg"></div>
-        <div class="results-wrapper" v-if="resultsIsVisible">
-          <div class="no-results" v-if="!searchItems.models.length">
+        <div
+          class="results-wrapper"
+          v-if="resultsIsVisible"
+          >
+          <div
+            class="no-results"
+            v-if="!searchItems.models.length"
+            >
             Without Results
           </div>
           <div
@@ -83,8 +98,15 @@
           </div>
         </div>
       </div>
-      <div class="right-wrapper" v-bind:style="headerLeftRightStyle">
-        <div class="username" v-on:click="showUserMenu" v-click-outside="hideUserMenu">
+      <div
+        class="right-wrapper"
+        v-bind:style="headerLeftRightStyle"
+        >
+        <div
+          class="username"
+          v-on:click="showUserMenu"
+          v-click-outside="hideUserMenu"
+          >
           <div
             v-if="isDesktopScreen"
             class="name"
@@ -105,15 +127,24 @@
               {{ getUserFirstLetter(user) }}
             </span>
           </div>
-          <div class="menu" v-if="userMenuOpen">
+          <div
+            class="menu"
+            v-if="userMenuOpen"
+            >
             <div class="options-wrapper">
-              <div class="option" v-on:click="showUserDetail(user)">
+              <div
+                class="option"
+                v-on:click="showUserDetail(user)"
+                >
                 <i class="material-icons option-icon">
                   person
                 </i>
                 User Profile
               </div>
-              <a class="option" href="/admin-logout">
+              <a
+                class="option"
+                href="/admin-logout"
+                >
                 <i class="material-icons option-icon">
                   input
                 </i>

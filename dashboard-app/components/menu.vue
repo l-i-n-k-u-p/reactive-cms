@@ -1,7 +1,18 @@
 <template lang="html">
   <div>
-    <div id="menu" v-click-outside="closeMenu">
-      <img class="logo" src="/website/assets/reactive-cms-logo.png" />
+    <div
+      id="menu"
+      v-bind:class="{
+        'sticky': isMenuSticky,
+        'no-sticky': !isMenuSticky,
+        }"
+      v-click-outside="closeMenu"
+      >
+      <img
+        class="logo"
+        src="/website/assets/reactive-cms-logo.png"
+        v-if="!isMenuSticky"
+        />
       <router-link
         v-for="option in options"
         v-bind:key="option.position"
@@ -14,13 +25,19 @@
         {{ option.title }}
       </router-link>
     </div>
-    <div class="shadow"></div>
+    <div
+      class="shadow"
+      v-if="!isMenuSticky"
+      >
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['currentPageTitle'],
+  props: [
+    'isMenuSticky',
+  ],
   data() {
     return {
       options: [
@@ -75,6 +92,9 @@ export default {
   },
   methods: {
     closeMenu: function() {
+      if (this.isMenuSticky)
+        return
+
       this.$eventHub.$emit('dashboard-app-toggle-menu', '')
     },
   },
@@ -83,15 +103,23 @@ export default {
 
 <style scoped lang="css">
 #menu {
+  flex-grow: 0;
+  left: 0;
+  min-width: 180px;
+  position: fixed;
+  z-index: 1;
+}
+
+.no-sticky {
   background-color: #fff;
   box-shadow: 0px 0px 5px -1px rgba(0, 0, 0, 0.4);
-  flex-grow: 0;
   height: 100%;
-  left: 0;
-  min-width: 200px;
-  position: fixed;
   top: 0px;
-  z-index: 1;
+}
+
+.sticky {
+  height: calc(100% - 50px);
+  top: 50px;
 }
 
 .logo {
@@ -101,11 +129,13 @@ export default {
 }
 
 #menu .option {
+  -webkit-user-select: none;
   align-items: center;
   border-bottom: 0;
   border-radius: 3px;
   border: 0;
   color: #616161;
+  cursor: pointer;
   cursor: pointer;
   display: flex;
   flex-direction: row;
@@ -120,6 +150,7 @@ export default {
   position: relative;
   text-decoration: none;
   text-transform: uppercase;
+  user-select: none;
   z-index: 2;
 }
 

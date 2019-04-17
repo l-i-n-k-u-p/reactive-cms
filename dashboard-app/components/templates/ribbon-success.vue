@@ -1,14 +1,12 @@
 <template lang="html">
-  <transition name="fade">
-    <div id="ribbon-success-wrapper">
-      <p>
-        <slot></slot>
-      </p>
-      <i class="material-icons" v-on:click="removeRibbonMessage">
-        close
-      </i>
-    </div>
-  </transition>
+  <div id="ribbon-success-wrapper">
+    <p>
+      <slot></slot>
+    </p>
+    <i class="material-icons" v-on:click="removeRibbonMessage">
+      close
+    </i>
+  </div>
 </template>
 
 <script>
@@ -60,11 +58,4 @@ p {
   margin-right: 20px;
 }
 
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 100ms;
-}
-
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
-}
 </style>

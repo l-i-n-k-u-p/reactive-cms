@@ -7,11 +7,9 @@
     <i class="material-icons icon">
       {{ icon }}
     </i>
-    <transition name="fade">
-      <div class="items-wrapper" v-if="show">
-        <slot></slot>
-      </div>
-    </transition>
+    <div class="items-wrapper" v-if="show">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
@@ -85,14 +83,6 @@ export default {
 .icon {
   color: #616161;
   font-size: 18px;
-}
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 100ms;
-}
-
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
 }
 
 .select-wrapper.open {

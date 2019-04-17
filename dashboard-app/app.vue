@@ -1,13 +1,19 @@
 <template lang="html">
-  <div class="app-wrapper">
+  <div
+    class="app-wrapper"
+    v-window-resize="onResizeWindow"
+    >
     <Header
       v-on:dashboard-toggle-menu="menuIsOpen"
       v-bind:pageTitle="pageTitle"
     >
     </Header>
-    <transition name="fade">
-      <Menu class="left-menu-wrapper" v-if="menuIsOpen"> </Menu>
-    </transition>
+    <Menu
+      class="left-menu-wrapper"
+      v-if="menuIsOpen"
+      v-bind:isMenuSticky="isMenuSticky"
+      >
+    </Menu>
     <div id="content">
       <div v-bind:class="pageWrapperClass">
         <router-view :key="$route.fullPath" />
@@ -86,6 +92,7 @@ export default {
     return {
       pageWrapperClass: 'page-content-wrapper closed',
       menuIsOpen: false,
+      isMenuSticky: false,
       pageTitle: '',
       appErrorMessage: '',
       appSuccessMessage: '',
@@ -134,6 +141,7 @@ export default {
       this.previewMediaModalData = ObjectData
     })
     setTimeout(this.hideSplashScreen, 1000)
+    this.onResizeWindow()
   },
   methods: {
     initAxiosListenEvent: function() {
@@ -164,6 +172,15 @@ export default {
       } else {
         this.menuIsOpen = true
         this.pageWrapperClass = 'page-content-wrapper'
+      }
+    },
+    onResizeWindow: function() {
+      if (window.innerWidth >= 1485) {
+        this.menuIsOpen = true
+        this.isMenuSticky = true
+      } else {
+        this.menuIsOpen = false
+        this.isMenuSticky = false
       }
     },
   },
@@ -226,14 +243,6 @@ footer img {
 .left-menu-wrapper {
     position: relative;
     z-index: 4;
-}
-
-.fade-enter-active, .fade-leave-active {
-    transition: all 100ms ease;
-}
-
-.fade-enter, .fade-leave-to {
-    opacity: 0;
 }
 
 .autohide-enter-active, .autohide-leave-active {
