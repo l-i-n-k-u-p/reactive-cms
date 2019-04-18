@@ -1,29 +1,29 @@
 <template lang="html">
-  <BoxWrapper style="padding: 0;">
-    <div class="page">
-      <div class="header">
-        <NavigationButtons buttonColor="#f0f0f0" />
-        <h2>
-          Page Detail
-        </h2>
-        <div class="header-action-buttons-wrapper">
-          <Button
-            v-if="page.get('page_thumbnail')"
-            buttonIcon="broken_image"
-            v-bind:buttonAction="removeMedia"
-            buttonColor="#f0f0f0"
-          >
-            Remove Image
-          </Button>
-          <Button
-            buttonIcon="image"
-            v-bind:buttonAction="openMediaModal"
-            buttonColor="#f0f0f0"
-            style="margin-left: 5px;"
-          >
-            Set Image
-          </Button>
-        </div>
+  <div class="page">
+    <div class="header">
+      <NavigationButtons/>
+      <h2>
+        Page Detail
+      </h2>
+    </div>
+    <BoxWrapper style="position: relative">
+      <div class="header-action-buttons-wrapper">
+        <Button
+          v-if="page.get('page_thumbnail')"
+          buttonIcon="broken_image"
+          v-bind:buttonAction="removeMedia"
+          buttonColor="#f0f0f0"
+        >
+          Remove Image
+        </Button>
+        <Button
+          buttonIcon="image"
+          v-bind:buttonAction="openMediaModal"
+          style="margin-left: 5px;"
+          buttonColor="#f0f0f0"
+        >
+          Set Image
+        </Button>
       </div>
       <div
         class="page-thumbnail"
@@ -78,6 +78,7 @@
             v-bind:initialIndexOption="currentPageTemplateIndex"
             v-bind:onSelectOption="onSelectPageTemplateOption"
             v-bind:selectOptions="pageTemplateOptions"
+            openInTop="true"
           >
           </DropdownSelect>
           <DropdownSelect
@@ -86,6 +87,7 @@
             v-bind:onSelectOption="onSelectOption"
             v-bind:selectOptions="selectOptions"
             style="margin-left: 5px;"
+            openInTop="true"
           >
           </DropdownSelect>
           <Button
@@ -104,8 +106,8 @@
           </Button>
         </div>
       </div>
-    </div>
-  </BoxWrapper>
+    </BoxWrapper>
+  </div>
 </template>
 
 <script>
@@ -414,33 +416,23 @@ export default {
 }
 
 .header {
-  box-sizing: border-box;
   display: flex;
-  left: 0;
-  padding: 10px;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  z-index: 1;
+  margin: 0 20px;
 }
 
 h2 {
-  color: #f0f0f0;
+  color: #616161;
   display: flex;
   flex-grow: 1;
   font-size: 13px;
   font-weight: 500;
-  margin-top: 7px;
   text-transform: uppercase;
 }
 
 .buttons-wrapper {
-  bottom: 0;
   display: flex;
+  flex-grow: 1;
   justify-content: flex-end;
-  margin-top: 10px;
-  padding: 0px;
-  right: 0;
 }
 
 .page-thumbnail {
@@ -453,9 +445,9 @@ h2 {
   height: 200px;
   left: 0;
   overflow: hidden;
-  padding: 10px;
+  padding: 0;
   pointer-events: none;
-  position: relative;
+  position: absolute;
   right: 0;
   top: 0;
   transition-duration: 100ms;
@@ -475,7 +467,7 @@ h2 {
 
 .content-wrapper {
   box-sizing: content-box;
-  padding: 10px;
+  margin-top: 191px;
   position: relative;
 }
 
@@ -486,17 +478,19 @@ h2 {
 .header-action-buttons-wrapper {
   display: flex;
   justify-content: flex-end;
-  padding: 0px;
+  padding: 0;
+  position: relative;
   right: 0;
   top: 0;
+  z-index: 1;
 }
 
 .page-info-wrapper {
   display: flex;
   position: absolute;
   position: absolute;
-  right: 10px;
-  top: -37px;
+  right: 0;
+  top: -67px;
 }
 
 .date-wrapper {

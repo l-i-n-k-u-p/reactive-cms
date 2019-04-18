@@ -49,12 +49,14 @@ export default {
 <style scoped lang="css">
 #navigation-buttons-wrapper {
   -webkit-user-select: none;
+  display: flex;
   margin-right: 5px;
   position: relative;
   user-select: none;
 }
 
 #button-wrapper {
+  align-self: center;
   background: transparent;
   border-radius: 3px;
   border: none;
@@ -64,7 +66,7 @@ export default {
   font-weight: 500;
   font-weight: 600;
   height: 24px;
-  margin-top: 2px;
+  margin-right: 5px;
   outline: none;
   position: relative;
   text-transform: uppercase;

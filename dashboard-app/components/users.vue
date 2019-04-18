@@ -1,22 +1,22 @@
 <template lang="html">
-  <BoxWrapper>
-    <div>
-      <div class="header">
-        <NavigationButtons />
-        <h2>Users</h2>
-        <div class="buttons-wrapper">
-          <Dropdown
-            label="Bulk Actions"
-            v-bind:onSelectOption="onSelectOption"
-            v-bind:selectOptions="selectOptions"
-            style="margin-left: 5px;"
-          >
-          </Dropdown>
-          <Button buttonIcon="add" v-bind:buttonAction="openNewUserForm">
-            Add User
-          </Button>
-        </div>
+  <div>
+    <div class="header">
+      <NavigationButtons />
+      <h2>Users</h2>
+      <div class="buttons-wrapper">
+        <Dropdown
+          label="Bulk Actions"
+          v-bind:onSelectOption="onSelectOption"
+          v-bind:selectOptions="selectOptions"
+          style="margin-left: 5px;"
+        >
+        </Dropdown>
+        <Button buttonIcon="add" v-bind:buttonAction="openNewUserForm">
+          Add User
+        </Button>
       </div>
+    </div>
+    <BoxWrapper footerSize="32">
       <UserListTable
         v-if="users.models.length"
         v-bind:userList="users"
@@ -28,8 +28,26 @@
         v-bind:itemsSkipped="itemsSkipped"
         v-bind:totalUsers="totalUsers"
       />
+    </BoxWrapper>
+    <div class="navigation-wrapper">
+      <div class="data">
+        Rows from {{ itemsSkipped + 1 }} to
+        {{ itemsSkipped + users.models.length }} of {{ totalUsers }}
+      </div>
+      <div class="data">Page {{ currentPage }} of {{ totalPages }}</div>
+      <ButtonIcon
+        buttonIcon="navigate_before"
+        v-bind:buttonAction="navigationBefore"
+      >
+      </ButtonIcon>
+      <ButtonIcon
+        buttonIcon="navigate_next"
+        v-bind:buttonAction="navigationNext"
+        style="margin-left: 5px;"
+      >
+      </ButtonIcon>
     </div>
-  </BoxWrapper>
+  </div>
 </template>
 
 <script>
@@ -38,6 +56,7 @@ import BoxWrapper from './templates/box-wrapper.vue'
 import Button from './templates/button.vue'
 import Dropdown from './templates/dropdown.vue'
 import NavigationButtons from './templates/navigation-buttons.vue'
+import ButtonIcon from './templates/button-icon.vue'
 
 export default {
   data() {
@@ -70,6 +89,7 @@ export default {
     Button,
     Dropdown,
     NavigationButtons,
+    ButtonIcon,
   },
   created() {
     this.$eventHub.$emit('dashboard-app-page-title', 'Users')
@@ -212,6 +232,7 @@ export default {
 <style scoped lang="css">
 .header {
   display: flex;
+  margin: 0 20px;
 }
 
 h2 {
@@ -220,7 +241,6 @@ h2 {
   flex-grow: 1;
   font-size: 13px;
   font-weight: 500;
-  margin-top: 7px;
   text-transform: uppercase;
 }
 
@@ -228,6 +248,21 @@ h2 {
   display: flex;
   flex-grow: 1;
   justify-content: flex-end;
-  margin-bottom: 15px;
+}
+
+.navigation-wrapper {
+  color: #616161;
+  display: flex;
+  font-weight: 500;
+  justify-content: flex-end;
+  margin: 5px 20px;
+  position: relative;
+}
+
+.navigation-wrapper .data {
+  align-self: center;
+  font-size: 13px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 </style>

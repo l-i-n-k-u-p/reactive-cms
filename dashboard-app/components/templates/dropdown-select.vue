@@ -10,16 +10,21 @@
     <label>
       {{ label + ': ' + getOptionName() }}
     </label>
-    <transition name="fade">
-      <ul class="select-options" v-if="show">
-        <li
-          v-for="(option, index) in selectOptions"
-          v-on:click="onSelect(index)"
-        >
-          {{ option.name }}
-        </li>
-      </ul>
-    </transition>
+    <ul
+      v-bind:class="{
+        'select-options': true,
+        'top': openInTop,
+        'bottom': !openInTop,
+      }"
+      v-if="show"
+      >
+      <li
+        v-for="(option, index) in selectOptions"
+        v-on:click="onSelect(index)"
+      >
+        {{ option.name }}
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -30,6 +35,7 @@ export default {
     'selectOptions',
     'initialIndexOption',
     'label',
+    'openInTop',
   ],
   data() {
     return {
@@ -104,11 +110,10 @@ export default {
   top: -2px;
 }
 
-
 .select-options {
   background-color: transparent;
   border-radius: 3px;
-  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, .2), 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12);
+  box-shadow: 0px 0px 5px -1px rgba(0, 0, 0, 0.4);
   left: 0;
   list-style: none;
   margin: 0;
@@ -117,8 +122,17 @@ export default {
   padding: 30px 0 0 0;
   position: absolute;
   right: 0;
-  top: 0;
   z-index: 999;
+}
+
+.top {
+  bottom: 0;
+  padding: 0 0 26px 0;
+}
+
+.bottom {
+  top: 0;
+  padding: 26px 0 0 0;
 }
 
 .select-options li {
@@ -129,14 +143,6 @@ export default {
 
 .select-options li:hover {
   background-color: #eee;
-}
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 100ms;
-}
-
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
 }
 
 .select-wrapper.open {

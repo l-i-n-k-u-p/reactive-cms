@@ -1,10 +1,10 @@
 <template lang="html">
-  <BoxWrapper>
-    <div class="settings-wrapper">
-      <div class="header">
-        <NavigationButtons />
-        <h2>Dashboard</h2>
-      </div>
+  <div class="settings-wrapper">
+    <div class="header">
+      <NavigationButtons />
+      <h2>Dashboard</h2>
+    </div>
+    <BoxWrapper>
       <div class="content-wrapper">
         <h2>Activity</h2>
         <div class="dashboard-activity">
@@ -113,8 +113,8 @@
           </div>
         </div>
       </div>
-    </div>
-  </BoxWrapper>
+    </BoxWrapper>
+  </div>
 </template>
 
 
@@ -164,6 +164,7 @@ export default {
 
 .header {
   display: flex;
+  margin: 0 20px;
 }
 
 h2 {
@@ -171,18 +172,14 @@ h2 {
   display: flex;
   flex-grow: 1;
   font-size: 13px;
-  font-weight: bold;
-  margin-top: 7px;
+  font-weight: 500;
   text-transform: uppercase;
 }
 
 .buttons-wrapper {
-  bottom: 0;
   display: flex;
+  flex-grow: 1;
   justify-content: flex-end;
-  margin-top: 15px;
-  padding: 0px;
-  right: 0;
 }
 
 .content-wrapper {

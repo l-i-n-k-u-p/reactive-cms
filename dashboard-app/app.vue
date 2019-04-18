@@ -1,19 +1,24 @@
 <template lang="html">
-  <div class="app-wrapper">
+  <div
+    class="app-wrapper"
+    v-window-resize="onResizeWindow"
+    >
     <Header
       v-on:dashboard-toggle-menu="menuIsOpen"
-      v-bind:scrollTop="scrollTop"
       v-bind:pageTitle="pageTitle"
     >
     </Header>
-    <transition name="fade">
-      <Menu class="left-menu-wrapper" v-if="menuIsOpen"> </Menu>
-    </transition>
-    <div id="overflow" v-on:scroll="onScroll">
-      <div id="content">
-        <div v-bind:class="pageWrapperClass">
-          <router-view :key="$route.fullPath" />
-        </div>
+    <Menu
+      class="left-menu-wrapper"
+      v-if="menuIsOpen"
+      v-bind:isMenuSticky="isMenuSticky"
+      >
+    </Menu>
+    <div
+      id="content"
+      v-bind:class="{'full-content-width': isMenuSticky}">
+      <div class="page-content-wrapper">
+        <router-view :key="$route.fullPath" />
       </div>
     </div>
     <transition name="autohide">
@@ -87,12 +92,11 @@ export default {
   },
   data: function() {
     return {
-      pageWrapperClass: 'page-content-wrapper closed',
       menuIsOpen: false,
+      isMenuSticky: false,
       pageTitle: '',
       appErrorMessage: '',
       appSuccessMessage: '',
-      scrollTop: 0,
       showSplashScreen: true,
       showLogin: false,
       ribbonTimeOut: 5000,
@@ -100,6 +104,7 @@ export default {
       mediaModalData: null,
       previewMediaModalData: null,
       throttleToggleMenu: _.throttle(this.toggleMenu, 100, { 'trailing': false }),
+      breakWidth: 1485,
     }
   },
   watch: {
@@ -138,6 +143,7 @@ export default {
       this.previewMediaModalData = ObjectData
     })
     setTimeout(this.hideSplashScreen, 1000)
+    this.onResizeWindow()
   },
   methods: {
     initAxiosListenEvent: function() {
@@ -152,9 +158,6 @@ export default {
         },
       )
     },
-    onScroll: function(el) {
-      this.scrollTop = el.target.scrollTop
-    },
     hideSplashScreen: function() {
       this.showSplashScreen = false
     },
@@ -165,12 +168,24 @@ export default {
       this.appErrorMessage = ''
     },
     toggleMenu: function() {
-      if (this.menuIsOpen === true) {
+      if (this.menuIsOpen === true)
         this.menuIsOpen = false
-        this.pageWrapperClass = 'page-content-wrapper closed'
-      } else {
+      else
         this.menuIsOpen = true
-        this.pageWrapperClass = 'page-content-wrapper'
+    },
+    onResizeWindow: function() {
+      if (this.isMenuSticky && window.innerWidth >= this.breakWidth)
+        return
+
+      if (!this.isMenuSticky && window.innerWidth < this.breakWidth)
+        return
+
+      if (window.innerWidth >= this.breakWidth) {
+        this.menuIsOpen = true
+        this.isMenuSticky = true
+      } else {
+        this.menuIsOpen = false
+        this.isMenuSticky = false
       }
     },
   },
@@ -180,61 +195,58 @@ export default {
 <style scoped lang="css">
 
 .app-wrapper {
-    display: flex;
-    height: 100%;
-    overflow: hidden;
-    position: relative;
-    width: 100%;
-}
-
-#overflow {
-    margin-top: 48px;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    position: relative;
-    width: 100%;
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
 }
 
 #content {
-    max-width: 1145px;
-    position: relative;
-    z-index: 1;
-    margin: auto auto 100px auto;
+  margin: 50px auto 100px auto;
+  position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+.full-content-width {
+  padding-left: 170px;
+  padding-right: 170px;
 }
 
 .page-content-wrapper {
-    margin-top: 15px;
-    margin: auto;
-    position: relative;
+  margin-top: 15px;
+  margin: auto;
+  position: relative;
 }
 
 .page-content-wrapper.closed {
-    margin-left: auto;
+  margin-left: auto;
 }
 
 footer {
-    bottom: 10px;
-    display: flex;
-    justify-content: center;
-    position: absolute;
-    width: 100%;
-    z-index: 0;
-    user-select: none;
-    -webkit-user-select: none;
+  bottom: 4px;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  z-index: 0;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 footer span {
-    align-self: center;
-    display: flex;
-    font-size: 12px;
-    margin: auto 5px auto 5px;
+  align-self: center;
+  display: flex;
+  font-size: 12px;
+  margin: auto 5px auto 5px;
 }
 
 footer img {
-    display: flex;
-    position: relative;
-    top: -1px;
-    width: 130px;
+  display: flex;
+  position: relative;
+  top: -1px;
+  width: 130px;
 }
 
 .left-menu-wrapper {
@@ -242,19 +254,11 @@ footer img {
     z-index: 4;
 }
 
-.fade-enter-active, .fade-leave-active {
-    transition: all 100ms ease;
-}
-
-.fade-enter, .fade-leave-to {
-    opacity: 0;
-}
-
 .autohide-enter-active, .autohide-leave-active {
-    transition: all 500ms ease;
+  transition: all 500ms ease;
 }
 
 .autohide-enter, .autohide-leave-to {
-    opacity: 0;
+  opacity: 0;
 }
 </style>

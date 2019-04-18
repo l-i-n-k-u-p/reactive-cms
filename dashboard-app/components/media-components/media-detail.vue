@@ -1,63 +1,60 @@
 <template lang="html">
-    <BoxWrapper
-        style="padding: 0;">
+  <div class="media">
+      <div
+          class="header">
+          <NavigationButtons/>
+          <h2>
+              Media detail
+          </h2>
+      </div>
+      <BoxWrapper style="position: relative;">
         <div
-            class="media">
+            class="media-thumbnail"
+            v-if="media.isImage()"
+            v-bind:style="getCoverImage()">
+        </div>
+        <div
+            class="media-thumbnail"
+            v-if="!media.isImage()"
+            v-bind:style="getCoverColor()">
+        </div>
+        <Button
+            class="media-download"
+            buttonColor="#f0f0f0"
+            buttonIcon="cloud_download"
+            v-bind:buttonAction="openMediaFile">
+            Open
+        </Button>
+        <div
+            class="content-wrapper">
+            <InputText
+                class="input"
+                inputName="Media Title"
+                v-bind:inputValue="media.media_title"
+                v-bind:onChangeValue="onChangeInputValue"
+                propName='media_title'>
+            </InputText>
             <div
-                class="header">
-                <NavigationButtons
-                    buttonColor="#f0f0f0"/>
-                <h2>
-                    Media detail
-                </h2>
+                class="date-wrapper">
+                {{ mediaDate }}
             </div>
             <div
-                class="media-thumbnail"
-                v-if="media.isImage()"
-                v-bind:style="getCoverImage()">
-            </div>
-            <div
-                class="media-thumbnail"
-                v-if="!media.isImage()"
-                v-bind:style="getCoverColor()">
-            </div>
-            <Button
-                class="media-download"
-                buttonColor="#f0f0f0"
-                buttonIcon="cloud_download"
-                v-bind:buttonAction="openMediaFile">
-                Open
-            </Button>
-            <div
-                class="content-wrapper">
-                <InputText
-                    class="input"
-                    inputName="Media Title"
-                    v-bind:inputValue="media.media_title"
-                    v-bind:onChangeValue="onChangeInputValue"
-                    propName='media_title'>
-                </InputText>
-                <div
-                    class="date-wrapper">
-                    {{ mediaDate }}
-                </div>
-                <div
-                    class="buttons-wrapper">
-                    <Button
-                        buttonIcon="remove"
-                        v-bind:buttonAction="showConfirmationModal">
-                        Delete
-                    </Button>
-                    <Button
-                        buttonIcon="save"
-                        v-bind:buttonAction="updateMedia"
-                        style="margin-left: 5px;">
-                        Update
-                    </Button>
-                </div>
+                class="buttons-wrapper">
+                <Button
+                    buttonIcon="remove"
+                    v-bind:buttonAction="showConfirmationModal">
+                    Delete
+                </Button>
+                <Button
+                    buttonIcon="save"
+                    v-bind:buttonAction="updateMedia"
+                    style="margin-left: 5px;">
+                    Update
+                </Button>
             </div>
         </div>
-    </BoxWrapper>
+      </BoxWrapper>
+  </div>
 </template>
 
 <script>
@@ -180,73 +177,67 @@ export default {
 <style scoped lang="css">
 
 .media {
-    position: relative;
+  position: relative;
 }
 
 .header {
-    display: flex;
-    left: 0;
-    padding: 10px;
-    position: absolute;
-    top: 0;
-    z-index: 1;
+  display: flex;
+  margin: 0 20px;
 }
 
 h2 {
-    color: #f0f0f0;
-    display: flex;
-    flex-grow: 1;
-    font-size: 13px;
-    font-weight: 500;
-    margin-top: 7px;
-    text-transform: uppercase;
-}
-
-form {
-    margin-top: 10px;
+  color: #616161;
+  display: flex;
+  flex-grow: 1;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
 }
 
 .buttons-wrapper {
-    bottom: 0;
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 10px;
-    padding: 0px;
-    right: 0;
+  display: flex;
+  flex-grow: 1;
+  justify-content: flex-end;
+}
+
+form {
+  margin-top: 10px;
 }
 
 .media-thumbnail {
-    background-color: #f8f8f8;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-    box-sizing: border-box;
-    color: #616161;
-    display: flex;
-    height: 200px;
-    left: 0;
-    overflow: hidden;
-    padding: 10px;
-    pointer-events: none;
-    position: relative;
-    right: 0;
-    top: 0;
-    width: 100%;
-    z-index: 0;
+  background-color: #f8f8f8;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  box-sizing: border-box;
+  color: #616161;
+  display: flex;
+  height: 200px;
+  left: 0;
+  overflow: hidden;
+  padding: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition-duration: 100ms;
+  width: 100%;
+  z-index: 0;
 }
 
 .media-thumbnail:after {
-    background-color: rgba(0, 0, 0, 0.5);
-    bottom: 0;
-    content: "";
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  bottom: 0;
+  content: "";
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 .content-wrapper {
-    box-sizing: content-box;
-    padding: 10px;
+  box-sizing: content-box;
+  margin-top: 220px;
+  position: relative;
 }
 
 .input {
@@ -254,18 +245,18 @@ form {
 }
 
 .media-download {
-    position: absolute !important;
-    right: 10px;
-    top: 10px;
+  position: absolute !important;
+  right: 10px;
+  top: 10px;
 }
 
 .date-wrapper {
-    color: #616161;
-    display: block;
-    font-size: 12px;
-    font-weight: 500;
-    margin-top: 15px;
-    text-align: right;
+  color: #616161;
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 15px;
+  text-align: right;
 }
 
 </style>

@@ -12,8 +12,8 @@ module.exports = {
     },
     ignore_watch: [
       'node_modules',
-      'site-static/uploads',
-      'dashboard-app/static',
+      'dashboard-app',
+      'site-static',
       'server-app/static',
     ],
     watch_options: {
