@@ -16,6 +16,7 @@
         </Button>
       </div>
     </div>
+    <LoadingBar v-if="isLoading"/>
     <BoxWrapper footerSize="32">
       <UserListTable
         v-if="users.models.length"
@@ -57,6 +58,7 @@ import Button from './templates/button.vue'
 import Dropdown from './templates/dropdown.vue'
 import NavigationButtons from './templates/navigation-buttons.vue'
 import ButtonIcon from './templates/button-icon.vue'
+import LoadingBar from './templates/loading-bar.vue'
 
 export default {
   data() {
@@ -81,6 +83,7 @@ export default {
           value: 'delete',
         },
       ],
+      isLoading: false,
     }
   },
   components: {
@@ -90,6 +93,7 @@ export default {
     Dropdown,
     NavigationButtons,
     ButtonIcon,
+    LoadingBar,
   },
   created() {
     this.$eventHub.$emit('dashboard-app-page-title', 'Users')
@@ -100,10 +104,12 @@ export default {
   },
   methods: {
     getUsers: function() {
+      this.isLoading = true
       this.users
         .page(this.currentPage)
         .fetch()
         .then(data => {
+          this.isLoading = false
           if (data.getData().status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
@@ -116,6 +122,7 @@ export default {
           this.totalUsers = data.getData().total_items
         })
         .catch(data => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', data.message)
         })
     },
@@ -136,94 +143,56 @@ export default {
       this.$router.push({ name: 'new-user' })
     },
     onSelectOption: function(option) {
-      // NOTE: improve this
+      let promisses = []
+      let typeAction = ''
+      this.isLoading = true
       if (option === 'delete') {
-        let promisses = []
+        typeAction = 'deleted'
         Object.values(this.itemsSelected).forEach(id => {
           let user = this.users.find({ _id: id })
           promisses.push(user.delete())
         })
-        Promise.all(promisses)
-          .then(responses => {
-            let success = responses.length
-            responses.forEach(response => {
-              success = success - response.getData().status_code
-            })
-            if (!responses) {
-              this.$eventHub.$emit(
-                'dashboard-app-error',
-                "Some users it doesn't deleted",
-              )
-              return
-            }
-            this.$eventHub.$emit(
-              'dashboard-app-success',
-              success + ' user/s deleted',
-            )
-          })
-          .catch(data => {
-            this.$eventHub.$emit('dashboard-app-error', data.message)
-          })
       }
       if (option === 'activate') {
-        let promisses = []
+        typeAction = 'updated'
         Object.values(this.itemsSelected).forEach(id => {
           let user = this.users.find({ _id: id })
           user.set('user_active', true)
           promisses.push(user.put())
         })
-        Promise.all(promisses)
-          .then(responses => {
-            let success = responses.length
-            responses.forEach(response => {
-              success = success - response.getData().status_code
-            })
-            if (!responses) {
-              this.$eventHub.$emit(
-                'dashboard-app-error',
-                "Some users it doesn't updated",
-              )
-              return
-            }
-            this.$eventHub.$emit(
-              'dashboard-app-success',
-              success + ' user/s updated',
-            )
-          })
-          .catch(data => {
-            this.$eventHub.$emit('dashboard-app-error', data.message)
-          })
       }
       if (option === 'deactivate') {
-        let promisses = []
+        typeAction = 'updated'
         Object.values(this.itemsSelected).forEach(id => {
           let user = this.users.find({ _id: id })
           user.set('user_active', false)
           promisses.push(user.put())
         })
-        Promise.all(promisses)
-          .then(responses => {
-            let success = responses.length
-            responses.forEach(response => {
-              success = success - response.getData().status_code
-            })
-            if (!responses) {
-              this.$eventHub.$emit(
-                'dashboard-app-error',
-                "Some users it doesn't updated",
-              )
-              return
-            }
-            this.$eventHub.$emit(
-              'dashboard-app-success',
-              success + ' user/s updated',
-            )
-          })
-          .catch(data => {
-            this.$eventHub.$emit('dashboard-app-error', data.message)
-          })
-        this.itemsSelected = {}
       }
+      Promise.all(promisses)
+        .then(responses => {
+          this.isLoading = false
+          let success = responses.length
+          responses.forEach(response => {
+            success = success - response.getData().status_code
+          })
+          if (!responses) {
+            this.$eventHub.$emit(
+              'dashboard-app-error',
+              "Some user/s it doesn't " + typeAction,
+            )
+            return
+          }
+          this.$eventHub.$emit(
+            'dashboard-app-success',
+            success + ' user/s ' + typeAction,
+          )
+        })
+        .catch(data => {
+          this.isLoading = false
+          this.$eventHub.$emit('dashboard-app-error', data.message)
+        })
+      this.itemsSelected = {}
     },
   },
 }

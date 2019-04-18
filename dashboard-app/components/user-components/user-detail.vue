@@ -6,7 +6,8 @@
         User Detail
       </h2>
     </div>
-    <BoxWrapper style="position: relative;">
+    <LoadingBar v-if="isLoading"/>
+    <BoxWrapper>
       <div class="header-action-buttons-wrapper">
         <Button
           v-if="user.get('user_thumbnail')"
@@ -143,6 +144,7 @@ import Button from '../templates/button.vue'
 import InputText from '../templates/input-text.vue'
 import NavigationButtons from '../templates/navigation-buttons.vue'
 import FormDropdownSelect from '../templates/form-dropdown-select.vue'
+import LoadingBar from '../templates/loading-bar.vue'
 
 export default {
   data() {
@@ -173,6 +175,7 @@ export default {
         closeMediaModal: this.closeMediaAvatarModal,
         onMediaSelect: this.onMediaAvatarSelect,
       },
+      isLoading: false,
     }
   },
   components: {
@@ -181,6 +184,7 @@ export default {
     InputText,
     NavigationButtons,
     FormDropdownSelect,
+    LoadingBar,
   },
   created() {
     this.$eventHub.$emit('dashboard-app-page-title', 'User')
@@ -192,7 +196,7 @@ export default {
     setOnChangeUser: function() {
       this.user.on('change', ({ attribute, value }) => {
         if (attribute === 'user_registration_date')
-          this.userDate = moment(value).format('MMMM Do YYYY, h:mm:ss a')
+          this.setUserFormatDate()
         if (attribute === 'user_type') this.setInitialUserTypeIndex()
       })
     },
@@ -204,9 +208,11 @@ export default {
       this.user.set(propName, value)
     },
     getUserData: function() {
+      this.isLoading = true
       this.user
         .fetch()
         .then(data => {
+          this.isLoading = false
           if (data.getData().status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
@@ -214,16 +220,20 @@ export default {
             )
             return
           }
+          this.setUserFormatDate()
           this.setInitialUserTypeIndex()
         })
         .catch(err => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', data.message)
         })
     },
     getUserTypesData: function() {
+      this.isLoading = true
       this.userTypes
         .fetch()
         .then(data => {
+          this.isLoading = false
           if (data.getData().status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
@@ -234,13 +244,16 @@ export default {
           this.setInitialUserTypes()
         })
         .catch(err => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', err.toString())
         })
     },
     deleteUser: function() {
+      this.isLoading = true
       this.user
         .delete()
         .then(data => {
+          this.isLoading = false
           if (data.getData().status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
@@ -254,14 +267,17 @@ export default {
           )
         })
         .catch(err => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', data.message)
         })
       this.$router.replace({ name: 'users', params: { page: 1 } })
     },
     updateUser: function() {
+      this.isLoading = true
       this.user
         .put()
         .then(data => {
+          this.isLoading = false
           if (data.getData().status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
@@ -277,6 +293,7 @@ export default {
           this.newPassword = ''
         })
         .catch(data => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', data.message)
         })
     },
@@ -364,6 +381,9 @@ export default {
       if (!user.get('user_first_name')) return
 
       return user.get('user_first_name')[0]
+    },
+    setUserFormatDate: function() {
+      this.userDate = moment(this.user.get('user_registration_date')).format('MMMM Do YYYY, h:mm:ss a')
     },
   },
 }

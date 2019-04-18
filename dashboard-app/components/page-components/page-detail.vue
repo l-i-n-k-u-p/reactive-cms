@@ -6,6 +6,7 @@
         Page Detail
       </h2>
     </div>
+    <LoadingBar v-if="isLoading"/>
     <BoxWrapper style="position: relative">
       <div class="header-action-buttons-wrapper">
         <Button
@@ -119,6 +120,7 @@ import DropdownSelect from '../templates/dropdown-select.vue'
 import NavigationButtons from '../templates/navigation-buttons.vue'
 import Link from '../templates/link.vue'
 import Gallery from '../templates/gallery.vue'
+import LoadingBar from '../templates/loading-bar.vue'
 
 export default {
   data() {
@@ -163,6 +165,7 @@ export default {
         metaFields: this.previewMediaMetaFields,
         file: this.previewFile,
       },
+      isLoading: false,
     }
   },
   components: {
@@ -174,6 +177,7 @@ export default {
     NavigationButtons,
     Link,
     Gallery,
+    LoadingBar,
   },
   created() {
     this.getPageData()
@@ -201,9 +205,11 @@ export default {
       this.page.set(propName, value)
     },
     getPageData: function() {
+      this.isLoading = true
       this.page
         .fetch()
         .then(data => {
+          this.isLoading = false
           if (data.getData().status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
@@ -217,13 +223,16 @@ export default {
           this.setPageTemplateIndex()
         })
         .catch(err => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', err.message)
         })
     },
     deletePage: function() {
+      this.isLoading = true
       this.page
         .delete()
         .then(data => {
+          this.isLoading = false
           if (data.getData().status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
@@ -237,14 +246,17 @@ export default {
           )
         })
         .catch(err => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', err.message)
         })
       this.$router.replace({ name: 'pages', params: { page: 1 } })
     },
     updatePage: function() {
+      this.isLoading = true
       this.page
         .put()
         .then(data => {
+          this.isLoading = false
           if (data.getData().status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
@@ -258,6 +270,7 @@ export default {
           )
         })
         .catch(data => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', err.message)
         })
     },
@@ -296,9 +309,11 @@ export default {
       this.page.set('page_thumbnail', '')
     },
     getFileTemplates: function() {
+      this.isLoading = true
       this.fileTemplates
         .fetch()
         .then(data => {
+          this.isLoading = false
           if (data.getData().status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
@@ -309,6 +324,7 @@ export default {
           this.setPageTemplateOptions()
         })
         .catch(err => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', data.message)
         })
     },
@@ -433,6 +449,7 @@ h2 {
   display: flex;
   flex-grow: 1;
   justify-content: flex-end;
+  margin-top: 10px;
 }
 
 .page-thumbnail {

@@ -42,5 +42,6 @@ export default {
   margin-right: 10px;
   overflow: auto;
   padding: 10px;
+  position: relative;
 }
 </style>

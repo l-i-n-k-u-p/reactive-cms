@@ -6,7 +6,8 @@
         Post detail
       </h2>
     </div>
-    <BoxWrapper style="position: relative;">
+    <LoadingBar v-if="isLoading"/>
+    <BoxWrapper>
       <div class="header-action-buttons-wrapper">
         <Button
           v-if="post.get('post_thumbnail')"
@@ -98,6 +99,7 @@ import InputText from '../templates/input-text.vue'
 import DropdownSelect from '../templates/dropdown-select.vue'
 import NavigationButtons from '../templates/navigation-buttons.vue'
 import Link from '../templates/link.vue'
+import LoadingBar from '../templates/loading-bar.vue'
 
 export default {
   data() {
@@ -131,6 +133,7 @@ export default {
         closeMediaModal: this.closeMediaModal,
         onMediaSelect: this.onMediaSelect,
       },
+      isLoading: false,
     }
   },
   components: {
@@ -141,6 +144,7 @@ export default {
     InputText,
     NavigationButtons,
     Link,
+    LoadingBar,
   },
   created() {
     this.getPostData()
@@ -166,9 +170,11 @@ export default {
       this.post.set(propName, value)
     },
     getPostData: function() {
+      this.isLoading = true
       this.post
         .fetch()
         .then(data => {
+          this.isLoading = false
           if (data.getData().status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
@@ -181,13 +187,16 @@ export default {
             this.postStatusIndex = 1
         })
         .catch(err => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', err.message)
         })
     },
     deletePost: function() {
+      this.isLoading = true
       this.post
         .delete()
         .then(data => {
+          this.isLoading = false
           if (data.getData().status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
@@ -201,14 +210,17 @@ export default {
           )
         })
         .catch(err => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', err.message)
         })
       this.$router.replace({ name: 'posts', params: { page: 1 } })
     },
     updatePost: function() {
+      this.isLoading = true
       this.post
         .put()
         .then(data => {
+          this.isLoading = false
           if (data.getData().status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
@@ -222,6 +234,7 @@ export default {
           )
         })
         .catch(data => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', err.message)
         })
     },
@@ -294,6 +307,7 @@ h2 {
   display: flex;
   flex-grow: 1;
   justify-content: flex-end;
+  margin-top: 10px;
 }
 
 .post-thumbnail {

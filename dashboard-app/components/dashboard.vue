@@ -4,6 +4,7 @@
       <NavigationButtons />
       <h2>Dashboard</h2>
     </div>
+    <LoadingBar v-if="isLoading"/>
     <BoxWrapper>
       <div class="content-wrapper">
         <h2>Activity</h2>
@@ -121,25 +122,30 @@
 <script>
 import BoxWrapper from './templates/box-wrapper.vue'
 import NavigationButtons from './templates/navigation-buttons.vue'
+import LoadingBar from './templates/loading-bar.vue'
 
 export default {
   data() {
     return {
       dashboard: new this.$models.Dashboard(),
+      isLoading: false,
     }
   },
   components: {
     BoxWrapper,
     NavigationButtons,
+    LoadingBar,
   },
   created() {
     this.getDashboardData()
   },
   methods: {
     getDashboardData: function() {
+      this.isLoading = true
       this.dashboard
         .fetch()
         .then(data => {
+          this.isLoading = false
           if (data.getData().status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
@@ -149,6 +155,7 @@ export default {
           }
         })
         .catch(err => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', err.message)
         })
     },

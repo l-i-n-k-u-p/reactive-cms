@@ -6,7 +6,8 @@
         Create post
       </h2>
     </div>
-    <BoxWrapper style="position: relative;">
+    <LoadingBar v-if="isLoading"/>
+    <BoxWrapper>
       <div class="header-action-buttons-wrapper">
         <Button
           v-if="post.get('post_thumbnail')"
@@ -85,6 +86,7 @@ import Button from '../templates/button.vue'
 import InputText from '../templates/input-text.vue'
 import DropdownSelect from '../templates/dropdown-select.vue'
 import NavigationButtons from '../templates/navigation-buttons.vue'
+import LoadingBar from '../templates/loading-bar.vue'
 
 export default {
   data() {
@@ -111,6 +113,7 @@ export default {
         closeMediaModal: this.closeMediaModal,
         onMediaSelect: this.onMediaSelect,
       },
+      isLoading: false,
     }
   },
   components: {
@@ -120,15 +123,18 @@ export default {
     Button,
     InputText,
     NavigationButtons,
+    LoadingBar,
   },
   methods: {
     onChangeInputValue: function(propName, value) {
       this.post.set(propName, value)
     },
     createPost: function() {
+      this.isLoading = true
       this.post
         .post()
         .then(data => {
+          this.isLoading = false
           if (data.response.data.status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
@@ -146,6 +152,7 @@ export default {
           )
         })
         .catch(err => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', data.message)
         })
     },
@@ -211,6 +218,7 @@ h2 {
   display: flex;
   flex-grow: 1;
   justify-content: flex-end;
+  margin-top: 10px;
 }
 
 .post-thumbnail {
