@@ -4,6 +4,7 @@
       <NavigationButtons />
       <h2>Settings</h2>
     </div>
+    <LoadingBar v-if="isLoading"/>
     <BoxWrapper>
       <div class="content-wrapper">
         <h2>Dashboard</h2>
@@ -83,6 +84,7 @@ import Button from './templates/button.vue'
 import InputText from './templates/input-text.vue'
 import NavigationButtons from './templates/navigation-buttons.vue'
 import FormDropdownSelect from './templates/form-dropdown-select.vue'
+import LoadingBar from './templates/loading-bar.vue'
 
 export default {
   data() {
@@ -95,6 +97,7 @@ export default {
       fileTemplates: new this.$models.FileTemplates(),
       templatePostsIndex: null,
       templateFileOptions: [],
+      isLoading: false,
     }
   },
   components: {
@@ -103,6 +106,7 @@ export default {
     InputText,
     NavigationButtons,
     FormDropdownSelect,
+    LoadingBar,
   },
   created() {
     this.getSettingsData()
@@ -113,9 +117,11 @@ export default {
   },
   methods: {
     getSettingsData: function() {
+      this.isLoading = true
       this.settings
         .fetch()
         .then(data => {
+          this.isLoading = false
           if (data.getData().status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
@@ -125,13 +131,16 @@ export default {
           }
         })
         .catch(err => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', err.message)
         })
     },
     getSiteData: function() {
+      this.isLoading = true
       this.site
         .fetch()
         .then(data => {
+          this.isLoading = false
           if (data.getData().status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
@@ -143,13 +152,16 @@ export default {
           this.setIndexPostsTemplate()
         })
         .catch(err => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', err.message)
         })
     },
     getSettingPagesData: function() {
+      this.isLoading = true
       this.settingPages
         .fetch()
         .then(data => {
+          this.isLoading = false
           if (data.getData().status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
@@ -160,13 +172,16 @@ export default {
           this.setInitialSelectPages()
         })
         .catch(err => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', err.message)
         })
     },
     getTemplateFilesData: function() {
+      this.isLoading = true
       this.fileTemplates
         .fetch()
         .then(data => {
+          this.isLoading = false
           if (data.getData().status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
@@ -177,6 +192,7 @@ export default {
           this.setInitialSelectPostsTemplates()
         })
         .catch(err => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', data.message)
         })
     },
@@ -187,9 +203,11 @@ export default {
       this.site.set(propName, value)
     },
     saveSetting: function() {
+      this.isLoading = true
       this.settings
         .put()
         .then(data => {
+          this.isLoading = false
           if (data.getData().status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
@@ -203,14 +221,17 @@ export default {
           )
         })
         .catch(err => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', err.message)
         })
       this.saveSite()
     },
     saveSite: function() {
+      this.isLoading = true
       this.site
         .put()
         .then(data => {
+          this.isLoading = false
           if (data.getData().status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
@@ -224,6 +245,7 @@ export default {
           )
         })
         .catch(err => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', err.message)
         })
     },
@@ -330,6 +352,7 @@ h2 {
   display: flex;
   flex-grow: 1;
   justify-content: flex-end;
+  margin-top: 10px;
 }
 
 .content-wrapper {

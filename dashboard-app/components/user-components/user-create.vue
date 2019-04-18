@@ -6,7 +6,8 @@
         Create user
       </h2>
     </div>
-    <BoxWrapper style="position: relative;">
+    <LoadingBar v-if="isLoading"/>
+    <BoxWrapper>
       <div class="header-action-buttons-wrapper">
         <Button
           v-if="user.get('user_thumbnail')"
@@ -139,8 +140,8 @@ import BoxWrapper from '../templates/box-wrapper.vue'
 import Button from '../templates/button.vue'
 import InputText from '../templates/input-text.vue'
 import NavigationButtons from '../templates/navigation-buttons.vue'
-// import MediaModal from '../media-modal.vue'
 import FormDropdownSelect from '../templates/form-dropdown-select.vue'
+import LoadingBar from '../templates/loading-bar.vue'
 
 export default {
   data() {
@@ -166,6 +167,7 @@ export default {
         closeMediaModal: this.closeMediaAvatarModal,
         onMediaSelect: this.onMediaAvatarSelect,
       },
+      isLoading: false,
     }
   },
   components: {
@@ -174,6 +176,7 @@ export default {
     InputText,
     NavigationButtons,
     FormDropdownSelect,
+    LoadingBar,
   },
   created() {
     this.getUserTypesData()
@@ -187,9 +190,11 @@ export default {
       this.user.set(propName, value)
     },
     createUser: function() {
+      this.isLoading = true
       this.user
         .post()
         .then(data => {
+          this.isLoading = false
           if (data.getData().status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
@@ -207,6 +212,7 @@ export default {
           )
         })
         .catch(err => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', data.message)
         })
     },
@@ -250,9 +256,11 @@ export default {
       this.user.set('user_avatar', '')
     },
     getUserTypesData: function() {
+      this.isLoading = true
       this.userTypes
         .fetch()
         .then(data => {
+          this.isLoading = false
           if (data.getData().status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
@@ -263,6 +271,7 @@ export default {
           this.setInitialUserTypes()
         })
         .catch(err => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', err.toString())
         })
     },

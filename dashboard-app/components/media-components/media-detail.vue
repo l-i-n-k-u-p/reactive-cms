@@ -7,7 +7,8 @@
               Media detail
           </h2>
       </div>
-      <BoxWrapper style="position: relative;">
+      <LoadingBar v-if="isLoading"/>
+      <BoxWrapper>
         <div
             class="media-thumbnail"
             v-if="media.isImage()"
@@ -62,114 +63,126 @@ import BoxWrapper from '../templates/box-wrapper.vue'
 import Button from '../templates/button.vue'
 import InputText from '../templates/input-text.vue'
 import NavigationButtons from '../templates/navigation-buttons.vue'
+import LoadingBar from '../templates/loading-bar.vue'
 
 export default {
-    data() {
-        return {
-            media: new this.$models.Media({
-                '_id': this.$route.params.id,
-            }),
-            mediaStatusIndex: 0,
-            mediaDate: '',
-            confirmationModalData: {
-                modalTitle: 'Do you want delete this media?',
-                modalDescription: 'This action will delete this media',
-                cancelAction: this.cancelAction,
-                acceptAction: this.acceptAction,
-            },
-        }
-    },
-    components: {
-        BoxWrapper,
-        Button,
-        InputText,
-        NavigationButtons,
-    },
-    created() {
-        this.getMediaData()
-        this.setOnChangeMedia()
-    },
-    methods: {
-        setOnChangeMedia: function() {
-            this.media.on('change', ({attribute, value}) => {
-                if(attribute === 'media_content')
-                    this.editorContent = value
-                if(attribute === 'media_status') {
-                    if(value === 'pending')
-                        this.mediaStatusIndex = 1
-                    else
-                        this.mediaStatusIndex = 0
-                }
-                if(attribute === 'media_date')
-                    this.mediaDate = moment(value).format('MMMM Do YYYY, h:mm:ss a')
-            })
-        },
-        onChangeInputValue: function(propName, value) {
-            this.media.set(propName, value)
-        },
-        getMediaData: function() {
-            this.media.fetch()
-            .then(data => {
-                if(data.getData().status_code) {
-                    this.$eventHub.$emit('dashboard-app-error', data.getData().status_msg)
-                    return
-                }
-                this.editorContent = this.media.get('media_content')
-                if(this.media.get('media_status') === 'pending')
-                    this.mediaStatusIndex = 1
-            })
-            .catch(err => {
-                this.$eventHub.$emit('dashboard-app-error', err.message)
-            })
-        },
-        deleteMedia: function() {
-            this.media.delete()
-            .then(data => {
-                if(data.getData().status_code) {
-                    this.$eventHub.$emit('dashboard-app-error', data.getData().status_msg)
-                    return
-                }
-                this.$eventHub.$emit('dashboard-app-success', data.getData().status_msg)
-            })
-            .catch(err => {
-                this.$eventHub.$emit('dashboard-app-error', err.message)
-            })
-            this.$router.replace({ name: 'media', params: {page: 1}})
-        },
-        updateMedia: function() {
-            this.media.put()
-            .then(data => {
-                if(data.getData().status_code) {
-                    this.$eventHub.$emit('dashboard-app-error', data.getData().status_msg)
-                    return
-                }
-                this.$eventHub.$emit('dashboard-app-success',  data.getData().status_msg)
-            })
-            .catch(data => {
-                this.$eventHub.$emit('dashboard-app-error', err.message)
-            })
-        },
-        showConfirmationModal: function() {
-            this.$eventHub.$emit('confirmation-modal', this.confirmationModalData)
-        },
-        cancelAction: function() {
-            this.$eventHub.$emit('confirmation-modal', null)
-        },
-        acceptAction: function() {
-            this.$eventHub.$emit('confirmation-modal', null)
-            this.deleteMedia()
-        },
-        openMediaFile: function() {
-            let mediaURL = this.media.getMediaURL()
-            window.open(mediaURL, '_blank')
-        },
-        getCoverImage: function() {
-            return this.$getThumbnailURL(this.media.get('media_name'))
-        },
-        getCoverColor: function() {
-            return this.$getHexColor(this.media.get('media_title'))
-        },
+  data() {
+    return {
+      media: new this.$models.Media({
+        '_id': this.$route.params.id,
+      }),
+      mediaStatusIndex: 0,
+      mediaDate: '',
+      confirmationModalData: {
+        modalTitle: 'Do you want delete this media?',
+        modalDescription: 'This action will delete this media',
+        cancelAction: this.cancelAction,
+        acceptAction: this.acceptAction,
+      },
+      isLoading: false,
     }
+  },
+  components: {
+    BoxWrapper,
+    Button,
+    InputText,
+    NavigationButtons,
+    LoadingBar,
+  },
+  created() {
+    this.getMediaData()
+    this.setOnChangeMedia()
+  },
+  methods: {
+    setOnChangeMedia: function() {
+      this.media.on('change', ({attribute, value}) => {
+        if(attribute === 'media_content')
+        this.editorContent = value
+        if(attribute === 'media_status') {
+          if(value === 'pending')
+          this.mediaStatusIndex = 1
+          else
+          this.mediaStatusIndex = 0
+        }
+        if(attribute === 'media_date')
+        this.mediaDate = moment(value).format('MMMM Do YYYY, h:mm:ss a')
+      })
+    },
+    onChangeInputValue: function(propName, value) {
+      this.media.set(propName, value)
+    },
+    getMediaData: function() {
+      this.isLoading = true
+      this.media.fetch()
+      .then(data => {
+        this.isLoading = false
+        if(data.getData().status_code) {
+          this.$eventHub.$emit('dashboard-app-error', data.getData().status_msg)
+          return
+        }
+        this.editorContent = this.media.get('media_content')
+        if(this.media.get('media_status') === 'pending')
+        this.mediaStatusIndex = 1
+      })
+      .catch(err => {
+        this.isLoading = false
+        this.$eventHub.$emit('dashboard-app-error', err.message)
+      })
+    },
+    deleteMedia: function() {
+      this.isLoading = true
+      this.media.delete()
+      .then(data => {
+        this.isLoading = false
+        if(data.getData().status_code) {
+          this.$eventHub.$emit('dashboard-app-error', data.getData().status_msg)
+          return
+        }
+        this.$eventHub.$emit('dashboard-app-success', data.getData().status_msg)
+      })
+      .catch(err => {
+        this.isLoading = false
+        this.$eventHub.$emit('dashboard-app-error', err.message)
+      })
+      this.$router.replace({ name: 'media', params: {page: 1}})
+    },
+    updateMedia: function() {
+      this.isLoading = true
+      this.media.put()
+      .then(data => {
+        this.isLoading = false
+        if(data.getData().status_code) {
+          this.$eventHub.$emit('dashboard-app-error', data.getData().status_msg)
+          return
+        }
+        this.$eventHub.$emit('dashboard-app-success',  data.getData().status_msg)
+      })
+      .catch(data => {
+        this.isLoading = false
+        this.$eventHub.$emit('dashboard-app-error', err.message)
+      })
+    },
+    showConfirmationModal: function() {
+      this.$eventHub.$emit('confirmation-modal', this.confirmationModalData)
+    },
+    cancelAction: function() {
+      this.$eventHub.$emit('confirmation-modal', null)
+    },
+    acceptAction: function() {
+      this.$eventHub.$emit('confirmation-modal', null)
+      this.deleteMedia()
+    },
+    openMediaFile: function() {
+      let mediaURL = this.media.getMediaURL()
+      window.open(mediaURL, '_blank')
+    },
+    getCoverImage: function() {
+      return this.$getThumbnailURL(this.media.get('media_name'))
+    },
+    getCoverColor: function() {
+      return this.$getHexColor(this.media.get('media_title'))
+    },
+  }
 }
 
 </script>
@@ -198,6 +211,7 @@ h2 {
   display: flex;
   flex-grow: 1;
   justify-content: flex-end;
+  margin-top: 10px;
 }
 
 form {

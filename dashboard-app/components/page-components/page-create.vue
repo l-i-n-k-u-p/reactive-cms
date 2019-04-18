@@ -6,6 +6,7 @@
         Create page
       </h2>
     </div>
+    <LoadingBar v-if="isLoading"/>
     <BoxWrapper style="position: relative">
       <div class="header-action-buttons-wrapper">
         <Button
@@ -94,6 +95,7 @@ import Button from '../templates/button.vue'
 import InputText from '../templates/input-text.vue'
 import DropdownSelect from '../templates/dropdown-select.vue'
 import NavigationButtons from '../templates/navigation-buttons.vue'
+import LoadingBar from '../templates/loading-bar.vue'
 
 export default {
   data() {
@@ -123,6 +125,7 @@ export default {
         closeMediaModal: this.closeMediaModal,
         onMediaSelect: this.onMediaSelect,
       },
+      isLoading: false,
     }
   },
   components: {
@@ -132,6 +135,7 @@ export default {
     Button,
     InputText,
     NavigationButtons,
+    LoadingBar,
   },
   created() {
     this.getFileTemplates()
@@ -141,9 +145,11 @@ export default {
       this.page.set(propName, value)
     },
     createPage: function() {
+      this.isLoading = true
       this.page
         .post()
         .then(data => {
+          this.isLoading = false
           if (data.response.data.status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
@@ -161,6 +167,7 @@ export default {
           )
         })
         .catch(err => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', data.message)
         })
     },
@@ -189,9 +196,11 @@ export default {
       this.closeMediaModal()
     },
     getFileTemplates: function() {
+      this.isLoading = true
       this.fileTemplates
         .fetch()
         .then(data => {
+          this.isLoading = false
           if (data.getData().status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
@@ -202,6 +211,7 @@ export default {
           this.setPageTemplateOptions()
         })
         .catch(err => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', data.message)
         })
     },
@@ -263,6 +273,7 @@ h2 {
   display: flex;
   flex-grow: 1;
   justify-content: flex-end;
+  margin-top: 10px;
 }
 
 .page-thumbnail {

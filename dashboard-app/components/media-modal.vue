@@ -1,6 +1,7 @@
 <template lang="html">
   <div class="modal-box-wrapper">
     <div class="position-wrapper">
+      <LoadingBar v-if="isLoading"/>
       <div class="box-content">
         <div class="header">
           <div class="modal-title">
@@ -118,6 +119,7 @@
 <script>
 import Button from './templates/button.vue'
 import InputText from './templates/input-text.vue'
+import LoadingBar from './templates/loading-bar.vue'
 
 export default {
   props: [
@@ -140,6 +142,7 @@ export default {
       activeTab: 0,
       formData: new FormData(),
       mediaName: '',
+      isLoading: false,
     }
   },
   created() {
@@ -151,14 +154,17 @@ export default {
   components: {
     Button,
     InputText,
+    LoadingBar,
   },
   methods: {
     getMedia: function() {
-      if (this.mediaPage <= this.totalPages)
+      if (this.mediaPage <= this.totalPages) {
+        this.isLoading = true
         this.mediaFiles
           .page(this.mediaPage)
           .fetch()
           .then(data => {
+            this.isLoading = false
             if (data.getData().status_code) {
               this.$eventHub.$emit(
                 'dashboard-app-error',
@@ -172,8 +178,10 @@ export default {
             this.totalItems = data.getData().total_items
           })
           .catch(data => {
+            this.isLoading = false
             this.$eventHub.$emit('dashboard-app-error', data.message)
           })
+      }
     },
     selectMediaImage: function(media) {
       this.selectedMedia = media
@@ -209,6 +217,7 @@ export default {
         this.getMedia()
         return
       }
+      this.isLoading = true
       this.searchMediaItems.clear()
       this.searchMediaItems
         .fetch({
@@ -218,6 +227,7 @@ export default {
           },
         })
         .then(data => {
+          this.isLoading = false
           if (data.response.data.status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
@@ -232,6 +242,7 @@ export default {
           })
         })
         .catch(data => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', data.message)
         })
     },
@@ -270,17 +281,20 @@ export default {
       })
     },
     createMedia: function() {
+      this.isLoading = true
       this.axios
         .post(this.$appBaseURL + '/api/v1/media-file/', this.formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         })
         .then(data => {
+          this.isLoading = false
           this.activeTab = 0
           this.resetLibraryData()
           this.getMedia()
           this.$eventHub.$emit('dashboard-app-success', data.data.status_msg)
         })
         .catch(data => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', data.message)
         })
     },

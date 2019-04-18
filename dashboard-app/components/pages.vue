@@ -19,6 +19,7 @@
         </Button>
       </div>
     </div>
+    <LoadingBar v-if="isLoading"/>
     <BoxWrapper footerSize="32">
       <PageListTable
         v-if="pages.models.length"
@@ -60,6 +61,7 @@ import Button from './templates/button.vue'
 import Dropdown from './templates/dropdown.vue'
 import NavigationButtons from './templates/navigation-buttons.vue'
 import ButtonIcon from './templates/button-icon.vue'
+import LoadingBar from './templates/loading-bar.vue'
 
 export default {
   data() {
@@ -84,6 +86,7 @@ export default {
           value: 'delete',
         },
       ],
+      isLoading: false,
     }
   },
   components: {
@@ -93,6 +96,7 @@ export default {
     Dropdown,
     NavigationButtons,
     ButtonIcon,
+    LoadingBar,
   },
   created() {
     this.getPages()
@@ -102,10 +106,12 @@ export default {
   },
   methods: {
     getPages: function() {
+      this.isLoading = true
       this.pages
         .page(this.currentPage)
         .fetch()
         .then(data => {
+          this.isLoading = false
           if (data.getData().status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
@@ -118,6 +124,7 @@ export default {
           this.totalItems = data.getData().total_items
         })
         .catch(data => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', data.message)
         })
     },
@@ -140,6 +147,7 @@ export default {
     onSelectOption: function(option) {
       let promisses = []
       let typeAction = ''
+      this.isLoading = true
       if (option === 'delete') {
         typeAction = 'deleted'
         Object.values(this.itemsSelected).forEach(id => {
@@ -165,6 +173,7 @@ export default {
       }
       Promise.all(promisses)
         .then(responses => {
+          this.isLoading = false
           let success = responses.length
           responses.forEach(response => {
             success = success - response.getData().status_code
@@ -182,6 +191,7 @@ export default {
           )
         })
         .catch(data => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', data.message)
         })
       this.itemsSelected = {}

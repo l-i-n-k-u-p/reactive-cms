@@ -6,7 +6,8 @@
         Create media
       </h2>
     </div>
-    <BoxWrapper style="position: relative;">
+    <LoadingBar v-if="isLoading"/>
+    <BoxWrapper>
       <form enctype="multipart/form-data" method="POST">
         <div class="dropzone" ref="dropzone">
           <div>
@@ -60,6 +61,7 @@ import BoxWrapper from '../templates/box-wrapper.vue'
 import Button from '../templates/button.vue'
 import InputText from '../templates/input-text.vue'
 import NavigationButtons from '../templates/navigation-buttons.vue'
+import LoadingBar from '../templates/loading-bar.vue'
 
 export default {
   data() {
@@ -68,6 +70,7 @@ export default {
       dragAndDropCapable: false,
       mediaTitle: '',
       mediaName: '',
+      isLoading: false,
     }
   },
   components: {
@@ -75,6 +78,7 @@ export default {
     Button,
     InputText,
     NavigationButtons,
+    LoadingBar,
   },
   mounted() {
     this.addDragEnterAndLeaveEventListener()
@@ -84,12 +88,14 @@ export default {
       this.mediaTitle = value
     },
     createMedia: function() {
+      this.isLoading = true
       this.formData.append('media_title', this.mediaTitle)
       this.axios
         .post(this.$appBaseURL + '/api/v1/media-file/', this.formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         })
         .then(data => {
+          this.isLoading = false
           this.$router.replace({
             name: 'media-detail',
             params: { id: data.data.data.id },
@@ -97,6 +103,7 @@ export default {
           this.$eventHub.$emit('dashboard-app-success', data.data.status_msg)
         })
         .catch(data => {
+          this.isLoading = false
           this.$eventHub.$emit('dashboard-app-error', data.message)
         })
     },
@@ -158,6 +165,7 @@ h2 {
   display: flex;
   flex-grow: 1;
   justify-content: flex-end;
+  margin-top: 10px;
 }
 
 .dropzone {
