@@ -78,24 +78,6 @@
         </tfoot>
       </table>
     </div>
-    <div class="navigation-wrapper">
-      <div class="data">
-        Rows from {{ itemsSkipped + 1 }} to
-        {{ itemsSkipped + collection.models.length }} of {{ totalItems }}
-      </div>
-      <div class="data">Page {{ currentPage }} of {{ totalPages }}</div>
-      <ButtonIcon
-        buttonIcon="navigate_before"
-        v-bind:buttonAction="navigationBefore"
-      >
-      </ButtonIcon>
-      <ButtonIcon
-        buttonIcon="navigate_next"
-        v-bind:buttonAction="navigationNext"
-        style="margin-left: 5px;"
-      >
-      </ButtonIcon>
-    </div>
   </div>
 </template>
 
@@ -201,22 +183,6 @@ export default {
 
 .table-wrapper tbody tr:hover {
   background-color: rgba(190, 190, 190, 0.2);
-}
-
-.navigation-wrapper {
-  color: #616161;
-  display: flex;
-  font-weight: 500;
-  justify-content: flex-end;
-  margin-top: 15px;
-  position: relative;
-}
-
-.navigation-wrapper .data {
-  align-self: center;
-  font-size: 13px;
-  margin-left: 5px;
-  margin-right: 5px;
 }
 
 .avatar {

@@ -10,6 +10,9 @@
 
 <script>
 export default {
+  props: [
+    'footerSize',
+  ],
   data() {
     return {
       styleHeight: 'height: 0',
@@ -22,6 +25,8 @@ export default {
   methods: {
     setCustomStyle: function() {
       let height = window.innerHeight - this.headerHeight
+      if (this.footerSize)
+        height = height - this.footerSize;
       this.styleHeight = 'height: ' + height + 'px'
     },
   },

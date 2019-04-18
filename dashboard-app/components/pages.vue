@@ -19,7 +19,7 @@
         </Button>
       </div>
     </div>
-    <BoxWrapper>
+    <BoxWrapper footerSize="32">
       <PageListTable
         v-if="pages.models.length"
         v-bind:collection="pages"
@@ -32,6 +32,24 @@
         v-bind:totalItems="totalItems"
       />
     </BoxWrapper>
+    <div class="navigation-wrapper">
+      <div class="data">
+        Rows from {{ itemsSkipped + 1 }} to
+        {{ itemsSkipped + pages.models.length }} of {{ totalItems }}
+      </div>
+      <div class="data">Page {{ currentPage }} of {{ totalPages }}</div>
+      <ButtonIcon
+        buttonIcon="navigate_before"
+        v-bind:buttonAction="navigationBefore"
+      >
+      </ButtonIcon>
+      <ButtonIcon
+        buttonIcon="navigate_next"
+        v-bind:buttonAction="navigationNext"
+        style="margin-left: 5px;"
+      >
+      </ButtonIcon>
+    </div>
   </div>
 </template>
 
@@ -41,6 +59,7 @@ import BoxWrapper from './templates/box-wrapper.vue'
 import Button from './templates/button.vue'
 import Dropdown from './templates/dropdown.vue'
 import NavigationButtons from './templates/navigation-buttons.vue'
+import ButtonIcon from './templates/button-icon.vue'
 
 export default {
   data() {
@@ -73,6 +92,7 @@ export default {
     Button,
     Dropdown,
     NavigationButtons,
+    ButtonIcon,
   },
   created() {
     this.getPages()
@@ -189,5 +209,21 @@ h2 {
   display: flex;
   flex-grow: 1;
   justify-content: flex-end;
+}
+
+.navigation-wrapper {
+  color: #616161;
+  display: flex;
+  font-weight: 500;
+  justify-content: flex-end;
+  margin: 5px 20px;
+  position: relative;
+}
+
+.navigation-wrapper .data {
+  align-self: center;
+  font-size: 13px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 </style>
