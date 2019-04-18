@@ -1,10 +1,12 @@
 <template lang="html">
-  <BoxWrapper style="padding: 0; position: relative;">
+  <div>
     <div class="header">
-      <NavigationButtons buttonColor="#f0f0f0" />
+      <NavigationButtons/>
       <h2>
         Create user
       </h2>
+    </div>
+    <BoxWrapper style="position: relative;">
       <div class="header-action-buttons-wrapper">
         <Button
           v-if="user.get('user_thumbnail')"
@@ -23,112 +25,112 @@
           Set Image
         </Button>
       </div>
-    </div>
-    <div
-      class="user-thumbnail"
-      v-if="user.get('user_thumbnail')"
-      v-bind:style="getCoverImage()"
-    ></div>
-    <div
-      class="user-thumbnail"
-      v-if="!user.get('user_thumbnail')"
-      v-bind:style="getCoverColor()"
-    ></div>
-    <div class="user-avatar-wrapper">
-      <div class="user-avatar">
-        <div
-          class="user-image-color"
-          v-if="user.get('user_avatar')"
-          v-bind:style="getAvatarImage()"
-        ></div>
-        <div
-          class="user-image-color"
-          v-if="!user.get('user_avatar')"
-          v-bind:style="getCoverColor()"
-        >
-          <span class="user-letter">
-            {{ getUserFirstLetter(user) }}
-          </span>
-        </div>
-        <div class="avatar-buttons-wrapper">
-          <Button
-            class="buttom-top"
+      <div
+        class="user-thumbnail"
+        v-if="user.get('user_thumbnail')"
+        v-bind:style="getCoverImage()"
+      ></div>
+      <div
+        class="user-thumbnail"
+        v-if="!user.get('user_thumbnail')"
+        v-bind:style="getCoverColor()"
+      ></div>
+      <div class="user-avatar-wrapper">
+        <div class="user-avatar">
+          <div
+            class="user-image-color"
             v-if="user.get('user_avatar')"
-            buttonIcon="broken_image"
-            v-bind:buttonAction="removeMediaAvatar"
-            buttonColor="#f0f0f0"
+            v-bind:style="getAvatarImage()"
+          ></div>
+          <div
+            class="user-image-color"
+            v-if="!user.get('user_avatar')"
+            v-bind:style="getCoverColor()"
           >
-            Remove Avatar
+            <span class="user-letter">
+              {{ getUserFirstLetter(user) }}
+            </span>
+          </div>
+          <div class="avatar-buttons-wrapper">
+            <Button
+              class="buttom-top"
+              v-if="user.get('user_avatar')"
+              buttonIcon="broken_image"
+              v-bind:buttonAction="removeMediaAvatar"
+              buttonColor="#f0f0f0"
+            >
+              Remove Avatar
+            </Button>
+            <Button
+              class="buttom-bottom"
+              buttonIcon="image"
+              v-bind:buttonAction="openMediaAvatarModal"
+              buttonColor="#f0f0f0"
+            >
+              Set Avatar
+            </Button>
+          </div>
+        </div>
+      </div>
+      <div class="form-wrapper">
+        <InputText
+          inputName="User First Name"
+          v-bind:inputValue="user.user_first_name"
+          v-bind:onChangeValue="onChangeInputValue"
+          propName="user_first_name"
+        >
+        </InputText>
+        <InputText
+          inputName="User Last Name"
+          v-bind:inputValue="user.user_last_name"
+          v-bind:onChangeValue="onChangeInputValue"
+          propName="user_last_name"
+        >
+        </InputText>
+        <InputText
+          inputName="User Name"
+          v-bind:inputValue="user.user_name"
+          v-bind:onChangeValue="onChangeInputValue"
+          propName="user_name"
+        >
+        </InputText>
+        <InputText
+          inputName="User Password"
+          v-bind:inputValue="newPassword"
+          v-bind:onChangeValue="onSetNewPassword"
+          propName=""
+        >
+        </InputText>
+        <InputText
+          inputName="User Email"
+          v-bind:inputValue="user.user_email"
+          v-bind:onChangeValue="onChangeInputValue"
+          propName="user_email"
+        >
+        </InputText>
+        <FormDropdownSelect
+          class="dropdown-select"
+          label="User Type"
+          v-bind:initialIndexOption="userTypeIndex"
+          v-bind:onSelectOption="onSelectUserType"
+          v-bind:selectOptions="userTypeOptions"
+        >
+        </FormDropdownSelect>
+        <div class="buttons-wrapper">
+          <Button buttonIcon="close" v-bind:buttonAction="cancelCreateUser">
+            Cancel
           </Button>
           <Button
-            class="buttom-bottom"
-            buttonIcon="image"
-            v-bind:buttonAction="openMediaAvatarModal"
-            buttonColor="#f0f0f0"
+            buttonIcon="save"
+            v-bind:buttonAction="createUser"
+            style="margin-left: 5px;"
           >
-            Set Avatar
+            Create
           </Button>
         </div>
       </div>
-    </div>
-    <div class="form-wrapper">
-      <InputText
-        inputName="User First Name"
-        v-bind:inputValue="user.user_first_name"
-        v-bind:onChangeValue="onChangeInputValue"
-        propName="user_first_name"
-      >
-      </InputText>
-      <InputText
-        inputName="User Last Name"
-        v-bind:inputValue="user.user_last_name"
-        v-bind:onChangeValue="onChangeInputValue"
-        propName="user_last_name"
-      >
-      </InputText>
-      <InputText
-        inputName="User Name"
-        v-bind:inputValue="user.user_name"
-        v-bind:onChangeValue="onChangeInputValue"
-        propName="user_name"
-      >
-      </InputText>
-      <InputText
-        inputName="User Password"
-        v-bind:inputValue="newPassword"
-        v-bind:onChangeValue="onSetNewPassword"
-        propName=""
-      >
-      </InputText>
-      <InputText
-        inputName="User Email"
-        v-bind:inputValue="user.user_email"
-        v-bind:onChangeValue="onChangeInputValue"
-        propName="user_email"
-      >
-      </InputText>
-      <FormDropdownSelect
-        class="dropdown-select"
-        label="User Type"
-        v-bind:initialIndexOption="userTypeIndex"
-        v-bind:onSelectOption="onSelectUserType"
-        v-bind:selectOptions="userTypeOptions"
-      >
-      </FormDropdownSelect>
-      <div class="buttons-wrapper">
-        <Button buttonIcon="close" v-bind:buttonAction="cancelCreateUser">
-          Cancel
-        </Button>
-        <Button
-          buttonIcon="save"
-          v-bind:buttonAction="createUser"
-          style="margin-left: 5px;"
-        >
-          Create
-        </Button>
-      </div>
-    </div>
-  </BoxWrapper>
+    </BoxWrapper>
+  </div>
 </template>
 
 <script>
@@ -298,23 +300,16 @@ export default {
 
 <style scoped lang="css">
 .header {
-  box-sizing: border-box;
   display: flex;
-  left: 0;
-  padding: 10px;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  z-index: 1;
+  margin: 0 20px;
 }
 
 h2 {
-  color: #f0f0f0;
+  color: #616161;
   display: flex;
   flex-grow: 1;
   font-size: 13px;
   font-weight: 500;
-  margin-top: 7px;
   text-transform: uppercase;
 }
 
@@ -337,11 +332,12 @@ h2 {
   height: 200px;
   left: 0;
   overflow: hidden;
-  padding: 10px;
+  padding: 0;
   pointer-events: none;
-  position: relative;
+  position: absolute;
   right: 0;
   top: 0;
+  transition-duration: 100ms;
   width: 100%;
   z-index: 0;
 }
@@ -359,22 +355,24 @@ h2 {
 }
 
 .form-wrapper {
-  padding: 10px;
+  box-sizing: content-box;
+  margin-top: 251px;
+  position: relative;
 }
 
 .header-action-buttons-wrapper {
   display: flex;
   justify-content: flex-end;
   padding: 0;
+  position: relative;
   right: 0;
   top: 0;
+  z-index: 1;
 }
 
 .user-avatar-wrapper {
-  left: 10px;
-  margin-bottom: 75px;
-  max-width: 150px;
   position: relative;
+  margin-top: 158px;
 }
 
 .user-avatar {
@@ -386,6 +384,7 @@ h2 {
   position: absolute;
   top: -75px;
   width: 150px;
+  background-color: #f8f8f8;
 }
 
 .user-avatar:after {
