@@ -1,12 +1,12 @@
 <template lang="html">
-  <BoxWrapper style="padding: 0;">
-    <div class="media">
-      <div class="header">
-        <NavigationButtons />
-        <h2>
-          Create media
-        </h2>
-      </div>
+  <div class="media">
+    <div class="header">
+      <NavigationButtons/>
+      <h2>
+        Create media
+      </h2>
+    </div>
+    <BoxWrapper style="position: relative;">
       <form enctype="multipart/form-data" method="POST">
         <div class="dropzone" ref="dropzone">
           <div>
@@ -51,8 +51,8 @@
           </Button>
         </div>
       </div>
-    </div>
-  </BoxWrapper>
+    </BoxWrapper>
+  </div>
 </template>
 
 <script>
@@ -142,11 +142,7 @@ export default {
 
 .header {
   display: flex;
-  left: 0;
-  padding: 10px;
-  position: absolute;
-  top: 0;
-  z-index: 2;
+  margin: 0 20px;
 }
 
 h2 {
@@ -155,17 +151,13 @@ h2 {
   flex-grow: 1;
   font-size: 13px;
   font-weight: 500;
-  margin-top: 7px;
   text-transform: uppercase;
 }
 
 .buttons-wrapper {
-  bottom: 0;
   display: flex;
+  flex-grow: 1;
   justify-content: flex-end;
-  margin-top: 10px;
-  padding: 0px;
-  right: 0;
 }
 
 .dropzone {
@@ -178,7 +170,6 @@ h2 {
   display: flex;
   height: 200px;
   left: 0;
-  padding: 10px;
   pointer-events: none;
   position: relative;
   right: 0;
@@ -186,6 +177,7 @@ h2 {
   transition-duration: 100ms;
   width: 100%;
   z-index: 1;
+  position: absolute;
 }
 
 .dropzone.dragover {
@@ -230,7 +222,8 @@ h2 {
 
 .content-wrapper {
   box-sizing: content-box;
-  padding: 10px;
+  margin-top: 220px;
+  position: relative;
 }
 
 .input {
