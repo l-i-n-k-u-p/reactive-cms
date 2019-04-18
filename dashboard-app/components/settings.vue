@@ -51,6 +51,7 @@
           v-bind:initialIndexOption="templateHomeIndex"
           v-bind:onSelectOption="onSelectTemplateHome"
           v-bind:selectOptions="templateHomeOptions"
+          openInTop="true"
         >
         </FormDropdownSelect>
         <FormDropdownSelect
@@ -59,6 +60,7 @@
           v-bind:initialIndexOption="templatePostsIndex"
           v-bind:onSelectOption="onSelectPostsTemplate"
           v-bind:selectOptions="templateFileOptions"
+          openInTop="true"
         >
         </FormDropdownSelect>
         <div class="buttons-wrapper">

@@ -78,6 +78,7 @@
             v-bind:initialIndexOption="currentPageTemplateIndex"
             v-bind:onSelectOption="onSelectPageTemplateOption"
             v-bind:selectOptions="pageTemplateOptions"
+            openInTop="true"
           >
           </DropdownSelect>
           <DropdownSelect
@@ -86,6 +87,7 @@
             v-bind:onSelectOption="onSelectOption"
             v-bind:selectOptions="selectOptions"
             style="margin-left: 5px;"
+            openInTop="true"
           >
           </DropdownSelect>
           <Button

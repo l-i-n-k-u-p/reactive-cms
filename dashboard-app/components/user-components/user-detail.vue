@@ -114,6 +114,7 @@
           v-bind:initialIndexOption="userTypeIndex"
           v-bind:onSelectOption="onSelectUserType"
           v-bind:selectOptions="userTypeOptions"
+          openInTop="true"
         >
         </FormDropdownSelect>
         <div class="date-wrapper">
@@ -448,12 +449,12 @@ h2 {
 .user-avatar {
   border-radius: 100%;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.5);
+  display: flex;
   height: 150px;
   overflow: hidden;
   position: absolute;
   top: -75px;
   width: 150px;
-  display: flex;
 }
 
 .user-avatar:after {

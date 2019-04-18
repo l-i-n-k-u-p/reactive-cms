@@ -10,7 +10,14 @@
     <label>
       {{ label + ': ' + getOptionName() }}
     </label>
-    <ul class="select-options" v-if="show">
+    <ul
+      v-bind:class="{
+        'select-options': true,
+        'top': openInTop,
+        'bottom': !openInTop,
+      }"
+      v-if="show"
+      >
       <li
         v-for="(option, index) in selectOptions"
         v-on:click="onSelect(index)"
@@ -28,6 +35,7 @@ export default {
     'selectOptions',
     'initialIndexOption',
     'label',
+    'openInTop',
   ],
   data() {
     return {
@@ -114,8 +122,17 @@ export default {
   padding: 30px 0 0 0;
   position: absolute;
   right: 0;
-  top: 0;
   z-index: 999;
+}
+
+.top {
+  bottom: 0;
+  padding: 0 0 26px 0;
+}
+
+.bottom {
+  top: 0;
+  padding: 26px 0 0 0;
 }
 
 .select-options li {

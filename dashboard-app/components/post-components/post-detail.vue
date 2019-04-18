@@ -67,6 +67,7 @@
             v-bind:initialIndexOption="postStatusIndex"
             v-bind:onSelectOption="onSelectOption"
             v-bind:selectOptions="selectOptions"
+            openInTop="true"
           >
           </DropdownSelect>
           <Button

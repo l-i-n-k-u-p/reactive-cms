@@ -55,6 +55,7 @@
             initialIndexOption="0"
             v-bind:onSelectOption="onSelectOption"
             v-bind:selectOptions="selectOptions"
+            openInTop="true"
           >
           </DropdownSelect>
           <Button

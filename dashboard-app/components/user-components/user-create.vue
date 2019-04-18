@@ -114,6 +114,7 @@
           v-bind:initialIndexOption="userTypeIndex"
           v-bind:onSelectOption="onSelectUserType"
           v-bind:selectOptions="userTypeOptions"
+          openInTop="true"
         >
         </FormDropdownSelect>
         <div class="buttons-wrapper">
