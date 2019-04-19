@@ -1,122 +1,117 @@
 html {
-    padding: 0;
-    margin: 0;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
-    height: 100%;
-    background-color: #f5f5f5;
-    padding: 0;
-    margin: 0;
+  background-color: #f5f5f5;
+  font-family: 'Roboto', sans-serif;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .wrapper {
-    flex-direction: column;
-    margin: auto;
-    position: relative;
-    display: flex;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  position: relative;
 }
 
 h1 {
-    position: relative;
-    z-index: 1;
-    color: #000;
-    font-weight: 400;
-    font-size: 24px;
-    text-align: center;
-    display: block;
-    line-height: 1;
-    margin: 0;
+  color: #616161;
+  display: block;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1;
+  margin: 0;
+  position: relative;
+  text-align: center;
+  z-index: 1;
 }
 
 h2 {
-    margin-bottom: 15;
-    position: relative;
-    z-index: 1;
-    color: #000;
-    font-weight: 400;
-    font-size: 18px;
-    text-align: center;
-    display: block;
-    line-height: 1;
+  color: #616161;
+  display: block;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1;
+  margin-bottom: 15;
+  position: relative;
+  text-align: center;
+  z-index: 1;
 }
 
 .setup-form-wrapper {
-    position: relative;
-    z-index: 1;
-    background-color: white;
-    border-radius: 3px;
-    width: 400px;
-    padding: 20px;
-    margin: 100px auto auto auto;
-    box-shadow: 0px 0px 5px -1px rgba(0, 0, 0, 0.4);
+  background-color: white;
+  border-radius: 3px;
+  box-shadow: 0px 0px 5px -1px rgba(0, 0, 0, 0.4);
+  margin: 100px auto auto auto;
+  padding: 20px;
+  position: relative;
+  width: 400px;
+  z-index: 1;
 }
 
 .setup-form-wrapper form {
-    width: 100%;
+  width: 100%;
 }
 
-
 .input-text {
-    border-bottom: 1px solid #aaa;
-    width: 100%;
-    margin-bottom: 20px;
-    position: relative;
-    display: flex;
+  border-bottom: 1px solid #aaa;
+  display: flex;
+  margin-bottom: 20px;
+  position: relative;
+  width: 100%;
 }
 
 .input-text label {
-    position: absolute;
-    top: -10px;
-    left: 7px;
-    background-color: white;
-    padding-left: 4px;
-    padding-right: 4px;
-    font-size: 14px;
-    font-weight: 500;
+  background-color: white;
+  font-size: 14px;
+  font-weight: 500;
+  position: absolute;
+  top: -10px;
 }
 
 .input-text input {
-    border: none;
-    outline: none;
-    caret-color: #006dad;
-    width: 100%;
-    padding: 10px;
-    font-size: 14px;
-    background: transparent;
-    margin: 0;
-    font-weight: 400;
+  background: transparent;
+  border: none;
+  caret-color: black;
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0;
+  outline: none;
+  padding: 10px 0;
+  width: 100%;
 }
 
 .input-text input:focus {
-    outline: none;
-    border: none;
+  border: none;
+  outline: none;
 }
 
 .setup-form-wrapper form button {
-    position: relative;
-    margin: auto;
-    right: 0;
-    font-size: 13px;
-    font-weight: bold;
-    color: #444;
-    background: transparent;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    padding: 7px;
-    display: block;
-    text-transform: uppercase;
-    transition-duration: 150ms;
+  background: transparent;
+  border-radius: 4px;
+  border: none;
+  color: #444;
+  cursor: pointer;
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin: auto;
+  padding: 7px;
+  position: relative;
+  right: 0;
+  text-transform: uppercase;
 }
 
 .setup-form-wrapper form button:hover {
-    background-color: #ddd;
+  background-color: #ddd;
 }
 
 @media screen and (max-width: 480px) {
-    .setup-form-wrapper {
-        width: 290px;
-    }
+  .setup-form-wrapper {
+    width: 290px;
+  }
 }

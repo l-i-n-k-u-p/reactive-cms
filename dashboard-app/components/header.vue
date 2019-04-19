@@ -302,7 +302,6 @@ export default {
   position: absolute;
   right: 0px;
   top: 0;
-  transition-duration: 100ms;
   width: 100%;
   z-index: 2;
 }

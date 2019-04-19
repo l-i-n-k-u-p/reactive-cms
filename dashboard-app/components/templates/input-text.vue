@@ -72,7 +72,7 @@ export default {
   pointer-events: none;
   position: absolute;
   top: 5px;
-  transition-duration: 100ms;
+  transition-duration: 50ms;
 }
 
 .input-wrapper input {
@@ -82,7 +82,7 @@ export default {
   border-left: none;
   border-right: none;
   box-sizing: border-box;
-  caret-color: #006dad;
+  caret-color: black;
   color: #616161;
   font-size: 13px;
   font-weight: 500;
@@ -93,12 +93,12 @@ export default {
 }
 
 .input-wrapper.focus label {
-  color: #006dad;
+  color: black;
   top: -15px;
 }
 
 .input-wrapper.focus input {
-  border-bottom: 1px solid #006dad;
+  border-bottom: 1px solid black;
 }
 
 .input-wrapper.no-empty label {

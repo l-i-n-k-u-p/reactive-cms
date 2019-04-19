@@ -49,7 +49,6 @@ export default {
   padding: 7px;
   position: relative;
   text-transform: uppercase;
-  transition-duration: 100ms;
   user-select: none;
 }
 

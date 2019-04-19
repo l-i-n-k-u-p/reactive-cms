@@ -89,7 +89,6 @@ export default {
   outline: none;
   padding: 7px;
   position: relative;
-  transition-duration: 100ms;
   user-select: none;
 }
 

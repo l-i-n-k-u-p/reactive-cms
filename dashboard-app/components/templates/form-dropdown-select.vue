@@ -88,7 +88,6 @@ export default {
   padding-bottom: 7px;
   padding-top: 7px;
   position: relative;
-  transition-duration: 100ms;
   user-select: none;
 }
 
@@ -97,7 +96,6 @@ label {
 }
 
 .select-wrapper .title {
-  transition-duration: 100ms;
   margin-right: 5px;
   text-transform: capitalize;
 }
@@ -145,10 +143,10 @@ label {
 
 .select-wrapper.open {
   background-color: white;
-  border-bottom: 1px solid #006dad;
+  border-bottom: 1px solid black;
 }
 
 .select-wrapper.open .title {
-  color: #006dad;
+  color: black;
 }
 </style>

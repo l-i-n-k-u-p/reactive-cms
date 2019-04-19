@@ -202,15 +202,17 @@ export default {
 
 .header {
   display: flex;
-  margin: 0 20px;
+  margin: 0 20px 5px 20px;
 }
 
 h2 {
+  align-self: center;
   color: #616161;
   display: flex;
   flex-grow: 1;
   font-size: 13px;
   font-weight: 500;
+  margin: 0;
   text-transform: uppercase;
 }
 
@@ -244,7 +246,6 @@ h2 {
   position: absolute;
   right: 0;
   top: 0;
-  transition-duration: 100ms;
   width: 100%;
   z-index: 0;
 }
