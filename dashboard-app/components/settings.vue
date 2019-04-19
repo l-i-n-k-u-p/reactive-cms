@@ -365,6 +365,7 @@ h2 {
 
 .content-wrapper {
   box-sizing: content-box;
+  margin-bottom: 40px;
 }
 
 .dropdown-select {

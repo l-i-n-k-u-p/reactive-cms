@@ -317,6 +317,7 @@ h2 {
 
 .content-wrapper {
   box-sizing: content-box;
+  margin-bottom: 40px;
   margin-top: 191px;
   position: relative;
 }
