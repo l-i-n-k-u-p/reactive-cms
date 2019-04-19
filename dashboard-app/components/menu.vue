@@ -136,17 +136,16 @@ export default {
   border: 0;
   color: #616161;
   cursor: pointer;
-  cursor: pointer;
   display: flex;
   flex-direction: row;
   flex-shrink: 0;
   font-size: 13px;
-  height: 40px;
-  margin-left: 5px;
-  margin-right: 5px;
+  height: 32px;
+  margin-left: 2px;
+  margin-right: 2px;
   max-width: 100%;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
   position: relative;
   text-decoration: none;
   text-transform: uppercase;
@@ -155,7 +154,7 @@ export default {
 }
 
 #menu .option:hover {
-  background-color: rgba(190, 190, 190, 0.2);
+  background-color: rgba(200, 200, 200, 0.20);
 }
 
 #menu .option .icon {

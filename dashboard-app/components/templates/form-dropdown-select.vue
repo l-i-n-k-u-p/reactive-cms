@@ -88,7 +88,6 @@ export default {
   padding-bottom: 7px;
   padding-top: 7px;
   position: relative;
-  transition-duration: 100ms;
   user-select: none;
 }
 
@@ -97,7 +96,6 @@ label {
 }
 
 .select-wrapper .title {
-  transition-duration: 100ms;
   margin-right: 5px;
   text-transform: capitalize;
 }
@@ -111,7 +109,7 @@ label {
 }
 
 .select-options {
-  background-color: transparent;
+  background-color: white;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
   box-shadow: 0px 0px 5px -1px rgba(0, 0, 0, 0.4);
@@ -140,15 +138,15 @@ label {
 }
 
 .select-options li:hover {
-  background-color: #eee;
+  background-color: rgba(200, 200, 200, 0.20);
 }
 
 .select-wrapper.open {
   background-color: white;
-  border-bottom: 1px solid #006dad;
+  border-bottom: 1px solid black;
 }
 
 .select-wrapper.open .title {
-  color: #006dad;
+  color: black;
 }
 </style>

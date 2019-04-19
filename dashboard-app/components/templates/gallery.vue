@@ -128,7 +128,6 @@ h2 {
   height: 70px;
   overflow: hidden;
   position: relative;
-  transition-duration: 100ms;
   width: 70px;
   cursor: pointer;
 }
@@ -137,7 +136,6 @@ h2 {
   content: "";
   height: 100%;
   position: absolute;
-  transition-duration: 100ms;
   width: 100%;
   z-index: 1;
 }

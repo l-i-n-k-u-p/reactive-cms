@@ -286,7 +286,6 @@ button {
   padding: 7px;
   position: relative;
   text-transform: uppercase;
-  transition-duration: 100ms;
 }
 
 button:hover {
@@ -304,7 +303,7 @@ button i {
 .ProseMirror {
   background: transparent;
   border-bottom: 1px solid #616161;
-  caret-color: #006dad;
+  caret-color: black;
   color: #616161;
   font-size: 13px;
   font-weight: 500;
@@ -317,7 +316,7 @@ button i {
 }
 
 .ProseMirror:focus {
-  border-bottom: 1px solid #006dad;
+  border-bottom: 1px solid black;
 }
 
 .dropdown-wrapper button {

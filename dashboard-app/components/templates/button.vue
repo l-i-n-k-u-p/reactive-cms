@@ -49,12 +49,11 @@ export default {
   padding: 7px;
   position: relative;
   text-transform: uppercase;
-  transition-duration: 100ms;
   user-select: none;
 }
 
 #button-wrapper:hover {
-  background-color: rgba(190, 190, 190, 0.2);
+  background-color: rgba(200, 200, 200, 0.20);
 }
 
 #button-wrapper .icon {

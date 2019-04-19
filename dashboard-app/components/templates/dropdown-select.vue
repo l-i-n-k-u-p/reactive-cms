@@ -89,7 +89,6 @@ export default {
   outline: none;
   padding: 7px;
   position: relative;
-  transition-duration: 100ms;
   user-select: none;
 }
 
@@ -102,6 +101,11 @@ export default {
   background-color: #eee;
 }
 
+.select-wrapper.open .icon,
+.select-wrapper.open label {
+  z-index: 3;
+}
+
 .select-wrapper .icon {
   font-size: 20px;
   line-height: 1;
@@ -111,7 +115,7 @@ export default {
 }
 
 .select-options {
-  background-color: transparent;
+  background-color: white;
   border-radius: 3px;
   box-shadow: 0px 0px 5px -1px rgba(0, 0, 0, 0.4);
   left: 0;
@@ -122,7 +126,7 @@ export default {
   padding: 30px 0 0 0;
   position: absolute;
   right: 0;
-  z-index: 999;
+  z-index: 2;
 }
 
 .top {

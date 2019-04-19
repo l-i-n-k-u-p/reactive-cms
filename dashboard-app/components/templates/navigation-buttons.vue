@@ -50,34 +50,31 @@ export default {
 #navigation-buttons-wrapper {
   -webkit-user-select: none;
   display: flex;
-  margin-right: 5px;
   position: relative;
   user-select: none;
 }
 
 #button-wrapper {
-  align-self: center;
   background: transparent;
   border-radius: 3px;
   border: none;
   cursor: pointer;
-  display: block;
   display: inline-flex;
-  font-weight: 500;
   font-weight: 600;
-  height: 24px;
   margin-right: 5px;
   outline: none;
+  padding: 2px;
   position: relative;
   text-transform: uppercase;
-  transition-duration: 100ms;
 }
 
 #button-wrapper:hover {
-  background-color: rgba(190, 190, 190, 0.2);
+  background-color: rgba(200, 200, 200, 0.20);
 }
 
 #button-wrapper .icon {
+  align-self: center;
   font-size: 24px;
+  line-height: 1;
 }
 </style>

@@ -302,7 +302,6 @@ export default {
   position: absolute;
   right: 0px;
   top: 0;
-  transition-duration: 100ms;
   width: 100%;
   z-index: 2;
 }
@@ -415,7 +414,7 @@ export default {
 }
 
 .username .menu .option:hover {
-  background-color: #eee;
+  background-color: rgba(200, 200, 200, 0.20);
 }
 
 .search-wrapper {
@@ -510,7 +509,7 @@ export default {
 }
 
 .results-wrapper .item:hover {
-  background-color: #eee;
+  background-color: rgba(200, 200, 200, 0.20);
 }
 
 .results-wrapper .item > div {

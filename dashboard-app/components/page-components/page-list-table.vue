@@ -180,7 +180,7 @@ export default {
 }
 
 .table-wrapper tbody tr:hover {
-  background-color: rgba(190, 190, 190, 0.2);
+  background-color: rgba(200, 200, 200, 0.20);
 }
 
 .avatar {

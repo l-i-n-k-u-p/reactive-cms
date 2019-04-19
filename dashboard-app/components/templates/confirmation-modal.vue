@@ -107,11 +107,10 @@ export default {
   position: relative;
   right: 0;
   text-transform: uppercase;
-  transition-duration: 100ms;
 }
 
 .buttons-wrapper .button:last-child {
-  color: #006dad;
+  color: black;
   margin-left: 10px;
 }
 

@@ -34,30 +34,26 @@ export default {
 <style scoped lang="css">
 #button-wrapper {
   -webkit-user-select: none;
-  align-self: center;
   background: transparent;
   border-radius: 3px;
   border: none;
   cursor: pointer;
-  display: block;
-  display: flex;
-  font-weight: 500;
+  display: inline-flex;
   font-weight: 600;
-  height: 14px;
   outline: none;
-  padding: 7px;
+  padding: 2px;
   position: relative;
   text-transform: uppercase;
-  transition-duration: 100ms;
   user-select: none;
 }
 
 #button-wrapper:hover {
-  background-color: rgba(190, 190, 190, 0.2);
+  background-color: rgba(200, 200, 200, 0.20);
 }
 
 #button-wrapper .icon {
-  font-size: 16px;
-  line-height: 15px;
+  align-self: center;
+  font-size: 24px;
+  line-height: 1;
 }
 </style>

@@ -406,7 +406,6 @@ export default {
   height: 100px;
   overflow: hidden;
   position: relative;
-  transition-duration: 100ms;
   width: 100px;
 }
 
@@ -414,7 +413,6 @@ export default {
   content: "";
   height: 100%;
   position: absolute;
-  transition-duration: 100ms;
   width: 100%;
   z-index: 1;
 }
@@ -479,7 +477,6 @@ export default {
   position: relative;
   right: 0;
   top: 0;
-  transition-duration: 100ms;
   width: 100%;
   z-index: 1;
 }
@@ -561,11 +558,10 @@ export default {
   position: relative;
   right: 0;
   text-transform: uppercase;
-  transition-duration: 100ms;
 }
 
 .buttons-wrapper .button:last-child {
-  color: #006dad;
+  color: black;
   margin-left: 10px;
 }
 
