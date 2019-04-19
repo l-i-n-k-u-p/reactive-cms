@@ -62,32 +62,32 @@
         <div class="date-wrapper">
           {{ postDate }}
         </div>
-        <div class="buttons-wrapper">
-          <DropdownSelect
-            label="Status"
-            v-bind:initialIndexOption="postStatusIndex"
-            v-bind:onSelectOption="onSelectOption"
-            v-bind:selectOptions="selectOptions"
-            openInTop="true"
-          >
-          </DropdownSelect>
-          <Button
-            buttonIcon="remove"
-            v-bind:buttonAction="showConfirmationModal"
-            style="margin-left: 5px;"
-          >
-            Delete
-          </Button>
-          <Button
-            buttonIcon="save"
-            v-bind:buttonAction="updatePost"
-            style="margin-left: 5px;"
-          >
-            Update
-          </Button>
-        </div>
       </div>
     </BoxWrapper>
+    <div class="buttons-wrapper">
+      <DropdownSelect
+        label="Status"
+        v-bind:initialIndexOption="postStatusIndex"
+        v-bind:onSelectOption="onSelectOption"
+        v-bind:selectOptions="selectOptions"
+        openInTop="true"
+      >
+      </DropdownSelect>
+      <Button
+        buttonIcon="remove"
+        v-bind:buttonAction="showConfirmationModal"
+        style="margin-left: 5px;"
+      >
+        Delete
+      </Button>
+      <Button
+        buttonIcon="save"
+        v-bind:buttonAction="updatePost"
+        style="margin-left: 5px;"
+      >
+        Update
+      </Button>
+    </div>
   </div>
 </template>
 
@@ -304,10 +304,18 @@ h2 {
 }
 
 .buttons-wrapper {
+  background-color: white;
+  bottom: 0;
   display: flex;
   flex-grow: 1;
   justify-content: flex-end;
-  margin-top: 10px;
+  left: 0;
+  margin: auto;
+  padding-bottom: 10px;
+  position: absolute;
+  right: 0;
+  width: calc(100% - 40px);
+  z-index: 1;
 }
 
 .post-thumbnail {

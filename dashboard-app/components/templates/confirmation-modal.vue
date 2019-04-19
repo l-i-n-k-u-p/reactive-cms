@@ -61,9 +61,10 @@ export default {
   box-shadow: 0px 0px 5px -1px rgba(0, 0, 0, 0.4);
   margin: auto;
   max-height: 300px;
+  max-width: 500px;
   padding: 10px;
   position: relative;
-  width: 500px;
+  width: calc(100% - 40px);
 }
 
 .title {

@@ -118,20 +118,20 @@
           openInTop="true"
         >
         </FormDropdownSelect>
-        <div class="buttons-wrapper">
-          <Button buttonIcon="close" v-bind:buttonAction="cancelCreateUser">
-            Cancel
-          </Button>
-          <Button
-            buttonIcon="save"
-            v-bind:buttonAction="createUser"
-            style="margin-left: 5px;"
-          >
-            Create
-          </Button>
-        </div>
       </div>
     </BoxWrapper>
+    <div class="buttons-wrapper">
+      <Button buttonIcon="close" v-bind:buttonAction="cancelCreateUser">
+        Cancel
+      </Button>
+      <Button
+        buttonIcon="save"
+        v-bind:buttonAction="createUser"
+        style="margin-left: 5px;"
+      >
+        Create
+      </Button>
+    </div>
   </div>
 </template>
 
@@ -324,12 +324,18 @@ h2 {
 }
 
 .buttons-wrapper {
+  background-color: white;
   bottom: 0;
   display: flex;
+  flex-grow: 1;
   justify-content: flex-end;
-  margin-top: 10px;
-  padding: 0px;
+  left: 0;
+  margin: auto;
+  padding-bottom: 10px;
+  position: absolute;
   right: 0;
+  width: calc(100% - 40px);
+  z-index: 1;
 }
 
 .user-thumbnail {
