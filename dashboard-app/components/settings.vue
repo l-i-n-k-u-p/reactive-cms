@@ -64,17 +64,17 @@
           openInTop="true"
         >
         </FormDropdownSelect>
-        <div class="buttons-wrapper">
-          <Button
-            buttonIcon="save"
-            v-bind:buttonAction="saveSetting"
-            style="margin-left: 10px;"
-          >
-            Update
-          </Button>
-        </div>
       </div>
     </BoxWrapper>
+    <div class="buttons-wrapper">
+      <Button
+        buttonIcon="save"
+        v-bind:buttonAction="saveSetting"
+        style="margin-left: 10px;"
+      >
+        Update
+      </Button>
+    </div>
   </div>
 </template>
 
@@ -349,10 +349,18 @@ h2 {
 }
 
 .buttons-wrapper {
+  background-color: white;
+  bottom: 0;
   display: flex;
   flex-grow: 1;
   justify-content: flex-end;
-  margin-top: 10px;
+  left: 0;
+  margin: auto;
+  padding-bottom: 10px;
+  position: absolute;
+  right: 0;
+  width: calc(100% - 40px);
+  z-index: 1;
 }
 
 .content-wrapper {

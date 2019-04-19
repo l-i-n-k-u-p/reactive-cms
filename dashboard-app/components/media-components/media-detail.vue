@@ -39,22 +39,21 @@
                 class="date-wrapper">
                 {{ mediaDate }}
             </div>
-            <div
-                class="buttons-wrapper">
-                <Button
-                    buttonIcon="remove"
-                    v-bind:buttonAction="showConfirmationModal">
-                    Delete
-                </Button>
-                <Button
-                    buttonIcon="save"
-                    v-bind:buttonAction="updateMedia"
-                    style="margin-left: 5px;">
-                    Update
-                </Button>
-            </div>
         </div>
       </BoxWrapper>
+      <div class="buttons-wrapper">
+          <Button
+              buttonIcon="remove"
+              v-bind:buttonAction="showConfirmationModal">
+              Delete
+          </Button>
+          <Button
+              buttonIcon="save"
+              v-bind:buttonAction="updateMedia"
+              style="margin-left: 5px;">
+              Update
+          </Button>
+      </div>
   </div>
 </template>
 
@@ -208,10 +207,18 @@ h2 {
 }
 
 .buttons-wrapper {
+  background-color: white;
+  bottom: 0;
   display: flex;
   flex-grow: 1;
   justify-content: flex-end;
-  margin-top: 10px;
+  left: 0;
+  margin: auto;
+  padding-bottom: 10px;
+  position: absolute;
+  right: 0;
+  width: calc(100% - 40px);
+  z-index: 1;
 }
 
 form {

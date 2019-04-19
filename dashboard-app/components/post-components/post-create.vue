@@ -50,32 +50,32 @@
           v-bind:onChangeContent="onChangeContent"
         >
         </editor>
-        <div class="buttons-wrapper">
-          <DropdownSelect
-            label="Status"
-            initialIndexOption="0"
-            v-bind:onSelectOption="onSelectOption"
-            v-bind:selectOptions="selectOptions"
-            openInTop="true"
-          >
-          </DropdownSelect>
-          <Button
-            style="margin-left: 5px;"
-            buttonIcon="close"
-            v-bind:buttonAction="cancelCrateUser"
-          >
-            Cancel
-          </Button>
-          <Button
-            buttonIcon="save"
-            v-bind:buttonAction="createPost"
-            style="margin-left: 5px;"
-          >
-            Create
-          </Button>
-        </div>
       </div>
     </BoxWrapper>
+    <div class="buttons-wrapper">
+      <DropdownSelect
+        label="Status"
+        initialIndexOption="0"
+        v-bind:onSelectOption="onSelectOption"
+        v-bind:selectOptions="selectOptions"
+        openInTop="true"
+      >
+      </DropdownSelect>
+      <Button
+        style="margin-left: 5px;"
+        buttonIcon="close"
+        v-bind:buttonAction="cancelCrateUser"
+      >
+        Cancel
+      </Button>
+      <Button
+        buttonIcon="save"
+        v-bind:buttonAction="createPost"
+        style="margin-left: 5px;"
+      >
+        Create
+      </Button>
+    </div>
   </div>
 </template>
 
@@ -215,10 +215,18 @@ h2 {
 }
 
 .buttons-wrapper {
+  background-color: white;
+  bottom: 0;
   display: flex;
   flex-grow: 1;
   justify-content: flex-end;
-  margin-top: 10px;
+  left: 0;
+  margin: auto;
+  padding-bottom: 10px;
+  position: absolute;
+  right: 0;
+  width: calc(100% - 40px);
+  z-index: 1;
 }
 
 .post-thumbnail {
