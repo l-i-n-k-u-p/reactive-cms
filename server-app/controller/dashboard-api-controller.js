@@ -184,7 +184,7 @@ exports.addNewUser = async (req, res) => {
 
 exports.updateUserByID = async (req, res) => {
   // NOTE: improve this
-  if (req.body.user_pass === undefined) {
+  if (req.body.user_pass === undefined || !req.body.user_pass.length) {
     try {
       delete req.body.user_pass
       let isUserTypeValid = validateUserType(req.body.user_type)
