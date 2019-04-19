@@ -453,6 +453,7 @@ h2 {
 
 .form-wrapper {
   box-sizing: content-box;
+  margin-bottom: 40px;
   margin-top: 251px;
   position: relative;
 }
