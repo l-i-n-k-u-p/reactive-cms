@@ -273,9 +273,7 @@ export default {
       this.post.set('post_thumbnail', '')
     },
     getCoverImage: function() {
-      return this.$getThumbnailURL(
-        this.post.get('post_thumbnail').media_file_name,
-      )
+      return this.$getThumbnailURL(this.post.get('post_thumbnail').media_file_name)
     },
     getCoverColor: function() {
       return this.$getHexColor(this.post.get('post_title'))

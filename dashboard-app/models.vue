@@ -29,15 +29,19 @@ class User extends Model {
       }
     )
   }
-  default () {
+  defaults () {
     return {
-      user_first_name: '',
-      user_last_name: '',
+      _id: '',
       user_name: '',
       user_pass: '',
       user_email: '',
+      user_first_name: '',
+      user_last_name: '',
       user_type: '',
       user_registration_date: '',
+      user_active: '',
+      user_thumbnail: '',
+      user_avatar: '',
     }
   }
   options () {
@@ -170,6 +174,7 @@ class Post extends Model {
     return {
       post_title: '',
       post_content: '',
+      post_thumbnail: '',
       post_slug: '',
       post_date: '',
       post_status: '',
@@ -281,6 +286,7 @@ class Page extends Model {
     return {
       page_title: '',
       page_content: '',
+      page_thumbnail: '',
       page_slug: '',
       page_date: '',
       page_status: '',

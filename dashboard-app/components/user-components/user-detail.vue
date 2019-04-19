@@ -149,7 +149,9 @@ import LoadingBar from '../templates/loading-bar.vue'
 export default {
   data() {
     return {
-      user: new this.$models.User({ _id: this.$route.params.id }),
+      user: new this.$models.User({
+        _id: this.$route.params.id,
+      }),
       newPassword: '',
       userDate: '',
       userTypes: new this.$models.UserTypes(),

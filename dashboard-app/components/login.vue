@@ -107,12 +107,13 @@ export default {
   align-self: center;
   background-color: white;
   border-radius: 3px;
-  box-shadow: 0 11px 15px -7px rgba(0, 0, 0, 0.2), 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 0px 5px -1px rgba(0, 0, 0, 0.4);
   margin: auto;
   max-height: 300px;
-  padding: 15px;
+  max-width: 500px;
+  padding: 10px;
   position: relative;
-  width: 500px;
+  width: calc(100% - 40px);
 }
 
 .title {
