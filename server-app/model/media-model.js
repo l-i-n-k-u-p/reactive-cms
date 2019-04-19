@@ -14,7 +14,6 @@ const MediaModel = new Schema({
   collection: 'media'
 })
 
-
 MediaModel.virtual('model_name').get(() => {
   return 'media'
 })
