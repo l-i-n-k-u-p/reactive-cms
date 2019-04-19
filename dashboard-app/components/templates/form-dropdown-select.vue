@@ -109,7 +109,7 @@ label {
 }
 
 .select-options {
-  background-color: transparent;
+  background-color: white;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
   box-shadow: 0px 0px 5px -1px rgba(0, 0, 0, 0.4);
@@ -138,7 +138,7 @@ label {
 }
 
 .select-options li:hover {
-  background-color: #eee;
+  background-color: rgba(200, 200, 200, 0.20);
 }
 
 .select-wrapper.open {

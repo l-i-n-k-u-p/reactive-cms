@@ -56,7 +56,12 @@ export default {
 }
 
 .select-wrapper:hover {
-  background-color: rgba(190, 190, 190, 0.2);
+  background-color: rgba(200, 200, 200, 0.20);
+}
+
+.select-wrapper.open .icon,
+.select-wrapper.open label {
+  z-index: 3;
 }
 
 .items-wrapper {
@@ -76,7 +81,7 @@ export default {
   position: absolute;
   right: 0;
   top: 100%;
-  z-index: 999;
+  z-index: 2;
 }
 
 .icon {

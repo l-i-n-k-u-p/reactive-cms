@@ -7,7 +7,7 @@
     <LoadingBar v-if="isLoading"/>
     <BoxWrapper>
       <div class="content-wrapper">
-        <h2>Dashboard</h2>
+        <h3>Dashboard</h3>
         <InputText
           inputName="Dashboard Title"
           v-bind:inputValue="settings.get('setting_page_title')"
@@ -23,7 +23,7 @@
           inputType="number"
         >
         </InputText>
-        <h2>Site</h2>
+        <h3>Site</h3>
         <InputText
           inputName="Site Title"
           v-bind:inputValue="site.get('site_name')"
@@ -347,6 +347,17 @@ h2 {
   font-size: 13px;
   font-weight: 500;
   margin: 0;
+  text-transform: uppercase;
+}
+
+h3 {
+  align-self: center;
+  color: #616161;
+  display: flex;
+  flex-grow: 1;
+  font-size: 13px;
+  font-weight: 500;
+  margin: 30px 0 15px 0;
   text-transform: uppercase;
 }
 

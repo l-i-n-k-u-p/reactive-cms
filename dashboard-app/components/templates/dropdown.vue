@@ -79,7 +79,12 @@ export default {
 }
 
 .select-wrapper:hover {
-  background-color: rgba(190, 190, 190, 0.2);
+  background-color: rgba(200, 200, 200, 0.20);
+}
+
+.select-wrapper.open .icon,
+.select-wrapper.open label {
+  z-index: 3;
 }
 
 .select-wrapper .icon {
@@ -91,7 +96,7 @@ export default {
 }
 
 .select-options {
-  background-color: transparent;
+  background-color: white;
   border-radius: 3px;
   box-shadow: 0px 0px 5px -1px rgba(0, 0, 0, 0.4);
   left: 0;
@@ -102,7 +107,7 @@ export default {
   overflow: hidden;
   position: absolute;
   right: 0;
-  z-index: 999;
+  z-index: 2;
 }
 
 .top {
@@ -123,7 +128,7 @@ export default {
 }
 
 .select-options li:hover {
-  background-color: #eee;
+  background-color: rgba(200, 200, 200, 0.20);
 }
 
 .select-wrapper.open {

@@ -414,7 +414,7 @@ export default {
 }
 
 .username .menu .option:hover {
-  background-color: #eee;
+  background-color: rgba(200, 200, 200, 0.20);
 }
 
 .search-wrapper {
@@ -509,7 +509,7 @@ export default {
 }
 
 .results-wrapper .item:hover {
-  background-color: #eee;
+  background-color: rgba(200, 200, 200, 0.20);
 }
 
 .results-wrapper .item > div {
