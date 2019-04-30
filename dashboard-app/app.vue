@@ -206,7 +206,6 @@ export default {
   margin: 50px auto 100px auto;
   position: relative;
   width: 100%;
-  z-index: 1;
 }
 
 .full-content-width {

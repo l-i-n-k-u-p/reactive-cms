@@ -1,6 +1,6 @@
 module.exports = {
   apps: [{
-    name: 'REACTIVE-WEB',
+    name: 'REACTIVE-CMS',
     script: './server-app/server.js',
     instances: 1,
     exec_mode: 'cluster',

@@ -19,10 +19,16 @@ export default {
     'onChangeValue',
     'label',
     'item',
+    'currentValue',
   ],
+  watch: {
+    currentValue: function(newVal, oldVal) {
+      this.isChecked = newVal
+    },
+  },
   data() {
     return {
-      isChecked: false,
+      isChecked: this.currentValue,
     }
   },
   methods: {
@@ -73,6 +79,7 @@ export default {
   bottom: 0;
   height: 14px;
   left: 0;
+  margin: auto;
   position: absolute;
   right: 0;
   top: 0;

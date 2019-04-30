@@ -212,6 +212,42 @@ let routes = [
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.getTemplateFileNames,
   },
+  {
+    method: 'GET',
+    url: '/role/:id',
+    preHandler: session.isAuthenticated,
+    handler: dashboardAPIController.getRoleByID,
+  },
+  {
+    method: 'POST',
+    url: '/role/',
+    preHandler: session.isAuthenticated,
+    handler: dashboardAPIController.addNewRole,
+  },
+  {
+    method: 'GET',
+    url: '/roles/:page',
+    preHandler: session.isAuthenticated,
+    handler: dashboardAPIController.getRolesByPage,
+  },
+  {
+    method: 'PUT',
+    url: '/role/:id',
+    preHandler: session.isAuthenticated,
+    handler: dashboardAPIController.updateRoleByID,
+  },
+  {
+    method: 'DELETE',
+    url: '/role/:id',
+    preHandler: session.isAuthenticated,
+    handler: dashboardAPIController.deleteRoleByID,
+  },
+  {
+    method: 'GET',
+    url: '/views/:page',
+    preHandler: session.isAuthenticated,
+    handler: dashboardAPIController.getViewNames,
+  },
 ]
 
 const dasboardAPIRouter = async (fastify, opts, next) => {

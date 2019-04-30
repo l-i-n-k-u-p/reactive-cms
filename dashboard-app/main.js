@@ -17,6 +17,7 @@ import Pages from './components/pages.vue'
 import Posts from './components/posts.vue'
 import Media from './components/media.vue'
 import Users from './components/users.vue'
+import Roles from './components/roles.vue'
 import Settings from './components/settings.vue'
 import UserDetail from './components/user-components/user-detail.vue'
 import UserCreate from './components/user-components/user-create.vue'
@@ -26,6 +27,8 @@ import PageDetail from './components/page-components/page-detail.vue'
 import PageCreate from './components/page-components/page-create.vue'
 import MediaDetail from './components/media-components/media-detail.vue'
 import MediaCreate from './components/media-components/media-create.vue'
+import RoleDetail from './components/role-components/role-detail.vue'
+import RoleCreate from './components/role-components/role-create.vue'
 import Error from './components/error.vue'
 
 
@@ -78,6 +81,11 @@ const routes = [
     component: Users,
   },
   {
+    name: 'roles',
+    path: appBaseURL + '/roles/:page',
+    component: Roles,
+  },
+  {
     name: 'settings',
     path: appBaseURL + '/settings',
     component: Settings,
@@ -121,6 +129,16 @@ const routes = [
     name: 'new-media',
     path: appBaseURL + '/new-media/',
     component: MediaCreate,
+  },
+  {
+    name: 'role-detail',
+    path: appBaseURL + '/role/:id',
+    component: RoleDetail,
+  },
+  {
+    name: 'new-role',
+    path: appBaseURL + '/new-role/',
+    component: RoleCreate,
   },
 ]
 

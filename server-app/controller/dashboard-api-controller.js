@@ -1,6 +1,6 @@
-const path = require('path')
 const dateTime = require('node-datetime')
 const slugify = require('slugify')
+const mongoose = require('mongoose')
 
 const DASHBOARD_ADMIN_CONFIG = require('../config/dashboard-admin-config')
 const SITE_CONFIG = require('../config/site-config')
@@ -14,12 +14,15 @@ const {
   generatePageSlug,
 } = require('../lib/slug')
 
-const UserModel = require(path.join('../model/user-model'))
-const PostModel = require(path.join('../model/post-model'))
-const PageModel = require(path.join('../model/page-model'))
-const MediaModel = require(path.join('../model/media-model'))
-const SettingModel = require(path.join('../model/setting-model'))
-const SiteModel = require(path.join('../model/site-model'))
+const UserModel = require('../model/user-model')
+const PostModel = require('../model/post-model')
+const PageModel = require('../model/page-model')
+const MediaModel = require('../model/media-model')
+const SettingModel = require('../model/setting-model')
+const SiteModel = require('../model/site-model')
+const RoleModel = require('../model/role-model')
+const ViewModel = require('../model/view-model')
+const ResourceModel = require('../model/resource-model')
 
 
 exports.login = async (req, res) => {
@@ -788,4 +791,163 @@ exports.getTemplateFileNames = async (req, res) => {
   res.send({
     items: websiteTemplates.templates,
   })
+}
+
+exports.getRolesByPage = async (req, res) => {
+  try {
+    let skipItems = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
+    let items = await RoleModel.aggregate([
+      {
+        $lookup: {
+          from: 'resource',
+          localField: '_id',
+          foreignField: 'resource_role_ref',
+          as: 'role_resources'
+        }
+      },
+      {
+        $skip: skipItems,
+      },
+      {
+        $limit: DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST,
+      }
+    ])
+    let totalItems = items.length
+    res.send({
+      items: items,
+      total_pages: Math.ceil(totalItems / DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST),
+      items_skipped: skipItems,
+      total_items: totalItems,
+      status_code: 0,
+      status_msg: '',
+    })
+  } catch (err) {
+    res.send({
+      status_code: 1,
+      status_msg: 'Error loading the roles',
+    })
+  }
+}
+
+exports.getRoleByID = async (req, res) => {
+  let objectId = mongoose.Types.ObjectId(req.params.id)
+  try {
+    let item = await RoleModel.aggregate([
+      {
+        $match: { _id: objectId }
+      },
+      {
+        $lookup: {
+          from: 'resource',
+          localField: '_id',
+          foreignField: 'resource_role_ref',
+          as: 'role_resources'
+        }
+      },
+    ])
+    if (!item.length)
+      throw new Error('Role not found')
+
+    res.send(item[0])
+  } catch (err) {
+    res.send({
+      status_code: 1,
+      status_msg: 'Role not found',
+    })
+  }
+}
+
+exports.updateRoleByID = async (req, res) => {
+  try {
+    let role = await RoleModel.findById(req.params.id)
+    role.role_name = req.body.role_name
+    await role.save()
+    let role_resources = req.body.role_resources
+    let resourcesToUpate = []
+    let resourcesToSave = []
+    for (let resource of role_resources) {
+      if (resource._id)
+        resourcesToUpate.push(resource)
+      else
+        resourcesToSave.push(resource)
+    }
+    if (resourcesToSave) {
+      let queries = []
+      for (let res of resourcesToSave) {
+        let newResource = new ResourceModel()
+        newResource.resource_name = res.resource_name
+        newResource.resource_role_ref = role._id
+        newResource.resource_permission = res.resource_permission
+        queries.push(newResource.save())
+      }
+      await Promise.all(queries)
+    }
+    if (resourcesToUpate) {
+      let queries = []
+      for (let res of resourcesToUpate) {
+        let resource = ResourceModel.updateOne({
+          _id: mongoose.Types.ObjectId(res._id)
+        }, {
+          $set: {
+            resource_name: res.resource_name,
+            resource_permission: res.resource_permission,
+          }
+        })
+        queries.push(resource)
+      }
+      await Promise.all(queries)
+    }
+    // get role by id to send as push notification
+    let objectId = mongoose.Types.ObjectId(req.params.id)
+    let item = await RoleModel.aggregate([
+      {
+        $match: { _id: objectId }
+      },
+      {
+        $lookup: {
+          from: 'resource',
+          localField: '_id',
+          foreignField: 'resource_role_ref',
+          as: 'role_resources'
+        }
+      },
+    ])
+    res.send({
+      status_code: 0,
+      status_msg: 'Role updated',
+    })
+    req.pushBroadcastMessage({
+      channel: 'role-put',
+      data: { data: item[0] },
+    })
+  } catch (err) {
+    res.send({
+      status_code: 1,
+      status_msg: 'It was not updated',
+    })
+  }
+}
+
+exports.addNewRole = async (req, res) => {
+
+}
+
+exports.deleteRoleByID = async (req, res) => {
+
+}
+
+exports.getViewNames = async (req, res) => {
+  try {
+    let items = await ViewModel.find()
+    res.send({
+      items: items,
+      status_code: 0,
+      status_msg: '',
+    })
+  } catch (err) {
+    res.send({
+      status_code: 1,
+      status_msg: 'Views not found',
+    })
+  }
 }
