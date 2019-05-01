@@ -11,7 +11,7 @@ const fastifyHelmet = require('fastify-helmet')
 const pointOfView = require('point-of-view')
 const path = require('path')
 const ejs = require('ejs')
-const io = require('socket.io')(fastify.server)
+const io = require('socket.io')(fastify.server, { pingTimeout: 60000 })
 
 const APP_CONFIG = require('./config/config')
 const SITE_CONFIG = require('./config/site-config')

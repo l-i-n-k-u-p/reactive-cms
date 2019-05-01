@@ -82,6 +82,14 @@ export default {
         },
         {
           position: 5,
+          title: 'Roles',
+          class: 'option',
+          name: 'roles',
+          icon: 'security',
+          params: { page: 1 },
+        },
+        {
+          position: 6,
           title: 'Settings',
           class: 'option',
           name: 'settings',

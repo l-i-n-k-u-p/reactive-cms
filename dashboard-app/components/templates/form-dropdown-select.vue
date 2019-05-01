@@ -4,7 +4,7 @@
     v-on:click="showOptions"
     v-click-outside="clickOutsite"
   >
-    <label class="title">
+    <label id="title">
       {{ label + ':' }}
     </label>
     <label>
@@ -58,7 +58,7 @@ export default {
     },
     onSelect: function(index) {
       this.currentIndex = index
-      this.onSelectOption(this.selectOptions[index])
+      this.onSelectOption(this.selectOptions[index], index)
     },
     clickOutsite: function(event) {
       this.show = false
@@ -95,7 +95,7 @@ label {
   cursor: pointer;
 }
 
-.select-wrapper .title {
+.select-wrapper #title {
   margin-right: 5px;
   text-transform: capitalize;
 }
@@ -116,12 +116,13 @@ label {
   left: 0;
   list-style: none;
   margin: 0;
+  max-height: 150px;
   min-width: 112px;
-  overflow: hidden;
+  overflow: auto;
   padding: 0;
   position: absolute;
   right: 0;
-  z-index: 999;
+  z-index: 9;
 }
 
 .top {
@@ -146,7 +147,7 @@ label {
   border-bottom: 1px solid black;
 }
 
-.select-wrapper.open .title {
+.select-wrapper.open #title {
   color: black;
 }
 </style>

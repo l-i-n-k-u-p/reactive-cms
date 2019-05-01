@@ -669,6 +669,174 @@ class FileTemplates extends Collection {
   }
 }
 
+class Role extends Model {
+  constructor (props) {
+    super(props)
+    this.listenPushMessages()
+  }
+  listenPushMessages () {
+    socketIO.registerEvent(
+      'role-put',
+      (data) => {
+        if (this.get('_id') === data.data._id)
+          this.set(data.data)
+      }
+    )
+    socketIO.registerEvent(
+      'role-delete',
+      (data) => {
+        if (this.get('_id') === data.data._id)
+          this.removeFromAllCollections()
+      }
+    )
+  }
+  defaults () {
+    return {
+      role_name: '',
+      role_resources: '',
+      role_user_ref: '',
+    }
+  }
+  options () {
+    return {}
+  }
+  post () {
+    let method = 'POST'
+    let route = this.getRoute('post')
+    let url = this.getURL(route, this.getRouteParameters())
+    let data = this._attributes
+    return this.getRequest({ method, url, data }).send()
+  }
+  put () {
+    let method = 'PUT'
+    let route = this.getRoute('put')
+    let url = this.getURL(route, this.getRouteParameters())
+    let data = this._attributes
+    return this.getRequest({ method, url, data }).send()
+  }
+  delete () {
+    let method = 'DELETE'
+    let route = this.getRoute('delete')
+    let url = this.getURL(route, this.getRouteParameters())
+    let data = this._attributes
+    return this.getRequest({ method, url, data }).send()
+  }
+  routes () {
+    return {
+      fetch: appApiBaseURL + '/role/{_id}',
+      post: appApiBaseURL + '/role/',
+      put: appApiBaseURL + '/role/{_id}',
+      delete: appApiBaseURL + '/role/{_id}',
+    }
+  }
+}
+
+class RoleList extends Collection {
+  constructor (props) {
+    super(props)
+    this.listenPushMessages()
+  }
+  listenPushMessages () {
+    socketIO.registerEvent(
+      'role-post',
+      (data) => {
+        if (this.models.length < 20) {
+          this.add(data.data)
+          let lastModel = this.models.pop()
+          this.models.unshift(lastModel)
+        }
+      }
+    )
+  }
+  model () {
+    return Role
+  }
+  getModelsFromResponse (response) {
+    return response.getData().items
+  }
+  bulkDelete (params) {
+    let method = 'DELETE'
+    let route = this.getRoute('bulkDelete')
+    let url = this.getURL(route, this.getRouteParameters())
+    let data = params
+    return this.getRequest({ method, url, data }).send()
+  }
+  bulkUpdate (params) {
+    let method = 'PUT'
+    let route = this.getRoute('bulkUpdate')
+    let url = this.getURL(route, this.getRouteParameters())
+    // let data = this._attributes
+    let data = params
+    return this.getRequest({ method, url, data }).send()
+  }
+  routes () {
+    return {
+      fetch: appApiBaseURL + '/roles/{page}',
+      bulkDelete: appApiBaseURL + '/roles/',
+      bulkUpdate: appApiBaseURL + '/roles/',
+    }
+  }
+}
+
+class View extends Model {
+  constructor (props) {
+    super(props)
+    this.listenPushMessages()
+  }
+  listenPushMessages () {
+    socketIO.registerEvent(
+      'view-put',
+      (data) => {
+        if (this.get('_id') === data.data._id)
+          this.set(data.data)
+      }
+    )
+    socketIO.registerEvent(
+      'view-delete',
+      (data) => {
+        if (this.get('_id') === data.data._id)
+          this.removeFromAllCollections()
+      }
+    )
+  }
+  defaults () {
+    return {
+      view_name: '',
+      view_description: '',
+    }
+  }
+}
+
+class ViewList extends Collection {
+  constructor (props) {
+    super(props)
+    this.listenPushMessages()
+  }
+  listenPushMessages () {
+    socketIO.registerEvent(
+      'view-post',
+      (data) => {
+        if (this.models.length < 20) {
+          this.add(data.data)
+          let lastModel = this.models.pop()
+          this.models.unshift(lastModel)
+        }
+      }
+    )
+  }
+  model () {
+    return View
+  }
+  getModelsFromResponse (response) {
+    return response.getData().items
+  }
+  routes () {
+    return {
+      fetch: appApiBaseURL + '/views/{page}',
+    }
+  }
+}
+
 export default {
   User: User,
   UserList: UserList,
@@ -686,5 +854,9 @@ export default {
   SettingPages: SettingPages,
   UserTypes: UserTypes,
   FileTemplates: FileTemplates,
+  Role: Role,
+  RoleList: RoleList,
+  View: View,
+  ViewList: ViewList,
 }
 </script>
