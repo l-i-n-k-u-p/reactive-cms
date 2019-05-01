@@ -802,7 +802,7 @@ exports.getRolesByPage = async (req, res) => {
           from: 'resource',
           localField: '_id',
           foreignField: 'resource_role_ref',
-          as: 'role_resources'
+          as: 'role_resources',
         }
       },
       {
@@ -834,15 +834,22 @@ exports.getRoleByID = async (req, res) => {
   try {
     let item = await RoleModel.aggregate([
       {
-        $match: { _id: objectId }
+        $match: {
+          _id: objectId,
+        },
       },
       {
         $lookup: {
           from: 'resource',
           localField: '_id',
           foreignField: 'resource_role_ref',
-          as: 'role_resources'
-        }
+          as: 'role_resources',
+        },
+      },
+      {
+        $addFields: {
+          id: req.params.id,
+        },
       },
     ])
     if (!item.length)
@@ -859,13 +866,14 @@ exports.getRoleByID = async (req, res) => {
 
 exports.updateRoleByID = async (req, res) => {
   try {
-    let role = await RoleModel.findById(req.params.id)
+    let id = req.params.id
+    let roleResources = req.body.role_resources
+    let role = await RoleModel.findById(id)
     role.role_name = req.body.role_name
     await role.save()
-    let role_resources = req.body.role_resources
     let resourcesToUpate = []
     let resourcesToSave = []
-    for (let resource of role_resources) {
+    for (let resource of roleResources) {
       if (resource._id)
         resourcesToUpate.push(resource)
       else
@@ -886,22 +894,23 @@ exports.updateRoleByID = async (req, res) => {
       let queries = []
       for (let res of resourcesToUpate) {
         let resource = ResourceModel.updateOne({
-          _id: mongoose.Types.ObjectId(res._id)
+          _id: mongoose.Types.ObjectId(res._id),
         }, {
           $set: {
             resource_name: res.resource_name,
             resource_permission: res.resource_permission,
-          }
+          },
         })
         queries.push(resource)
       }
       await Promise.all(queries)
     }
-    // get role by id to send as push notification
-    let objectId = mongoose.Types.ObjectId(req.params.id)
+    let objectId = mongoose.Types.ObjectId(id)
     let item = await RoleModel.aggregate([
       {
-        $match: { _id: objectId }
+        $match: {
+          _id: objectId,
+        }
       },
       {
         $lookup: {
@@ -909,7 +918,12 @@ exports.updateRoleByID = async (req, res) => {
           localField: '_id',
           foreignField: 'resource_role_ref',
           as: 'role_resources'
-        }
+        },
+      },
+      {
+        $addFields: {
+          id: id,
+        },
       },
     ])
     res.send({
@@ -918,7 +932,9 @@ exports.updateRoleByID = async (req, res) => {
     })
     req.pushBroadcastMessage({
       channel: 'role-put',
-      data: { data: item[0] },
+      data: {
+        data: item[0],
+      },
     })
   } catch (err) {
     res.send({
@@ -929,11 +945,83 @@ exports.updateRoleByID = async (req, res) => {
 }
 
 exports.addNewRole = async (req, res) => {
-
+  try {
+    let role = new RoleModel()
+    role.role_name = req.body.role_name
+    role.role_user_ref = req.session.user.user_id
+    let newRole = await role.save()
+    let queries = []
+    let newResource = null
+    for (let resource of req.body.role_resources) {
+      newResource = new ResourceModel()
+      newResource.resource_name = resource.resource_name
+      newResource.resource_role_ref = newRole._id
+      newResource.resource_permission = resource.resource_permission
+      queries.push(newResource.save())
+    }
+    await Promise.all(queries)
+    let objectId = mongoose.Types.ObjectId(newRole._id)
+    let item = await RoleModel.aggregate([
+      {
+        $match: {
+          _id: objectId,
+        },
+      },
+      {
+        $lookup: {
+          from: 'resource',
+          localField: '_id',
+          foreignField: 'resource_role_ref',
+          as: 'role_resources',
+        },
+      },
+      {
+        $addFields: {
+          id: newRole._id,
+        },
+      },
+    ])
+    res.send({
+      data: item[0],
+      status_code: 0,
+      status_msg: 'New role registered',
+    })
+    req.pushBroadcastMessage({
+      channel: 'role-post',
+      data: { data: item[0] },
+    })
+  } catch (err) {
+    res.send({
+      status_code: 1,
+      status_msg: 'Role not registered',
+    })
+  }
 }
 
 exports.deleteRoleByID = async (req, res) => {
-
+  try {
+    let id = req.params.id
+    let objectId = mongoose.Types.ObjectId(id)
+    await ResourceModel.find({
+      resource_role_ref: objectId,
+    }).remove()
+    let role = await RoleModel.findByIdAndRemove(id)
+    res.send({
+      status_code: 0,
+      status_msg: 'Role deleted',
+    })
+    req.pushBroadcastMessage({
+      channel: 'role-delete',
+      data: {
+        data: role,
+      },
+    })
+  } catch (err) {
+    res.send({
+      status_code: 1,
+      status_msg: 'Error at delete role',
+    })
+  }
 }
 
 exports.getViewNames = async (req, res) => {

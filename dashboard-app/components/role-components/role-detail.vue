@@ -54,6 +54,12 @@
     </BoxWrapper>
     <div class="buttons-wrapper">
       <Button
+        buttonIcon="remove"
+        v-bind:buttonAction="showConfirmationModal"
+        >
+        Delete
+      </Button>
+      <Button
         buttonIcon="save"
         v-bind:buttonAction="saveRole"
         style="margin-left: 10px;"
@@ -96,6 +102,12 @@ export default {
       modalPermissionsDescription: 'Chose permissions for this resource',
       modalPermissionsCheckboxNames: [],
       currentResourceModalIndex: null,
+      confirmationModalData: {
+        modalTitle: 'Do you want delete this role?',
+        modalDescription: 'This action will delete this role',
+        cancelAction: this.cancelAction,
+        acceptAction: this.acceptAction,
+      },
     }
   },
   components: {
@@ -168,7 +180,7 @@ export default {
       let resource = {
         resource_name: selectedResourceName,
         resource_permission: [],
-        resource_role_ref: this.role.get('_id'),
+        resource_role_ref: this.role.get('id'),
       }
       currentRoleResources.push(resource)
       this.role.set('role_resources', currentRoleResources)
@@ -268,6 +280,42 @@ export default {
       currentRoleResources[this.currentResourceModalIndex].resource_permission = permissions
       this.role.set('role_resources', currentRoleResources)
     },
+    showConfirmationModal: function() {
+      this.$eventHub.$emit('confirmation-modal', this.confirmationModalData)
+    },
+    acceptAction: function() {
+      this.$eventHub.$emit('confirmation-modal', null)
+      this.isLoading = true
+      this.role
+        .delete()
+        .then(data => {
+          this.isLoading = false
+          if (data.getData().status_code) {
+            this.$eventHub.$emit(
+              'dashboard-app-error',
+              data.getData().status_msg,
+            )
+            return
+          }
+          this.$eventHub.$emit(
+            'dashboard-app-success',
+            data.getData().status_msg,
+          )
+        })
+        .catch(err => {
+          this.isLoading = false
+          this.$eventHub.$emit('dashboard-app-error', data.message)
+        })
+      this.$router.replace({
+        name: 'roles',
+        params: {
+          page: 1,
+        },
+      })
+    },
+    cancelAction: function() {
+      this.$eventHub.$emit('confirmation-modal', null)
+    },
   },
 }
 </script>
@@ -357,9 +405,11 @@ h3 {
 }
 
 .boxlist-wrapper {
+  box-sizing: border-box;
   display: block;
   max-height: 100px;
   overflow: auto;
+  padding: 10px;
   width: 100%;
 }
 

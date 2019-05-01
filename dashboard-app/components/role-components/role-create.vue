@@ -1,202 +1,276 @@
 <template lang="html">
-  <div class="post">
+  <div class="role-wrapper">
     <div class="header">
-      <NavigationButtons/>
-      <h2>
-        Create post
-      </h2>
+      <NavigationButtons />
+      <h2>Role Detail</h2>
     </div>
     <LoadingBar v-if="isLoading"/>
     <BoxWrapper>
-      <div class="header-action-buttons-wrapper">
-        <Button
-          v-if="post.get('post_thumbnail')"
-          buttonIcon="broken_image"
-          v-bind:buttonAction="removeMedia"
-          buttonColor="#f0f0f0"
-        >
-          Remove Image
-        </Button>
-        <Button
-          buttonIcon="update"
-          v-bind:buttonAction="openMediaModal"
-          buttonColor="#f0f0f0"
-          style="margin-left: 5px;"
-        >
-          Set Image
-        </Button>
-      </div>
-      <div
-        class="post-thumbnail"
-        v-if="post.get('post_thumbnail')"
-        v-bind:style="getCoverImage()"
-      ></div>
-      <div
-        class="post-thumbnail"
-        v-if="!post.get('post_thumbnail')"
-        v-bind:style="getCoverColor()"
-      ></div>
       <div class="content-wrapper">
         <InputText
-          class="input"
-          inputName="Post Title"
-          v-bind:inputValue="post.post_title"
+          inputName="Role Name"
+          v-bind:inputValue="role.role_name"
           v-bind:onChangeValue="onChangeInputValue"
-          propName="post_title"
+          propName="role_name"
         >
         </InputText>
-        <editor
-          v-bind:content="editorContent"
-          v-bind:onChangeContent="onChangeContent"
-        >
-        </editor>
+        </InputText>
+        <div id="doubleBoxWrapper">
+          <div id="leftBox">
+            <p class="sub-title">Resources</p>
+            <div class="boxlist-wrapper">
+              <ButtonDoubleAction
+                v-for="(resourceName, index) of this.resourceNames"
+                buttonIcon="add"
+                v-bind:buttonTextAction="addToRoleResources"
+                v-bind:buttonIconAction="addToRoleResources"
+                v-bind:data="index"
+                :key="$uuid.v1()"
+              >
+                {{ resourceName }}
+              </ButtonDoubleAction>
+            </div>
+          </div>
+          <div id="rightBox">
+            <p class="sub-title">Role Resources</p>
+            <div class="boxlist-wrapper">
+              <ButtonDoubleAction
+                v-for="(resource, index) of this.role.get('role_resources')"
+                buttonIcon="remove"
+                v-bind:buttonTextAction="openPermissionsModal"
+                v-bind:buttonIconAction="addToResources"
+                v-bind:data="index"
+                :key="$uuid.v1()"
+              >
+                {{ resource.resource_name }}
+                <label class="item-permissions">
+                  {{ resource.resource_permission.join(',') }}
+                </label>
+              </ButtonDoubleAction>
+            </div>
+          </div>
+        </div>
       </div>
     </BoxWrapper>
     <div class="buttons-wrapper">
-      <DropdownSelect
-        label="Status"
-        initialIndexOption="0"
-        v-bind:onSelectOption="onSelectOption"
-        v-bind:selectOptions="selectOptions"
-        openInTop="true"
-      >
-      </DropdownSelect>
       <Button
         style="margin-left: 5px;"
         buttonIcon="close"
-        v-bind:buttonAction="cancelCrateUser"
+        v-bind:buttonAction="cancelCrateRole"
       >
         Cancel
       </Button>
       <Button
         buttonIcon="save"
-        v-bind:buttonAction="createPost"
-        style="margin-left: 5px;"
+        v-bind:buttonAction="saveRole"
+        style="margin-left: 10px;"
       >
         Create
       </Button>
     </div>
+    <Modal
+      v-if="modalPermissionsIsVisible"
+      v-bind:modalTitle="modalPermissionsTitle"
+      v-bind:modalDescription="modalPermissionsDescription"
+      v-bind:cancelAction="modalPermissionsClose"
+      v-bind:acceptAction="modalPermissionsAccept"
+      v-bind:checkboxNames="modalPermissionsCheckboxNames"
+    ></Modal>
   </div>
 </template>
 
 <script>
-import Editor from '../editor/editor.vue'
 import BoxWrapper from '../templates/box-wrapper.vue'
 import Button from '../templates/button.vue'
 import InputText from '../templates/input-text.vue'
-import DropdownSelect from '../templates/dropdown-select.vue'
 import NavigationButtons from '../templates/navigation-buttons.vue'
 import LoadingBar from '../templates/loading-bar.vue'
+import ButtonDoubleAction from '../templates/button-double-action.vue'
+import Modal from '../templates/modal.vue'
 
 export default {
   data() {
     return {
-      post: new this.$models.Post({
-        post_status: 'publish',
+      role: new this.$models.Role({
+        role_name: '',
+        role_resources: [],
       }),
-      post_content: '',
-      selectOptions: [
-        {
-          name: 'Publish',
-          value: 'publish',
-        },
-        {
-          name: 'Pending',
-          value: 'pending',
-        },
-      ],
-      editorContent: '',
-      mediaModalData: {
-        onlyImages: true,
-        modalTitle: 'Set Featured Image',
-        modalDescription: 'Chose one image or upload new',
-        closeMediaModal: this.closeMediaModal,
-        onMediaSelect: this.onMediaSelect,
-      },
+      views: new this.$models.ViewList(),
+      resourceNames: [],
+      resources: [],
       isLoading: false,
+      modalPermissionsIsVisible: false,
+      modalPermissionsTitle: '',
+      modalPermissionsDescription: 'Chose permissions for this resource',
+      modalPermissionsCheckboxNames: [],
+      currentResourceModalIndex: null,
     }
   },
   components: {
-    Editor,
-    DropdownSelect,
     BoxWrapper,
     Button,
     InputText,
     NavigationButtons,
     LoadingBar,
+    ButtonDoubleAction,
+    Modal,
+  },
+  created() {
+    this.getViewsData()
   },
   methods: {
-    onChangeInputValue: function(propName, value) {
-      this.post.set(propName, value)
-    },
-    createPost: function() {
+    getViewsData: function() {
       this.isLoading = true
-      this.post
-        .post()
+      this.views
+        .page(1)
+        .fetch()
         .then(data => {
           this.isLoading = false
-          if (data.response.data.status_code) {
+          if (data.getData().status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
               data.getData().status_msg,
             )
             return
           }
-          this.$router.replace({
-            name: 'post-detail',
-            params: { id: data.getData().data.id },
-          })
+          this.setInitialResourceData()
+        })
+        .catch(err => {
+          this.isLoading = false
+          this.$eventHub.$emit('dashboard-app-error', err.message)
+        })
+    },
+    onChangeInputValue: function(propName, value) {
+      this.role.set(propName, value)
+    },
+    addToRoleResources: function(index) {
+      let selectedResourceName = this.resourceNames[index]
+      let resourceExists = false
+      let currentRoleResources = this.role.get('role_resources')
+      for(let resource of currentRoleResources)
+        if (resource.resource_name === selectedResourceName)
+          resourceExists = true
+      if (resourceExists)
+        return
+
+      let resource = {
+        resource_name: selectedResourceName,
+        resource_permission: [],
+        resource_role_ref: this.role.get('_id'),
+      }
+      currentRoleResources.push(resource)
+      this.role.set('role_resources', currentRoleResources)
+      this.setInitialResourceData()
+    },
+    addToResources: function(index) {
+      let currentRoleResources = this.role.get('role_resources')
+      let removed = currentRoleResources.splice(index, 1)
+      this.role.set('role_resources', currentRoleResources)
+      this.setInitialResourceData()
+    },
+    setInitialResourceData: function() {
+      this.resourceNames = []
+      let views = this.views.models
+      let currentRoleResources = this.role.get('role_resources')
+      let isFreeResource = true
+      for (let view of this.views.models) {
+        isFreeResource = true
+        for (let resource of currentRoleResources) {
+          if (resource.resource_name === view.view_name)
+            isFreeResource = false
+        }
+        if (isFreeResource)
+          this.resourceNames.push(view.view_name)
+      }
+    },
+    saveRole: function() {
+      this.isLoading = true
+      this.role
+        .post()
+        .then(data => {
+          this.isLoading = false
+          if (data.getData().status_code) {
+            this.$eventHub.$emit(
+              'dashboard-app-error',
+              data.getData().status_msg,
+            )
+            return
+          }
           this.$eventHub.$emit(
             'dashboard-app-success',
             data.getData().status_msg,
           )
+          this.$router.replace({
+            name: 'role-detail',
+            params: {
+              id: data.getData().data.id,
+            },
+          })
         })
         .catch(err => {
           this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', data.message)
+          this.$eventHub.$emit('dashboard-app-error', err.message)
         })
     },
-    cancelCrateUser: function() {
-      this.$router.back()
+    openPermissionsModal: function(index) {
+      this.currentResourceModalIndex = index
+      let resource = this.role.get('role_resources')[index]
+      let resourcePermissions =  resource.resource_permission.join(',')
+      this.modalPermissionsTitle = 'Permissions for ' + resource.resource_name
+      this.modalPermissionsCheckboxNames = [
+        {
+          name: 'Create',
+          letter: 'c',
+          value: resourcePermissions.includes('c'),
+        },
+        {
+          name: 'Read',
+          letter: 'r',
+          value: resourcePermissions.includes('r'),
+        },
+        {
+          name: 'Update',
+          letter: 'u',
+          value: resourcePermissions.includes('u'),
+        },
+        {
+          name: 'Delete',
+          letter: 'd',
+          value: resourcePermissions.includes('d'),
+        },
+      ]
+      this.modalPermissionsIsVisible = true
     },
-    onSelectOption: function(option) {
-      this.post.set('post_status', option.value)
+    modalPermissionsClose: function() {
+      this.modalPermissionsIsVisible = false
     },
-    onChangeContent: function({ getJSON, getHTML }) {
-      this.post.set('post_content', getHTML())
-    },
-    openMediaModal: function() {
-      this.$eventHub.$emit('media-modal', this.mediaModalData)
-    },
-    closeMediaModal: function() {
-      this.$eventHub.$emit('media-modal', null)
-    },
-    onMediaSelect: function(media) {
-      let mediaData = {
-        media_id: media.get('id'),
-        media_file_name: media.get('media_name'),
-        media_image: media.isImage(),
+    modalPermissionsAccept: function(data) {
+      let currentRoleResources = this.role.get('role_resources')
+      let currentResourcePermission = currentRoleResources[this.currentResourceModalIndex]
+      let permissions = []
+      this.modalPermissionsIsVisible = false
+      for (let itemP of data) {
+        if (itemP.letter === 'c' && itemP.value)
+          permissions.push('c')
+        if (itemP.letter === 'r' && itemP.value)
+          permissions.push('r')
+        if (itemP.letter === 'u' && itemP.value)
+          permissions.push('u')
+        if (itemP.letter === 'd' && itemP.value)
+          permissions.push('d')
       }
-      this.post.set('post_thumbnail', mediaData)
-      this.closeMediaModal()
+      currentRoleResources[this.currentResourceModalIndex].resource_permission = permissions
+      this.role.set('role_resources', currentRoleResources)
     },
-    removeMedia: function() {
-      this.post.set('post_thumbnail', '')
-    },
-    getCoverImage: function() {
-      return this.$getThumbnailURL(
-        this.post.get('post_thumbnail').media_file_name,
-      )
-    },
-    getCoverColor: function() {
-      return this.$getHexColor(this.post.get('post_title'))
+    cancelCrateRole: function() {
+      this.$router.back()
     },
   },
 }
 </script>
 
 <style scoped lang="css">
-.post {
+.role-wrapper {
   position: relative;
 }
 
@@ -216,6 +290,17 @@ h2 {
   text-transform: uppercase;
 }
 
+h3 {
+  align-self: center;
+  color: #616161;
+  display: flex;
+  flex-grow: 1;
+  font-size: 13px;
+  font-weight: 500;
+  margin: 30px 0 15px 0;
+  text-transform: uppercase;
+}
+
 .buttons-wrapper {
   background-color: white;
   bottom: 0;
@@ -231,53 +316,57 @@ h2 {
   z-index: 1;
 }
 
-.post-thumbnail {
-  background-color: #f8f8f8;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  box-sizing: border-box;
-  color: #616161;
-  display: flex;
-  height: 200px;
-  left: 0;
-  overflow: hidden;
-  padding: 0;
-  pointer-events: none;
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 100%;
-  z-index: 0;
-}
-
-.post-thumbnail:after {
-  background-color: rgba(0, 0, 0, 0.5);
-  bottom: 0;
-  content: "";
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-}
-
 .content-wrapper {
   box-sizing: content-box;
   margin-bottom: 40px;
-  margin-top: 191px;
-  position: relative;
 }
 
-.input {
-  margin-top: 15px;
+.dropdown-select {
+  margin-top: 10px;
 }
 
-.header-action-buttons-wrapper {
+#doubleBoxWrapper {
+  border-radius: 3px;
+  border: 1px solid #616161;
+  display: flex;
+  margin: 10px 0;
+}
+
+#leftBox, #rightBox {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 50%;
+}
+
+#rightBox {
+  border-left: 1px solid #616161;
+}
+
+.sub-title {
+  align-self: center;
+  color: #616161;
+  display: flex;
+  flex-grow: 1;
+  font-size: 13px;
+  font-weight: 500;
+  margin: 5px 0;
+}
+
+.boxlist-wrapper {
+  box-sizing: border-box;
+  display: block;
+  max-height: 100px;
+  overflow: auto;
+  padding: 10px;
+  width: 100%;
+}
+
+.item-permissions {
   display: flex;
   justify-content: flex-end;
-  padding: 0;
-  position: relative;
-  right: 0;
-  top: 0;
-  z-index: 1;
+  padding-right: 10px;
+  pointer-events: none;
+  width: 100%;
 }
 </style>
