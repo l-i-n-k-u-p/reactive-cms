@@ -92,6 +92,9 @@ export default {
   },
   created() {
     this.collectionItems = this.collection.models
+    this.$eventHub.$on('items-selected-clear', () => {
+      this.itemSelected = {}
+    })
   },
   methods: {
     onChangeValue: function(isChecked, itemId) {

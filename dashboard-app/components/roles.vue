@@ -74,14 +74,6 @@ export default {
       itemsSelected: {},
       selectOptions: [
         {
-          name: 'Activate',
-          value: 'publish',
-        },
-        {
-          name: 'Deactivate',
-          value: 'pending',
-        },
-        {
           name: 'Delete',
           value: 'delete',
         },
@@ -131,18 +123,35 @@ export default {
     navigationBefore: function() {
       if (this.currentPage < 2) return
       this.currentPage--
-      this.$router.push({ name: 'roles', params: { page: this.currentPage } })
+      this.$router.push({
+        name: 'roles',
+        params: {
+          page: this.currentPage,
+        },
+      })
     },
     navigationNext: function() {
       if (parseInt(this.currentPage) + 1 > this.totalPages) return
       this.currentPage++
-      this.$router.push({ name: 'roles', params: { page: this.currentPage } })
+      this.$router.push({
+        name: 'roles',
+        params: {
+          page: this.currentPage,
+        },
+      })
     },
     showRoleDetail: function(role) {
-      this.$router.push({ name: 'role-detail', params: { id: role._id } })
+      this.$router.push({
+        name: 'role-detail',
+        params: {
+          id: role._id,
+        },
+      })
     },
     openNewPostForm: function() {
-      this.$router.push({ name: 'new-role' })
+      this.$router.push({
+        name: 'new-role',
+      })
     },
     onSelectOption: function(option) {
       let promisses = []
@@ -151,24 +160,10 @@ export default {
       if (option === 'delete') {
         typeAction = 'deleted'
         Object.values(this.itemsSelected).forEach(id => {
-          let role = this.roles.find({ _id: id })
+          let role = this.roles.find({
+            _id: id,
+          })
           promisses.push(role.delete())
-        })
-      }
-      if (option === 'activate') {
-        typeAction = 'updated'
-        Object.values(this.itemsSelected).forEach(id => {
-          let role = this.roles.find({ _id: id })
-          role.set('role_status', 'activate')
-          promisses.push(role.put())
-        })
-      }
-      if (option === 'deactivate') {
-        typeAction = 'updated'
-        Object.values(this.itemsSelected).forEach(id => {
-          let role = this.roles.find({ _id: id })
-          role.set('role_status', 'deactivate')
-          promisses.push(role.put())
         })
       }
       Promise.all(promisses)
@@ -181,7 +176,7 @@ export default {
           if (!responses) {
             this.$eventHub.$emit(
               'dashboard-app-error',
-              "Some pages it doesn't " + typeAction,
+              "Some roles it doesn't " + typeAction,
             )
             return
           }
@@ -195,6 +190,7 @@ export default {
           this.$eventHub.$emit('dashboard-app-error', data.message)
         })
       this.itemsSelected = {}
+      this.$eventHub.$emit('items-selected-clear')
     },
   },
 }
