@@ -3,6 +3,7 @@ const dateTime = require('node-datetime')
 const DASHBOARD_ADMIN_CONFIG = require('../config/dashboard-admin-config')
 const SITE_CONFIG = require('../config/site-config')
 const VIEW_FUNCTIONS = require('../lib/view-functions')
+const VIEWS = require('../config/views')
 const session = require('../lib/session')
 
 const PostModel = require('../model/post-model')
@@ -10,6 +11,9 @@ const PageModel = require('../model/page-model')
 const UserModel = require('../model/user-model')
 const SettingModel = require('../model/setting-model')
 const SiteModel = require('../model/site-model')
+const ViewModel = require('../model/view-model')
+const RoleModel = require('../model/role-model')
+const ResourceModel = require('../model/resource-model')
 
 
 exports.websiteSetupView = async (req, res) => {
@@ -32,10 +36,6 @@ exports.websiteSetupPassed = async (req, res, next) => {
 }
 
 exports.websiteSetupSetInitialConfig = async (req, res) => {
-  let totalUsers = await UserModel.countDocuments()
-  if (totalUsers)
-    return res.redirect('admin')
-
   let setup_site_name = req.body.setup_site_name
   let setup_site_url = req.body.setup_site_url
   let setup_first_name = req.body.setup_first_name
@@ -52,6 +52,24 @@ exports.websiteSetupSetInitialConfig = async (req, res) => {
     let settings = new SettingModel()
     let site = new SiteModel()
     try {
+      let totalUsers = await UserModel.countDocuments()
+      if (totalUsers)
+        return res.redirect('admin')
+
+      let viewsSaved = await ViewModel.insertMany(VIEWS)
+      let adminRole = new RoleModel()
+      adminRole.role_name = 'administrator'
+      adminRole.role_user_ref = '000000000000000000000000'
+      await adminRole.save()
+      let resources = []
+      for (let view of viewsSaved) {
+        resources.push({
+          resource_name: view.view_name,
+          resource_permission: ['c', 'r', 'u', 'd'],
+          resource_role_ref: adminRole._id,
+        })
+      }
+      await ResourceModel.insertMany(resources)
       let userPassword = await session.hashPassword(setup_user_pass)
       user.user_name = setup_user_name
       user.user_pass = userPassword
@@ -60,6 +78,7 @@ exports.websiteSetupSetInitialConfig = async (req, res) => {
       user.user_type = 'admin'
       user.user_registration_date = dateTime.create().format('Y-m-d H:M:S')
       user.user_active = true
+      user.user_role_ref = adminRole
       settings.setting_page_title = DASHBOARD_ADMIN_CONFIG.dashboardTitle
       settings.setting_items_peer_page = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST
       site.site_name = setup_site_name
