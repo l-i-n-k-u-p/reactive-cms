@@ -11,7 +11,6 @@
             <td>
               Role Name
             </td>
-            <td></td>
           </tr>
         </thead>
         <tbody>
@@ -40,7 +39,6 @@
             <td v-on:click="onClickRow(role)">
               <p class="item-text">{{ role.get('role_name') }}</p>
             </td>
-            <td v-on:click="onClickRow(role)"></td>
           </tr>
         </tbody>
         <tfoot>
@@ -52,7 +50,6 @@
             <td>
               Role Name
             </td>
-            <td></td>
           </tr>
         </tfoot>
       </table>
@@ -126,13 +123,7 @@ export default {
   width: 100%;
 }
 
-.table-wrapper tr {
-  display: flex;
-}
-
 .table-wrapper tr td {
-  display: flex;
-  width: 200px;
   word-break: break-all;
 }
 
@@ -140,14 +131,13 @@ export default {
 .table-wrapper thead tr td:first-child,
 .table-wrapper tfoot tr td:first-child {
   margin-left: 10px;
-  width: 40px;
+  width: 50px;
 }
 
 .table-wrapper tbody tr td:last-child,
 .table-wrapper thead tr td:last-child,
 .table-wrapper tfoot tr td:last-child {
   margin-right: 10px;
-  width: 100%;
 }
 
 .table-wrapper thead tr td {
@@ -170,7 +160,7 @@ export default {
 }
 
 .table-wrapper tbody tr {
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #f4f4f4;
 }
 
 .table-wrapper tbody tr:last-child {
@@ -187,6 +177,7 @@ export default {
   display: flex;
   height: 24px;
   justify-content: center;
+  margin: auto 0 auto 0;
   width: 24px;
 }
 

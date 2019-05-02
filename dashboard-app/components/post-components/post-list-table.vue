@@ -26,7 +26,6 @@
             >
             <td>
               <Checkbox
-                style="margin-right: 10px;"
                 v-bind:onChangeValue="onChangeValue"
                 v-bind:item="post.get('_id')"
               >
@@ -35,12 +34,6 @@
             <td v-on:click="onClickRow(post)">
               <div
                 class="avatar"
-                v-if="post.get('post_thumbnail')"
-                v-bind:style="getCoverImage(post)"
-              ></div>
-              <div
-                class="avatar"
-                v-if="!post.get('post_thumbnail')"
                 v-bind:style="getCoverColor(post)"
               >
                 <span>
@@ -49,13 +42,19 @@
               </div>
             </td>
             <td v-on:click="onClickRow(post)">
-              {{ post.post_title }}
+              <p class="item-text">
+                {{ post.post_title }}
+              </p>
             </td>
             <td v-on:click="onClickRow(post)">
-              {{ getMomentDate(post.get('post_date')) }}
+              <p class="item-text">
+                {{ getMomentDate(post.get('post_date')) }}
+              </p>
             </td>
             <td v-on:click="onClickRow(post)">
-              {{ post.post_status }}
+              <p class="item-text">
+                {{ post.post_status }}
+              </p>
             </td>
           </tr>
         </tbody>
@@ -150,8 +149,21 @@ export default {
   width: 100%;
 }
 
-.table-wrapper table tr td {
+.table-wrapper tr td {
   word-break: break-all;
+}
+
+.table-wrapper tbody tr td:first-child,
+.table-wrapper thead tr td:first-child,
+.table-wrapper tfoot tr td:first-child {
+  margin-left: 10px;
+  width: 50px;
+}
+
+.table-wrapper tbody tr td:last-child,
+.table-wrapper thead tr td:last-child,
+.table-wrapper tfoot tr td:last-child {
+  margin-right: 10px;
 }
 
 .table-wrapper thead tr td {
@@ -166,21 +178,19 @@ export default {
   padding-top: 5px;
 }
 
-.table-wrapper thead tr td:first-child, .table-wrapper tbody tr td:first-child, .table-wrapper tfoot tr td:first-child {
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
 .table-wrapper tbody tr td {
-  border-bottom: 1px solid #eee;
   cursor: pointer;
   font-size: 13px;
   padding-bottom: 7px;
   padding-top: 7px;
 }
 
-.table-wrapper tbody tr:first-child td {
-  border-top: 1px solid #eee;
+.table-wrapper tbody tr {
+  border-bottom: 1px solid #f4f4f4;
+}
+
+.table-wrapper tbody tr:last-child {
+  border: none;
 }
 
 .table-wrapper tbody tr:hover {
@@ -193,6 +203,7 @@ export default {
   display: flex;
   height: 24px;
   justify-content: center;
+  margin: auto 0 auto 0;
   width: 24px;
 }
 
@@ -202,5 +213,11 @@ export default {
   font-size: 16px;
   font-weight: 300;
   text-transform: uppercase;
+}
+
+.item-text {
+  align-self: center;
+  margin: 0;
+  padding: 0;
 }
 </style>

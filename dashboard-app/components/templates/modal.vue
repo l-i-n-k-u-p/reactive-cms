@@ -94,7 +94,7 @@ export default {
   align-self: center;
   background-color: white;
   border-radius: 3px;
-  box-shadow: 0px 0px 5px -1px rgba(0, 0, 0, 0.4);
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   margin: auto;
   max-height: 300px;
   max-width: 500px;
