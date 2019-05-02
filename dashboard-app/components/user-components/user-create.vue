@@ -111,10 +111,10 @@
         </InputText>
         <FormDropdownSelect
           class="dropdown-select"
-          label="User Type"
-          v-bind:initialIndexOption="userTypeIndex"
-          v-bind:onSelectOption="onSelectUserType"
-          v-bind:selectOptions="userTypeOptions"
+          label="User Role"
+          v-bind:initialIndexOption="noop"
+          v-bind:onSelectOption="onSelectRole"
+          v-bind:selectOptions="roleOptions"
           openInTop="true"
         >
         </FormDropdownSelect>
@@ -149,10 +149,10 @@ export default {
       user: new this.$models.User({
         user_active: true,
       }),
+      roles: new this.$models.RoleList(),
       newPassword: '',
-      userTypes: new this.$models.UserTypes(),
-      userTypeIndex: 0,
-      userTypeOptions: [],
+      userRoleIndex: null,
+      roleOptions: [],
       mediaModalData: {
         onlyImages: true,
         modalTitle: 'Set Featured Image',
@@ -179,7 +179,7 @@ export default {
     LoadingBar,
   },
   created() {
-    this.getUserTypesData()
+    this.getRolesData()
   },
   methods: {
     onSetNewPassword: function(propName, value) {
@@ -192,29 +192,29 @@ export default {
     createUser: function() {
       this.isLoading = true
       this.user
-        .post()
-        .then(data => {
-          this.isLoading = false
-          if (data.getData().status_code) {
-            this.$eventHub.$emit(
-              'dashboard-app-error',
-              data.getData().status_msg,
-            )
-            return
-          }
-          this.$router.replace({
-            name: 'user-detail',
-            params: { id: data.getData().data.id },
-          })
+      .post()
+      .then(data => {
+        this.isLoading = false
+        if (data.getData().status_code) {
           this.$eventHub.$emit(
-            'dashboard-app-success',
+            'dashboard-app-error',
             data.getData().status_msg,
           )
+          return
+        }
+        this.$router.replace({
+          name: 'user-detail',
+          params: { id: data.getData().data.id },
         })
-        .catch(err => {
-          this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', data.message)
-        })
+        this.$eventHub.$emit(
+          'dashboard-app-success',
+          data.getData().status_msg,
+        )
+      })
+      .catch(err => {
+        this.isLoading = false
+        this.$eventHub.$emit('dashboard-app-error', data.message)
+      })
     },
     onMediaSelect: function(media) {
       let mediaData = {
@@ -255,36 +255,43 @@ export default {
     removeMediaAvatar: function() {
       this.user.set('user_avatar', '')
     },
-    getUserTypesData: function() {
+    getRolesData: function() {
       this.isLoading = true
-      this.userTypes
-        .fetch()
-        .then(data => {
-          this.isLoading = false
-          if (data.getData().status_code) {
-            this.$eventHub.$emit(
-              'dashboard-app-error',
-              data.getData().status_msg,
-            )
-            return
-          }
-          this.setInitialUserTypes()
-        })
-        .catch(err => {
-          this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', err.toString())
-        })
+      this.roles
+      .page(-1)
+      .fetch()
+      .then(data => {
+        this.isLoading = false
+        if (data.getData().status_code) {
+          this.$eventHub.$emit(
+            'dashboard-app-error',
+            data.getData().status_msg,
+          )
+          return
+        }
+        this.setInitialRoles()
+      })
+      .catch(err => {
+        this.isLoading = false
+        this.$eventHub.$emit('dashboard-app-error', err.toString())
+      })
     },
-    onSelectUserType: function(option) {
-      this.user.set('user_type', option.value)
+    onSelectRole: function(option) {
+      this.user.set({
+        'user_role': option.value,
+        'user_role_ref': option.value._id,
+      })
     },
-    setInitialUserTypes: function() {
-      this.userTypeOptions = []
-      for (let type of this.userTypes.models) {
-        let typeName = type.get('type_name')
-        this.userTypeOptions.push({
-          name: typeName,
-          value: typeName,
+    setInitialRoles: function() {
+      this.roleOptions = []
+      for (let role of this.roles.models) {
+        this.roleOptions.push({
+          name: role.get('role_name'),
+          value: {
+            _id: role.get('_id'),
+            role_name: role.get('role_name'),
+            role_user_ref: role.get('role_user_ref'),
+          },
         })
       }
     },
@@ -303,6 +310,9 @@ export default {
       if (!user.get('user_first_name')) return
 
       return user.get('user_first_name')[0]
+    },
+    noop: function() {
+      return
     },
   },
 }

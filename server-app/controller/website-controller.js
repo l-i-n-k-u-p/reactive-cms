@@ -75,7 +75,6 @@ exports.websiteSetupSetInitialConfig = async (req, res) => {
       user.user_pass = userPassword
       user.user_email = setup_user_email
       user.user_first_name = setup_first_name
-      user.user_type = 'admin'
       user.user_registration_date = dateTime.create().format('Y-m-d H:M:S')
       user.user_active = true
       user.user_role_ref = adminRole
@@ -103,7 +102,7 @@ exports.websiteAdminValidateRequestAccess = async (req, res) => {
   if (!totalUsers)
     return res.redirect('setup')
 
-  if (req.session.user && req.session.user.user_type === 'admin')
+  if (req.session.user && req.session.user.user_role)
     res.redirect('dashboard')
   else
     res.view('dashboard-website-login', {
@@ -120,9 +119,34 @@ exports.websiteAdminValidateLoginAccess = async (req, res) => {
   const user_name = req.body.user_name
   const user_pass = req.body.user_pass
   try {
-    let user = await UserModel.findOne({
-      'user_name': user_name,
-    })
+    let roles = await RoleModel.find()
+    let user = await UserModel.aggregate([
+      {
+        $match: {
+          user_name: user_name,
+        },
+      },
+      {
+        $lookup: {
+          from: 'role',
+          localField: 'user_role_ref',
+          foreignField: '_id',
+          as: 'user_role',
+        },
+      },
+      {
+        $unwind: '$user_role',
+      },
+      {
+        $lookup: {
+          from: 'resource',
+          localField: 'user_role_ref',
+          foreignField: 'resource_role_ref',
+          as: 'user_resource',
+        },
+      },
+    ])
+    user = user[0]
     if (!user) {
       res.view('dashboard-website-login', {
         viewFunctions: VIEW_FUNCTIONS,
@@ -134,16 +158,22 @@ exports.websiteAdminValidateLoginAccess = async (req, res) => {
     let result = await session.passwordIsEqual(user_pass, user.user_pass)
     if (!result)
       throw new Error('Not valid user')
+    let roleExists = false
+    for (let role of roles)
+      if (role._id.toString() === user.user_role_ref.toString())
+        roleExists = true
+    if (!roleExists)
+      throw new Error('Not valid user')
     req.session.user = {
-      user_id: user.id.toString(),
+      user_id: user._id.toString(),
       user_name: user.user_name,
       user_email: user.user_email,
       user_pass: user.user_pass,
-      user_type: user.user_type,
+      user_role: user.user_role,
+      user_resource: user.user_resource,
+      user_role_ref: user.user_role_ref,
     }
-    if (user.user_type === 'admin')
-      return res.redirect('dashboard')
-    throw new Error('Not valid user')
+    res.redirect('dashboard')
   } catch (err) {
     res.view('dashboard-website-login', {
       title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,

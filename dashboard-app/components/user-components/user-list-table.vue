@@ -15,7 +15,7 @@
               User Email
             </td>
             <td>
-              User Type
+              User Role
             </td>
             <td>
               User Registered
@@ -61,7 +61,7 @@
               {{ user.get('user_email') }}
             </td>
             <td v-on:click="onClickRow(user)">
-              {{ user.get('user_type') }}
+              {{ user.get('user_role').role_name }}
             </td>
             <td v-on:click="onClickRow(user)">
               {{ getMomentDate(user.get('user_registration_date')) }}
@@ -84,7 +84,7 @@
               User Email
             </td>
             <td>
-              User Type
+              User Role
             </td>
             <td>
               User Registered

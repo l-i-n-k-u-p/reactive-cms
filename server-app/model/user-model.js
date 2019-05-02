@@ -25,10 +25,6 @@ const UserModel = new Schema({
   user_last_name: {
     type: String,
   },
-  user_type: {
-    type: String,
-    required: true,
-  },
   user_registration_date: {
     type: String,
     required: true,

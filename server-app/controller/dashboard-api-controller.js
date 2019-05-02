@@ -6,7 +6,6 @@ const DASHBOARD_ADMIN_CONFIG = require('../config/dashboard-admin-config')
 const SITE_CONFIG = require('../config/site-config')
 const websiteTemplates = require('../config/website-templates')
 const userTypes = require('../config/user-types')
-const { validateUserType } = require('../lib/validate')
 const { mediaUpload } = require('../lib/media-upload')
 const session = require('../lib/session')
 const {
@@ -29,26 +28,56 @@ exports.login = async (req, res) => {
   const user_name = req.body.user_name
   const user_pass = req.body.user_pass
   try {
-    let user = await UserModel.findOne({
-      'user_name': user_name,
-    })
+    let roles = await RoleModel.find()
+    let user = await UserModel.aggregate([
+      {
+        $match: {
+          user_name: user_name,
+        },
+      },
+      {
+        $lookup: {
+          from: 'role',
+          localField: 'user_role_ref',
+          foreignField: '_id',
+          as: 'user_role',
+        },
+      },
+      {
+        $unwind: '$user_role',
+      },
+      {
+        $lookup: {
+          from: 'resource',
+          localField: 'user_role_ref',
+          foreignField: 'resource_role_ref',
+          as: 'user_resource',
+        },
+      },
+    ])
+    user = user[0]
     if (!user)
       throw new Error('Not valid user')
     let result = await session.passwordIsEqual(user_pass, user.user_pass)
     if (!result)
       throw new Error('Not valid user')
     req.session.user = {
-      user_id: user.id.toString(),
+      user_id: user._id.toString(),
       user_name: user.user_name,
       user_email: user.user_email,
       user_pass: user.user_pass,
-      user_type: user.user_type,
+      user_role_ref: user.user_role_ref,
+      user_role: user.user_role,
+      user_resource: user.user_resource,
     }
-    // TODO: finish session stored
-    // session.saveSessionOnDB(req.cookies.sessionid, req.session.user)
-    if (user.user_type === 'admin')
+    let roleExists = false
+    for (let role of roles) {
+      if (role.role_name === user.user_role.role_name)
+        roleExists = true
+    }
+    if (roleExists)
       res.send({
-        user_id: user.id.toString(),
+        user_id: user._id.toString(),
       })
     throw new Error('Not valid user')
   } catch (err) {
@@ -104,28 +133,50 @@ exports.searchMedia = async (req, res) => {
 exports.getUsersPaged = async (req, res) => {
   try {
     let skipUsers = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
-    let [totalUsers, users] = await Promise.all([
-      UserModel.countDocuments(),
-      UserModel.find().select([
-        'user_first_name',
-        'user_last_name',
-        'user_name',
-        'user_email',
-        'user_type',
-        'user_registration_date',
-        'user_active',
-        'user_thumbnail',
-        'user_avatar',
-      ])
-        .sort({ 'user_registration_date': 'desc' })
-        .skip(skipUsers)
-        .limit(DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST).exec(),
+    let ascSort = -1
+    let users = await UserModel.aggregate([
+      {
+        $sort: {
+          user_registration_date: ascSort,
+        },
+      },
+      {
+        $lookup: {
+          from: 'role',
+          localField: 'user_role_ref',
+          foreignField: '_id',
+          as: 'user_role',
+        },
+      },
+      {
+        $unwind: '$user_role',
+      },
+      {
+        $project: {
+          user_first_name: true,
+          user_last_name: true,
+          user_name: true,
+          user_email: true,
+          user_registration_date: true,
+          user_active: true,
+          user_thumbnail: true,
+          user_avatar: true,
+          user_role_ref: true,
+          user_role: true,
+        },
+      },
+      {
+        $skip: skipUsers,
+      },
+      {
+        $limit: DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST,
+      },
     ])
     res.send({
       items: users,
-      total_pages: Math.ceil(totalUsers / DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST),
+      total_pages: Math.ceil(users.length / DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST),
       items_skipped: skipUsers,
-      total_items: totalUsers,
+      total_items: users.length,
       status_code: 0,
       status_msg: '',
     })
@@ -139,18 +190,54 @@ exports.getUsersPaged = async (req, res) => {
 
 exports.getUserByID = async (req, res) => {
   try {
-    let user = await UserModel.findById(req.params.id, [
-      'user_first_name',
-      'user_last_name',
-      'user_name',
-      'user_email',
-      'user_type',
-      'user_active',
-      'user_registration_date',
-      'user_thumbnail',
-      'user_avatar',
+    let objectId = mongoose.Types.ObjectId(req.params.id)
+    let user = await UserModel.aggregate([
+      {
+        $match: {
+          _id: objectId,
+        },
+      },
+      {
+        $lookup: {
+          from: 'role',
+          localField: 'user_role_ref',
+          foreignField: '_id',
+          as: 'user_role',
+        },
+      },
+      {
+        $unwind: '$user_role',
+      },
+      {
+        $lookup: {
+          from: 'resource',
+          localField: 'user_role_ref',
+          foreignField: 'resource_role_ref',
+          as: 'user_resource',
+        },
+      },
+      {
+        $project: {
+          user_first_name: true,
+          user_last_name: true,
+          user_name: true,
+          user_email: true,
+          user_active: true,
+          user_registration_date: true,
+          user_thumbnail: true,
+          user_avatar: true,
+          user_role_ref: true,
+          user_role: true,
+          user_resource: true,
+        },
+      },
+      {
+        $addFields: {
+          id: req.params.id,
+        },
+      },
     ])
-    res.send(user)
+    res.send(user[0])
   } catch (err) {
     res.send({
       status_code: 1,
@@ -186,61 +273,38 @@ exports.addNewUser = async (req, res) => {
 }
 
 exports.updateUserByID = async (req, res) => {
-  // NOTE: improve this
-  if (req.body.user_pass === undefined || !req.body.user_pass.length) {
-    try {
+  try {
+    if (req.body.user_pass === undefined || !req.body.user_pass.length)
       delete req.body.user_pass
-      let isUserTypeValid = validateUserType(req.body.user_type)
-      if (!isUserTypeValid)
-        delete req.body.user_type
-      let user = await UserModel.findOneAndUpdate({ '_id': req.params.id }, req.body, { new: true })
-      let sessionFinished = await session.currentUserSessionDataChanged(user, req)
-      let message = 'User updated'
-      if (sessionFinished)
-        message = 'User updated and session finished'
-      res.send({
-        status_code: 0,
-        status_msg: message,
-      })
-      user.user_pass = ''
-      req.pushBroadcastMessage({
-        channel: 'user-put',
-        data: { data: user },
-      })
-    } catch (err) {
-      res.send({
-        status_code: 1,
-        status_msg: 'It could not update the user' + err.toString(),
-      })
-    }
-  } else {
-    try {
-      let isUserTypeValid = validateUserType(req.body.user_type)
-      if (!isUserTypeValid)
-        delete req.body.user_type
+    else {
       let newPassword = await session.hashPassword(req.body.user_pass)
       req.body.user_pass = newPassword
-      let user = await UserModel.findOneAndUpdate({ '_id': req.params.id }, req.body, { new: true })
-      let sessionFinished = await session.currentUserSessionDataChanged(user, req)
-      session.removeUserSessionOnDB(user._id)
-      let message = 'User updated'
-      if (sessionFinished)
-        message = 'User updated and session finished'
-      res.send({
-        status_code: 0,
-        status_msg: message,
-      })
-      user.user_pass = ''
-      req.pushBroadcastMessage({
-        channel: 'user-put',
-        data: { data: user },
-      })
-    } catch (err) {
-      res.send({
-        status_code: 1,
-        status_msg: 'It could not update the user' + err.toString(),
-      })
     }
+    let user = await UserModel.findOneAndUpdate({
+      '_id': req.params.id,
+    }, req.body, {
+      new: true,
+    })
+    let sessionFinished = await session.currentUserSessionDataChanged(user, req)
+    if (sessionFinished)
+      session.removeUserSessionOnDB(user._id)
+    let message = 'User updated'
+    if (sessionFinished)
+      message = 'User updated and session finished'
+    res.send({
+      status_code: 0,
+      status_msg: message,
+    })
+    user.user_pass = ''
+    req.pushBroadcastMessage({
+      channel: 'user-put',
+      data: { data: user },
+    })
+  } catch (err) {
+    res.send({
+      status_code: 1,
+      status_msg: 'It could not update the user.\n' + err.toString(),
+    })
   }
 }
 
@@ -717,7 +781,6 @@ exports.getDashboard = async (req, res) => {
           'user_last_name',
           'user_name',
           'user_email',
-          'user_type',
           'user_active',
           'user_registration_date',
           'user_thumbnail',
@@ -796,7 +859,13 @@ exports.getTemplateFileNames = async (req, res) => {
 exports.getRolesByPage = async (req, res) => {
   try {
     let skipItems = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
+    let ascSort = -1
     let items = await RoleModel.aggregate([
+      {
+        $sort: {
+          _id: ascSort,
+        },
+      },
       {
         $lookup: {
           from: 'resource',
