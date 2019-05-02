@@ -404,6 +404,7 @@ h2 {
 }
 
 .user-avatar {
+  background-color: white;
   border-radius: 100%;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.5);
   display: flex;
@@ -412,7 +413,6 @@ h2 {
   position: absolute;
   top: -75px;
   width: 150px;
-  background-color: #f8f8f8;
 }
 
 .user-avatar:after {

@@ -18,7 +18,7 @@
     </div>
     <LoadingBar v-if="isLoading"/>
     <BoxWrapper
-      footerSize="32"
+      footerSize="12"
       style="padding-top: 0; padding-bottom: 0;"
       >
       <UserListTable
