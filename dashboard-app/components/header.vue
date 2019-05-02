@@ -52,47 +52,58 @@
             v-for="item in searchItems.models"
           >
             <div
-              v-if="item.model_name == 'user'"
+              v-if="item.get('model_name') === 'user'"
               v-on:click="showUserDetail(item)"
             >
               <i class="material-icons">
                 person
               </i>
               <label>
-                {{ item.user_name }}
+                {{ item.get('user_name') }}
               </label>
             </div>
             <div
-              v-if="item.model_name == 'post'"
+              v-if="item.get('model_name') === 'post'"
               v-on:click="showPostDetail(item)"
             >
               <i class="material-icons">
                 insert_drive_file
               </i>
               <label>
-                {{ item.post_title }}
+                {{ item.get('post_title') }}
               </label>
             </div>
             <div
-              v-if="item.model_name == 'page'"
+              v-if="item.get('model_name') === 'page'"
               v-on:click="showPageDetail(item)"
             >
               <i class="material-icons">
                 insert_drive_file
               </i>
               <label>
-                {{ item.page_title }}
+                {{ item.get('page_title') }}
               </label>
             </div>
             <div
-              v-if="item.model_name == 'media'"
+              v-if="item.get('model_name') === 'media'"
               v-on:click="showMediaDetail(item)"
             >
               <i class="material-icons">
                 image
               </i>
               <label>
-                {{ item.media_title }}
+                {{ item.get('media_title') }}
+              </label>
+            </div>
+            <div
+              v-if="item.get('model_name') === 'role'"
+              v-on:click="showRoleDetail(item)"
+            >
+              <i class="material-icons">
+                security
+              </i>
+              <label>
+                {{ item.get('role_name') }}
               </label>
             </div>
           </div>
@@ -259,6 +270,12 @@ export default {
       this.$router.push({
         name: 'media-detail',
         params: { id: media.get('_id') },
+      })
+    },
+    showRoleDetail: function(role) {
+      this.$router.push({
+        name: 'role-detail',
+        params: { id: role.get('_id') },
       })
     },
     showUserMenu: function() {

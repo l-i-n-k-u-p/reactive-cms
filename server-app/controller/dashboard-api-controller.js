@@ -95,6 +95,7 @@ exports.search = async (req, res) => {
       PostModel.find({ 'post_title': searchRegex }).select(['post_title']).exec(),
       PageModel.find({ 'page_title': searchRegex }).select(['page_title']).exec(),
       MediaModel.find({ 'media_title': searchRegex }).select(['media_title']).exec(),
+      RoleModel.find({ 'role_name': searchRegex }).select(['role_name']).exec(),
     ])
     res.send({
       items: data,
