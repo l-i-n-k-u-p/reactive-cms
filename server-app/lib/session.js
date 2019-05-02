@@ -67,16 +67,17 @@ const passwordIsEqual = (userPass, hashedPassword) => {
 const currentUserSessionDataChanged = (user, req) => {
   return new Promise((resolve, reject) => {
     let removeSession = false
+    // NOTE: improve this with session collection
     if (user._id.toString() !== req.session.user.user_id.toString())
       resolve(false)
-    else if (user.user_type.toString() !== req.session.user.user_type.toString())
+    else if (user.user_role_ref.toString() !== req.session.user.user_role_ref.toString())
       removeSession = true
     else if (user.user_name.toString() !== req.session.user.user_name.toString())
       removeSession = true
     else if (user.user_pass.toString() !== req.session.user.user_pass.toString())
       removeSession = true
     if (removeSession) {
-      req.session = {}
+      req.sessionStore.destroy(req.session.sessionId)
       resolve(true)
     }
     resolve(false)

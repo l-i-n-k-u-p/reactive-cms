@@ -31,17 +31,16 @@ class User extends Model {
   }
   defaults () {
     return {
-      _id: '',
       user_name: '',
       user_pass: '',
       user_email: '',
       user_first_name: '',
       user_last_name: '',
-      user_type: '',
       user_registration_date: '',
       user_active: '',
       user_thumbnail: '',
       user_avatar: '',
+      user_role_ref: '',
     }
   }
   options () {
