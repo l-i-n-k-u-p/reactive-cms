@@ -384,7 +384,7 @@ export default {
 .username .menu {
   background-color: white;
   border-radius: 3px;
-  box-shadow: 0px 0px 5px -1px rgba(0, 0, 0, 0.4);
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -420,7 +420,7 @@ export default {
 .search-wrapper {
   align-self: center;
   border-radius: 3px;
-  box-shadow: 0px 0px 5px -1px rgba(0, 0, 0, 0.4);
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   display: flex;
   margin: auto;
   min-width: 150px;
@@ -485,7 +485,7 @@ export default {
   background-color: white;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
-  box-shadow: 0px 0px 5px -1px rgba(0, 0, 0, 0.4);
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   color: #616161;
   max-height: 300px;
   overflow: scroll;
