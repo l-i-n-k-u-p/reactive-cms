@@ -20,7 +20,10 @@
       </div>
     </div>
     <LoadingBar v-if="isLoading"/>
-    <BoxWrapper footerSize="32">
+    <BoxWrapper
+      footerSize="12"
+      style="padding-top: 0; padding-bottom: 0;"
+      >
       <PostListTable
         v-if="posts.models.length"
         v-bind:collection="posts"

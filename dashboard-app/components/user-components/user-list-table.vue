@@ -6,7 +6,7 @@
           <tr>
             <td></td>
             <td>
-              Avatar
+              Image
             </td>
             <td>
               User Name
@@ -85,7 +85,7 @@
           <tr>
             <td></td>
             <td>
-              Avatar
+              Image
             </td>
             <td>
               User Name
@@ -174,7 +174,6 @@ export default {
 }
 
 .overflow-x-scroll {
-  overflow-x: scroll;
   position: relative;
   width: 100%;
 }
@@ -196,16 +195,25 @@ export default {
   margin-right: 10px;
 }
 
-.table-wrapper thead tr td {
-  font-size: 13px;
+thead tr td,
+tfoot tr td {
+  background-color: white;
+  font-size: 12px;
   font-weight: 500;
-  padding-bottom: 5px;
+  height: 30px;
+  padding: 0;
+  position: -webkit-sticky;
+  position: sticky;
+  z-index: 1;
+  text-transform: uppercase;
 }
 
-.table-wrapper tfoot tr td {
-  font-size: 13px;
-  font-weight: 500;
-  padding-top: 5px;
+thead tr td {
+  top: 0;
+}
+
+tfoot tr td {
+  bottom: 0;
 }
 
 .table-wrapper tbody tr td {
