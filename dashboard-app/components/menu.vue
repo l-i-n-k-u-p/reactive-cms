@@ -15,6 +15,7 @@
         />
       <router-link
         v-for="option in options"
+        v-acl-show="option.resourceName"
         v-bind:key="option.position"
         v-bind:class="option.class"
         :to="{ name: option.name, params: option.params }"
@@ -47,6 +48,7 @@ export default {
           class: 'option',
           name: 'dashboard',
           icon: 'dashboard',
+          resourceName: 'dashboard',
         },
         {
           position: 1,
@@ -55,6 +57,7 @@ export default {
           name: 'pages',
           icon: 'pages',
           params: { page: 1 },
+          resourceName: 'pages',
         },
         {
           position: 2,
@@ -63,6 +66,7 @@ export default {
           name: 'posts',
           icon: 'pages',
           params: { page: 1 },
+          resourceName: 'posts',
         },
         {
           position: 3,
@@ -71,6 +75,7 @@ export default {
           name: 'media',
           icon: 'perm_media',
           params: { page: 1 },
+          resourceName: 'media',
         },
         {
           position: 4,
@@ -79,6 +84,7 @@ export default {
           name: 'users',
           icon: 'people',
           params: { page: 1 },
+          resourceName: 'users',
         },
         {
           position: 5,
@@ -87,6 +93,7 @@ export default {
           name: 'roles',
           icon: 'security',
           params: { page: 1 },
+          resourceName: 'roles',
         },
         {
           position: 6,
@@ -94,6 +101,7 @@ export default {
           class: 'option',
           name: 'settings',
           icon: 'settings',
+          resourceName: 'settings',
         },
       ],
     }

@@ -10,6 +10,7 @@ import {
   getThumbnailURL,
 } from './lib'
 import GLOBAL_DIRECTIVES from './global-directives.vue'
+import ACL_DIRECTIVES from './acl-directives.vue'
 import App from './app.vue'
 import Models from './models.vue'
 import Dashboard from './components/dashboard.vue'
@@ -33,6 +34,9 @@ import Error from './components/error.vue'
 
 
 for (let directive of GLOBAL_DIRECTIVES.directives) {
+  Vue.directive(directive.name, directive.action)
+}
+for (let directive of ACL_DIRECTIVES.directives) {
   Vue.directive(directive.name, directive.action)
 }
 

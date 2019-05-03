@@ -184,6 +184,7 @@ export default {
       settings: new this.$models.Setting(),
       isDesktopScreen: true,
       headerLeftRightStyle: '',
+      userRole: new this.$models.Role(),
     }
   },
   watch: {
@@ -192,6 +193,7 @@ export default {
     },
   },
   created() {
+    this.setOnChangeModel()
     this.getSessionUserData()
     this.getDashboardData()
   },
@@ -199,6 +201,15 @@ export default {
     this.onResizeWindow()
   },
   methods: {
+    setOnChangeModel: function() {
+      this.user.on('change', ({ attribute, value }) => {
+        window.user_data = this.user
+        if (!window.user_data.get('user_role'))
+          return
+
+        this.userRole.set('_id', window.user_data.get('user_role')._id)
+      })
+    },
     onResizeWindow: function() {
       if (window.innerWidth <= 640) {
         this.isDesktopScreen = false
@@ -286,7 +297,8 @@ export default {
     },
     getSessionUserData: function() {
       this.user.set('_id', window.user_id)
-      this.user.fetch().catch(data => {
+      this.user.fetch()
+      .catch(data => {
         this.$eventHub.$emit('dashboard-app-error', data.message)
       })
     },

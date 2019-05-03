@@ -41,6 +41,8 @@ class User extends Model {
       user_thumbnail: '',
       user_avatar: '',
       user_role_ref: '',
+      user_role: '',
+      user_resource: '',
     }
   }
   options () {
@@ -857,5 +859,6 @@ export default {
   RoleList: RoleList,
   View: View,
   ViewList: ViewList,
+  socketIO: socketIO,
 }
 </script>
