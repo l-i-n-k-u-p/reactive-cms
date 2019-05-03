@@ -221,7 +221,7 @@ exports.websiteDashboardView = async (req, res) => {
       },
     },
   ])
-  let user = user[0]
+  user = user[0]
   res.view('dashboard-website-index', {
     viewFunctions: VIEW_FUNCTIONS,
     title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
