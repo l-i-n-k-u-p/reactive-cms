@@ -34,6 +34,12 @@
             <td v-on:click="onClickRow(post)">
               <div
                 class="avatar"
+                v-if="post.get('post_thumbnail')"
+                v-bind:style="getCoverImage(post)"
+              ></div>
+              <div
+                class="avatar"
+                v-if="!post.get('post_thumbnail')"
                 v-bind:style="getCoverColor(post)"
               >
                 <span>
