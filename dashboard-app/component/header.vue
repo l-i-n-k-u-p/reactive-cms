@@ -184,7 +184,6 @@ export default {
       settings: new this.$models.Setting(),
       isDesktopScreen: true,
       headerLeftRightStyle: '',
-      userRole: new this.$models.Role(),
     }
   },
   watch: {
@@ -204,10 +203,6 @@ export default {
     setOnChangeModel: function() {
       this.user.on('change', ({ attribute, value }) => {
         window.user_data = this.user
-        if (!window.user_data.get('user_role'))
-          return
-
-        this.userRole.set('_id', window.user_data.get('user_role')._id)
       })
     },
     onResizeWindow: function() {

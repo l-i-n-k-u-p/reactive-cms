@@ -291,14 +291,60 @@ exports.updateUserByID = async (req, res) => {
     let message = 'User updated'
     if (sessionFinished)
       message = 'User updated and session finished'
+    let objectId = mongoose.Types.ObjectId(req.params.id)
+    let newUserData = await UserModel.aggregate([
+      {
+        $match: {
+          _id: objectId,
+        },
+      },
+      {
+        $lookup: {
+          from: 'role',
+          localField: 'user_role_ref',
+          foreignField: '_id',
+          as: 'user_role',
+        },
+      },
+      {
+        $unwind: '$user_role',
+      },
+      {
+        $lookup: {
+          from: 'resource',
+          localField: 'user_role_ref',
+          foreignField: 'resource_role_ref',
+          as: 'user_resource',
+        },
+      },
+      {
+        $project: {
+          user_first_name: true,
+          user_last_name: true,
+          user_name: true,
+          user_email: true,
+          user_active: true,
+          user_registration_date: true,
+          user_thumbnail: true,
+          user_avatar: true,
+          user_role_ref: true,
+          user_role: true,
+          user_resource: true,
+        },
+      },
+      {
+        $addFields: {
+          id: req.params.id,
+        },
+      },
+    ])
     res.send({
       status_code: 0,
       status_msg: message,
     })
-    user.user_pass = ''
     req.pushBroadcastMessage({
       channel: 'user-put',
-      data: { data: user },
+      data: { data: newUserData[0] },
     })
   } catch (err) {
     res.send({

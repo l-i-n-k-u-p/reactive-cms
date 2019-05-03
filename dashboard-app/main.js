@@ -9,6 +9,8 @@ import {
   getHexColor,
   getAvatarURL,
   getThumbnailURL,
+  aclReplaceVNode,
+  aclUserCan,
 } from './lib/lib'
 import SocketIO from './lib/socket-io'
 // NOTE: directives
@@ -53,7 +55,7 @@ import MediaDetail from './component/media-components/media-detail.vue'
 import MediaCreate from './component/media-components/media-create.vue'
 import RoleDetail from './component/role-components/role-detail.vue'
 import RoleCreate from './component/role-components/role-create.vue'
-import Error from './component/error.vue'
+import NotFound from './component/not-found.vue'
 
 
 for (let directive of GLOBAL_DIRECTIVES.directives)
@@ -88,13 +90,15 @@ Vue.prototype.$appApiBaseURL = APP_SETTINGS.appApiBaseURL
 Vue.prototype.$getHexColor = getHexColor
 Vue.prototype.$getAvatarURL = getAvatarURL
 Vue.prototype.$getThumbnailURL = getThumbnailURL
+Vue.prototype.$aclReplaceVNode = aclReplaceVNode
+Vue.prototype.$aclUserCan = aclUserCan
 Vue.prototype.$socketIO = new SocketIO()
 
 const routes = [
   {
     name: 'error',
     path: '*',
-    component: Error,
+    component: NotFound,
   },
   {
     name: 'dashboard',
@@ -186,6 +190,24 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   routes: routes,
+  base: '/',
+})
+
+// NOTE: check for user permissions in router - Improve using Dynamic Route Matching
+router.beforeResolve((to, from, next) => {
+  if (to.name === 'error')
+    return next()
+
+  let res = aclUserCan('read', to.name)
+  if (res)
+    return next()
+
+  next({
+    name: 'error',
+    params: {
+      '0': to.path,
+    },
+  })
 })
 
 new Vue(Vue.util.extend({ router }, App)).$mount('#app')

@@ -38,8 +38,43 @@ const getThumbnailURL = (fileURL) => {
   return style
 }
 
+const aclReplaceVNode = (el, binding, vNode) => {
+  let permissionResult = aclUserCan('read', binding.value)
+  if (permissionResult)
+    return
+
+  const comment = document.createComment('')
+  Object.defineProperty(comment, 'setAttribute', {
+    value: () => undefined,
+  })
+  vNode.elm = comment
+  vNode.text = ''
+  vNode.isComment = true
+  vNode.context = undefined
+  vNode.tag = undefined
+  vNode.data.directives = undefined
+  if (vNode.componentInstance)
+    vNode.componentInstance.$el = comment
+  if (el.parentNode)
+    el.parentNode.replaceChild(comment, el)
+}
+
+const aclUserCan = (action, resource) => {
+  let permission = action[0]
+  let userResources = window.user_data.get ? window.user_data.get('user_resource') : window.user_data.user_resource
+  for (let userResource of userResources) {
+    let hasResource = userResource.resource_name === resource ? true : false
+    let hasPermission = userResource.resource_permission.join(',').includes(permission)
+    if (hasResource && hasPermission)
+      return true
+  }
+  return false
+}
+
 module.exports = {
   getHexColor,
   getAvatarURL,
   getThumbnailURL,
+  aclReplaceVNode,
+  aclUserCan,
 }
