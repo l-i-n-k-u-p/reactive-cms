@@ -40,4 +40,4 @@ class SocketIO {
   }
 }
 
-module.exports = SocketIO
+export default SocketIO

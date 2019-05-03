@@ -91,7 +91,7 @@ export default {
       this.isLoading = true
       this.formData.append('media_title', this.mediaTitle)
       this.axios
-        .post(this.$appBaseURL + '/api/v1/media-file/', this.formData, {
+        .post(this.$appApiBaseURL + '/media-file/', this.formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         })
         .then(data => {

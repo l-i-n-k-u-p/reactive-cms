@@ -5,7 +5,6 @@ const mongoose = require('mongoose')
 const DASHBOARD_ADMIN_CONFIG = require('../config/dashboard-admin-config')
 const SITE_CONFIG = require('../config/site-config')
 const websiteTemplates = require('../config/website-templates')
-const userTypes = require('../config/user-types')
 const { mediaUpload } = require('../lib/media-upload')
 const session = require('../lib/session')
 const {
@@ -823,32 +822,6 @@ exports.getDashboard = async (req, res) => {
       status_msg: 'Error loading Dashboard Info',
     })
   }
-}
-
-exports.getSettingAllPages = async (req, res) => {
-  try {
-    let items = await PageModel.find()
-      .sort({ 'page_date': 'desc' })
-      .select([
-        'page_status',
-        'page_title',
-      ])
-      .exec()
-    res.send({
-      items: items,
-    })
-  } catch (err) {
-    res.send({
-      status_code: 1,
-      status_msg: 'Error loading the pages',
-    })
-  }
-}
-
-exports.getUserTypes = async (req, res) => {
-  res.send({
-    items: userTypes,
-  })
 }
 
 exports.getTemplateFileNames = async (req, res) => {

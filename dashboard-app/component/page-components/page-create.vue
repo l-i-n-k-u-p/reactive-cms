@@ -116,7 +116,7 @@ export default {
         },
       ],
       editorContent: '',
-      fileTemplates: new this.$models.FileTemplates(),
+      fileTemplates: new this.$models.FileTemplate(),
       pageTemplateOptions: [],
       currentPageTemplateIndex: null,
       mediaModalData: {

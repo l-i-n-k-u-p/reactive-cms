@@ -196,18 +196,6 @@ let routes = [
   },
   {
     method: 'GET',
-    url: '/setting/get-all-pages*',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.getSettingAllPages,
-  },
-  {
-    method: 'GET',
-    url: '/user/user-types*',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.getUserTypes,
-  },
-  {
-    method: 'GET',
     url: '/page/template-files*',
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.getTemplateFileNames,

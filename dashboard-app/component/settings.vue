@@ -91,10 +91,10 @@ export default {
     return {
       settings: new this.$models.Setting(),
       site: new this.$models.Site(),
-      settingPages: new this.$models.SettingPages(),
+      settingPages: new this.$models.PageList(),
       templateHomeIndex: null,
       templateHomeOptions: [],
-      fileTemplates: new this.$models.FileTemplates(),
+      fileTemplates: new this.$models.FileTemplate(),
       templatePostsIndex: null,
       templateFileOptions: [],
       isLoading: false,
@@ -119,82 +119,83 @@ export default {
     getSettingsData: function() {
       this.isLoading = true
       this.settings
-        .fetch()
-        .then(data => {
-          this.isLoading = false
-          if (data.getData().status_code) {
-            this.$eventHub.$emit(
-              'dashboard-app-error',
-              data.getData().status_msg,
-            )
-            return
-          }
-        })
-        .catch(err => {
-          this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', err.message)
-        })
+      .fetch()
+      .then(data => {
+        this.isLoading = false
+        if (data.getData().status_code) {
+          this.$eventHub.$emit(
+            'dashboard-app-error',
+            data.getData().status_msg,
+          )
+          return
+        }
+      })
+      .catch(err => {
+        this.isLoading = false
+        this.$eventHub.$emit('dashboard-app-error', err.message)
+      })
     },
     getSiteData: function() {
       this.isLoading = true
       this.site
-        .fetch()
-        .then(data => {
-          this.isLoading = false
-          if (data.getData().status_code) {
-            this.$eventHub.$emit(
-              'dashboard-app-error',
-              data.getData().status_msg,
-            )
-            return
-          }
-          this.setIndexPageTemplate()
-          this.setIndexPostsTemplate()
-        })
-        .catch(err => {
-          this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', err.message)
-        })
+      .fetch()
+      .then(data => {
+        this.isLoading = false
+        if (data.getData().status_code) {
+          this.$eventHub.$emit(
+            'dashboard-app-error',
+            data.getData().status_msg,
+          )
+          return
+        }
+        this.setIndexPageTemplate()
+        this.setIndexPostsTemplate()
+      })
+      .catch(err => {
+        this.isLoading = false
+        this.$eventHub.$emit('dashboard-app-error', err.message)
+      })
     },
     getSettingPagesData: function() {
       this.isLoading = true
       this.settingPages
-        .fetch()
-        .then(data => {
-          this.isLoading = false
-          if (data.getData().status_code) {
-            this.$eventHub.$emit(
-              'dashboard-app-error',
-              data.getData().status_msg,
-            )
-            return
-          }
-          this.setInitialSelectPages()
-        })
-        .catch(err => {
-          this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', err.message)
-        })
+      .page(-1)
+      .fetch()
+      .then(data => {
+        this.isLoading = false
+        if (data.getData().status_code) {
+          this.$eventHub.$emit(
+            'dashboard-app-error',
+            data.getData().status_msg,
+          )
+          return
+        }
+        this.setInitialSelectPages()
+      })
+      .catch(err => {
+        this.isLoading = false
+        this.$eventHub.$emit('dashboard-app-error', err.message)
+      })
     },
     getTemplateFilesData: function() {
       this.isLoading = true
       this.fileTemplates
-        .fetch()
-        .then(data => {
-          this.isLoading = false
-          if (data.getData().status_code) {
-            this.$eventHub.$emit(
-              'dashboard-app-error',
-              data.getData().status_msg,
-            )
-            return
-          }
-          this.setInitialSelectPostsTemplates()
-        })
-        .catch(err => {
-          this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', data.message)
-        })
+      .fetch()
+      .then(data => {
+        this.isLoading = false
+        if (data.getData().status_code) {
+          this.$eventHub.$emit(
+            'dashboard-app-error',
+            data.getData().status_msg,
+          )
+          return
+        }
+        this.setInitialSelectPostsTemplates()
+      })
+      .catch(err => {
+        this.isLoading = false
+        this.$eventHub.$emit('dashboard-app-error', data.message)
+      })
     },
     onChangeInputValue: function(propName, value) {
       this.settings.set(propName, value)
@@ -205,49 +206,49 @@ export default {
     saveSetting: function() {
       this.isLoading = true
       this.settings
-        .put()
-        .then(data => {
-          this.isLoading = false
-          if (data.getData().status_code) {
-            this.$eventHub.$emit(
-              'dashboard-app-error',
-              data.getData().status_msg,
-            )
-            return
-          }
+      .put()
+      .then(data => {
+        this.isLoading = false
+        if (data.getData().status_code) {
           this.$eventHub.$emit(
-            'dashboard-app-success',
+            'dashboard-app-error',
             data.getData().status_msg,
           )
-        })
-        .catch(err => {
-          this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', err.message)
-        })
+          return
+        }
+        this.$eventHub.$emit(
+          'dashboard-app-success',
+          data.getData().status_msg,
+        )
+      })
+      .catch(err => {
+        this.isLoading = false
+        this.$eventHub.$emit('dashboard-app-error', err.message)
+      })
       this.saveSite()
     },
     saveSite: function() {
       this.isLoading = true
       this.site
-        .put()
-        .then(data => {
-          this.isLoading = false
-          if (data.getData().status_code) {
-            this.$eventHub.$emit(
-              'dashboard-app-error',
-              data.getData().status_msg,
-            )
-            return
-          }
+      .put()
+      .then(data => {
+        this.isLoading = false
+        if (data.getData().status_code) {
           this.$eventHub.$emit(
-            'dashboard-app-success',
+            'dashboard-app-error',
             data.getData().status_msg,
           )
-        })
-        .catch(err => {
-          this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', err.message)
-        })
+          return
+        }
+        this.$eventHub.$emit(
+          'dashboard-app-success',
+          data.getData().status_msg,
+        )
+      })
+      .catch(err => {
+        this.isLoading = false
+        this.$eventHub.$emit('dashboard-app-error', err.message)
+      })
     },
     onSelectTemplateHome: function(option) {
       this.site.set('site_template_home', option.value)

@@ -61,7 +61,7 @@ export default {
       this.formData.append('user_name', this.loginUserName)
       this.formData.append('user_pass', this.loginUserPassword)
       this.axios
-        .post(this.$appBaseURL + '/api/v1/login/', this.formData)
+        .post(this.$appApiBaseURL + '/login/', this.formData)
         .then(data => {
           let error_message = data.data.error_message
           if (error_message) {

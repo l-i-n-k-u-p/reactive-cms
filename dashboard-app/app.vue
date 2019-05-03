@@ -68,15 +68,15 @@
 </template>
 
 <script>
-import Header from './components/header.vue'
-import RibbonError from './components/templates/ribbon-error.vue'
-import RibbonSuccess from './components/templates/ribbon-success.vue'
-import Menu from './components/menu.vue'
+import Header from './component/header.vue'
+import RibbonError from './component/templates/ribbon-error.vue'
+import RibbonSuccess from './component/templates/ribbon-success.vue'
+import Menu from './component/menu.vue'
 import SplashScreen from './splash-screen.vue'
-import Login from './components/login.vue'
-import MediaModal from './components/media-modal.vue'
-import ConfirmationModal from './components/templates/confirmation-modal.vue'
-import PreviewMediaModal from './components/templates/preview-media-modal.vue'
+import Login from './component/login.vue'
+import MediaModal from './component/media-modal.vue'
+import ConfirmationModal from './component/templates/confirmation-modal.vue'
+import PreviewMediaModal from './component/templates/preview-media-modal.vue'
 
 export default {
   components: {

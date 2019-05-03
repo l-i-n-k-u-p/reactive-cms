@@ -5,7 +5,7 @@ const ACL_DIRECTIVES = [
     action: {
       bind: (el, binding, vNode) => {
         let vNodeContext = vNode
-        vNode.context.$models.socketIO.registerEvent(
+        vNode.context.$socketIO.registerEvent(
           'role-put',
           (data) => {
             if (!(window.user_data.get('user_role_ref') === data.data._id))
