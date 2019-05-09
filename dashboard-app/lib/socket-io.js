@@ -2,9 +2,10 @@ class SocketIO {
   constructor () {
     this.io = io('/', {
       reconnection: true,
-      reconnectionDelay: 1000,
-      reconnectionDelayMax: 5000,
+      reconnectionDelay: 3000,
+      reconnectionDelayMax: 6000,
       reconnectionAttempts: Infinity,
+      transports: ['websocket'],
     })
     this.events = []
     this.socketIOEventManager()

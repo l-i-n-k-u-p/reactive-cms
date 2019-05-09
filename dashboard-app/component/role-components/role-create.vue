@@ -238,6 +238,11 @@ export default {
           letter: 'd',
           value: resourcePermissions.includes('d'),
         },
+        {
+          name: 'View',
+          letter: 'v',
+          value: resourcePermissions.includes('v'),
+        },
       ]
       this.modalPermissionsIsVisible = true
     },
@@ -258,6 +263,8 @@ export default {
           permissions.push('u')
         if (itemP.letter === 'd' && itemP.value)
           permissions.push('d')
+        if (itemP.letter === 'v' && itemP.value)
+          permissions.push('v')
       }
       currentRoleResources[this.currentResourceModalIndex].resource_permission = permissions
       this.role.set('role_resources', currentRoleResources)
@@ -364,9 +371,9 @@ h3 {
 
 .item-permissions {
   display: flex;
+  flex-grow: 1;
   justify-content: flex-end;
   padding-right: 10px;
   pointer-events: none;
-  width: 100%;
 }
 </style>

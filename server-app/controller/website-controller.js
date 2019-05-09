@@ -66,7 +66,7 @@ exports.websiteSetupSetInitialConfig = async (req, res) => {
       for (let view of viewsSaved) {
         resources.push({
           resource_name: view.view_name,
-          resource_permission: ['c', 'r', 'u', 'd'],
+          resource_permission: ['c', 'r', 'u', 'd', 'v'],
           resource_role_ref: adminRole._id,
         })
       }

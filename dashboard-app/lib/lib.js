@@ -39,7 +39,7 @@ const getThumbnailURL = (fileURL) => {
 }
 
 const aclReplaceVNode = (el, binding, vNode) => {
-  let permissionResult = aclUserCan('read', binding.value)
+  let permissionResult = aclUserCan(binding.value)
   if (permissionResult)
     return
 
@@ -59,11 +59,12 @@ const aclReplaceVNode = (el, binding, vNode) => {
     el.parentNode.replaceChild(comment, el)
 }
 
-const aclUserCan = (action, resource) => {
-  let permission = action[0]
+const aclUserCan = (resource) => {
+  // NOTE: in user_resource: ['v',] is 'view'
+  let permission = 'v'
   let userResources = window.user_data.get ? window.user_data.get('user_resource') : window.user_data.user_resource
   for (let userResource of userResources) {
-    let hasResource = userResource.resource_name === resource ? true : false
+    let hasResource = userResource.resource_name === resource
     let hasPermission = userResource.resource_permission.join(',').includes(permission)
     if (hasResource && hasPermission)
       return true

@@ -127,6 +127,7 @@ let routes = [
     url: '/page/:id',
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.updatePageByID,
+    config: { resource_name: 'pages', },
   },
   {
     method: 'DELETE',

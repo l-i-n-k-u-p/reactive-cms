@@ -198,7 +198,7 @@ router.beforeResolve((to, from, next) => {
   if (to.name === 'error')
     return next()
 
-  let res = aclUserCan('read', to.name)
+  let res = aclUserCan(to.name)
   if (res)
     return next()
 

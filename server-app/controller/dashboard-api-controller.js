@@ -22,6 +22,8 @@ const RoleModel = require('../model/role-model')
 const ViewModel = require('../model/view-model')
 const ResourceModel = require('../model/resource-model')
 
+const sessionQuery = require('../query/session-query')
+
 
 exports.login = async (req, res) => {
   const user_name = req.body.user_name
@@ -292,6 +294,7 @@ exports.updateUserByID = async (req, res) => {
     if (sessionFinished)
       message = 'User updated and session finished'
     let objectId = mongoose.Types.ObjectId(req.params.id)
+    await sessionQuery.refreshUserSessionByID(objectId)
     let newUserData = await UserModel.aggregate([
       {
         $match: {
@@ -338,13 +341,14 @@ exports.updateUserByID = async (req, res) => {
         },
       },
     ])
+    newUserData = newUserData[0]
     res.send({
       status_code: 0,
       status_msg: message,
     })
     req.pushBroadcastMessage({
       channel: 'user-put',
-      data: { data: newUserData[0] },
+      data: { data: newUserData },
     })
   } catch (err) {
     res.send({
@@ -563,6 +567,23 @@ exports.getPagesByPage = async (req, res) => {
 }
 
 exports.updatePageByID = async (req, res) => {
+  let userResources = req.session.user.user_resource
+  let hasPermission = false
+  let resourceName = res.context.config.resource_name
+  for (let userResource of userResources) {
+    if (userResource.resource_name === resourceName) {
+      let resourcePermission = userResource.resource_permission.join(',')
+      if (resourcePermission.includes('u'))
+        hasPermission = true
+    }
+  }
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   try {
     let page = await PageModel.findById(req.params.id)
     let pageSaved = null
@@ -955,9 +976,9 @@ exports.getRoleByID = async (req, res) => {
 
 exports.updateRoleByID = async (req, res) => {
   try {
-    let id = req.params.id
+    let roleID = req.params.id
     let roleResources = req.body.role_resources
-    let role = await RoleModel.findById(id)
+    let role = await RoleModel.findById(roleID)
     role.role_name = req.body.role_name
     await role.save()
     let resourcesToUpate = []
@@ -994,8 +1015,8 @@ exports.updateRoleByID = async (req, res) => {
       }
       await Promise.all(queries)
     }
-    let objectId = mongoose.Types.ObjectId(id)
-    let item = await RoleModel.aggregate([
+    let objectId = mongoose.Types.ObjectId(roleID)
+    let roleUpdated = await RoleModel.aggregate([
       {
         $match: {
           _id: objectId,
@@ -1011,10 +1032,19 @@ exports.updateRoleByID = async (req, res) => {
       },
       {
         $addFields: {
-          id: id,
+          id: roleID,
         },
       },
     ])
+    roleUpdated = roleUpdated[0]
+    let sessions = await sessionQuery.sessionGetSessionsWithRole(roleID)
+    if (sessions) {
+      // NOTE: update sessions with the same roleID
+      let sessionIDs = []
+      for (let session of sessions)
+        sessionIDs.push(session._id)
+      sessionQuery.sessionFindByIDAndUpdateResources(sessionIDs, roleUpdated.role_resources)
+    }
     res.send({
       status_code: 0,
       status_msg: 'Role updated',
@@ -1022,7 +1052,7 @@ exports.updateRoleByID = async (req, res) => {
     req.pushBroadcastMessage({
       channel: 'role-put',
       data: {
-        data: item[0],
+        data: roleUpdated,
       },
     })
   } catch (err) {
