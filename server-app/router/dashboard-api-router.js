@@ -127,6 +127,7 @@ let routes = [
     url: '/page/:id',
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.updatePageByID,
+    config: { resource_name: 'pages', },
   },
   {
     method: 'DELETE',
@@ -193,18 +194,6 @@ let routes = [
     url: '/dashboard/',
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.getDashboard,
-  },
-  {
-    method: 'GET',
-    url: '/setting/get-all-pages*',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.getSettingAllPages,
-  },
-  {
-    method: 'GET',
-    url: '/user/user-types*',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.getUserTypes,
   },
   {
     method: 'GET',

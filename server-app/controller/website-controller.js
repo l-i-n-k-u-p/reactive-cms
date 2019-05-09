@@ -1,4 +1,5 @@
 const dateTime = require('node-datetime')
+const mongoose = require('mongoose')
 
 const DASHBOARD_ADMIN_CONFIG = require('../config/dashboard-admin-config')
 const SITE_CONFIG = require('../config/site-config')
@@ -65,7 +66,7 @@ exports.websiteSetupSetInitialConfig = async (req, res) => {
       for (let view of viewsSaved) {
         resources.push({
           resource_name: view.view_name,
-          resource_permission: ['c', 'r', 'u', 'd'],
+          resource_permission: ['c', 'r', 'u', 'd', 'v'],
           resource_role_ref: adminRole._id,
         })
       }
@@ -193,10 +194,39 @@ exports.websiteDashboardLogout = async (req, res) => {
 }
 
 exports.websiteDashboardView = async (req, res) => {
+  let objectId = mongoose.Types.ObjectId(req.session.user.user_id)
+  let user = await UserModel.aggregate([
+    {
+      $match: {
+        _id: objectId,
+      },
+    },
+    {
+      $lookup: {
+        from: 'role',
+        localField: 'user_role_ref',
+        foreignField: '_id',
+        as: 'user_role',
+      },
+    },
+    {
+      $unwind: '$user_role',
+    },
+    {
+      $lookup: {
+        from: 'resource',
+        localField: 'user_role_ref',
+        foreignField: 'resource_role_ref',
+        as: 'user_resource',
+      },
+    },
+  ])
+  user = user[0]
   res.view('dashboard-website-index', {
     viewFunctions: VIEW_FUNCTIONS,
     title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
     user_id: req.session.user.user_id,
+    user_data: JSON.stringify(user),
   })
 }
 

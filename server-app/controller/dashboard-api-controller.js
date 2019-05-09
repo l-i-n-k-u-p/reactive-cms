@@ -5,7 +5,6 @@ const mongoose = require('mongoose')
 const DASHBOARD_ADMIN_CONFIG = require('../config/dashboard-admin-config')
 const SITE_CONFIG = require('../config/site-config')
 const websiteTemplates = require('../config/website-templates')
-const userTypes = require('../config/user-types')
 const { mediaUpload } = require('../lib/media-upload')
 const session = require('../lib/session')
 const {
@@ -22,6 +21,8 @@ const SiteModel = require('../model/site-model')
 const RoleModel = require('../model/role-model')
 const ViewModel = require('../model/view-model')
 const ResourceModel = require('../model/resource-model')
+
+const sessionQuery = require('../query/session-query')
 
 
 exports.login = async (req, res) => {
@@ -292,14 +293,62 @@ exports.updateUserByID = async (req, res) => {
     let message = 'User updated'
     if (sessionFinished)
       message = 'User updated and session finished'
+    let objectId = mongoose.Types.ObjectId(req.params.id)
+    await sessionQuery.refreshUserSessionByID(objectId)
+    let newUserData = await UserModel.aggregate([
+      {
+        $match: {
+          _id: objectId,
+        },
+      },
+      {
+        $lookup: {
+          from: 'role',
+          localField: 'user_role_ref',
+          foreignField: '_id',
+          as: 'user_role',
+        },
+      },
+      {
+        $unwind: '$user_role',
+      },
+      {
+        $lookup: {
+          from: 'resource',
+          localField: 'user_role_ref',
+          foreignField: 'resource_role_ref',
+          as: 'user_resource',
+        },
+      },
+      {
+        $project: {
+          user_first_name: true,
+          user_last_name: true,
+          user_name: true,
+          user_email: true,
+          user_active: true,
+          user_registration_date: true,
+          user_thumbnail: true,
+          user_avatar: true,
+          user_role_ref: true,
+          user_role: true,
+          user_resource: true,
+        },
+      },
+      {
+        $addFields: {
+          id: req.params.id,
+        },
+      },
+    ])
+    newUserData = newUserData[0]
     res.send({
       status_code: 0,
       status_msg: message,
     })
-    user.user_pass = ''
     req.pushBroadcastMessage({
       channel: 'user-put',
-      data: { data: user },
+      data: { data: newUserData },
     })
   } catch (err) {
     res.send({
@@ -518,6 +567,23 @@ exports.getPagesByPage = async (req, res) => {
 }
 
 exports.updatePageByID = async (req, res) => {
+  let userResources = req.session.user.user_resource
+  let hasPermission = false
+  let resourceName = res.context.config.resource_name
+  for (let userResource of userResources) {
+    if (userResource.resource_name === resourceName) {
+      let resourcePermission = userResource.resource_permission.join(',')
+      if (resourcePermission.includes('u'))
+        hasPermission = true
+    }
+  }
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   try {
     let page = await PageModel.findById(req.params.id)
     let pageSaved = null
@@ -825,32 +891,6 @@ exports.getDashboard = async (req, res) => {
   }
 }
 
-exports.getSettingAllPages = async (req, res) => {
-  try {
-    let items = await PageModel.find()
-      .sort({ 'page_date': 'desc' })
-      .select([
-        'page_status',
-        'page_title',
-      ])
-      .exec()
-    res.send({
-      items: items,
-    })
-  } catch (err) {
-    res.send({
-      status_code: 1,
-      status_msg: 'Error loading the pages',
-    })
-  }
-}
-
-exports.getUserTypes = async (req, res) => {
-  res.send({
-    items: userTypes,
-  })
-}
-
 exports.getTemplateFileNames = async (req, res) => {
   res.send({
     items: websiteTemplates.templates,
@@ -936,9 +976,9 @@ exports.getRoleByID = async (req, res) => {
 
 exports.updateRoleByID = async (req, res) => {
   try {
-    let id = req.params.id
+    let roleID = req.params.id
     let roleResources = req.body.role_resources
-    let role = await RoleModel.findById(id)
+    let role = await RoleModel.findById(roleID)
     role.role_name = req.body.role_name
     await role.save()
     let resourcesToUpate = []
@@ -975,8 +1015,8 @@ exports.updateRoleByID = async (req, res) => {
       }
       await Promise.all(queries)
     }
-    let objectId = mongoose.Types.ObjectId(id)
-    let item = await RoleModel.aggregate([
+    let objectId = mongoose.Types.ObjectId(roleID)
+    let roleUpdated = await RoleModel.aggregate([
       {
         $match: {
           _id: objectId,
@@ -992,10 +1032,19 @@ exports.updateRoleByID = async (req, res) => {
       },
       {
         $addFields: {
-          id: id,
+          id: roleID,
         },
       },
     ])
+    roleUpdated = roleUpdated[0]
+    let sessions = await sessionQuery.sessionGetSessionsWithRole(roleID)
+    if (sessions) {
+      // NOTE: update sessions with the same roleID
+      let sessionIDs = []
+      for (let session of sessions)
+        sessionIDs.push(session._id)
+      sessionQuery.sessionFindByIDAndUpdateResources(sessionIDs, roleUpdated.role_resources)
+    }
     res.send({
       status_code: 0,
       status_msg: 'Role updated',
@@ -1003,7 +1052,7 @@ exports.updateRoleByID = async (req, res) => {
     req.pushBroadcastMessage({
       channel: 'role-put',
       data: {
-        data: item[0],
+        data: roleUpdated,
       },
     })
   } catch (err) {
