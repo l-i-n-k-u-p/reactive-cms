@@ -15,7 +15,6 @@ const {
 const UserModel = require('../model/user-model')
 const PostModel = require('../model/post-model')
 const PageModel = require('../model/page-model')
-const MediaModel = require('../model/media-model')
 const SettingModel = require('../model/setting-model')
 const SiteModel = require('../model/site-model')
 const RoleModel = require('../model/role-model')
@@ -25,6 +24,7 @@ const ResourceModel = require('../model/resource-model')
 const sessionQuery = require('../query/session-query')
 const mediaQuery = require('../query/media-query')
 const searchQuery = require('../query/search-query')
+const dashboardQuery = require('../query/dashboard-query')
 
 
 exports.login = async (req, res) => {
@@ -815,59 +815,38 @@ exports.updateSiteSettings = async (req, res) => {
 }
 
 exports.getDashboard = async (req, res) => {
-  try {
-    let data = await Promise.all([
-      UserModel.countDocuments(),
-      PostModel.countDocuments(),
-      PageModel.countDocuments(),
-      MediaModel.countDocuments(),
-      UserModel.find()
-        .select([
-          'user_first_name',
-          'user_last_name',
-          'user_name',
-          'user_email',
-          'user_active',
-          'user_registration_date',
-          'user_thumbnail',
-          'user_avatar',
-        ]).sort({ 'user_registration_date': 'desc' }).limit(3),
-      PostModel.find().sort({'post_date': 'desc'}).limit(3),
-      PageModel.find().sort({'page_date': 'desc'}).limit(3),
-      MediaModel.find().sort({'media_date': 'desc'}).limit(3),
-    ])
-    res.send({
-      items: [
-        {
-          model: 'user',
-          total: data[0],
-          last: data[4],
-        },
-        {
-          model: 'post',
-          total: data[1],
-          last: data[5],
-        },
-        {
-          model: 'page',
-          total: data[2],
-          last: data[6],
-        },
-        {
-          model: 'media',
-          total: data[3],
-          last: data[7],
-        },
-      ],
-      status_code: 0,
-      status_msg: '',
-    })
-  } catch (err) {
+  let items = await dashboardQuery.getLog()
+  if (items.error) {
     res.send({
       status_code: 1,
-      status_msg: 'Error loading Dashboard Info',
+      status_msg: 'Error loading dashboard data',
     })
+    return
   }
+  res.send({
+    items: [
+      {
+        model: 'user',
+        total: items[0],
+        last: items[4],
+      },
+      {
+        model: 'post',
+        total: items[1],
+        last: items[5],
+      },
+      {
+        model: 'page',
+        total: items[2],
+        last: items[6],
+      },
+      {
+        model: 'media',
+        total: items[3],
+        last: items[7],
+      },
+    ],
+  })
 }
 
 exports.getTemplateFileNames = async (req, res) => {
