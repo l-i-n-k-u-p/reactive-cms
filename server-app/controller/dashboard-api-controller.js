@@ -12,7 +12,6 @@ const {
   generatePageSlug,
 } = require('../lib/slug')
 
-const PageModel = require('../model/page-model')
 const SettingModel = require('../model/setting-model')
 const SiteModel = require('../model/site-model')
 const RoleModel = require('../model/role-model')
@@ -25,6 +24,7 @@ const searchQuery = require('../query/search-query')
 const dashboardQuery = require('../query/dashboard-query')
 const userQuery = require('../query/user-query')
 const postQuery = require('../query/post-query')
+const pageQuery = require('../query/page-query')
 
 
 exports.login = async (req, res) => {
@@ -352,69 +352,68 @@ exports.deletePostByID = async (req, res) => {
 }
 
 exports.getPageByID = async (req, res) => {
-  try {
-    let page = await PageModel.findById(req.params.id)
-    res.send(page)
-  } catch (err) {
+  let page = await pageQuery.getByID(req.params.id)
+  if (page.error) {
     res.send({
       status_code: 1,
       status_msg: 'Page not found',
     })
+    return
   }
+  res.send(page)
 }
 
 exports.addNewPage = async (req, res) => {
-  try {
-    let newPost = new PageModel(req.body)
-    let newPostSlug = slugify(req.body.page_title, { lower: true })
-    let slug = await generatePageSlug(null, newPostSlug)
-    newPost.page_date = dateTime.create().format('Y-m-d H:M:S')
-    newPost.page_slug = slug
-    let page = await newPost.save()
-    res.send({
-      status_code: 0,
-      status_msg: 'New page registered',
-      data: {
-        id: page.id
-      },
-    })
-    req.pushBroadcastMessage({
-      channel: 'page-post',
-      data: { data: page },
-    })
-  } catch (err) {
+  let newPostSlug = slugify(req.body.page_title, { lower: true })
+  let slug = await generatePageSlug(null, newPostSlug)
+  req.body.page_date = dateTime.create().format('Y-m-d H:M:S')
+  req.body.page_slug = slug
+  let page = await pageQuery.create(req.body)
+  if (page.error) {
     res.send({
       status_code: 1,
       status_msg: 'Error at create page',
     })
+    return
   }
+  res.send({
+    status_code: 0,
+    status_msg: 'New page registered',
+    data: {
+      id: page.id
+    },
+  })
+  req.pushBroadcastMessage({
+    channel: 'page-post',
+    data: { data: page },
+  })
 }
 
 exports.getPagesByPage = async (req, res) => {
-  try {
-    let skipPosts = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
-    let [totalItems, items] = await Promise.all([
-      PageModel.countDocuments(),
-      PageModel.find()
-        .skip(skipPosts)
-        .limit(DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST)
-        .sort({ 'page_date': 'desc' })
-        .exec()
-    ])
-    res.send({
-      items: items,
-      total_pages: Math.ceil(totalItems / DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST),
-      items_skipped: skipPosts,
-      total_items: totalItems,
-      status_code: 0,
-      status_msg: '',
-    })
-  } catch (err) {
+  let skipItems = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
+  let totalItems = await pageQuery.getTotalItems()
+  let ascSort = -1
+  let items = await pageQuery.getItemsByPage({
+    skip: skipItems,
+    limit: DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST,
+    sort: { 'page_date': ascSort },
+  })
+  if (items.error) {
+    console.log(items.error)
     res.send({
       status_code: 1,
       status_msg: 'Error loading the pages',
     })
+    return
   }
+  res.send({
+    items: items,
+    total_pages: Math.ceil(totalItems / DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST),
+    items_skipped: skipItems,
+    total_items: totalItems,
+    status_code: 0,
+    status_msg: '',
+  })
 }
 
 exports.updatePageByID = async (req, res) => {
@@ -435,61 +434,54 @@ exports.updatePageByID = async (req, res) => {
     })
     return
   }
-  try {
-    let page = await PageModel.findById(req.params.id)
-    let pageSaved = null
-    page.page_content = req.body.page_content
-    page.page_status = req.body.page_status
-    page.page_thumbnail = req.body.page_thumbnail
-    page.page_template = req.body.page_template
-    page.page_gallery = req.body.page_gallery
-    if (page.page_title === req.body.page_title) {
-      page.page_title = req.body.page_title
-      pageSaved = await page.save()
-      res.send({
-        status_code: 0,
-        status_msg: 'Post updated',
-      })
-    } else {
-      let newPostSlug = slugify(req.body.page_title, { lower: true })
-      let slug = await generatePageSlug(page._id, newPostSlug)
-      page.page_title = req.body.page_title
-      page.page_slug = slug
-      pageSaved = await page.save()
-      res.send({
-        status_code: 0,
-        status_msg: 'Post updated',
-      })
+  let newPostSlug = slugify(req.body.page_title, { lower: true })
+  let slug = await generatePageSlug(req.params.id, newPostSlug)
+  let page = await pageQuery.updateByID({
+    id: req.params.id,
+    update_fields: {
+      page_title: req.body.page_title,
+      page_content: req.body.page_content,
+      page_status: req.body.page_status,
+      page_thumbnail: req.body.page_thumbnail,
+      page_template: req.body.page_template,
+      page_gallery: req.body.page_gallery,
+      page_slug: slug
     }
-    req.pushBroadcastMessage({
-      channel: 'page-put',
-      data: { data: pageSaved },
-    })
-  } catch (err) {
+  })
+  if (page.error) {
     res.send({
       status_code: 1,
       status_msg: 'It was not updated',
     })
+    return
   }
+  res.send({
+    status_code: 0,
+    status_msg: 'Page updated',
+  })
+  req.pushBroadcastMessage({
+    channel: 'page-put',
+    data: { data: page },
+  })
 }
 
 exports.deletePageByID = async (req, res) => {
-  try {
-    let page = await PageModel.findByIdAndRemove(req.params.id)
-    res.send({
-      status_code: 0,
-      status_msg: 'Post deleted',
-    })
-    req.pushBroadcastMessage({
-      channel: 'page-delete',
-      data: { data: page },
-    })
-  } catch (err) {
+  let page = await pageQuery.deleteByID(req.params.id)
+  if (page.error) {
     res.send({
       status_code: 1,
       status_msg: 'Error at delete page',
     })
+    return
   }
+  res.send({
+    status_code: 0,
+    status_msg: 'Post deleted',
+  })
+  req.pushBroadcastMessage({
+    channel: 'page-delete',
+    data: { data: page },
+  })
 }
 
 exports.getMediaByID = async (req, res) => {
