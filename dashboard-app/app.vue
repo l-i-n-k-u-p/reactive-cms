@@ -115,7 +115,7 @@ export default {
       setTimeout(this.hideRibbonSuccessNotification, this.ribbonTimeOut)
     },
   },
-  created() {
+  created () {
     this.initAxiosListenEvent()
     this.$eventHub.$on('dashboard-app-page-title', title => {
       if (title) this.pageTitle = ' - ' + title
@@ -150,7 +150,11 @@ export default {
       this.axios.interceptors.response.use(
         response => {
           let statusCode = response.data.status_code
-          if (statusCode === 3) this.showLogin = true
+          let statusMessage = response.data.status_msg
+          if (statusCode === 1)
+            this.$eventHub.$emit('dashboard-app-error', statusMessage)
+          if (statusCode === 3)
+            this.showLogin = true
           return response
         },
         error => {

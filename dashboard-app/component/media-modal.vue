@@ -228,13 +228,6 @@ export default {
         })
         .then(data => {
           this.isLoading = false
-          if (data.response.data.status_code) {
-            this.$eventHub.$emit(
-              'dashboard-app-error',
-              data.response.data.status_msg,
-            )
-            return
-          }
           this.mediaFiles.clear()
           this.searchMediaItems.models.forEach(item => {
             let mediaItem = new this.$models.Media(item._attributes)
@@ -243,7 +236,6 @@ export default {
         })
         .catch(data => {
           this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', data.message)
         })
     },
     activeLibrary: function() {

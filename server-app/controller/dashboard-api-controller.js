@@ -23,6 +23,7 @@ const ViewModel = require('../model/view-model')
 const ResourceModel = require('../model/resource-model')
 
 const sessionQuery = require('../query/session-query')
+const mediaQuery = require('../query/media-query')
 
 
 exports.login = async (req, res) => {
@@ -112,24 +113,20 @@ exports.search = async (req, res) => {
 }
 
 exports.searchMedia = async (req, res) => {
-  try {
-    const searchRegex = new RegExp(req.query.search, 'i')
-    const mimetypeRegex = new RegExp(req.query.mimetype, 'i')
-    let data = await MediaModel.find({
-      'media_title': searchRegex,
-      'media_mime_type': mimetypeRegex
-    }).exec()
-    res.send({
-      items: data,
-      status_code: 0,
-      status_msg: '',
-    })
-  } catch (err) {
+  let mediaData = await mediaQuery.searchMedia({
+    search_word: req.query.search,
+    search_mimetype: req.query.mimetype,
+  })
+  if (mediaData.error) {
     res.send({
       status_code: 1,
-      status_msg: 'Error searching',
+      status_msg: 'Error searching media',
     })
+    return
   }
+  res.send({
+    items: mediaData,
+  })
 }
 
 exports.getUsersPaged = async (req, res) => {
@@ -642,131 +639,121 @@ exports.deletePageByID = async (req, res) => {
 }
 
 exports.getMediaByID = async (req, res) => {
-  try {
-    let media = await MediaModel.findById(req.params.id)
-    if (!media)
-      throw new Error('Media not found')
-    res.send(media)
-  } catch (err) {
+  let mediaItem = await mediaQuery.getByID(req.params.id)
+  if (mediaItem.error) {
     res.send({
       status_code: 1,
       status_msg: 'Media not found',
     })
+    return
   }
+  res.send(mediaItem)
 }
 
 exports.addNewMedia = async (req, res) => {
-  try {
-    let resultUpload = await mediaUpload(req, res)
-    if (!resultUpload.fileData)
-      throw new Error('Error at upload file')
-    let newMedia = new MediaModel({
-      media_original_name: resultUpload.fileData.originalName,
-      media_name: resultUpload.fileData.fileName,
-      media_title: resultUpload.postData.media_title,
-      media_mime_type: resultUpload.fileData.mimeType,
-      media_size: resultUpload.fileData.size,
-      media_path: resultUpload.fileData.path,
-      media_date: dateTime.create().format('Y-m-d H:M:S'),
-    })
-    let media = await newMedia.save()
-    res.send({
-      status_code: 0,
-      status_msg: 'New media added',
-      data: {
-        id: media.id
-      },
-    })
-    req.pushBroadcastMessage({
-      channel: 'media-post',
-      data: { data: media },
-    })
-  } catch (err) {
+  let resultUpload = await mediaUpload(req, res)
+  if (!resultUpload.fileData) {
     res.send({
       status_code: 1,
       status_msg: 'Error at upload media',
     })
+    return
   }
+  let newMedia = await mediaQuery.createNewMedia({
+    media_original_name: resultUpload.fileData.originalName,
+    media_name: resultUpload.fileData.fileName,
+    media_title: resultUpload.postData.media_title,
+    media_mime_type: resultUpload.fileData.mimeType,
+    media_size: resultUpload.fileData.size,
+    media_path: resultUpload.fileData.path,
+    media_date: dateTime.create().format('Y-m-d H:M:S'),
+  })
+  if (newMedia.error) {
+    res.send({
+      status_code: 1,
+      status_msg: 'Error seving media',
+    })
+    return
+  }
+  res.send({
+    status_code: 0,
+    status_msg: '',
+    data: {
+      id: newMedia.id
+    },
+  })
+  req.pushBroadcastMessage({
+    channel: 'media-post',
+    data: { data: newMedia },
+  })
 }
 
 exports.getMediaByPage = async (req, res) => {
-  try {
-    let skipPosts = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
-    let totalItems = await MediaModel.countDocuments()
-    let items = await MediaModel.find()
-      .skip(skipPosts)
-      .limit(DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST)
-      .sort({'media_date': 'desc'})
-      .exec()
-    res.send({
-      items: items,
-      total_pages: Math.ceil(totalItems / DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST),
-      items_skipped: skipPosts,
-      total_items: totalItems,
-      status_code: 0,
-      status_msg: '',
-    })
-  } catch (err) {
+  let skipPosts = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
+  let totalItems = await mediaQuery.getTotalItems()
+  let items = await mediaQuery.getMediaItemsByPage({
+    skip: skipPosts,
+    limit: DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST,
+    sort: { 'media_date': 'desc' },
+  })
+  if (items.error) {
     res.send({
       status_code: 1,
-      status_msg: 'Error loading the media',
+      status_msg: 'Error loading the media items',
     })
+    return
   }
+  res.send({
+    items: items,
+    total_pages: Math.ceil(totalItems / DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST),
+    items_skipped: skipPosts,
+    total_items: totalItems,
+    status_code: 0,
+    status_msg: '',
+  })
 }
 
 exports.updateMediaByID = async (req, res) => {
-  try {
-    let media = await MediaModel.findById(req.params.id)
-    let resMedia = null
-    media.media_content = req.body.media_content
-    media.media_status = req.body.media_status
-    if (media.media_title === req.body.media_title) {
-      media.media_title = req.body.media_title
-      resMedia = await media.save()
-      res.send({
-        status_code: 0,
-        status_msg: 'Post updated',
-      })
-    } else {
-      let newMediaSlug = slugify(req.body.media_title, { lower: true })
-      let slug = await generatePageSlug(media._id, newMediaSlug)
-      media.media_title = req.body.media_title
-      media.media_slug = slug
-      resMedia = await media.save()
-      res.send({
-        status_code: 0,
-        status_msg: 'Post updated',
-      })
-    }
-    req.pushBroadcastMessage({
-      channel: 'media-put',
-      data: { data: resMedia },
-    })
-  } catch (err) {
+  let media = await mediaQuery.updateByID({
+    id: req.params.id,
+    update_fields: {
+      media_title: req.body.media_title,
+    },
+  })
+  if (media.error) {
     res.send({
       status_code: 1,
-      status_msg: 'It was not updated',
+      status_msg: 'Media was not updated',
     })
+    return
   }
+  res.send({
+    status_code: 0,
+    status_msg: 'Media updated',
+  })
+  req.pushBroadcastMessage({
+    channel: 'media-put',
+    data: { data: media },
+  })
 }
 
 exports.deleteMediaByID = async (req, res) => {
-  try {
-    let media = await MediaModel.findByIdAndRemove(req.params.id)
-    res.send({
-      status_code: 0,
-      status_msg: 'Media deleted',
-    })
-    req.pushBroadcastMessage({
-      channel: 'media-delete',
-      data: { data: media },
-    })
-  } catch (err) {
+  let media = await mediaQuery.deleteByID(req.params.id)
+  if (media.error) {
     res.send({
       status_code: 1,
       status_msg: 'Error at delete media',
     })
+    return
   }
+  res.send({
+    status_code: 0,
+    status_msg: 'Media deleted',
+  })
+  req.pushBroadcastMessage({
+    channel: 'media-delete',
+    data: { data: media },
+  })
 }
 
 exports.getSettings = async (req, res) => {
@@ -1037,13 +1024,13 @@ exports.updateRoleByID = async (req, res) => {
       },
     ])
     roleUpdated = roleUpdated[0]
-    let sessions = await sessionQuery.sessionGetSessionsWithRole(roleID)
+    let sessions = await sessionQuery.getSessionsWithRole(roleID)
     if (sessions) {
       // NOTE: update sessions with the same roleID
       let sessionIDs = []
       for (let session of sessions)
         sessionIDs.push(session._id)
-      sessionQuery.sessionFindByIDAndUpdateResources(sessionIDs, roleUpdated.role_resources)
+      sessionQuery.findByIDAndUpdateResources(sessionIDs, roleUpdated.role_resources)
     }
     res.send({
       status_code: 0,
