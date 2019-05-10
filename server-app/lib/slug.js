@@ -2,20 +2,19 @@ const PostModel = require('../model/post-model')
 const PageModel = require('../model/page-model')
 
 
-const generatePostSlug = (id, slug) => {
-  return new Promise((resolve, reject) => {
+const generatePostSlug = async (id, slug) => {
+  try {
     const slugRegex = new RegExp(slug, 'i')
-    PostModel.find({ 'post_slug': slugRegex, '_id': { $ne: id } })
-      .then(post => {
-        if(post.length)
-          resolve(slug + '-' + post.length)
-        else
-          resolve(slug)
-      })
-      .catch(err => {
-        reject(err)
-      })
-  })
+    let post = await PostModel.find({ 'post_slug': slugRegex, '_id': { $ne: id } })
+      if(post.length)
+        return slug + '-' + post.length
+
+      return slug
+  } catch (err) {
+    return {
+      error: err.toString()
+    }
+  }
 }
 
 const generatePageSlug = (id, slug) => {

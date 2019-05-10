@@ -12,7 +12,6 @@ const {
   generatePageSlug,
 } = require('../lib/slug')
 
-const PostModel = require('../model/post-model')
 const PageModel = require('../model/page-model')
 const SettingModel = require('../model/setting-model')
 const SiteModel = require('../model/site-model')
@@ -25,6 +24,7 @@ const mediaQuery = require('../query/media-query')
 const searchQuery = require('../query/search-query')
 const dashboardQuery = require('../query/dashboard-query')
 const userQuery = require('../query/user-query')
+const postQuery = require('../query/post-query')
 
 
 exports.login = async (req, res) => {
@@ -215,125 +215,140 @@ exports.deleteUserByID = async (req, res) => {
 }
 
 exports.getPostByID = async (req, res) => {
-  try {
-    let post = await PostModel.findById(req.params.id)
-    res.send(post)
-  } catch (err) {
+  let post = await postQuery.getByID(req.params.id)
+  if (post.error) {
     res.send({
       status_code: 1,
       status_msg: 'Post not found',
     })
+    return
   }
+  res.send(post)
 }
 
 exports.addNewPost = async (req, res) => {
-  try {
-    let newPost = new PostModel(req.body)
-    let newPostSlug = slugify(req.body.post_title, { lower: true })
-    let slug = await generatePostSlug(null, newPostSlug)
-    newPost.post_date = dateTime.create().format('Y-m-d H:M:S')
-    newPost.post_slug = slug
-    let post = await newPost.save()
-    res.send({
-      status_code: 0,
-      status_msg: 'New post registered',
-      data: {
-        id: post.id
-      },
-    })
-    req.pushBroadcastMessage({
-      channel: 'post-post',
-      data: { data: post },
-    })
-  } catch (err) {
+  let bodyPostTitle = req.body.post_title
+  if (!bodyPostTitle) {
     res.send({
       status_code: 1,
       status_msg: 'Error at create post',
     })
+    return
   }
+  let newPostSlug = slugify(bodyPostTitle, { lower: true })
+  let slug = await generatePostSlug(null, newPostSlug)
+  if (slug.error) {
+    res.send({
+      status_code: 1,
+      status_msg: 'Error at create post',
+    })
+    return
+  }
+  req.body.post_date = dateTime.create().format('Y-m-d H:M:S')
+  req.body.post_slug = slug
+  let post = await postQuery.create(req.body)
+  if (post.error) {
+    res.send({
+      status_code: 1,
+      status_msg: 'Error at create post',
+    })
+    return
+  }
+  res.send({
+    status_code: 0,
+    status_msg: 'New post registered',
+    data: {
+      id: post.id
+    },
+  })
+  req.pushBroadcastMessage({
+    channel: 'post-post',
+    data: { data: post },
+  })
 }
 
 exports.getPostsByPage = async (req, res) => {
-  try {
-    let skipPosts = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
-    let [totalItems, items] = await Promise.all([
-      PostModel.countDocuments(),
-      PostModel.find()
-        .skip(skipPosts)
-        .limit(DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST)
-        .sort({ 'post_date': 'desc' })
-        .exec()
-    ])
-    res.send({
-      items: items,
-      total_pages: Math.ceil(totalItems / DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST),
-      items_skipped: skipPosts,
-      total_items: totalItems,
-      status_code: 0,
-      status_msg: '',
-    })
-  } catch (err) {
+  let skipItems = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
+  let totalItems = await postQuery.getTotalItems()
+  let ascSort = -1
+  let items = await postQuery.getItemsByPage({
+    skip: skipItems,
+    limit: DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST,
+    sort: { 'post_date': ascSort },
+  })
+  if (items.error) {
+    console.log(items.error)
     res.send({
       status_code: 1,
       status_msg: 'Error loading the posts',
     })
+    return
   }
+  res.send({
+    items: items,
+    total_pages: Math.ceil(totalItems / DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST),
+    items_skipped: skipItems,
+    total_items: totalItems,
+    status_code: 0,
+    status_msg: '',
+  })
 }
 
 exports.updatePostByID = async (req, res) => {
-  try {
-    let post = await PostModel.findById(req.params.id)
-    let postSaved = null
-    post.post_content = req.body.post_content
-    post.post_status = req.body.post_status
-    post.post_thumbnail = req.body.post_thumbnail
-    if (post.post_title === req.body.post_title) {
-      post.post_title = req.body.post_title
-      postSaved = await post.save()
-      res.send({
-        status_code: 0,
-        status_msg: 'Post updated',
-      })
-    } else {
-      let newPostSlug = slugify(req.body.post_title, { lower: true })
-      let slug = await generatePostSlug(post._id, newPostSlug)
-      post.post_title = req.body.post_title
-      post.post_slug = slug
-      postSaved = await post.save()
-      res.send({
-        status_code: 0,
-        status_msg: 'Post updated',
-      })
-    }
-    req.pushBroadcastMessage({
-      channel: 'post-put',
-      data: { data: postSaved },
+  let newPostSlug = slugify(req.body.post_title, { lower: true })
+  let slug = await generatePostSlug(req.params.id, newPostSlug)
+  if (slug.error) {
+    res.send({
+      status_code: 1,
+      status_msg: 'Error updating post',
     })
-  } catch (err) {
+    return
+  }
+  let objectData = {
+    id: req.params.id,
+    update_fields: {
+      post_title: req.body.post_title,
+      post_content: req.body.post_content,
+      post_status: req.body.post_status,
+      post_thumbnail: req.body.post_thumbnail,
+      post_slug: slug,
+    }
+  }
+  let post = await postQuery.updateByID(objectData)
+  if (post.error) {
     res.send({
       status_code: 1,
       status_msg: 'It was not updated',
     })
+    return
   }
+  res.send({
+    status_code: 0,
+    status_msg: 'Post updated',
+  })
+  req.pushBroadcastMessage({
+    channel: 'post-put',
+    data: { data: post },
+  })
 }
 
 exports.deletePostByID = async (req, res) => {
-  try {
-    let post = await PostModel.findByIdAndRemove(req.params.id)
-    res.send({
-      status_code: 0,
-      status_msg: 'Post deleted',
-    })
-    req.pushBroadcastMessage({
-      channel: 'post-delete',
-      data: { data: post },
-    })
-  } catch (err) {
+  let post = await postQuery.deleteByID(req.params.id)
+  if (post.error) {
     res.send({
       status_code: 1,
-      status_msg: 'Error at delete post',
+      status_msg: 'Error deleting post',
     })
+    return
   }
+  res.send({
+    status_code: 0,
+    status_msg: 'Post deleted',
+  })
+  req.pushBroadcastMessage({
+    channel: 'post-delete',
+    data: { data: post },
+  })
 }
 
 exports.getPageByID = async (req, res) => {
