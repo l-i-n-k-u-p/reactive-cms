@@ -12,7 +12,6 @@ const {
   generatePageSlug,
 } = require('../lib/slug')
 
-const UserModel = require('../model/user-model')
 const PostModel = require('../model/post-model')
 const PageModel = require('../model/page-model')
 const SettingModel = require('../model/setting-model')
@@ -25,69 +24,44 @@ const sessionQuery = require('../query/session-query')
 const mediaQuery = require('../query/media-query')
 const searchQuery = require('../query/search-query')
 const dashboardQuery = require('../query/dashboard-query')
+const userQuery = require('../query/user-query')
 
 
 exports.login = async (req, res) => {
-  const user_name = req.body.user_name
-  const user_pass = req.body.user_pass
-  try {
-    let roles = await RoleModel.find()
-    let user = await UserModel.aggregate([
-      {
-        $match: {
-          user_name: user_name,
-        },
-      },
-      {
-        $lookup: {
-          from: 'role',
-          localField: 'user_role_ref',
-          foreignField: '_id',
-          as: 'user_role',
-        },
-      },
-      {
-        $unwind: '$user_role',
-      },
-      {
-        $lookup: {
-          from: 'resource',
-          localField: 'user_role_ref',
-          foreignField: 'resource_role_ref',
-          as: 'user_resource',
-        },
-      },
-    ])
-    user = user[0]
-    if (!user)
-      throw new Error('Not valid user')
-    let result = await session.passwordIsEqual(user_pass, user.user_pass)
-    if (!result)
-      throw new Error('Not valid user')
-    req.session.user = {
-      user_id: user._id.toString(),
-      user_name: user.user_name,
-      user_email: user.user_email,
-      user_pass: user.user_pass,
-      user_role_ref: user.user_role_ref,
-      user_role: user.user_role,
-      user_resource: user.user_resource,
-    }
-    let roleExists = false
-    for (let role of roles) {
-      if (role.role_name === user.user_role.role_name)
-        roleExists = true
-    }
-    if (roleExists)
-      res.send({
-        user_id: user._id.toString(),
-      })
-    throw new Error('Not valid user')
-  } catch (err) {
+  const userName = req.body.user_name
+  const userPass = req.body.user_pass
+  let user = await userQuery.getByUserName(userName)
+  if (user.error) {
     res.send({
-      error_message: err.toString(),
+      error_message: user.error.toString(),
     })
+    return
   }
+  if (!user) {
+    res.send({
+      error_message: 'Not valid user',
+    })
+    return
+  }
+  let result = await session.passwordIsEqual(userPass, user.user_pass)
+  if (!result) {
+    res.send({
+      error_message: 'Not valid user',
+    })
+    return
+  }
+  req.session.user = {
+    user_id: user._id.toString(),
+    user_name: user.user_name,
+    user_email: user.user_email,
+    user_pass: user.user_pass,
+    user_role_ref: user.user_role_ref,
+    user_role: user.user_role,
+    user_resource: user.user_resource,
+  }
+  res.send({
+    user_id: user._id.toString(),
+  })
 }
 
 exports.search = async (req, res) => {
@@ -122,249 +96,122 @@ exports.searchMedia = async (req, res) => {
 }
 
 exports.getUsersPaged = async (req, res) => {
-  try {
-    let skipUsers = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
-    let ascSort = -1
-    let users = await UserModel.aggregate([
-      {
-        $sort: {
-          user_registration_date: ascSort,
-        },
-      },
-      {
-        $lookup: {
-          from: 'role',
-          localField: 'user_role_ref',
-          foreignField: '_id',
-          as: 'user_role',
-        },
-      },
-      {
-        $unwind: '$user_role',
-      },
-      {
-        $project: {
-          user_first_name: true,
-          user_last_name: true,
-          user_name: true,
-          user_email: true,
-          user_registration_date: true,
-          user_active: true,
-          user_thumbnail: true,
-          user_avatar: true,
-          user_role_ref: true,
-          user_role: true,
-        },
-      },
-      {
-        $skip: skipUsers,
-      },
-      {
-        $limit: DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST,
-      },
-    ])
-    res.send({
-      items: users,
-      total_pages: Math.ceil(users.length / DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST),
-      items_skipped: skipUsers,
-      total_items: users.length,
-      status_code: 0,
-      status_msg: '',
-    })
-  } catch (err) {
+  let ascSort = -1
+  let skipItems = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
+  let totalItems = await userQuery.getTotalItems()
+  let items = await userQuery.getItemsByPage({
+    skip: skipItems,
+    limit: DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST,
+    sort: { user_registration_date: ascSort },
+  })
+  if (items.error) {
     res.send({
       status_code: 1,
       status_msg: 'Error loading users',
     })
+    return
   }
+  res.send({
+    items: items,
+    total_pages: Math.ceil(totalItems / DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST),
+    items_skipped: skipItems,
+    total_items: totalItems,
+    status_code: 0,
+    status_msg: '',
+  })
 }
 
 exports.getUserByID = async (req, res) => {
-  try {
-    let objectId = mongoose.Types.ObjectId(req.params.id)
-    let user = await UserModel.aggregate([
-      {
-        $match: {
-          _id: objectId,
-        },
-      },
-      {
-        $lookup: {
-          from: 'role',
-          localField: 'user_role_ref',
-          foreignField: '_id',
-          as: 'user_role',
-        },
-      },
-      {
-        $unwind: '$user_role',
-      },
-      {
-        $lookup: {
-          from: 'resource',
-          localField: 'user_role_ref',
-          foreignField: 'resource_role_ref',
-          as: 'user_resource',
-        },
-      },
-      {
-        $project: {
-          user_first_name: true,
-          user_last_name: true,
-          user_name: true,
-          user_email: true,
-          user_active: true,
-          user_registration_date: true,
-          user_thumbnail: true,
-          user_avatar: true,
-          user_role_ref: true,
-          user_role: true,
-          user_resource: true,
-        },
-      },
-      {
-        $addFields: {
-          id: req.params.id,
-        },
-      },
-    ])
-    res.send(user[0])
-  } catch (err) {
-    res.send({
-      status_code: 1,
-      status_msg: 'User not found',
-    })
-  }
-}
-
-exports.addNewUser = async (req, res) => {
-  try {
-    let newUser = new UserModel(req.body)
-    newUser.user_registration_date = dateTime.create().format('Y-m-d H:M:S')
-    let newPassword = await session.hashPassword(newUser.user_pass)
-    newUser.user_pass = newPassword
-    let user = await newUser.save()
-    res.send({
-      status_code: 0,
-      status_msg: 'New user registered',
-      data: {
-        id: newUser.id
-      }
-    })
-    req.pushBroadcastMessage({
-      channel: 'user-post',
-      data: { data: user },
-    })
-  } catch (err) {
+  let user = await userQuery.getByID(req.params.id)
+  if (user.error) {
     res.send({
       status_code: 1,
       status_msg: err.toString(),
     })
+    return
   }
+  res.send(user)
+}
+
+exports.addNewUser = async (req, res) => {
+  let userData = req.body
+  userData.user_registration_date = dateTime.create().format('Y-m-d H:M:S')
+  userData.user_pass = await session.hashPassword(userData.user_pass)
+  let newUser = await userQuery.create(userData)
+  if (newUser.error) {
+    res.send({
+      status_code: 1,
+      status_msg: err.toString(),
+    })
+    return
+  }
+  res.send({
+    status_msg: 'New user registered',
+    data: {
+      id: newUser.id
+    }
+  })
+  req.pushBroadcastMessage({
+    channel: 'user-post',
+    data: { data: newUser },
+  })
 }
 
 exports.updateUserByID = async (req, res) => {
-  try {
-    if (req.body.user_pass === undefined || !req.body.user_pass.length)
-      delete req.body.user_pass
-    else {
-      let newPassword = await session.hashPassword(req.body.user_pass)
-      req.body.user_pass = newPassword
-    }
-    let user = await UserModel.findOneAndUpdate({
-      '_id': req.params.id,
-    }, req.body, {
-      new: true,
-    })
-    let sessionFinished = await session.currentUserSessionDataChanged(user, req)
-    if (sessionFinished)
-      session.removeUserSessionOnDB(user._id)
-    let message = 'User updated'
-    if (sessionFinished)
-      message = 'User updated and session finished'
-    let objectId = mongoose.Types.ObjectId(req.params.id)
-    await sessionQuery.refreshUserSessionByID(objectId)
-    let newUserData = await UserModel.aggregate([
-      {
-        $match: {
-          _id: objectId,
-        },
-      },
-      {
-        $lookup: {
-          from: 'role',
-          localField: 'user_role_ref',
-          foreignField: '_id',
-          as: 'user_role',
-        },
-      },
-      {
-        $unwind: '$user_role',
-      },
-      {
-        $lookup: {
-          from: 'resource',
-          localField: 'user_role_ref',
-          foreignField: 'resource_role_ref',
-          as: 'user_resource',
-        },
-      },
-      {
-        $project: {
-          user_first_name: true,
-          user_last_name: true,
-          user_name: true,
-          user_email: true,
-          user_active: true,
-          user_registration_date: true,
-          user_thumbnail: true,
-          user_avatar: true,
-          user_role_ref: true,
-          user_role: true,
-          user_resource: true,
-        },
-      },
-      {
-        $addFields: {
-          id: req.params.id,
-        },
-      },
-    ])
-    newUserData = newUserData[0]
-    res.send({
-      status_code: 0,
-      status_msg: message,
-    })
-    req.pushBroadcastMessage({
-      channel: 'user-put',
-      data: { data: newUserData },
-    })
-  } catch (err) {
+  if (req.body.user_pass === undefined || !req.body.user_pass.length)
+    delete req.body.user_pass
+  else {
+    let newPassword = await session.hashPassword(req.body.user_pass)
+    req.body.user_pass = newPassword
+  }
+  let userUpdated = await userQuery.updateByID({
+    id: req.params.id,
+    update_fields: req.body,
+  })
+  if (userUpdated.error) {
     res.send({
       status_code: 1,
-      status_msg: 'It could not update the user.\n' + err.toString(),
+      status_msg: 'It could not update the user',
     })
+    return
   }
+  let sessionFinished = await session.currentUserSessionDataChanged(userUpdated, req)
+  if (sessionFinished)
+    session.removeUserSessionOnDB(userUpdated._id)
+  let message = 'User updated'
+  if (sessionFinished)
+    message = 'User updated and session finished'
+  let objectId = mongoose.Types.ObjectId(userUpdated._id)
+  await sessionQuery.refreshUserSessionByID(objectId)
+  let newUserData = await userQuery.getByID(userUpdated._id)
+  res.send({
+    status_code: 0,
+    status_msg: message,
+  })
+  req.pushBroadcastMessage({
+    channel: 'user-put',
+    data: { data: newUserData },
+  })
 }
 
 exports.deleteUserByID = async (req, res) => {
-  try {
-    let user = await UserModel.findByIdAndRemove(req.params.id)
-    session.removeUserSessionOnDB(user._id)
-    res.send({
-      status_code: 0,
-      status_msg: 'User deleted',
-    })
-    req.pushBroadcastMessage({
-      channel: 'user-delete',
-      data: { data: user },
-    })
-  } catch (err) {
+  let userDeleted = await userQuery.deleteByID(req.params.id)
+  if (userDeleted.error) {
     res.send({
       status_code: 1,
       status_msg: 'Error at delete user',
     })
+    return
   }
+  session.removeUserSessionOnDB(userDeleted._id)
+  res.send({
+    status_code: 0,
+    status_msg: 'User deleted',
+  })
+  req.pushBroadcastMessage({
+    channel: 'user-delete',
+    data: { data: userDeleted },
+  })
 }
 
 exports.getPostByID = async (req, res) => {
