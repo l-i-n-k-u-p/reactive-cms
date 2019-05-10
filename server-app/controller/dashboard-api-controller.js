@@ -12,7 +12,6 @@ const {
   generatePageSlug,
 } = require('../lib/slug')
 
-const SettingModel = require('../model/setting-model')
 const SiteModel = require('../model/site-model')
 const RoleModel = require('../model/role-model')
 const ViewModel = require('../model/view-model')
@@ -25,6 +24,7 @@ const dashboardQuery = require('../query/dashboard-query')
 const userQuery = require('../query/user-query')
 const postQuery = require('../query/post-query')
 const pageQuery = require('../query/page-query')
+const settingQuery = require('../query/setting-query')
 
 
 exports.login = async (req, res) => {
@@ -603,36 +603,40 @@ exports.deleteMediaByID = async (req, res) => {
 }
 
 exports.getSettings = async (req, res) => {
-  try {
-    let settings = await SettingModel.findOne()
-    res.send(settings)
-  } catch (err) {
+  let settings = await settingQuery.getAll()
+  if (settings.error) {
     res.send({
       status_code: 1,
       status_msg: 'Settings not found',
     })
+    return
   }
+  res.send(settings)
 }
 
 exports.updateSettings = async (req, res) => {
-  if (req.body)
-    try {
-      let settings = await SettingModel.findOneAndUpdate({ '_id': req.body.id }, req.body, { new: true })
-      DASHBOARD_ADMIN_CONFIG.loadDashboardSettings()
-      res.send({
-        status_code: 0,
-        status_msg: 'Settings updated',
-      })
-      req.pushBroadcastMessage({
-        channel: 'settings-put',
-        data: { data: settings },
-      })
-    } catch (err) {
+  if (req.body) {
+    let settings = await settingQuery.update({
+      id: req.body.id,
+      update_fields: req.body,
+    })
+    if (settings.error) {
       res.send({
         status_code: 1,
         status_msg: 'It could not update the settings',
       })
+      return
     }
+    DASHBOARD_ADMIN_CONFIG.loadDashboardSettings()
+    res.send({
+      status_code: 0,
+      status_msg: 'Settings updated',
+    })
+    req.pushBroadcastMessage({
+      channel: 'settings-put',
+      data: { data: settings },
+    })
+  }
 }
 
 exports.getSiteSettings = async (req, res) => {
