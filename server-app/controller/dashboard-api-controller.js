@@ -24,6 +24,7 @@ const ResourceModel = require('../model/resource-model')
 
 const sessionQuery = require('../query/session-query')
 const mediaQuery = require('../query/media-query')
+const searchQuery = require('../query/search-query')
 
 
 exports.login = async (req, res) => {
@@ -90,26 +91,17 @@ exports.login = async (req, res) => {
 }
 
 exports.search = async (req, res) => {
-  try {
-    const searchRegex = new RegExp(req.query.search, 'i')
-    let data = await Promise.all([
-      UserModel.find({ 'user_name': searchRegex }).select(['user_name']).exec(),
-      PostModel.find({ 'post_title': searchRegex }).select(['post_title']).exec(),
-      PageModel.find({ 'page_title': searchRegex }).select(['page_title']).exec(),
-      MediaModel.find({ 'media_title': searchRegex }).select(['media_title']).exec(),
-      RoleModel.find({ 'role_name': searchRegex }).select(['role_name']).exec(),
-    ])
-    res.send({
-      items: data,
-      status_code: 0,
-      status_msg: '',
-    })
-  } catch (err) {
+  let items = await searchQuery.getItemsWithWord(req.query.search)
+  if (items.error) {
     res.send({
       status_code: 1,
       status_msg: 'Error searching',
     })
+    return
   }
+  res.send({
+    items: items,
+  })
 }
 
 exports.searchMedia = async (req, res) => {
