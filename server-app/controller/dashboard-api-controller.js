@@ -13,7 +13,6 @@ const {
 } = require('../lib/slug')
 
 const RoleModel = require('../model/role-model')
-const ViewModel = require('../model/view-model')
 const ResourceModel = require('../model/resource-model')
 
 const sessionQuery = require('../query/session-query')
@@ -25,6 +24,7 @@ const postQuery = require('../query/post-query')
 const pageQuery = require('../query/page-query')
 const settingQuery = require('../query/setting-query')
 const siteQuery = require('../query/site-query')
+const viewQuery = require('../query/view-query')
 
 
 exports.login = async (req, res) => {
@@ -964,17 +964,17 @@ exports.deleteRoleByID = async (req, res) => {
 }
 
 exports.getViewNames = async (req, res) => {
-  try {
-    let items = await ViewModel.find()
-    res.send({
-      items: items,
-      status_code: 0,
-      status_msg: '',
-    })
-  } catch (err) {
+  let views = await viewQuery.getAll()
+  if (views.error) {
     res.send({
       status_code: 1,
       status_msg: 'Views not found',
     })
+    return
   }
+  res.send({
+    items: views,
+    status_code: 0,
+    status_msg: '',
+  })
 }
