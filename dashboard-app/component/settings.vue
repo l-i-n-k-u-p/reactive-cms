@@ -255,12 +255,10 @@ export default {
     },
     setOnChangeSetting: function() {
       this.site.on('change', ({ attribute, value }) => {
-        if (attribute === 'site_template_home') {
+        if (attribute === 'site_template_home')
           this.setIndexPageTemplate()
-        }
-        if (attribute === 'site_template_posts') {
+        if (attribute === 'site_template_posts')
           this.setIndexPostsTemplate()
-        }
       })
     },
     setInitialSelectPages: function() {
@@ -270,7 +268,7 @@ export default {
         value: '',
       })
       for (let template of templates) {
-        let pageID = template.get('id')
+        let pageID = template.get('_id')
         let pageTitle = template.get('page_title')
         this.templateHomeOptions.push({
           name: pageTitle,

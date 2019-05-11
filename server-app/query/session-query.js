@@ -4,7 +4,7 @@ const SessionModel = require('../model/session-model')
 const UserModel = require('../model/user-model')
 
 
-const sessionGetSessionsWithRole = async (roleID) => {
+const getSessionsWithRole = async (roleID) => {
   let objectID = mongoose.Types.ObjectId(roleID)
   let sessions = await SessionModel.find({
     'session.user.user_role._id': objectID
@@ -12,7 +12,7 @@ const sessionGetSessionsWithRole = async (roleID) => {
   return sessions
 }
 
-const sessionFindByIDAndUpdateResources = async (sessionIDs, resources) => {
+const findByIDAndUpdateResources = async (sessionIDs, resources) => {
   try {
     let criteria = {
       _id: { $in: sessionIDs }
@@ -74,13 +74,14 @@ const refreshUserSessionByID = async (objectID) => {
     }, { multi: true })
     return sessionsUpdated
   } catch (err) {
-    return err
+    return {
+      error: err
+    }
   }
 }
 
-
 module.exports = {
-  sessionGetSessionsWithRole: sessionGetSessionsWithRole,
-  sessionFindByIDAndUpdateResources: sessionFindByIDAndUpdateResources,
+  getSessionsWithRole: getSessionsWithRole,
+  findByIDAndUpdateResources: findByIDAndUpdateResources,
   refreshUserSessionByID: refreshUserSessionByID,
 }
