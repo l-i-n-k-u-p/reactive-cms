@@ -7,7 +7,7 @@ const getAll = async () => {
     return item
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }
@@ -20,7 +20,7 @@ const update = async (objectData) => {
     return item
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }
@@ -31,7 +31,7 @@ const create = async (objectData) => {
     return item
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }

@@ -12,7 +12,7 @@ const searchMedia = async (objectData) => {
     return items
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }
@@ -23,7 +23,7 @@ const getByID = async (id) => {
     return mediaItem
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }
@@ -35,7 +35,7 @@ const createNewMedia = async (objectData) => {
     return resMedia
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }
@@ -50,7 +50,7 @@ const getMediaItemsByPage = async (objectData) => {
     return mediaItems
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }
@@ -61,7 +61,7 @@ const getTotalItems = async () => {
     return totalItems
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }
@@ -74,7 +74,7 @@ const updateByID = async (objectData) => {
     return media
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }
@@ -85,7 +85,7 @@ const deleteByID = async (id) => {
     return media
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }

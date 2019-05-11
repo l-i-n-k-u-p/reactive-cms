@@ -12,7 +12,7 @@ const generatePostSlug = async (id, slug) => {
       return slug
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }

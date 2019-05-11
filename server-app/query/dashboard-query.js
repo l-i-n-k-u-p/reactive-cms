@@ -29,7 +29,7 @@ const getLog = async (word) => {
     return items
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }

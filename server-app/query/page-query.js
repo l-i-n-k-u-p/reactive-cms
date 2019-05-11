@@ -7,7 +7,7 @@ const getByID = async (id) => {
     return item
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }
@@ -18,7 +18,7 @@ const create = async (objectData) => {
     return item
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }
@@ -39,7 +39,7 @@ const getItemsByPage = async (objectData) => {
     return items
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }
@@ -50,7 +50,7 @@ const getTotalItems = async () => {
     return totalItems
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }
@@ -63,7 +63,7 @@ const updateByID = async (objectData) => {
     return item
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }
@@ -74,7 +74,7 @@ const deleteByID = async (id) => {
     return item
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }
@@ -85,7 +85,7 @@ const getBySlug = async (slug) => {
     return item
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }

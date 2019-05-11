@@ -7,7 +7,7 @@ const getAll = async () => {
     return item
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }
@@ -19,9 +19,8 @@ const update = async (objectData) => {
     }, objectData.update_fields, { new: true })
     return item
   } catch (err) {
-    console.log('== err ==', err)
     return {
-      error: err.toString()
+      error: err
     }
   }
 }
@@ -32,7 +31,7 @@ const create = async (objectData) => {
     return item
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }

@@ -34,7 +34,7 @@ const getByUserName = async (userName) => {
     return user[0]
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }
@@ -80,7 +80,7 @@ const getItemsByPage = async (objectData) => {
     return users
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }
@@ -91,7 +91,7 @@ const getTotalItems = async () => {
     return totalItems
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }
@@ -148,7 +148,7 @@ const getByID = async (id) => {
     return user[0]
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }
@@ -160,7 +160,7 @@ const create = async (objectData) => {
     return userSaved
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }
@@ -175,7 +175,7 @@ const updateByID = async (objectData) => {
     return user
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }
@@ -186,7 +186,7 @@ const deleteByID = async (id) => {
     return userDeleted
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }

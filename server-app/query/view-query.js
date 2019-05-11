@@ -7,7 +7,7 @@ const getAll = async () => {
     return items
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }
@@ -18,7 +18,7 @@ const createMany = async (itemsData) => {
     return items
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }

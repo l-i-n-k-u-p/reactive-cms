@@ -7,7 +7,7 @@ const create = async (ObjectData) => {
     return item
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }
@@ -23,7 +23,7 @@ const updateByID = async (objectData) => {
     return item
   } catch (err) {
     return {
-      rerror: err.toString()
+      rerror: err
     }
   }
 }
@@ -37,7 +37,7 @@ const deleteByRoleRef = async (roleID) => {
     return item
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }
@@ -48,7 +48,7 @@ const createMany = async (itemsData) => {
     return items
   } catch (err) {
     return {
-      rerror: err.toString()
+      rerror: err
     }
   }
 }
