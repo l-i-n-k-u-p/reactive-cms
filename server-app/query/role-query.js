@@ -112,6 +112,17 @@ const deleteByID = async (id) => {
   }
 }
 
+const getAll = async () => {
+  try {
+    let items = await RoleModel.find()
+    return items
+  } catch (err) {
+    return {
+      error: err.toString()
+    }
+  }
+}
+
 module.exports = {
   getTotalItems: getTotalItems,
   getItemsByPage: getItemsByPage,
@@ -119,4 +130,5 @@ module.exports = {
   updateByID: updateByID,
   create: create,
   deleteByID: deleteByID,
+  getAll: getAll,
 }
