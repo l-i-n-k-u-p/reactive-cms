@@ -12,8 +12,6 @@ const {
   generatePageSlug,
 } = require('../lib/slug')
 
-const RoleModel = require('../model/role-model')
-
 const sessionQuery = require('../query/session-query')
 const mediaQuery = require('../query/media-query')
 const searchQuery = require('../query/search-query')
@@ -25,6 +23,7 @@ const settingQuery = require('../query/setting-query')
 const siteQuery = require('../query/site-query')
 const viewQuery = require('../query/view-query')
 const resourceQuery = require('../query/resource-query')
+const roleQuery = require('../query/role-query')
 
 
 exports.login = async (req, res) => {
@@ -718,242 +717,170 @@ exports.getTemplateFileNames = async (req, res) => {
 }
 
 exports.getRolesByPage = async (req, res) => {
-  try {
-    let skipItems = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
-    let ascSort = -1
-    let items = await RoleModel.aggregate([
-      {
-        $sort: {
-          _id: ascSort,
-        },
-      },
-      {
-        $lookup: {
-          from: 'resource',
-          localField: '_id',
-          foreignField: 'resource_role_ref',
-          as: 'role_resources',
-        }
-      },
-      {
-        $skip: skipItems,
-      },
-      {
-        $limit: DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST,
-      }
-    ])
-    let totalItems = items.length
-    res.send({
-      items: items,
-      total_pages: Math.ceil(totalItems / DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST),
-      items_skipped: skipItems,
-      total_items: totalItems,
-      status_code: 0,
-      status_msg: '',
-    })
-  } catch (err) {
+  let skipItems = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
+  let ascSort = -1
+  let totalItems = await roleQuery.getTotalItems()
+  if (totalItems.error) {
     res.send({
       status_code: 1,
       status_msg: 'Error loading the roles',
     })
+    return
   }
+  let items = await roleQuery.getItemsByPage({
+    sort: ascSort,
+    skip: skipItems,
+    limit: DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST,
+  })
+  if (items.error) {
+    res.send({
+      status_code: 1,
+      status_msg: 'Error loading the roles',
+    })
+    return
+  }
+  res.send({
+    items: items,
+    total_pages: Math.ceil(totalItems / DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST),
+    items_skipped: skipItems,
+    total_items: totalItems,
+    status_code: 0,
+    status_msg: '',
+  })
 }
 
 exports.getRoleByID = async (req, res) => {
-  let objectId = mongoose.Types.ObjectId(req.params.id)
-  try {
-    let item = await RoleModel.aggregate([
-      {
-        $match: {
-          _id: objectId,
-        },
-      },
-      {
-        $lookup: {
-          from: 'resource',
-          localField: '_id',
-          foreignField: 'resource_role_ref',
-          as: 'role_resources',
-        },
-      },
-      {
-        $addFields: {
-          id: req.params.id,
-        },
-      },
-    ])
-    if (!item.length)
-      throw new Error('Role not found')
-
-    res.send(item[0])
-  } catch (err) {
+  let role = await roleQuery.getByID(req.params.id)
+  if (role.error) {
     res.send({
       status_code: 1,
       status_msg: 'Role not found',
     })
+    return
   }
+  res.send(role)
 }
 
 exports.updateRoleByID = async (req, res) => {
-  try {
-    let roleID = req.params.id
-    let roleResources = req.body.role_resources
-    let role = await RoleModel.findById(roleID)
-    role.role_name = req.body.role_name
-    await role.save()
-    let resourcesToUpate = []
-    let resourcesToSave = []
-    for (let resource of roleResources) {
-      if (resource._id)
-        resourcesToUpate.push(resource)
-      else
-        resourcesToSave.push(resource)
-    }
-    if (resourcesToSave) {
-      for (let res of resourcesToSave) {
-        let resourceData = {
-          resource_name: res.resource_name,
-          resource_role_ref: role._id,
-          resource_permission: res.resource_permission,
-        }
-        await resourceQuery.create(resourceData)
-      }
-    }
-    if (resourcesToUpate) {
-      for (let res of resourcesToUpate) {
-        let resourceData = {
-          id: res._id,
-          update_fields: {
-            resource_name: res.resource_name,
-            resource_permission: res.resource_permission,
-          },
-        }
-        await resourceQuery.updateByID(resourceData)
-      }
-    }
-    let objectId = mongoose.Types.ObjectId(roleID)
-    let roleUpdated = await RoleModel.aggregate([
-      {
-        $match: {
-          _id: objectId,
-        }
-      },
-      {
-        $lookup: {
-          from: 'resource',
-          localField: '_id',
-          foreignField: 'resource_role_ref',
-          as: 'role_resources'
-        },
-      },
-      {
-        $addFields: {
-          id: roleID,
-        },
-      },
-    ])
-    roleUpdated = roleUpdated[0]
-    let sessions = await sessionQuery.getSessionsWithRole(roleID)
-    if (sessions) {
-      // NOTE: update sessions with the same roleID
-      let sessionIDs = []
-      for (let session of sessions)
-        sessionIDs.push(session._id)
-      sessionQuery.findByIDAndUpdateResources(sessionIDs, roleUpdated.role_resources)
-    }
-    res.send({
-      status_code: 0,
-      status_msg: 'Role updated',
-    })
-    req.pushBroadcastMessage({
-      channel: 'role-put',
-      data: {
-        data: roleUpdated,
-      },
-    })
-  } catch (err) {
+  let roleID = req.params.id
+  let roleResources = req.body.role_resources
+  let role = await roleQuery.updateByID({
+    id: roleID,
+    update_fields: {
+      role_name: req.body.role_name
+    },
+  })
+  if (role.error) {
     res.send({
       status_code: 1,
-      status_msg: 'It was not updated',
+      status_msg: 'It was not updatedss',
     })
+    return
   }
-}
-
-exports.addNewRole = async (req, res) => {
-  try {
-    let role = new RoleModel()
-    role.role_name = req.body.role_name
-    role.role_user_ref = req.session.user.user_id
-    let newRole = await role.save()
-    let queries = []
-    for (let resource of req.body.role_resources) {
+  let resourcesToUpate = []
+  let resourcesToSave = []
+  for (let resource of roleResources) {
+    if (resource._id)
+      resourcesToUpate.push(resource)
+    else
+      resourcesToSave.push(resource)
+  }
+  if (resourcesToSave) {
+    for (let res of resourcesToSave) {
       let resourceData = {
-        resource_name: resource.resource_name,
-        resource_role_ref: newRole._id,
-        resource_permission: resource.resource_permission,
+        resource_name: res.resource_name,
+        resource_role_ref: role._id,
+        resource_permission: res.resource_permission,
       }
       await resourceQuery.create(resourceData)
     }
-    await Promise.all(queries)
-    let objectId = mongoose.Types.ObjectId(newRole._id)
-    let item = await RoleModel.aggregate([
-      {
-        $match: {
-          _id: objectId,
+  }
+  if (resourcesToUpate) {
+    for (let res of resourcesToUpate) {
+      let resourceData = {
+        id: res._id,
+        update_fields: {
+          resource_name: res.resource_name,
+          resource_permission: res.resource_permission,
         },
-      },
-      {
-        $lookup: {
-          from: 'resource',
-          localField: '_id',
-          foreignField: 'resource_role_ref',
-          as: 'role_resources',
-        },
-      },
-      {
-        $addFields: {
-          id: newRole._id,
-        },
-      },
-    ])
-    res.send({
-      data: item[0],
-      status_code: 0,
-      status_msg: 'New role registered',
-    })
-    req.pushBroadcastMessage({
-      channel: 'role-post',
-      data: { data: item[0] },
-    })
-  } catch (err) {
+      }
+      await resourceQuery.updateByID(resourceData)
+    }
+  }
+  let roleUpdated = await roleQuery.getByID(roleID)
+  let sessions = await sessionQuery.getSessionsWithRole(roleID)
+  if (sessions) {
+    // NOTE: update sessions with the same roleID
+    let sessionIDs = []
+    for (let session of sessions)
+      sessionIDs.push(session._id)
+    sessionQuery.findByIDAndUpdateResources(sessionIDs, roleUpdated.role_resources)
+  }
+  res.send({
+    status_code: 0,
+    status_msg: 'Role updated',
+  })
+  req.pushBroadcastMessage({
+    channel: 'role-put',
+    data: {
+      data: roleUpdated,
+    },
+  })
+}
+
+exports.addNewRole = async (req, res) => {
+  let role = await roleQuery.create({
+    role_name: req.body.role_name,
+    role_user_ref: req.session.user.user_id,
+  })
+  if (role.error) {
     res.send({
       status_code: 1,
       status_msg: 'Role not registered',
     })
+    return
   }
+  for (let resource of req.body.role_resources) {
+    let resourceData = {
+      resource_name: resource.resource_name,
+      resource_role_ref: role._id,
+      resource_permission: resource.resource_permission,
+    }
+    await resourceQuery.create(resourceData)
+  }
+  let objectId = mongoose.Types.ObjectId(role._id)
+  let roleCreated = await roleQuery.getByID(role._id)
+  res.send({
+    data: roleCreated,
+    status_code: 0,
+    status_msg: 'New role registered',
+  })
+  req.pushBroadcastMessage({
+    channel: 'role-post',
+    data: { data: roleCreated },
+  })
 }
 
 exports.deleteRoleByID = async (req, res) => {
-  try {
-    let id = req.params.id
-    await resourceQuery.deleteByRoleRef(id)
-    let role = await RoleModel.findByIdAndRemove(id)
-    res.send({
-      status_code: 0,
-      status_msg: 'Role deleted',
-    })
-    req.pushBroadcastMessage({
-      channel: 'role-delete',
-      data: {
-        data: role,
-      },
-    })
-  } catch (err) {
+  let id = req.params.id
+  await resourceQuery.deleteByRoleRef(id)
+  let role = await roleQuery.deleteByID(id)
+  if (role.error) {
     res.send({
       status_code: 1,
       status_msg: 'Error at delete role',
     })
   }
+  res.send({
+    status_code: 0,
+    status_msg: 'Role deleted',
+  })
+  req.pushBroadcastMessage({
+    channel: 'role-delete',
+    data: {
+      data: role,
+    },
+  })
 }
 
 exports.getViewNames = async (req, res) => {
