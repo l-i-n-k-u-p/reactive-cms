@@ -42,8 +42,20 @@ const deleteByRoleRef = async (roleID) => {
   }
 }
 
+const createMany = async (itemsData) => {
+  try {
+    let items = await ResourceModel.insertMany(itemsData)
+    return items
+  } catch (err) {
+    return {
+      rerror: err.toString()
+    }
+  }
+}
+
 module.exports = {
   create: create,
   updateByID: updateByID,
   deleteByRoleRef: deleteByRoleRef,
+  createMany: createMany,
 }

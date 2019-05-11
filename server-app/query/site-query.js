@@ -26,7 +26,19 @@ const update = async (objectData) => {
   }
 }
 
+const create = async (objectData) => {
+  try {
+    let item = new SiteModel(objectData).save()
+    return item
+  } catch (err) {
+    return {
+      error: err.toString()
+    }
+  }
+}
+
 module.exports = {
   getAll: getAll,
   update: update,
+  create: create,
 }

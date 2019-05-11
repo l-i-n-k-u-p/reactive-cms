@@ -12,6 +12,18 @@ const getAll = async () => {
   }
 }
 
+const createMany = async (itemsData) => {
+  try {
+    let items = await ViewModel.insertMany(itemsData)
+    return items
+  } catch (err) {
+    return {
+      error: err.toString()
+    }
+  }
+}
+
 module.exports = {
   getAll: getAll,
+  createMany: createMany,
 }

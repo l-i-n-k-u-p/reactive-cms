@@ -39,7 +39,7 @@ const getItemsByPage = async (objectData) => {
     return items
   } catch (err) {
     return {
-      error: err.toString()
+      error: err
     }
   }
 }
@@ -79,6 +79,17 @@ const deleteByID = async (id) => {
   }
 }
 
+const getBySlug = async (slug) => {
+  try {
+    let item = await PostModel.findOne({ 'post_slug': slug })
+    return item
+  } catch (err) {
+    return {
+      error: err.toString()
+    }
+  }
+}
+
 module.exports = {
   getByID: getByID,
   create: create,
@@ -86,4 +97,5 @@ module.exports = {
   getTotalItems: getTotalItems,
   updateByID: updateByID,
   deleteByID: deleteByID,
+  getBySlug: getBySlug,
 }
