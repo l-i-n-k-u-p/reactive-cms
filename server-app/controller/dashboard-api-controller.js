@@ -12,7 +12,6 @@ const {
   generatePageSlug,
 } = require('../lib/slug')
 
-const SiteModel = require('../model/site-model')
 const RoleModel = require('../model/role-model')
 const ViewModel = require('../model/view-model')
 const ResourceModel = require('../model/resource-model')
@@ -25,6 +24,7 @@ const userQuery = require('../query/user-query')
 const postQuery = require('../query/post-query')
 const pageQuery = require('../query/page-query')
 const settingQuery = require('../query/setting-query')
+const siteQuery = require('../query/site-query')
 
 
 exports.login = async (req, res) => {
@@ -277,7 +277,6 @@ exports.getPostsByPage = async (req, res) => {
     sort: { 'post_date': ascSort },
   })
   if (items.error) {
-    console.log(items.error)
     res.send({
       status_code: 1,
       status_msg: 'Error loading the posts',
@@ -399,7 +398,6 @@ exports.getPagesByPage = async (req, res) => {
     sort: { 'page_date': ascSort },
   })
   if (items.error) {
-    console.log(items.error)
     res.send({
       status_code: 1,
       status_msg: 'Error loading the pages',
@@ -615,61 +613,67 @@ exports.getSettings = async (req, res) => {
 }
 
 exports.updateSettings = async (req, res) => {
-  if (req.body) {
-    let settings = await settingQuery.update({
-      id: req.body.id,
-      update_fields: req.body,
-    })
-    if (settings.error) {
-      res.send({
-        status_code: 1,
-        status_msg: 'It could not update the settings',
-      })
-      return
-    }
-    DASHBOARD_ADMIN_CONFIG.loadDashboardSettings()
+  if (!req.body)
+    return
+
+  let settings = await settingQuery.update({
+    id: req.body.id,
+    update_fields: req.body,
+  })
+  if (settings.error) {
     res.send({
-      status_code: 0,
-      status_msg: 'Settings updated',
+      status_code: 1,
+      status_msg: 'It could not update the settings',
     })
-    req.pushBroadcastMessage({
-      channel: 'settings-put',
-      data: { data: settings },
-    })
+    return
   }
+  DASHBOARD_ADMIN_CONFIG.loadDashboardSettings()
+  res.send({
+    status_code: 0,
+    status_msg: 'Settings updated',
+  })
+  req.pushBroadcastMessage({
+    channel: 'settings-put',
+    data: { data: settings },
+  })
 }
 
 exports.getSiteSettings = async (req, res) => {
-  try {
-    let siteSettings = await SiteModel.findOne()
-    res.send(siteSettings)
-  } catch (err) {
+  let siteSettings = await siteQuery.getAll()
+  if (siteSettings.error) {
     res.send({
       status_code: 1,
       status_msg: 'Site settings not found',
     })
+    return
   }
+  res.send(siteSettings)
 }
 
 exports.updateSiteSettings = async (req, res) => {
-  if (req.body)
-    try {
-      let siteSettings = await SiteModel.findOneAndUpdate({ '_id': req.body.id }, req.body, { new: true })
-      SITE_CONFIG.loadSiteSettings()
-      res.send({
-        status_code: 0,
-        status_msg: 'Settings updated',
-      })
-      req.pushBroadcastMessage({
-        channel: 'site-settings-put',
-        data: { data: siteSettings },
-      })
-    } catch (err) {
-      res.send({
-        status_code: 1,
-        status_msg: 'It could not update the site settings',
-      })
-    }
+  if (!req.body)
+    return
+
+  let siteSettings = await siteQuery.update({
+    id: req.body.id,
+    update_fields: req.body,
+  })
+  if (siteSettings.error) {
+    res.send({
+      status_code: 1,
+      status_msg: 'It could not update the site settings',
+    })
+    return
+  }
+  SITE_CONFIG.loadSiteSettings()
+  res.send({
+    status_code: 0,
+    status_msg: 'Settings updated',
+  })
+  req.pushBroadcastMessage({
+    channel: 'site-settings-put',
+    data: { data: siteSettings },
+  })
 }
 
 exports.getDashboard = async (req, res) => {
