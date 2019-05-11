@@ -13,7 +13,6 @@ const {
 } = require('../lib/slug')
 
 const RoleModel = require('../model/role-model')
-const ResourceModel = require('../model/resource-model')
 
 const sessionQuery = require('../query/session-query')
 const mediaQuery = require('../query/media-query')
@@ -25,6 +24,7 @@ const pageQuery = require('../query/page-query')
 const settingQuery = require('../query/setting-query')
 const siteQuery = require('../query/site-query')
 const viewQuery = require('../query/view-query')
+const resourceQuery = require('../query/resource-query')
 
 
 exports.login = async (req, res) => {
@@ -810,30 +810,26 @@ exports.updateRoleByID = async (req, res) => {
         resourcesToSave.push(resource)
     }
     if (resourcesToSave) {
-      let queries = []
       for (let res of resourcesToSave) {
-        let newResource = new ResourceModel()
-        newResource.resource_name = res.resource_name
-        newResource.resource_role_ref = role._id
-        newResource.resource_permission = res.resource_permission
-        queries.push(newResource.save())
+        let resourceData = {
+          resource_name: res.resource_name,
+          resource_role_ref: role._id,
+          resource_permission: res.resource_permission,
+        }
+        await resourceQuery.create(resourceData)
       }
-      await Promise.all(queries)
     }
     if (resourcesToUpate) {
-      let queries = []
       for (let res of resourcesToUpate) {
-        let resource = ResourceModel.updateOne({
-          _id: mongoose.Types.ObjectId(res._id),
-        }, {
-          $set: {
+        let resourceData = {
+          id: res._id,
+          update_fields: {
             resource_name: res.resource_name,
             resource_permission: res.resource_permission,
           },
-        })
-        queries.push(resource)
+        }
+        await resourceQuery.updateByID(resourceData)
       }
-      await Promise.all(queries)
     }
     let objectId = mongoose.Types.ObjectId(roleID)
     let roleUpdated = await RoleModel.aggregate([
@@ -890,13 +886,13 @@ exports.addNewRole = async (req, res) => {
     role.role_user_ref = req.session.user.user_id
     let newRole = await role.save()
     let queries = []
-    let newResource = null
     for (let resource of req.body.role_resources) {
-      newResource = new ResourceModel()
-      newResource.resource_name = resource.resource_name
-      newResource.resource_role_ref = newRole._id
-      newResource.resource_permission = resource.resource_permission
-      queries.push(newResource.save())
+      let resourceData = {
+        resource_name: resource.resource_name,
+        resource_role_ref: newRole._id,
+        resource_permission: resource.resource_permission,
+      }
+      await resourceQuery.create(resourceData)
     }
     await Promise.all(queries)
     let objectId = mongoose.Types.ObjectId(newRole._id)
@@ -940,10 +936,7 @@ exports.addNewRole = async (req, res) => {
 exports.deleteRoleByID = async (req, res) => {
   try {
     let id = req.params.id
-    let objectId = mongoose.Types.ObjectId(id)
-    await ResourceModel.find({
-      resource_role_ref: objectId,
-    }).remove()
+    await resourceQuery.deleteByRoleRef(id)
     let role = await RoleModel.findByIdAndRemove(id)
     res.send({
       status_code: 0,
