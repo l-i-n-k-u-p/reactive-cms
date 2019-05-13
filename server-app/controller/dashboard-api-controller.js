@@ -91,6 +91,18 @@ exports.search = async (req, res) => {
 }
 
 exports.searchMedia = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'r',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let mediaData = await mediaQuery.searchMedia({
     search_word: req.query.search,
     search_mimetype: req.query.mimetype,
