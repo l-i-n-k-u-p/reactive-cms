@@ -11,6 +11,7 @@ const {
   generatePostSlug,
   generatePageSlug,
 } = require('../lib/slug')
+const permission = require('../lib/permission')
 
 const sessionQuery = require('../query/session-query')
 const mediaQuery = require('../query/media-query')
@@ -331,6 +332,18 @@ exports.updatePostByID = async (req, res) => {
 }
 
 exports.deletePostByID = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'd',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let post = await postQuery.deleteByID(req.params.id)
   if (post.error) {
     res.send({
@@ -350,6 +363,18 @@ exports.deletePostByID = async (req, res) => {
 }
 
 exports.getPageByID = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'r',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let page = await pageQuery.getByID(req.params.id)
   if (page.error) {
     res.send({
@@ -362,6 +387,18 @@ exports.getPageByID = async (req, res) => {
 }
 
 exports.addNewPage = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'c',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let newPostSlug = slugify(req.body.page_title, { lower: true })
   let slug = await generatePageSlug(null, newPostSlug)
   req.body.page_date = dateTime.create().format('Y-m-d H:M:S')
@@ -388,6 +425,18 @@ exports.addNewPage = async (req, res) => {
 }
 
 exports.getPagesByPage = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'r',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let skipItems = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
   let totalItems = await pageQuery.getTotalItems()
   let ascSort = -1
@@ -414,16 +463,11 @@ exports.getPagesByPage = async (req, res) => {
 }
 
 exports.updatePageByID = async (req, res) => {
-  let userResources = req.session.user.user_resource
-  let hasPermission = false
-  let resourceName = res.context.config.resource_name
-  for (let userResource of userResources) {
-    if (userResource.resource_name === resourceName) {
-      let resourcePermission = userResource.resource_permission.join(',')
-      if (resourcePermission.includes('u'))
-        hasPermission = true
-    }
-  }
+  let hasPermission = permission.canUser({
+    permission: 'u',
+    req: req,
+    res: res,
+  })
   if (!hasPermission) {
     res.send({
       status_code: 1,
@@ -463,6 +507,18 @@ exports.updatePageByID = async (req, res) => {
 }
 
 exports.deletePageByID = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'd',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let page = await pageQuery.deleteByID(req.params.id)
   if (page.error) {
     res.send({

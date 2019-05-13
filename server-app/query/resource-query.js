@@ -1,3 +1,5 @@
+const mongoose = require('mongoose')
+
 const ResourceModel = require('../model/resource-model')
 
 
