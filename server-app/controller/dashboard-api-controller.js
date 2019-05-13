@@ -215,6 +215,18 @@ exports.deleteUserByID = async (req, res) => {
 }
 
 exports.getPostByID = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'r',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let post = await postQuery.getByID(req.params.id)
   if (post.error) {
     res.send({
@@ -227,6 +239,18 @@ exports.getPostByID = async (req, res) => {
 }
 
 exports.addNewPost = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'c',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let bodyPostTitle = req.body.post_title
   if (!bodyPostTitle) {
     res.send({
@@ -268,6 +292,18 @@ exports.addNewPost = async (req, res) => {
 }
 
 exports.getPostsByPage = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'r',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let skipItems = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
   let totalItems = await postQuery.getTotalItems()
   let ascSort = -1
@@ -294,6 +330,18 @@ exports.getPostsByPage = async (req, res) => {
 }
 
 exports.updatePostByID = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'u',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let newPostSlug = slugify(req.body.post_title, { lower: true })
   let slug = await generatePostSlug(req.params.id, newPostSlug)
   if (slug.error) {
