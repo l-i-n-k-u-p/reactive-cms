@@ -115,20 +115,12 @@ export default {
         .fetch()
         .then(data => {
           this.isLoading = false
-          if (data.getData().status_code) {
-            this.$eventHub.$emit(
-              'dashboard-app-error',
-              data.getData().status_msg,
-            )
-            return
-          }
           this.totalPages = data.getData().total_pages
           this.itemsSkipped = data.getData().items_skipped
           this.totalItems = data.getData().total_items
         })
         .catch(data => {
           this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', data.message)
         })
     },
     navigationBefore: function() {
