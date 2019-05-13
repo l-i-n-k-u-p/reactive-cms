@@ -65,6 +65,18 @@ exports.login = async (req, res) => {
 }
 
 exports.search = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'r',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let items = await searchQuery.getItemsWithWord(req.query.search)
   if (items.error) {
     res.send({

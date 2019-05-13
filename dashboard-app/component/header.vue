@@ -26,6 +26,10 @@
         v-bind:class="{ 'search-active': resultsIsVisible }"
         v-click-outside="clickOutsite"
       >
+        <LoadingBar
+          v-show="isLoading"
+          style="margin: 0; width: 100%;"
+          />
         <i class="material-icons icon">
           search
         </i>
@@ -33,7 +37,7 @@
           type="text"
           placeholder="Search"
           v-model="searchValue"
-          v-on:focus="onChangeSearchValue"
+          v-on:focus="onChangeSearchValueThrottle"
         />
         <div class="bkg"></div>
         <div
@@ -170,6 +174,8 @@
 </template>
 
 <script>
+import LoadingBar from './templates/loading-bar.vue'
+
 export default {
   props: [
     'pageTitle',
@@ -184,11 +190,16 @@ export default {
       settings: new this.$models.Setting(),
       isDesktopScreen: true,
       headerLeftRightStyle: '',
+      isLoading: false,
+      onChangeSearchValueThrottle: _.throttle(this.onChangeSearchValue, 100, { 'trailing': false }),
     }
+  },
+  components: {
+    LoadingBar,
   },
   watch: {
     searchValue: function(newVal, oldVal) {
-      this.onChangeSearchValue()
+      this.onChangeSearchValueThrottle()
     },
   },
   created() {
@@ -221,26 +232,21 @@ export default {
     onChangeSearchValue: function() {
       if (!this.searchValue) return
 
+      this.isLoading = true
       this.searchItems.clear()
       this.showResults()
       this.searchItems
-        .fetch({
-          params: {
-            search: this.searchValue,
-          },
-        })
-        .then(data => {
-          if (data.response.data.status_code) {
-            this.$eventHub.$emit(
-              'dashboard-app-error',
-              data.response.data.status_msg,
-            )
-            return
-          }
-        })
-        .catch(data => {
-          this.$eventHub.$emit('dashboard-app-error', data.message)
-        })
+      .fetch({
+        params: {
+          search: this.searchValue,
+        },
+      })
+      .then(data => {
+        this.isLoading = false
+      })
+      .catch(data => {
+        this.isLoading = false
+      })
     },
     onClickResult: function() {
       this.hideResults()

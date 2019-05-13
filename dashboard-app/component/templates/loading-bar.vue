@@ -20,6 +20,7 @@
   left: 0;
   margin: auto;
   overflow: hidden;
+  pointer-events: none;
   position: absolute;
   right: 0;
   width: calc(100% - 20px);
