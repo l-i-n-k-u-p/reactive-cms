@@ -1225,14 +1225,15 @@ exports.deleteRoleByID = async (req, res) => {
     req: req,
     res: res,
   })
-  if (!hasPermission) {
+  let id = req.params.id
+  let roleToDelete = await roleQuery.getByID(id)
+  if (!hasPermission || roleToDelete.role_user_ref.toString() === '000000000000000000000000') {
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
     })
     return
   }
-  let id = req.params.id
   await resourceQuery.deleteByRoleRef(id)
   let role = await roleQuery.deleteByID(id)
   if (role.error) {
