@@ -171,6 +171,10 @@ export default {
   margin-right: 10px;
 }
 
+.table-wrapper thead tr td:nth-child(2) {
+  width: 50px;
+}
+
 thead tr td,
 tfoot tr td {
   background-color: white;
@@ -195,8 +199,8 @@ tfoot tr td {
 .table-wrapper tbody tr td {
   cursor: pointer;
   font-size: 13px;
-  padding-bottom: 7px;
-  padding-top: 7px;
+  padding-bottom: 5px;
+  padding-top: 5px;
 }
 
 .table-wrapper tbody tr {
