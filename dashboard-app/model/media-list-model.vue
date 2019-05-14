@@ -19,11 +19,9 @@ class MediaListModel extends Collection {
     socketIO.registerEvent(
       'media-post',
       (data) => {
-        if (this.models.length < 20) {
-          this.add(data.data)
-          let lastModel = this.models.pop()
-          this.models.unshift(lastModel)
-        }
+        this.add(data.data)
+        let lastModel = this.models.pop()
+        this.models.unshift(lastModel)
       }
     )
   }

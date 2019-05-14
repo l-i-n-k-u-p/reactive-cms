@@ -104,7 +104,7 @@ export default {
       mediaModalData: null,
       previewMediaModalData: null,
       throttleToggleMenu: _.throttle(this.toggleMenu, 100, { 'trailing': false }),
-      breakWidth: 1485,
+      breakWidth: 1360,
     }
   },
   watch: {

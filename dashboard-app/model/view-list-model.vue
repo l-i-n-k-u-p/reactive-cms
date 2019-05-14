@@ -19,11 +19,9 @@ class ViewListModel extends Collection {
     socketIO.registerEvent(
       'view-post',
       (data) => {
-        if (this.models.length < 20) {
-          this.add(data.data)
-          let lastModel = this.models.pop()
-          this.models.unshift(lastModel)
-        }
+        this.add(data.data)
+        let lastModel = this.models.pop()
+        this.models.unshift(lastModel)
       }
     )
   }

@@ -112,6 +112,12 @@
             </div>
           </div>
         </div>
+        <ButtonIcon
+          v-if="resultsIsVisible"
+          buttonIcon="close"
+          v-bind:buttonAction="hideResults"
+          id="search-close-button"
+        />
       </div>
       <div
         class="right-wrapper"
@@ -126,7 +132,12 @@
             v-if="isDesktopScreen"
             class="name"
           >
-            {{ user.get('user_first_name') }}
+            <p id="user-first-name">
+              {{ user.get('user_first_name') }}
+            </p>
+            <p id="user-role-name">
+              {{ user.get('user_role').role_name }}
+            </p>
           </div>
           <div
             class="avatar"
@@ -175,6 +186,7 @@
 
 <script>
 import LoadingBar from './templates/loading-bar.vue'
+import ButtonIcon from './templates/button-icon.vue'
 
 export default {
   props: [
@@ -196,6 +208,7 @@ export default {
   },
   components: {
     LoadingBar,
+    ButtonIcon,
   },
   watch: {
     searchValue: function(newVal, oldVal) {
@@ -378,8 +391,6 @@ export default {
   color: #616161;
   cursor: pointer;
   flex-grow: 1;
-  font-size: 14px;
-  font-weight: 500;
   line-height: 1;
   overflow: hidden;
   padding-right: 10px;
@@ -495,10 +506,6 @@ export default {
   width: 100%;
 }
 
-.search-wrapper:hover .bkg {
-
-}
-
 .search-wrapper.search-active .bkg {
   background: rgba(255, 255, 255, 1);
   border-bottom-left-radius: 0px;
@@ -517,7 +524,7 @@ export default {
   border-bottom-right-radius: 3px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   color: #616161;
-  max-height: 300px;
+  max-height: 240px;
   overflow: scroll;
   position: absolute;
   top: 100%;
@@ -534,7 +541,7 @@ export default {
   display: flex;
   font-size: 13px;
   height: auto;
-  padding: 10px;
+  padding: 7px 10px;
   width: 100%;
 }
 
@@ -569,5 +576,25 @@ export default {
 .option-icon {
   font-size: 16px;
   margin-right: 10px;
+}
+
+#user-first-name {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0px;
+}
+
+#user-role-name {
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+  margin: 0;
+}
+
+#search-close-button {
+  background-color: white;
+  border-radius: 0;
+  position: relative;
+  z-index: 2;
 }
 </style>
