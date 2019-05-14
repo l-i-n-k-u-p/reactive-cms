@@ -120,6 +120,18 @@ exports.searchMedia = async (req, res) => {
 }
 
 exports.getUsersPaged = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'r',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let ascSort = -1
   let skipItems = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
   let totalItems = await userQuery.getTotalItems()
@@ -146,6 +158,18 @@ exports.getUsersPaged = async (req, res) => {
 }
 
 exports.getUserByID = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'r',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let user = await userQuery.getByID(req.params.id)
   if (user.error) {
     res.send({
@@ -158,6 +182,18 @@ exports.getUserByID = async (req, res) => {
 }
 
 exports.addNewUser = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'c',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let userData = req.body
   userData.user_registration_date = dateTime.create().format('Y-m-d H:M:S')
   userData.user_pass = await session.hashPassword(userData.user_pass)
@@ -182,6 +218,18 @@ exports.addNewUser = async (req, res) => {
 }
 
 exports.updateUserByID = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'u',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   if (req.body.user_pass === undefined || !req.body.user_pass.length)
     delete req.body.user_pass
   else {
@@ -219,6 +267,18 @@ exports.updateUserByID = async (req, res) => {
 }
 
 exports.deleteUserByID = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'd',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let userDeleted = await userQuery.deleteByID(req.params.id)
   if (userDeleted.error) {
     res.send({
