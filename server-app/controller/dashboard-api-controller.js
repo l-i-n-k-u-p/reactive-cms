@@ -163,7 +163,9 @@ exports.getUserByID = async (req, res) => {
     req: req,
     res: res,
   })
-  if (!hasPermission) {
+  // NOTE: validate id for get user profile data
+  let isSameSessionUserID = req.params.id === req.session.user.user_id
+  if (!hasPermission && !isSameSessionUserID) {
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
