@@ -848,6 +848,18 @@ exports.deleteMediaByID = async (req, res) => {
 }
 
 exports.getSettings = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'r',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let settings = await settingQuery.getAll()
   if (settings.error) {
     res.send({
@@ -860,6 +872,18 @@ exports.getSettings = async (req, res) => {
 }
 
 exports.updateSettings = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'u',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   if (!req.body)
     return
 
@@ -886,6 +910,18 @@ exports.updateSettings = async (req, res) => {
 }
 
 exports.getSiteSettings = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'r',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let siteSettings = await siteQuery.getAll()
   if (siteSettings.error) {
     res.send({
@@ -898,6 +934,18 @@ exports.getSiteSettings = async (req, res) => {
 }
 
 exports.updateSiteSettings = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'u',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   if (!req.body)
     return
 
