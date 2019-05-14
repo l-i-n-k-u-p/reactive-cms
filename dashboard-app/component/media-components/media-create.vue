@@ -96,15 +96,16 @@ export default {
         })
         .then(data => {
           this.isLoading = false
+          if (data.data.status_code)
+            return
+
           this.$router.replace({
             name: 'media-detail',
             params: { id: data.data.data.id },
           })
-          this.$eventHub.$emit('dashboard-app-success', data.data.status_msg)
         })
         .catch(data => {
           this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', data.message)
         })
     },
     cancelCreateMedia: function() {

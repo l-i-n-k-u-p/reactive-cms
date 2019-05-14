@@ -670,6 +670,18 @@ exports.deletePageByID = async (req, res) => {
 }
 
 exports.getMediaByID = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'r',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let mediaItem = await mediaQuery.getByID(req.params.id)
   if (mediaItem.error) {
     res.send({
@@ -682,6 +694,18 @@ exports.getMediaByID = async (req, res) => {
 }
 
 exports.addNewMedia = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'c',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let resultUpload = await mediaUpload(req, res)
   if (!resultUpload.fileData) {
     res.send({
@@ -720,6 +744,18 @@ exports.addNewMedia = async (req, res) => {
 }
 
 exports.getMediaByPage = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'r',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let skipPosts = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
   let totalItems = await mediaQuery.getTotalItems()
   let items = await mediaQuery.getMediaItemsByPage({
@@ -745,6 +781,18 @@ exports.getMediaByPage = async (req, res) => {
 }
 
 exports.updateMediaByID = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'u',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let media = await mediaQuery.updateByID({
     id: req.params.id,
     update_fields: {
@@ -769,6 +817,18 @@ exports.updateMediaByID = async (req, res) => {
 }
 
 exports.deleteMediaByID = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'd',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let media = await mediaQuery.deleteByID(req.params.id)
   if (media.error) {
     res.send({

@@ -165,13 +165,6 @@ export default {
           .fetch()
           .then(data => {
             this.isLoading = false
-            if (data.getData().status_code) {
-              this.$eventHub.$emit(
-                'dashboard-app-error',
-                data.getData().status_msg,
-              )
-              return
-            }
             this.totalPages = data.getData().total_pages
             this.mediaPage++
             if (this.mediaPage === 2) this.getMedia()
@@ -179,7 +172,6 @@ export default {
           })
           .catch(data => {
             this.isLoading = false
-            this.$eventHub.$emit('dashboard-app-error', data.message)
           })
       }
     },
