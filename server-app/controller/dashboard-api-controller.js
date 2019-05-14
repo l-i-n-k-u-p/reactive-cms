@@ -972,6 +972,18 @@ exports.updateSiteSettings = async (req, res) => {
 }
 
 exports.getDashboard = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'r',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let items = await dashboardQuery.getLog()
   if (items.error) {
     res.send({
