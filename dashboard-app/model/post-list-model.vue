@@ -19,11 +19,9 @@ class PostListModel extends Collection {
     socketIO.registerEvent(
       'post-post',
       (data) => {
-        if (this.models.length < 60) {
-          this.add(data.data)
-          let lastModel = this.models.pop()
-          this.models.unshift(lastModel)
-        }
+        this.add(data.data)
+        let lastModel = this.models.pop()
+        this.models.unshift(lastModel)
       }
     )
   }

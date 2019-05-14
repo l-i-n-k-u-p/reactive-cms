@@ -19,11 +19,9 @@ class UserListModel extends Collection {
     socketIO.registerEvent(
       'user-post',
       (data) => {
-        if (this.models.length < 20) {
-          this.add(data.data)
-          let lastModel = this.models.pop()
-          this.models.unshift(lastModel)
-        }
+        this.add(data.data)
+        let lastModel = this.models.pop()
+        this.models.unshift(lastModel)
       }
     )
   }
