@@ -1025,6 +1025,18 @@ exports.getTemplateFileNames = async (req, res) => {
 }
 
 exports.getRolesByPage = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'r',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let skipItems = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST * (req.params.page - 1)
   let ascSort = -1
   let totalItems = await roleQuery.getTotalItems()
@@ -1058,6 +1070,18 @@ exports.getRolesByPage = async (req, res) => {
 }
 
 exports.getRoleByID = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'r',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let role = await roleQuery.getByID(req.params.id)
   if (role.error) {
     res.send({
@@ -1070,6 +1094,18 @@ exports.getRoleByID = async (req, res) => {
 }
 
 exports.updateRoleByID = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'u',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let roleID = req.params.id
   let roleResources = req.body.role_resources
   let role = await roleQuery.updateByID({
@@ -1137,6 +1173,18 @@ exports.updateRoleByID = async (req, res) => {
 }
 
 exports.addNewRole = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'c',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let role = await roleQuery.create({
     role_name: req.body.role_name,
     role_user_ref: req.session.user.user_id,
@@ -1170,6 +1218,18 @@ exports.addNewRole = async (req, res) => {
 }
 
 exports.deleteRoleByID = async (req, res) => {
+  let hasPermission = permission.canUser({
+    permission: 'd',
+    req: req,
+    res: res,
+  })
+  if (!hasPermission) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let id = req.params.id
   await resourceQuery.deleteByRoleRef(id)
   let role = await roleQuery.deleteByID(id)
