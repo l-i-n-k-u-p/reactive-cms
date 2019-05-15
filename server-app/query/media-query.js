@@ -81,7 +81,9 @@ const updateByID = async (objectData) => {
 
 const deleteByID = async (id) => {
   try {
-    let media = await MediaModel.findByIdAndRemove(id)
+    let media = await MediaModel.findOneAndRemove({
+      _id: id,
+    })
     return media
   } catch (err) {
     return {
