@@ -11,6 +11,11 @@ const PageModel = new Schema({
   page_status: { type: String, required: true },
   page_template: { type: String },
   page_gallery: { type: Array },
+  page_user_ref: {
+    type: Schema.Types.ObjectId,
+    ref: 'user',
+    required: true,
+  },
 }, {
   collection: 'page'
 })

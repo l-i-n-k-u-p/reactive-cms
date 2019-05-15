@@ -10,6 +10,11 @@ const MediaModel = new Schema({
   media_size: { type: Number, trim: true, required: true },
   media_path: { type: String, trim: true, required: true },
   media_date: { type: String, trim: true, required: true },
+  media_user_ref: {
+    type: Schema.Types.ObjectId,
+    ref: 'user',
+    required: true,
+  },
 }, {
   collection: 'media'
 })
