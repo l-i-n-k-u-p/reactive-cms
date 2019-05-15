@@ -103,6 +103,14 @@ export default {
           icon: 'settings',
           resourceName: 'settings',
         },
+        {
+          position: 7,
+          title: 'Profile',
+          class: 'option',
+          name: 'profile',
+          icon: 'person',
+          resourceName: '',
+        },
       ],
     }
   },

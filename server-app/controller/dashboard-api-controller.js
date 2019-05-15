@@ -163,9 +163,7 @@ exports.getUserByID = async (req, res) => {
     req: req,
     res: res,
   })
-  // NOTE: validate id for get user profile data
-  let isSameSessionUserID = req.params.id === req.session.user.user_id
-  if (!hasPermission && !isSameSessionUserID) {
+  if (!hasPermission) {
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -1267,5 +1265,71 @@ exports.getViewNames = async (req, res) => {
     items: views,
     status_code: 0,
     status_msg: '',
+  })
+}
+
+exports.getProfileByID = async (req, res) => {
+  let isSameSessionUserID = req.params.id === req.session.user.user_id
+  if (!isSameSessionUserID) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
+  let user = await userQuery.getByID(req.params.id)
+  if (user.error) {
+    res.send({
+      status_code: 1,
+      status_msg: err.toString(),
+    })
+    return
+  }
+  res.send(user)
+}
+
+exports.updateProfileByID = async (req, res) => {
+  let isSameSessionUserID = req.params.id === req.session.user.user_id
+  if (!isSameSessionUserID) {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
+  if (req.body.user_pass === undefined || !req.body.user_pass.length)
+    delete req.body.user_pass
+  else {
+    let newPassword = await session.hashPassword(req.body.user_pass)
+    req.body.user_pass = newPassword
+  }
+  delete req.body.user_name
+  let userUpdated = await userQuery.updateByID({
+    id: req.params.id,
+    update_fields: req.body,
+  })
+  if (userUpdated.error) {
+    res.send({
+      status_code: 1,
+      status_msg: 'It could not update the user',
+    })
+    return
+  }
+  let sessionFinished = await session.currentUserSessionDataChanged(userUpdated, req)
+  if (sessionFinished)
+    session.removeUserSessionOnDB(userUpdated._id)
+  let message = 'User updated'
+  if (sessionFinished)
+    message = 'User updated and session finished'
+  let objectId = mongoose.Types.ObjectId(userUpdated._id)
+  await sessionQuery.refreshUserSessionByID(objectId)
+  let newUserData = await userQuery.getByID(userUpdated._id)
+  res.send({
+    status_code: 0,
+    status_msg: message,
+  })
+  req.pushBroadcastMessage({
+    channel: 'user-put',
+    data: { data: newUserData },
   })
 }
