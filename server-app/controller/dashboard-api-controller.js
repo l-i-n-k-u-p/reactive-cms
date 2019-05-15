@@ -197,6 +197,7 @@ exports.addNewUser = async (req, res) => {
   let userData = req.body
   userData.user_registration_date = dateTime.create().format('Y-m-d H:M:S')
   userData.user_pass = await session.hashPassword(userData.user_pass)
+  userData.user_user_ref = req.session.user.user_id
   let newUser = await userQuery.create(userData)
   if (newUser.error) {
     res.send({

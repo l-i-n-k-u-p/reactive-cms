@@ -182,7 +182,9 @@ const updateByID = async (objectData) => {
 
 const deleteByID = async (id) => {
   try {
-    let userDeleted = await UserModel.findByIdAndRemove(id)
+    let userDeleted = await UserModel.findOneAndRemove({
+      _id: id,
+    })
     return userDeleted
   } catch (err) {
     return {

@@ -1,5 +1,8 @@
 const mongoose = require('mongoose')
+const dateTime = require('node-datetime')
+
 const Schema = mongoose.Schema
+const logQuery = require('../query/log-query')
 
 
 const MediaModel = new Schema({
@@ -25,6 +28,36 @@ MediaModel.virtual('model_name').get(() => {
 
 MediaModel.set('toJSON', {
   virtuals: true
+})
+
+MediaModel.post('findOneAndUpdate', (item) => {
+  let log = logQuery.create({
+    log_model: item.model_name,
+    log_operation: 'update',
+    log_operation_data: item,
+    log_user_ref: item.media_user_ref,
+    log_date: dateTime.create().format('Y-m-d H:M:S'),
+  })
+})
+
+MediaModel.post('save', (item) => {
+  let log = logQuery.create({
+    log_model: item.model_name,
+    log_operation: 'save',
+    log_operation_data: item,
+    log_user_ref: item.media_user_ref,
+    log_date: dateTime.create().format('Y-m-d H:M:S'),
+  })
+})
+
+MediaModel.post('findOneAndRemove', (item) => {
+  let log = logQuery.create({
+    log_model: item.model_name,
+    log_operation: 'remove',
+    log_operation_data: item,
+    log_user_ref: item.media_user_ref,
+    log_date: dateTime.create().format('Y-m-d H:M:S'),
+  })
 })
 
 module.exports = mongoose.model('MediaModel', MediaModel)

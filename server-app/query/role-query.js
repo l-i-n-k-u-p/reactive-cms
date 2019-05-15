@@ -102,7 +102,9 @@ const create = async (objectData) => {
 
 const deleteByID = async (id) => {
   try {
-    let item = await RoleModel.findByIdAndRemove(id)
+    let item = await RoleModel.findOneAndRemove({
+      _id: id,
+    })
     return item
   } catch (err) {
     return {

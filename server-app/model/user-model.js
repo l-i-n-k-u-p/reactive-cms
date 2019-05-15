@@ -1,5 +1,8 @@
 const mongoose = require('mongoose')
+const dateTime = require('node-datetime')
+
 const Schema = mongoose.Schema
+const logQuery = require('../query/log-query')
 
 
 const UserModel = new Schema({
@@ -44,6 +47,11 @@ const UserModel = new Schema({
     ref: 'role',
     required: true,
   },
+  user_user_ref: {
+    type: Schema.Types.ObjectId,
+    ref: 'user',
+    required: true,
+  },
 }, {
   collection: 'user'
 })
@@ -54,6 +62,36 @@ UserModel.virtual('model_name').get(() => {
 
 UserModel.set('toJSON', {
   virtuals: true
+})
+
+UserModel.post('findOneAndUpdate', (item) => {
+  let log = logQuery.create({
+    log_model: item.model_name,
+    log_operation: 'update',
+    log_operation_data: item,
+    log_user_ref: item.user_user_ref,
+    log_date: dateTime.create().format('Y-m-d H:M:S'),
+  })
+})
+
+UserModel.post('save', (item) => {
+  let log = logQuery.create({
+    log_model: item.model_name,
+    log_operation: 'save',
+    log_operation_data: item,
+    log_user_ref: item.user_user_ref,
+    log_date: dateTime.create().format('Y-m-d H:M:S'),
+  })
+})
+
+UserModel.post('findOneAndRemove', (item) => {
+  let log = logQuery.create({
+    log_model: item.model_name,
+    log_operation: 'remove',
+    log_operation_data: item,
+    log_user_ref: item.user_user_ref,
+    log_date: dateTime.create().format('Y-m-d H:M:S'),
+  })
 })
 
 module.exports = mongoose.model('UserModel', UserModel)

@@ -45,6 +45,7 @@ exports.websiteSetupPassed = async (req, res, next) => {
 }
 
 exports.websiteSetupSetInitialConfig = async (req, res) => {
+  let adminRootRef = '000000000000000000000000'
   let setup_site_name = req.body.setup_site_name
   let setup_site_url = req.body.setup_site_url
   let setup_first_name = req.body.setup_first_name
@@ -67,7 +68,7 @@ exports.websiteSetupSetInitialConfig = async (req, res) => {
     let viewsSaved = await viewQuery.createMany(VIEWS)
     let adminRoleData = {}
     adminRoleData.role_name = 'administrator'
-    adminRoleData.role_user_ref = '000000000000000000000000'
+    adminRoleData.role_user_ref = adminRootRef
     let adminRole = await roleQuery.create(adminRoleData)
     let resources = []
     for (let view of viewsSaved) {
@@ -86,6 +87,7 @@ exports.websiteSetupSetInitialConfig = async (req, res) => {
     userData.user_registration_date = dateTime.create().format('Y-m-d H:M:S')
     userData.user_active = true
     userData.user_role_ref = adminRole
+    userData.user_user_ref = adminRootRef
     settingsData.setting_page_title = DASHBOARD_ADMIN_CONFIG.dashboardTitle
     settingsData.setting_items_peer_page = DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST
     siteData.site_name = setup_site_name

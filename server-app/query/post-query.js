@@ -70,7 +70,9 @@ const updateByID = async (objectData) => {
 
 const deleteByID = async (id) => {
   try {
-    let item = await PostModel.findByIdAndRemove(id)
+    let item = await PostModel.findOneAndRemove({
+      _id: id,
+    })
     return item
   } catch (err) {
     return {
