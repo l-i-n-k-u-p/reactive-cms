@@ -9,6 +9,11 @@ const PostModel = new Schema({
   post_slug: { type: String, trim: true, required: true },
   post_date: { type: String, required: true },
   post_status: { type: String, required: true },
+  post_user_ref: {
+    type: Schema.Types.ObjectId,
+    ref: 'user',
+    required: true,
+  },
 }, {
   collection: 'post'
 })

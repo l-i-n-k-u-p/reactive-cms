@@ -354,6 +354,7 @@ exports.addNewPost = async (req, res) => {
   }
   req.body.post_date = dateTime.create().format('Y-m-d H:M:S')
   req.body.post_slug = slug
+  req.body.post_user_ref = req.session.user.user_id
   let post = await postQuery.create(req.body)
   if (post.error) {
     res.send({
@@ -535,6 +536,7 @@ exports.addNewPage = async (req, res) => {
   let slug = await generatePageSlug(null, newPostSlug)
   req.body.page_date = dateTime.create().format('Y-m-d H:M:S')
   req.body.page_slug = slug
+  req.body.page_user_ref = req.session.user.user_id
   let page = await pageQuery.create(req.body)
   if (page.error) {
     res.send({
@@ -722,6 +724,7 @@ exports.addNewMedia = async (req, res) => {
     media_size: resultUpload.fileData.size,
     media_path: resultUpload.fileData.path,
     media_date: dateTime.create().format('Y-m-d H:M:S'),
+    media_user_ref: req.session.user.user_id,
   })
   if (newMedia.error) {
     res.send({
