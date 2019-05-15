@@ -97,19 +97,19 @@ export default {
         },
         {
           position: 6,
-          title: 'Settings',
-          class: 'option',
-          name: 'settings',
-          icon: 'settings',
-          resourceName: 'settings',
-        },
-        {
-          position: 7,
           title: 'Profile',
           class: 'option',
           name: 'profile',
           icon: 'person',
           resourceName: '',
+        },
+        {
+          position: 7,
+          title: 'Settings',
+          class: 'option',
+          name: 'settings',
+          icon: 'settings',
+          resourceName: 'settings',
         },
       ],
     }
