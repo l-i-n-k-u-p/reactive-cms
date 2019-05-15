@@ -1,6 +1,5 @@
 <script>
 import {
-  Model,
   Collection,
 } from 'vue-mc'
 import SocketIO from '../lib/socket-io'
@@ -10,7 +9,7 @@ import APP_SETTINGS from '../app-settings'
 
 let socketIO = new SocketIO()
 
-class ViewListModel extends Collection {
+class ViewCollection extends Collection {
   constructor (props) {
     super(props)
     this.listenPushMessages()
@@ -39,7 +38,7 @@ class ViewListModel extends Collection {
 }
 
 export default {
-  model: ViewListModel,
+  model: ViewCollection,
 }
 
 </script>

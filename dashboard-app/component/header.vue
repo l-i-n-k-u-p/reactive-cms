@@ -196,7 +196,7 @@ export default {
     return {
       searchValue: '',
       resultsIsVisible: false,
-      searchItems: new this.$models.SearchList(),
+      searchItems: new this.$models.SearchCollection(),
       user: new this.$models.Profile(),
       userMenuOpen: false,
       settings: new this.$models.DashboardSetting(),
@@ -282,6 +282,7 @@ export default {
     showPostDetail: function(post) {
       this.$router.push({
         name: 'post-detail',
+        params: { id: post.get('_id') },
       })
     },
     showPageDetail: function(page) {

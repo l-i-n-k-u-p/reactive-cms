@@ -69,7 +69,7 @@ import LoadingBar from './templates/loading-bar.vue'
 export default {
   data() {
     return {
-      posts: new this.$models.PostList(),
+      posts: new this.$models.PostCollection(),
       currentPage: this.$route.params.page,
       totalPages: 1,
       itemsSkipped: -1,

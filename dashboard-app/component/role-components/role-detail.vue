@@ -93,7 +93,7 @@ export default {
       role: new this.$models.Role({
         _id: this.$route.params.id,
       }),
-      views: new this.$models.ViewList(),
+      views: new this.$models.ViewCollection(),
       resourceNames: [],
       resources: [],
       isLoading: false,

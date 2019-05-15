@@ -1,6 +1,5 @@
 <script>
 import {
-  Model,
   Collection,
 } from 'vue-mc'
 import SocketIO from '../lib/socket-io'
@@ -10,7 +9,7 @@ import APP_SETTINGS from '../app-settings'
 
 let socketIO = new SocketIO()
 
-class RoleListModel extends Collection {
+class RoleCollection extends Collection {
   constructor (props) {
     super(props)
     this.listenPushMessages()
@@ -56,7 +55,7 @@ class RoleListModel extends Collection {
 }
 
 export default {
-  model: RoleListModel,
+  model: RoleCollection,
 }
 
 </script>

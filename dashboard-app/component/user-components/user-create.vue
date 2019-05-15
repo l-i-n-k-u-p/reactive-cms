@@ -76,21 +76,21 @@
       <div class="form-wrapper">
         <InputText
           inputName="User First Name"
-          v-bind:inputValue="user.user_first_name"
+          v-bind:inputValue="user.get('user_first_name')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="user_first_name"
         >
         </InputText>
         <InputText
           inputName="User Last Name"
-          v-bind:inputValue="user.user_last_name"
+          v-bind:inputValue="user.get('user_last_name')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="user_last_name"
         >
         </InputText>
         <InputText
           inputName="User Name"
-          v-bind:inputValue="user.user_name"
+          v-bind:inputValue="user.get('user_name')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="user_name"
         >
@@ -104,7 +104,7 @@
         </InputText>
         <InputText
           inputName="User Email"
-          v-bind:inputValue="user.user_email"
+          v-bind:inputValue="user.get('user_email')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="user_email"
         >
@@ -149,7 +149,7 @@ export default {
       user: new this.$models.User({
         user_active: true,
       }),
-      roles: new this.$models.RoleList(),
+      roles: new this.$models.RoleCollection(),
       newPassword: '',
       userRoleIndex: null,
       roleOptions: [],

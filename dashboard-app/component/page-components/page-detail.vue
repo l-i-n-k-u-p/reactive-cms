@@ -142,7 +142,7 @@ export default {
       ],
       pageStatusIndex: 0,
       pageDate: '',
-      fileTemplates: new this.$models.FileTemplate(),
+      fileTemplates: new this.$models.FileTemplateCollection(),
       pageTemplateOptions: [],
       currentPageTemplateIndex: null,
       previewMediaMetaFields: [],
