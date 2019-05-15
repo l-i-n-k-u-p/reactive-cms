@@ -197,7 +197,7 @@ export default {
       searchValue: '',
       resultsIsVisible: false,
       searchItems: new this.$models.SearchList(),
-      user: new this.$models.User(),
+      user: new this.$models.Profile(),
       userMenuOpen: false,
       settings: new this.$models.Setting(),
       isDesktopScreen: true,
@@ -275,14 +275,13 @@ export default {
     },
     showUserDetail: function(user) {
       this.$router.push({
-        name: 'user-detail',
+        name: 'profile',
         params: { id: user.get('_id') },
       })
     },
     showPostDetail: function(post) {
       this.$router.push({
         name: 'post-detail',
-        params: { id: post.get('_id') },
       })
     },
     showPageDetail: function(page) {

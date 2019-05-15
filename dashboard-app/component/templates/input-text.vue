@@ -14,6 +14,7 @@
       v-on:focus="focus"
       v-on:blur="focus"
       v-model="value"
+      v-bind:disabled="disabled"
     />
   </div>
 </template>
@@ -26,6 +27,7 @@ export default {
     'onChangeValue',
     'inputType',
     'propName',
+    'disabled',
   ],
   data() {
     return {

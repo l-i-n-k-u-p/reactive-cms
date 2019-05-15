@@ -270,6 +270,18 @@ let routes = [
     handler: dashboardAPIController.getViewNames,
     config: { resource_name: 'roles', },
   },
+  {
+    method: 'GET',
+    url: '/profile/:id',
+    preHandler: session.isAuthenticated,
+    handler: dashboardAPIController.getProfileByID,
+  },
+  {
+    method: 'PUT',
+    url: '/profile/:id',
+    preHandler: session.isAuthenticated,
+    handler: dashboardAPIController.updateProfileByID,
+  },
 ]
 
 const dasboardAPIRouter = async (fastify, opts, next) => {

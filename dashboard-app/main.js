@@ -36,6 +36,7 @@ import RoleModel from './model/role-model.vue'
 import RoleListModel from './model/role-list-model.vue'
 import ViewModel from './model/view-model.vue'
 import ViewListModel from './model/view-list-model.vue'
+import ProfileModel from './model/profile-model.vue'
 // NOTE: components
 import App from './app.vue'
 import Dashboard from './component/dashboard.vue'
@@ -56,6 +57,7 @@ import MediaCreate from './component/media-components/media-create.vue'
 import RoleDetail from './component/role-components/role-detail.vue'
 import RoleCreate from './component/role-components/role-create.vue'
 import NotFound from './component/not-found.vue'
+import Profile from './component/profile.vue'
 
 
 for (let directive of GLOBAL_DIRECTIVES.directives)
@@ -85,6 +87,7 @@ Vue.prototype.$models = {
   MediaList: MediaListModel.model,
   SearchMediaList: SearchMediaListModel.model,
   RoleList: RoleListModel.model,
+  Profile: ProfileModel.model,
 }
 Vue.prototype.$appApiBaseURL = APP_SETTINGS.appApiBaseURL
 Vue.prototype.$getHexColor = getHexColor
@@ -185,6 +188,11 @@ const routes = [
     path: APP_SETTINGS.appBaseURL + '/new-role/',
     component: RoleCreate,
   },
+  {
+    name: 'profile',
+    path: APP_SETTINGS.appBaseURL + '/profile',
+    component: Profile,
+  },
 ]
 
 const router = new VueRouter({
@@ -195,7 +203,8 @@ const router = new VueRouter({
 
 // NOTE: check for user permissions in router - Improve using Dynamic Route Matching
 router.beforeResolve((to, from, next) => {
-  if (to.name === 'error')
+  let isExceptionRouteName = APP_SETTINGS.appRouterNameException.indexOf(to.name) >= 0
+  if (to.name === 'error' || isExceptionRouteName)
     return next()
 
   let res = aclUserCan(to.name)

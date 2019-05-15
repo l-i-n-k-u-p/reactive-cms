@@ -39,6 +39,9 @@ const getThumbnailURL = (fileURL) => {
 }
 
 const aclReplaceVNode = (el, binding, vNode) => {
+  if (!binding.value)
+    return
+
   let permissionResult = aclUserCan(binding.value)
   if (permissionResult)
     return
