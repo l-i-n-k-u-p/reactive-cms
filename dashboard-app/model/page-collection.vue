@@ -1,23 +1,22 @@
 <script>
 import {
-  Model,
   Collection,
 } from 'vue-mc'
 import SocketIO from '../lib/socket-io'
-import UserModel from './user-model.vue'
+import PageModel from './page-model.vue'
 import APP_SETTINGS from '../app-settings'
 
 
 let socketIO = new SocketIO()
 
-class UserListModel extends Collection {
+class PageCollection extends Collection {
   constructor (props) {
     super(props)
     this.listenPushMessages()
   }
   listenPushMessages () {
     socketIO.registerEvent(
-      'user-post',
+      'page-post',
       (data) => {
         this.add(data.data)
         let lastModel = this.models.pop()
@@ -26,7 +25,7 @@ class UserListModel extends Collection {
     )
   }
   model () {
-    return UserModel.model
+    return PageModel.model
   }
   getModelsFromResponse (response) {
     return response.getData().items
@@ -35,13 +34,12 @@ class UserListModel extends Collection {
     let method = 'DELETE'
     let route = this.getRoute('bulkDelete')
     let url = this.getURL(route, this.getRouteParameters())
-    // let data = this._attributes
     let data = params
     return this.getRequest({ method, url, data }).send()
   }
   bulkUpdate (params) {
     let method = 'PUT'
-    let route = this.getRoute('bulkDelete')
+    let route = this.getRoute('bulkUpdate')
     let url = this.getURL(route, this.getRouteParameters())
     // let data = this._attributes
     let data = params
@@ -49,15 +47,15 @@ class UserListModel extends Collection {
   }
   routes () {
     return {
-      fetch: APP_SETTINGS.appApiBaseURL + '/users/{page}',
-      bulkDelete: APP_SETTINGS.appApiBaseURL + '/users/',
-      bulkUpdate: APP_SETTINGS.appApiBaseURL + '/users/',
+      fetch: APP_SETTINGS.appApiBaseURL + '/pages/{page}',
+      bulkDelete: APP_SETTINGS.appApiBaseURL + '/pages/',
+      bulkUpdate: APP_SETTINGS.appApiBaseURL + '/pages/',
     }
   }
 }
 
 export default {
-  model: UserListModel,
+  model: PageCollection,
 }
 
 </script>

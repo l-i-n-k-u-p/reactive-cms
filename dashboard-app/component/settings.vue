@@ -91,10 +91,10 @@ export default {
     return {
       settings: new this.$models.Setting(),
       site: new this.$models.Site(),
-      settingPages: new this.$models.PageList(),
+      settingPages: new this.$models.PageCollection(),
       templateHomeIndex: null,
       templateHomeOptions: [],
-      fileTemplates: new this.$models.FileTemplate(),
+      fileTemplates: new this.$models.FileTemplateCollection(),
       templatePostsIndex: null,
       templateFileOptions: [],
       isLoading: false,

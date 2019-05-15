@@ -69,7 +69,7 @@ import LoadingBar from './templates/loading-bar.vue'
 export default {
   data() {
     return {
-      mediaFiles: new this.$models.MediaList(),
+      mediaFiles: new this.$models.MediaCollection(),
       currentPage: this.$route.params.page,
       totalPages: 1,
       itemsSkipped: -1,

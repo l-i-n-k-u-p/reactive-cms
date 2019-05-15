@@ -127,7 +127,7 @@ import LoadingBar from './templates/loading-bar.vue'
 export default {
   data() {
     return {
-      dashboard: new this.$models.Dashboard(),
+      dashboard: new this.$models.DashboardCollection(),
       isLoading: false,
     }
   },

@@ -95,7 +95,7 @@ export default {
         role_name: '',
         role_resources: [],
       }),
-      views: new this.$models.ViewList(),
+      views: new this.$models.ViewCollection(),
       resourceNames: [],
       resources: [],
       isLoading: false,

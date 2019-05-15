@@ -19,23 +19,23 @@ import GLOBAL_DIRECTIVES from './directive/global-directives.vue'
 import ACL_DIRECTIVES from './directive/acl-directives.vue'
 // NOTE: models
 import UserModel from './model/user-model.vue'
-import UserListModel from './model/user-list-model.vue'
-import SearchListModel from './model/search-list-model.vue'
+import UserCollection from './model/user-collection.vue'
+import SearchCollection from './model/search-collection.vue'
 import PostModel from './model/post-model.vue'
-import PostListModel from './model/post-list-model.vue'
+import PostCollection from './model/post-collection.vue'
 import PageModel from './model/page-model.vue'
-import PageListModel from './model/page-list-model.vue'
+import PageCollection from './model/page-collection.vue'
 import MediaModel from './model/media-model.vue'
-import MediaListModel from './model/media-list-model.vue'
-import SearchMediaListModel from './model/search-media-list-model.vue'
+import MediaCollection from './model/media-collection.vue'
+import SearchMediaCollection from './model/search-media-collection.vue'
 import SettingModel from './model/setting-model.vue'
 import SiteModel from './model/site-model.vue'
-import DashboardModel from './model/dashboard-model.vue'
-import FileTemplateModel from './model/file-template-model.vue'
+import DashboardCollection from './model/dashboard-collection.vue'
+import FileTemplateCollection from './model/file-template-collection.vue'
 import RoleModel from './model/role-model.vue'
-import RoleListModel from './model/role-list-model.vue'
+import RoleCollection from './model/role-collection.vue'
 import ViewModel from './model/view-model.vue'
-import ViewListModel from './model/view-list-model.vue'
+import ViewCollection from './model/view-collection.vue'
 import ProfileModel from './model/profile-model.vue'
 import DashboardSettingModel from './model/dashboard-setting-model.vue'
 // NOTE: components
@@ -76,18 +76,18 @@ Vue.prototype.$models = {
   Media: MediaModel.model,
   Setting: SettingModel.model,
   Site: SiteModel.model,
-  Dashboard: DashboardModel.model,
-  FileTemplate: FileTemplateModel.model,
+  DashboardCollection: DashboardCollection.model,
+  FileTemplateCollection: FileTemplateCollection.model,
   Role: RoleModel.model,
   View: ViewModel.model,
-  ViewList: ViewListModel.model,
-  UserList: UserListModel.model,
-  SearchList: SearchListModel.model,
-  PostList: PostListModel.model,
-  PageList: PageListModel.model,
-  MediaList: MediaListModel.model,
-  SearchMediaList: SearchMediaListModel.model,
-  RoleList: RoleListModel.model,
+  ViewCollection: ViewCollection.model,
+  UserCollection: UserCollection.model,
+  SearchCollection: SearchCollection.model,
+  PostCollection: PostCollection.model,
+  PageCollection: PageCollection.model,
+  MediaCollection: MediaCollection.model,
+  SearchMediaCollection: SearchMediaCollection.model,
+  RoleCollection: RoleCollection.model,
   Profile: ProfileModel.model,
   DashboardSetting: DashboardSettingModel.model,
 }

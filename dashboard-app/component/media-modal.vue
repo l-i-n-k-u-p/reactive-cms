@@ -131,13 +131,13 @@ export default {
   ],
   data() {
     return {
-      mediaFiles: new this.$models.MediaList(),
+      mediaFiles: new this.$models.MediaCollection(),
       mediaPage: 1,
       totalItems: 0,
       totalPages: 1,
       selectedMedia: new this.$models.Media(),
       searchValue: '',
-      searchMediaItems: new this.$models.SearchMediaList(),
+      searchMediaItems: new this.$models.SearchMediaCollection(),
       searchMimetype: '',
       activeTab: 0,
       formData: new FormData(),
