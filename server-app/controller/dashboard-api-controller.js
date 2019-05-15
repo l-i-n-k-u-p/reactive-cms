@@ -1333,3 +1333,15 @@ exports.updateProfileByID = async (req, res) => {
     data: { data: newUserData },
   })
 }
+
+exports.getDashboardSettings = async (req, res) => {
+  let settings = await settingQuery.getAll()
+  if (settings.error) {
+    res.send({
+      status_code: 1,
+      status_msg: 'Settings not found',
+    })
+    return
+  }
+  res.send(settings)
+}

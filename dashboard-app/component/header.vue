@@ -199,7 +199,7 @@ export default {
       searchItems: new this.$models.SearchList(),
       user: new this.$models.Profile(),
       userMenuOpen: false,
-      settings: new this.$models.Setting(),
+      settings: new this.$models.DashboardSetting(),
       isDesktopScreen: true,
       headerLeftRightStyle: '',
       isLoading: false,

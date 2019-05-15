@@ -37,6 +37,7 @@ import RoleListModel from './model/role-list-model.vue'
 import ViewModel from './model/view-model.vue'
 import ViewListModel from './model/view-list-model.vue'
 import ProfileModel from './model/profile-model.vue'
+import DashboardSettingModel from './model/dashboard-setting-model.vue'
 // NOTE: components
 import App from './app.vue'
 import Dashboard from './component/dashboard.vue'
@@ -88,6 +89,7 @@ Vue.prototype.$models = {
   SearchMediaList: SearchMediaListModel.model,
   RoleList: RoleListModel.model,
   Profile: ProfileModel.model,
+  DashboardSetting: DashboardSettingModel.model,
 }
 Vue.prototype.$appApiBaseURL = APP_SETTINGS.appApiBaseURL
 Vue.prototype.$getHexColor = getHexColor

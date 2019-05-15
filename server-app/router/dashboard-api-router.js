@@ -282,6 +282,12 @@ let routes = [
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.updateProfileByID,
   },
+  {
+    method: 'GET',
+    url: '/dashboard-settings/',
+    preHandler: session.isAuthenticated,
+    handler: dashboardAPIController.getDashboardSettings,
+  },
 ]
 
 const dasboardAPIRouter = async (fastify, opts, next) => {
