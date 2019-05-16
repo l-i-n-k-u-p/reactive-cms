@@ -87,7 +87,7 @@ const getItemsByPage = async (objectData) => {
 
 const getTotalItems = async () => {
   try {
-    let totalItems = UserModel.countDocuments()
+    let totalItems = await UserModel.countDocuments()
     return totalItems
   } catch (err) {
     return {

@@ -14,7 +14,7 @@ const getByID = async (id) => {
 
 const create = async (objectData) => {
   try {
-    let item = new PageModel(objectData).save()
+    let item = await new PageModel(objectData).save()
     return item
   } catch (err) {
     return {
@@ -46,7 +46,7 @@ const getItemsByPage = async (objectData) => {
 
 const getTotalItems = async () => {
   try {
-    let totalItems = PageModel.countDocuments()
+    let totalItems = await PageModel.countDocuments()
     return totalItems
   } catch (err) {
     return {
