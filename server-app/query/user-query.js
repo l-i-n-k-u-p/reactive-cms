@@ -156,7 +156,7 @@ const getByID = async (id) => {
 const create = async (objectData) => {
   try {
     let user = await new UserModel(objectData)
-    let userSaved = user.save()
+    let userSaved = await user.save()
     return userSaved
   } catch (err) {
     return {

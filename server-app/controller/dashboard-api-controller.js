@@ -203,7 +203,7 @@ exports.addNewUser = async (req, res) => {
   if (newUser.error) {
     res.send({
       status_code: 1,
-      status_msg: err.toString(),
+      status_msg: 'Error creating the user',
     })
     return
   }
