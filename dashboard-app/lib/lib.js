@@ -1,4 +1,4 @@
-const getHexColor = (str) => {
+const getHexColor = (str, plain) => {
   if (!str)
     return ''
 
@@ -11,6 +11,9 @@ const getHexColor = (str) => {
     let value = (hash >> (i * 8)) & 0xFF
     colour += ('00' + value.toString(16)).substr(-2)
   }
+  if (plain)
+    return '#' + colour + '80'
+
   return 'background-color: #' + colour + '80;'
 }
 

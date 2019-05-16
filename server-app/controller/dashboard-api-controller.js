@@ -1053,7 +1053,7 @@ exports.getDashboard = async (req, res) => {
       log_user_ref: userID,
     },
   })
-  if ( mediaItems.error || pageItems.error || postItems.error || userItems.error || mediaTotalItems.error || pageTotalItems.error || postTotalItems.error || userTotalItems.error ) {
+  if ( mediaItems.error || pageItems.error || postItems.error || userItems.error ) {
     res.send({
       status_code: 1,
       status_msg: 'Error loading the dashboad',

@@ -9,11 +9,19 @@
       style="background-color: transparent; box-shadow: none;"
     >
       <div class="content-wrapper">
-        <h2>Activity</h2>
         <div class="dashboard-activity">
+          <div
+            id="global-chart"
+            v-if="chartDataReady"
+            >
+            <pie-chart
+              v-bind:chartdata="globalData"
+              v-bind:options="options"
+            />
+          </div>
           <div class="section" v-for="model in dashboard.models">
             <div class="model">
-              {{ model.get("model") }}: {{ model.get("total") }}
+              {{ model.get("model") }} - Operations: {{ model.get("total") }}
             </div>
             <div class="activity-items">
               <div
@@ -149,18 +157,30 @@
 import BoxWrapper from './templates/box-wrapper.vue'
 import NavigationButtons from './templates/navigation-buttons.vue'
 import LoadingBar from './templates/loading-bar.vue'
+import pieChart from './chart/pie-chart.vue'
 
 export default {
   data() {
     return {
       dashboard: new this.$models.DashboardCollection(),
       isLoading: false,
+      chartDataReady: false,
+      globalData: {
+          datasets: [{
+              data: [],
+              backgroundColor: [],
+              borderWidth: 0,
+          }],
+          labels: [],
+      },
+      options: {},
     }
   },
   components: {
     BoxWrapper,
     NavigationButtons,
     LoadingBar,
+    pieChart,
   },
   created() {
     this.getDashboardData()
@@ -172,10 +192,25 @@ export default {
         .fetch()
         .then(data => {
           this.isLoading = false
+          this.generateChartData()
         })
         .catch(err => {
           this.isLoading = false
         })
+    },
+    generateChartData: function() {
+      let labels = []
+      let colors = []
+      let values = []
+      for (let item of this.dashboard.models) {
+        labels.push(item.model)
+        colors.push(this.$getHexColor(item.model, true))
+        values.push(item.total)
+      }
+      this.globalData.labels = labels
+      this.globalData.datasets[0].data = values
+      this.globalData.datasets[0].backgroundColor = colors
+      this.chartDataReady = true
     },
   },
 }
@@ -238,15 +273,13 @@ h2 {
   border-radius: 3px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   flex-grow: 1;
-  margin-left: 10px;
-  margin-right: 10px;
+  height: 300px;
   margin: 5px;
-  max-height: 300px;
-  max-width: 200px;
   overflow-y: auto;
   overflow: auto;
   position: relative;
-  width: 100%;
+  width: 300px;
+  max-width: 300px;
 }
 
 .activity-item {
@@ -266,5 +299,18 @@ h2 {
 .tag {
   display: block;
   font-weight: bold;
+}
+
+#global-chart {
+  background-color: white;
+  border-radius: 3px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  flex-grow: 1;
+  height: auto;
+  justify-content: center;
+  margin: 5px;
+  position: relative;
+  max-width: 280px;
+  padding: 10px;
 }
 </style>

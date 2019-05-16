@@ -52,6 +52,9 @@ const getTotalItems = async (objectData) => {
         $count: 'total_items',
       },
     ])
+    if (!totalItems.length)
+      return 0
+
     return totalItems[0].total_items
   } catch (err) {
     return {
