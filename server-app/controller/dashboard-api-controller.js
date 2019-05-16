@@ -25,6 +25,7 @@ const siteQuery = require('../query/site-query')
 const viewQuery = require('../query/view-query')
 const resourceQuery = require('../query/resource-query')
 const roleQuery = require('../query/role-query')
+const logQuery = require('../query/log-query')
 
 
 exports.login = async (req, res) => {
@@ -988,35 +989,98 @@ exports.getDashboard = async (req, res) => {
     })
     return
   }
-  let items = await dashboardQuery.getLog()
-  if (items.error) {
+  let userID = req.session.user.user_id
+  let sort = { log_date: -1 }
+  let skipItems = 0
+  let limitItems = 3
+  let mediaItems = await logQuery.getItems({
+    match: {
+      log_model: 'media',
+      log_user_ref: userID,
+    },
+    sort: sort,
+    skip: skipItems,
+    limit: limitItems,
+  })
+  let pageItems = await logQuery.getItems({
+    match: {
+      log_model: 'page',
+      log_user_ref: userID,
+    },
+    sort: sort,
+    skip: skipItems,
+    limit: limitItems,
+  })
+  let postItems = await logQuery.getItems({
+    match: {
+      log_model: 'post',
+      log_user_ref: userID,
+    },
+    sort: sort,
+    skip: skipItems,
+    limit: limitItems,
+  })
+  let userItems = await logQuery.getItems({
+    match: {
+      log_model: 'user',
+      log_user_ref: userID,
+    },
+    sort: sort,
+    skip: skipItems,
+    limit: limitItems,
+  })
+  let mediaTotalItems = await logQuery.getTotalItems({
+    match: {
+      log_model: 'media',
+      log_user_ref: userID,
+    },
+  })
+  let pageTotalItems = await logQuery.getTotalItems({
+    match: {
+      log_model: 'page',
+      log_user_ref: userID,
+    },
+  })
+  let postTotalItems = await logQuery.getTotalItems({
+    match: {
+      log_model: 'post',
+      log_user_ref: userID,
+    },
+  })
+  let userTotalItems = await logQuery.getTotalItems({
+    match: {
+      log_model: 'user',
+      log_user_ref: userID,
+    },
+  })
+  if ( mediaItems.error || pageItems.error || postItems.error || userItems.error ) {
     res.send({
       status_code: 1,
-      status_msg: 'Error loading dashboard data',
+      status_msg: 'Error loading the dashboad',
     })
     return
   }
   res.send({
     items: [
       {
-        model: 'user',
-        total: items[0],
-        last: items[4],
-      },
-      {
-        model: 'post',
-        total: items[1],
-        last: items[5],
+        model: 'media',
+        items: mediaItems,
+        total: mediaTotalItems,
       },
       {
         model: 'page',
-        total: items[2],
-        last: items[6],
+        items: pageItems,
+        total: pageTotalItems,
       },
       {
-        model: 'media',
-        total: items[3],
-        last: items[7],
+        model: 'post',
+        items: postItems,
+        total: postTotalItems,
+      },
+      {
+        model: 'user',
+        items: userItems,
+        total: userTotalItems,
       },
     ],
   })
