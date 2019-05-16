@@ -1,3 +1,5 @@
+const mongoose = require('mongoose')
+
 const LogModel = require('../model/log-model')
 
 
@@ -12,9 +14,14 @@ const create = async (objectData) => {
   }
 }
 
-const getAll = async (objectData) => {
+const getItems = async (objectData) => {
   try {
+    if (objectData.match.log_user_ref)
+      objectData.match.log_user_ref = mongoose.Types.ObjectId(objectData.match.log_user_ref)
     let items = await LogModel.aggregate([
+      {
+        $match: objectData.match,
+      },
       {
         $sort: objectData.sort,
       },
@@ -33,8 +40,29 @@ const getAll = async (objectData) => {
   }
 }
 
+const getTotalItems = async (objectData) => {
+  try {
+    if (objectData.match.log_user_ref)
+      objectData.match.log_user_ref = mongoose.Types.ObjectId(objectData.match.log_user_ref)
+    let totalItems = await LogModel.aggregate([
+      {
+        $match: objectData.match,
+      },
+      {
+        $count: 'total_items',
+      },
+    ])
+    return totalItems[0].total_items
+  } catch (err) {
+    return {
+      error: err
+    }
+  }
+}
+
 
 module.exports = {
   create: create,
-  getAll: getAll,
+  getItems: getItems,
+  getTotalItems: getTotalItems,
 }
