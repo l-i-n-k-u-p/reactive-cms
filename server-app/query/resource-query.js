@@ -17,7 +17,7 @@ const create = async (ObjectData) => {
 const updateByID = async (objectData) => {
   try {
     let objectID = mongoose.Types.ObjectId(objectData.id)
-    let item = ResourceModel.updateOne({
+    let item = await ResourceModel.updateOne({
       _id: objectID,
     }, {
       $set: objectData.update_fields,

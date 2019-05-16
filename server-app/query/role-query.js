@@ -5,7 +5,7 @@ const RoleModel = require('../model/role-model')
 
 const getTotalItems = async () => {
   try {
-    let totalItems = RoleModel.countDocuments()
+    let totalItems = await RoleModel.countDocuments()
     return totalItems
   } catch (err) {
     return {
@@ -91,7 +91,7 @@ const updateByID = async (objectData) => {
 
 const create = async (objectData) => {
   try {
-    let item = new RoleModel(objectData).save()
+    let item = await new RoleModel(objectData).save()
     return item
   } catch (err) {
     return {

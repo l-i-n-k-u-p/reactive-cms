@@ -14,7 +14,7 @@ const getByID = async (id) => {
 
 const create = async (objectData) => {
   try {
-    let post = new PostModel(objectData).save()
+    let post = await new PostModel(objectData).save()
     return post
   } catch (err) {
     return {
@@ -46,7 +46,7 @@ const getItemsByPage = async (objectData) => {
 
 const getTotalItems = async () => {
   try {
-    let totalItems = PostModel.countDocuments()
+    let totalItems = await PostModel.countDocuments()
     return totalItems
   } catch (err) {
     return {
