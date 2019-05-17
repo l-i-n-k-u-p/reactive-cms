@@ -13,6 +13,8 @@
           v-bind:inputValue="settings.get('setting_page_title')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="setting_page_title"
+          v-bind:errorMessage="settings.errors.setting_page_title"
+          helperMessage="At least 2 characters"
         >
         </InputText>
         <InputText
@@ -21,6 +23,8 @@
           v-bind:onChangeValue="onChangeInputValue"
           propName="setting_items_peer_page"
           inputType="number"
+          v-bind:errorMessage="settings.errors.setting_items_peer_page"
+          helperMessage="Number of items by page from 1 to 40"
         >
         </InputText>
         <h3>Site</h3>
@@ -29,6 +33,8 @@
           v-bind:inputValue="site.get('site_name')"
           v-bind:onChangeValue="onChangeInputSiteValue"
           propName="site_name"
+          v-bind:errorMessage="site.errors.site_name"
+          helperMessage="At least 2 characters"
         >
         </InputText>
         <InputText
@@ -37,6 +43,8 @@
           v-bind:onChangeValue="onChangeInputSiteValue"
           propName="site_items_peer_page"
           inputType="number"
+          v-bind:errorMessage="site.errors.site_items_peer_page"
+          helperMessage="Number of items by page from 1 to 40"
         >
         </InputText>
         <InputText
@@ -44,6 +52,8 @@
           v-bind:inputValue="site.get('site_url')"
           v-bind:onChangeValue="onChangeInputSiteValue"
           propName="site_url"
+          v-bind:errorMessage="site.errors.site_url"
+          helperMessage="At least 2 characters"
         >
         </InputText>
         <FormDropdownSelect
@@ -204,6 +214,10 @@ export default {
       this.site.set(propName, value)
     },
     saveSetting: function() {
+      let errorCount = Object.keys(this.settings.errors).length + Object.keys(this.site.errors).length
+      if (errorCount)
+        return
+
       this.isLoading = true
       this.settings
       .put()
