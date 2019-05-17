@@ -17,6 +17,7 @@
       v-on:blur="focus"
       v-model="value"
       v-bind:disabled="disabled"
+      autocomplete="off"
     />
     <label
       v-show="errorMessage"
@@ -76,8 +77,7 @@ export default {
 <style scoped lang="css">
 .input-wrapper {
   background-color: transparent;
-  margin-bottom: 35px;
-  margin-top: 25px;
+  margin: 0 0 35px 0;
   position: relative;
 }
 

@@ -274,8 +274,7 @@ export default {
 
 <style scoped lang="css">
 #editor {
-  margin-bottom: 35px;
-  margin-top: 10px;
+  margin: 0 0 25px 0;
   position: relative;
 }
 
