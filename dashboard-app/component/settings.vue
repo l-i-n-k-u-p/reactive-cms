@@ -204,7 +204,7 @@ export default {
       })
       .catch(err => {
         this.isLoading = false
-        this.$eventHub.$emit('dashboard-app-error', data.message)
+        this.$eventHub.$emit('dashboard-app-error', err.message)
       })
     },
     onChangeInputValue: function(propName, value) {

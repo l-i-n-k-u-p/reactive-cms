@@ -161,7 +161,7 @@ export default {
         }
         this.$eventHub.$emit('dashboard-app-success',  data.getData().status_msg)
       })
-      .catch(data => {
+      .catch(err => {
         this.isLoading = false
         this.$eventHub.$emit('dashboard-app-error', err.message)
       })

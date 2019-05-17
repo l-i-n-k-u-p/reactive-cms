@@ -283,7 +283,7 @@ export default {
         })
         .catch(err => {
           this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', data.message)
+          this.$eventHub.$emit('dashboard-app-error', err.message)
         })
       this.$router.replace({ name: 'users', params: { page: 1 } })
     },
@@ -310,9 +310,8 @@ export default {
         this.user.user_pass = ''
         this.newPassword = ''
       })
-      .catch(data => {
+      .catch(err => {
         this.isLoading = false
-        this.$eventHub.$emit('dashboard-app-error', data.message)
       })
     },
     showConfirmationModal: function() {

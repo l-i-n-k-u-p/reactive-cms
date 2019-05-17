@@ -211,7 +211,6 @@ export default {
         })
         .catch(err => {
           this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', err.message)
         })
     },
     openPermissionsModal: function(index) {

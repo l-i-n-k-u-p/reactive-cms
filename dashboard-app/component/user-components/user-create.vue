@@ -221,7 +221,6 @@ export default {
       })
       .catch(err => {
         this.isLoading = false
-        this.$eventHub.$emit('dashboard-app-error', data.message)
       })
     },
     onMediaSelect: function(media) {

@@ -257,7 +257,7 @@ export default {
       .then(data => {
         this.isLoading = false
       })
-      .catch(data => {
+      .catch(err => {
         this.isLoading = false
       })
     },
@@ -312,8 +312,8 @@ export default {
     getSessionUserData: function() {
       this.user.set('_id', window.user_id)
       this.user.fetch()
-      .catch(data => {
-        this.$eventHub.$emit('dashboard-app-error', data.message)
+      .catch(err => {
+        this.$eventHub.$emit('dashboard-app-error', err.message)
       })
     },
     getDashboardData: function() {

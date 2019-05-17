@@ -140,7 +140,7 @@ export default {
             params: { id: data.data.data.id },
           })
         })
-        .catch(data => {
+        .catch(err => {
           this.isLoading = false
         })
     },

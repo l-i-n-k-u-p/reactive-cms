@@ -91,8 +91,8 @@ export default {
           this.$eventHub.$emit('dashboard-hide-login', '')
           this.$router.go()
         })
-        .catch(data => {
-          this.$eventHub.$emit('dashboard-app-error', data.message)
+        .catch(err => {
+          this.$eventHub.$emit('dashboard-app-error', err.message)
         })
     },
     onChangeInputUserName: function(propName, value) {
