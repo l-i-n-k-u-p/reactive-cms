@@ -6,7 +6,9 @@
       'no-empty': hasText,
     }"
   >
-    <label>
+    <label
+      id="input-title"
+      v-bind:class="{ 'error': errorMessage }">
       {{ inputName }}
     </label>
     <input
@@ -16,6 +18,16 @@
       v-model="value"
       v-bind:disabled="disabled"
     />
+    <label
+      v-show="errorMessage"
+      id="input-error-message">
+      {{ errorMessage }}
+    </label>
+    <label
+      v-show="!errorMessage"
+      id="input-helper-message">
+      {{ helperMessage }}
+    </label>
   </div>
 </template>
 
@@ -28,6 +40,8 @@ export default {
     'inputType',
     'propName',
     'disabled',
+    'helperMessage',
+    'errorMessage',
   ],
   data() {
     return {
@@ -62,11 +76,12 @@ export default {
 <style scoped lang="css">
 .input-wrapper {
   background-color: transparent;
+  margin-bottom: 35px;
   margin-top: 25px;
   position: relative;
 }
 
-.input-wrapper label {
+.input-wrapper #input-title {
   background-color: transparent;
   color: #616161;
   font-size: 13px;
@@ -94,7 +109,7 @@ export default {
   width: 100%;
 }
 
-.input-wrapper.focus label {
+.input-wrapper.focus #input-title {
   color: black;
   top: -15px;
 }
@@ -103,7 +118,27 @@ export default {
   border-bottom: 1px solid black;
 }
 
-.input-wrapper.no-empty label {
+.input-wrapper.no-empty #input-title {
   top: -15px;
+}
+
+#input-error-message, #input-helper-message {
+  font-size: 12px;
+  font-weight: 400;
+  position: absolute;
+  top: calc(100% + 2px);
+  width: 100%;
+}
+
+#input-error-message {
+  color: #ff4949;
+}
+
+#input-helper-message {
+  color: #777;
+}
+
+.input-wrapper #input-title.error {
+  color: #ff4949;
 }
 </style>

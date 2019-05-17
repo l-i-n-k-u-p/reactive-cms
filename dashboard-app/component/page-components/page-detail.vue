@@ -53,11 +53,15 @@
           v-bind:inputValue="page.page_title"
           v-bind:onChangeValue="onChangeInputValue"
           propName="page_title"
+          v-bind:errorMessage="page.errors.page_title"
+          helperMessage="At least 2 characters"
         >
         </InputText>
         <editor
           v-bind:content="editorContent"
           v-bind:onChangeContent="onChangeContent"
+          v-bind:errorMessage="page.errors.page_content"
+          helperMessage="At least 2 characters"
         >
         </editor>
         <Gallery
@@ -253,6 +257,9 @@ export default {
       this.$router.replace({ name: 'pages', params: { page: 1 } })
     },
     updatePage: function() {
+      if (Object.keys(this.page.errors).length)
+        return
+
       this.isLoading = true
       this.page
         .put()
@@ -272,7 +279,6 @@ export default {
         })
         .catch(data => {
           this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', err.message)
         })
     },
     showConfirmationModal: function() {
