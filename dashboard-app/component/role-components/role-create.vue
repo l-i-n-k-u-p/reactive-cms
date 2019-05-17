@@ -9,9 +9,11 @@
       <div class="content-wrapper">
         <InputText
           inputName="Role Name"
-          v-bind:inputValue="role.role_name"
+          v-bind:inputValue="role.get('role_name')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="role_name"
+          v-bind:errorMessage="role.errors.role_name"
+          helperMessage="At least 2 characters"
         >
         </InputText>
         </InputText>
@@ -186,7 +188,7 @@ export default {
     saveRole: function() {
       this.isLoading = true
       this.role
-        .post()
+        .save()
         .then(data => {
           this.isLoading = false
           if (data.getData().status_code) {
