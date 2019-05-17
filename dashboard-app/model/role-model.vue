@@ -2,6 +2,10 @@
 import {
   Model,
 } from 'vue-mc'
+import {
+  length,
+  string,
+} from 'vue-mc/validation'
 import SocketIO from '../lib/socket-io'
 import APP_SETTINGS from '../app-settings'
 
@@ -36,8 +40,24 @@ class RoleModel extends Model {
       role_user_ref: '',
     }
   }
+  mutations() {
+    return {
+      role_name: String,
+    }
+  }
+  validation() {
+    return {
+      role_name: string.and(length(2, 150)),
+    }
+  }
   options () {
-    return {}
+    return {
+      validateOnChange: true,
+      validateOnSave: true,
+      validateRecursively: true,
+      saveUnchanged: true,
+      useFirstErrorOnly: true,
+    }
   }
   post () {
     let method = 'POST'
@@ -63,7 +83,7 @@ class RoleModel extends Model {
   routes () {
     return {
       fetch: APP_SETTINGS.appApiBaseURL + '/role/{_id}',
-      post: APP_SETTINGS.appApiBaseURL + '/role/',
+      save: APP_SETTINGS.appApiBaseURL + '/role/',
       put: APP_SETTINGS.appApiBaseURL + '/role/{_id}',
       delete: APP_SETTINGS.appApiBaseURL + '/role/{_id}',
     }

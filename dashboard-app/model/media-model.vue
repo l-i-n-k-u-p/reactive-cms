@@ -2,11 +2,15 @@
 import {
   Model,
 } from 'vue-mc'
+import {
+  length,
+  string,
+} from 'vue-mc/validation'
 import SocketIO from '../lib/socket-io'
 import APP_SETTINGS from '../app-settings'
 
-
 let socketIO = new SocketIO()
+
 
 class MediaModel extends Model {
   constructor (props) {
@@ -40,8 +44,24 @@ class MediaModel extends Model {
       media_date: '',
     }
   }
+  mutations() {
+    return {
+      media_title: String,
+    }
+  }
+  validation() {
+    return {
+      media_title: string.and(length(2, 150)),
+    }
+  }
   options () {
-    return {}
+    return {
+      validateOnChange: true,
+      validateOnSave: true,
+      validateRecursively: true,
+      saveUnchanged: true,
+      useFirstErrorOnly: true,
+    }
   }
   post () {
     let method = 'POST'
@@ -67,7 +87,7 @@ class MediaModel extends Model {
   routes () {
     return {
       fetch: APP_SETTINGS.appApiBaseURL + '/media-file/{_id}',
-      post: APP_SETTINGS.appApiBaseURL + '/media-file/',
+      save: APP_SETTINGS.appApiBaseURL + '/media-file/',
       put: APP_SETTINGS.appApiBaseURL + '/media-file/{_id}',
       delete: APP_SETTINGS.appApiBaseURL + '/media-file/{_id}',
     }

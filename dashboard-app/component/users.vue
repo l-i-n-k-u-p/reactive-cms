@@ -117,7 +117,7 @@ export default {
           this.itemsSkipped = data.getData().items_skipped
           this.totalUsers = data.getData().total_items
         })
-        .catch(data => {
+        .catch(err => {
           this.isLoading = false
         })
     },
@@ -183,9 +183,9 @@ export default {
             success + ' user/s ' + typeAction,
           )
         })
-        .catch(data => {
+        .catch(err => {
           this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', data.message)
+          this.$eventHub.$emit('dashboard-app-error', err.message)
         })
       this.itemsSelected = {}
     },

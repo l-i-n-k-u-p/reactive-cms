@@ -2,11 +2,17 @@
 import {
   Model,
 } from 'vue-mc'
+import {
+  integer,
+  length,
+  string,
+  min,
+} from 'vue-mc/validation'
 import SocketIO from '../lib/socket-io'
 import APP_SETTINGS from '../app-settings'
 
-
 let socketIO = new SocketIO()
+
 
 class SettingModel extends Model {
   constructor (props) {
@@ -35,8 +41,30 @@ class SettingModel extends Model {
       setting_items_peer_page: '',
     }
   }
+  mutations() {
+    return {
+      setting_page_title: String,
+      setting_items_peer_page: Number,
+    }
+  }
+  validation() {
+    return {
+      setting_page_title: string.and(length(2, 150)),
+      setting_items_peer_page: (value) => {
+        if (value < 1 || value > 40) {
+          return 'Must have a number between 1 and 40'
+        }
+      },
+    }
+  }
   options () {
-    return {}
+    return {
+      validateOnChange: true,
+      validateOnSave: true,
+      validateRecursively: true,
+      saveUnchanged: true,
+      useFirstErrorOnly: true,
+    }
   }
   post () {
     let method = 'POST'
@@ -62,7 +90,7 @@ class SettingModel extends Model {
   routes () {
     return {
       fetch: APP_SETTINGS.appApiBaseURL + '/setting/',
-      post: APP_SETTINGS.appApiBaseURL + '/setting/',
+      // post: APP_SETTINGS.appApiBaseURL + '/setting/',
       put: APP_SETTINGS.appApiBaseURL + '/setting/',
       delete: APP_SETTINGS.appApiBaseURL + '/setting/',
     }

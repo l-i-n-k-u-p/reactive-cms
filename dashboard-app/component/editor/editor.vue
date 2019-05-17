@@ -141,6 +141,16 @@
       </div>
     </editor-menu-bar>
     <editor-content :editor="editor" />
+    <label
+      v-show="errorMessage"
+      id="input-error-message">
+      {{ errorMessage }}
+    </label>
+    <label
+      v-show="!errorMessage"
+      id="input-helper-message">
+      {{ helperMessage }}
+    </label>
   </div>
 </template>
 
@@ -171,7 +181,12 @@ import TextColor from './color'
 import DropdownSlot from '../templates/dropdown-slot.vue'
 
 export default {
-  props: ['content', 'onChangeContent'],
+  props: [
+    'content',
+    'onChangeContent',
+    'helperMessage',
+    'errorMessage',
+  ],
   data() {
     return {
       editorContent: '',
@@ -259,7 +274,8 @@ export default {
 
 <style scoped lang="css">
 #editor {
-  margin-top: 10px;
+  margin: 0 0 25px 0;
+  position: relative;
 }
 
 .editor-button-wrapper {
@@ -296,10 +312,29 @@ button i {
   font-size: 20px;
   margin: auto;
 }
+
+#input-error-message, #input-helper-message {
+  font-size: 12px;
+  font-weight: 400;
+  position: absolute;
+  top: calc(100% + 2px);
+  width: 100%;
+}
+
+#input-error-message {
+  color: #ff4949;
+}
+
+#input-helper-message {
+  color: #777;
+}
+
+#input-title.error {
+  color: #ff4949;
+}
 </style>
 
 <style lang="css">
-
 .ProseMirror {
   background: transparent;
   border-bottom: 1px solid #616161;

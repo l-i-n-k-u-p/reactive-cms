@@ -79,6 +79,8 @@
           v-bind:inputValue="user.get('user_first_name')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="user_first_name"
+          v-bind:errorMessage="user.errors.user_first_name"
+          helperMessage="At least 2 characters"
         >
         </InputText>
         <InputText
@@ -93,6 +95,8 @@
           v-bind:inputValue="user.get('user_name')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="user_name"
+          v-bind:errorMessage="user.errors.user_name"
+          helperMessage="At least 2 characters"
         >
         </InputText>
         <InputText
@@ -100,6 +104,8 @@
           v-bind:inputValue="newPassword"
           v-bind:onChangeValue="onSetNewPassword"
           propName=""
+          v-bind:errorMessage="user.errors.user_pass"
+          helperMessage="At least 2 characters"
         >
         </InputText>
         <InputText
@@ -107,6 +113,8 @@
           v-bind:inputValue="user.get('user_email')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="user_email"
+          v-bind:errorMessage="user.errors.user_email"
+          helperMessage="Example: eduardobc.88@gmail.com"
         >
         </InputText>
         <FormDropdownSelect
@@ -192,7 +200,7 @@ export default {
     createUser: function() {
       this.isLoading = true
       this.user
-      .post()
+      .save()
       .then(data => {
         this.isLoading = false
         if (data.getData().status_code) {
@@ -213,7 +221,6 @@ export default {
       })
       .catch(err => {
         this.isLoading = false
-        this.$eventHub.$emit('dashboard-app-error', data.message)
       })
     },
     onMediaSelect: function(media) {

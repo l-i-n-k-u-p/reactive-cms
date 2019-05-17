@@ -2,11 +2,16 @@
 import {
   Model,
 } from 'vue-mc'
+import {
+  length,
+  string,
+} from 'vue-mc/validation'
 import SocketIO from '../lib/socket-io'
 import APP_SETTINGS from '../app-settings'
 
-
 let socketIO = new SocketIO()
+let stripHTMLTagsRegex = /(<([^>]+)>)/gi
+
 
 class PageModel extends Model {
   constructor (props) {
@@ -41,8 +46,30 @@ class PageModel extends Model {
       page_gallery: [],
     }
   }
+  mutations() {
+    return {
+      page_title: String,
+      page_content: String,
+    }
+  }
+  validation() {
+    return {
+      page_title: string.and(length(2, 150)),
+      page_content: (value) => {
+        let valueStrip = value.replace(stripHTMLTagsRegex, '')
+        if (valueStrip.length < 5)
+          return 'Must have a length of at least 5'
+      }
+    }
+  }
   options () {
-    return {}
+    return {
+      validateOnChange: true,
+      validateOnSave: true,
+      validateRecursively: true,
+      saveUnchanged: true,
+      useFirstErrorOnly: true,
+    }
   }
   post () {
     let method = 'POST'
@@ -68,7 +95,7 @@ class PageModel extends Model {
   routes () {
     return {
       fetch: APP_SETTINGS.appApiBaseURL + '/page/{_id}',
-      post: APP_SETTINGS.appApiBaseURL + '/page/',
+      save: APP_SETTINGS.appApiBaseURL + '/page/',
       put: APP_SETTINGS.appApiBaseURL + '/page/{_id}',
       delete: APP_SETTINGS.appApiBaseURL + '/page/{_id}',
     }

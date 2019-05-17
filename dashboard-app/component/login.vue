@@ -14,6 +14,8 @@
           v-bind:inputValue="loginUserName"
           v-bind:onChangeValue="onChangeInputUserName"
           propName=""
+          v-bind:errorMessage="loginUserNameError"
+          helperMessage="Your user name"
         >
         </InputText>
         <InputText
@@ -23,6 +25,8 @@
           v-bind:onChangeValue="onChangeInputUserPassword"
           propName=""
           inputType="password"
+          v-bind:errorMessage="loginUserPasswordError"
+          helperMessage="Your password"
         >
         </InputText>
         <Button
@@ -48,14 +52,27 @@ export default {
       loginUserName: '',
       loginUserPassword: '',
       loginErrorMessage: '',
+      loginUserNameError: '',
+      loginUserPasswordError: '',
     }
   },
   components: {
     Button,
     InputText,
   },
+  watch: {
+    loginUserName: function(newValues, oldValues) {
+      this.validateUserName()
+    },
+    loginUserPassword: function(newValues, oldValues) {
+      this.validateUserPassword()
+    },
+  },
   methods: {
     acceptAction: function() {
+      if (!this.validateUserName() || !this.validateUserPassword())
+        return
+
       this.formData.delete('user_name')
       this.formData.delete('user_pass')
       this.formData.append('user_name', this.loginUserName)
@@ -74,8 +91,8 @@ export default {
           this.$eventHub.$emit('dashboard-hide-login', '')
           this.$router.go()
         })
-        .catch(data => {
-          this.$eventHub.$emit('dashboard-app-error', data.message)
+        .catch(err => {
+          this.$eventHub.$emit('dashboard-app-error', err.message)
         })
     },
     onChangeInputUserName: function(propName, value) {
@@ -83,6 +100,22 @@ export default {
     },
     onChangeInputUserPassword: function(propName, value) {
       this.loginUserPassword = value
+    },
+    validateUserName: function() {
+      if (!this.loginUserName) {
+        this.loginUserNameError = 'Required'
+        return false
+      }
+      this.loginUserNameError = ''
+      return true
+    },
+    validateUserPassword: function() {
+      if (!this.loginUserPassword) {
+        this.loginUserPasswordError = 'Required'
+        return false
+      }
+      this.loginUserPasswordError = ''
+      return true
     },
   },
 }
@@ -145,6 +178,6 @@ export default {
 }
 
 .form-wrapper .button {
-  margin-top: 10px;
+  margin: 0;
 }
 </style>

@@ -79,6 +79,8 @@
           v-bind:inputValue="user.get('user_first_name')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="user_first_name"
+          v-bind:errorMessage="user.errors.user_first_name"
+          helperMessage="At least 2 characters"
         >
         </InputText>
         <InputText
@@ -93,6 +95,8 @@
           v-bind:inputValue="user.get('user_name')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="user_name"
+          v-bind:errorMessage="user.errors.user_name"
+          helperMessage="At least 2 characters"
         >
         </InputText>
         <InputText
@@ -100,6 +104,8 @@
           v-bind:inputValue="newPassword"
           v-bind:onChangeValue="onSetNewPassword"
           propName=""
+          v-bind:errorMessage="user.errors.user_pass"
+          helperMessage="At least 2 characters"
         >
         </InputText>
         <InputText
@@ -107,6 +113,8 @@
           v-bind:inputValue="user.get('user_email')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="user_email"
+          v-bind:errorMessage="user.errors.user_email"
+          helperMessage="Example: eduardobc.88@gmail.com"
         >
         </InputText>
         <FormDropdownSelect
@@ -275,11 +283,14 @@ export default {
         })
         .catch(err => {
           this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', data.message)
+          this.$eventHub.$emit('dashboard-app-error', err.message)
         })
       this.$router.replace({ name: 'users', params: { page: 1 } })
     },
     updateUser: function() {
+      if (Object.keys(this.user.errors).length)
+        return
+
       this.isLoading = true
       this.user
       .put()
@@ -299,9 +310,8 @@ export default {
         this.user.user_pass = ''
         this.newPassword = ''
       })
-      .catch(data => {
+      .catch(err => {
         this.isLoading = false
-        this.$eventHub.$emit('dashboard-app-error', data.message)
       })
     },
     showConfirmationModal: function() {

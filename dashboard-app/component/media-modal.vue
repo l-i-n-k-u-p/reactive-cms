@@ -170,7 +170,7 @@ export default {
             if (this.mediaPage === 2) this.getMedia()
             this.totalItems = data.getData().total_items
           })
-          .catch(data => {
+          .catch(err => {
             this.isLoading = false
           })
       }
@@ -226,7 +226,7 @@ export default {
             this.mediaFiles.add(mediaItem)
           })
         })
-        .catch(data => {
+        .catch(err => {
           this.isLoading = false
         })
     },
@@ -277,9 +277,9 @@ export default {
           this.getMedia()
           this.$eventHub.$emit('dashboard-app-success', data.data.status_msg)
         })
-        .catch(data => {
+        .catch(err => {
           this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', data.message)
+          this.$eventHub.$emit('dashboard-app-error', err.message)
         })
     },
     selectMedia: function() {

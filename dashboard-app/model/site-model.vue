@@ -2,11 +2,18 @@
 import {
   Model,
 } from 'vue-mc'
+import {
+  integer,
+  length,
+  string,
+  min,
+  url,
+} from 'vue-mc/validation'
 import SocketIO from '../lib/socket-io'
 import APP_SETTINGS from '../app-settings'
 
-
 let socketIO = new SocketIO()
+
 
 class SiteModel extends Model {
   constructor (props) {
@@ -38,8 +45,33 @@ class SiteModel extends Model {
       site_template_posts: '',
     }
   }
+  mutations() {
+    return {
+      site_name: String,
+      site_items_peer_page: Number,
+      site_url: String,
+    }
+  }
+  validation() {
+    return {
+      setting_page_title: string.and(length(2, 150)),
+      site_name: string.and(length(2, 150)),
+      site_items_peer_page: (value) => {
+        if (value < 1 || value > 40) {
+          return 'Must have a number between 1 and 40'
+        }
+      },
+      site_url: url.and(length(2, 150)),
+    }
+  }
   options () {
-    return {}
+    return {
+      validateOnChange: true,
+      validateOnSave: true,
+      validateRecursively: true,
+      saveUnchanged: true,
+      useFirstErrorOnly: true,
+    }
   }
   post () {
     let method = 'POST'

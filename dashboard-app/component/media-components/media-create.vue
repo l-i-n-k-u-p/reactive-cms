@@ -9,7 +9,12 @@
     <LoadingBar v-if="isLoading"/>
     <BoxWrapper>
       <form enctype="multipart/form-data" method="POST">
-        <div class="dropzone" ref="dropzone">
+        <div
+          v-bind:class="{
+            'dropzone': true,
+            'error': mediaFileError,
+          }"
+          ref="dropzone">
           <div>
             <p class="description">
               Choose a file or drag it here
@@ -37,6 +42,8 @@
           v-bind:inputValue="mediaTitle"
           v-bind:onChangeValue="onChangeInputValue"
           propName=""
+          v-bind:errorMessage="mediaTitleError"
+          helperMessage="At least 2 characters"
         >
         </InputText>
       </div>
@@ -71,6 +78,10 @@ export default {
       mediaTitle: '',
       mediaName: '',
       isLoading: false,
+      mediaTitleError: '',
+      mediaTitleMinLength: 2,
+      mediaTitleMaxLength: 150,
+      mediaFileError: false,
     }
   },
   components: {
@@ -80,14 +91,39 @@ export default {
     NavigationButtons,
     LoadingBar,
   },
+  watch: {
+    mediaTitle: function(newValues, oldValues) {
+      this.validateMediaTitle()
+    },
+  },
   mounted() {
     this.addDragEnterAndLeaveEventListener()
   },
   methods: {
+    validateMediaTitle: function() {
+      let titleLength = this.mediaTitle.length
+      if (titleLength < this.mediaTitleMinLength || titleLength > this.mediaTitleMaxLength) {
+        this.mediaTitleError = 'Must have a length between 2 and 150'
+        return false
+      }
+      this.mediaTitleError = ''
+      return true
+    },
+    validateMediaFile: function() {
+      if (!this.mediaName) {
+        this.mediaFileError = true
+        return false
+      }
+      this.mediaFileError = false
+      return true
+    },
     onChangeInputValue: function(propName, value) {
       this.mediaTitle = value
     },
     createMedia: function() {
+      if (!this.validateMediaFile() || !this.validateMediaTitle())
+        return
+
       this.isLoading = true
       this.formData.append('media_title', this.mediaTitle)
       this.axios
@@ -104,7 +140,7 @@ export default {
             params: { id: data.data.data.id },
           })
         })
-        .catch(data => {
+        .catch(err => {
           this.isLoading = false
         })
     },
@@ -196,6 +232,10 @@ h2 {
   width: 100%;
   z-index: 1;
   position: absolute;
+}
+
+.dropzone.error {
+  border: 2px dashed red;
 }
 
 .dropzone.dragover {

@@ -97,7 +97,7 @@ export default {
 <style scoped lang="css">
 #gallery-wrapper {
   position: relative;
-  margin-top: 10px;
+  margin: 0 0 35px 0;
 }
 
 h2 {

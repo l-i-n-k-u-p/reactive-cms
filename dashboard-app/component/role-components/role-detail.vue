@@ -9,9 +9,11 @@
       <div class="content-wrapper">
         <InputText
           inputName="Role Name"
-          v-bind:inputValue="role.role_name"
+          v-bind:inputValue="role.get('role_name')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="role_name"
+          v-bind:errorMessage="role.errors.role_name"
+          helperMessage="At least 2 characters"
         >
         </InputText>
         </InputText>
@@ -208,6 +210,9 @@ export default {
       }
     },
     saveRole: function() {
+      if (Object.keys(this.role.errors).length)
+        return
+
       this.isLoading = true
       this.role
         .put()
@@ -227,7 +232,6 @@ export default {
         })
         .catch(err => {
           this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', err.message)
         })
     },
     openPermissionsModal: function(index) {
@@ -311,7 +315,7 @@ export default {
         })
         .catch(err => {
           this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', data.message)
+          this.$eventHub.$emit('dashboard-app-error', err.message)
         })
       this.$router.replace({
         name: 'roles',
