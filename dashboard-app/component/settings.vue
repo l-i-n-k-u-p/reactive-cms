@@ -53,7 +53,7 @@
           v-bind:onChangeValue="onChangeInputSiteValue"
           propName="site_url"
           v-bind:errorMessage="site.errors.site_url"
-          helperMessage="At least 2 characters"
+          helperMessage="Example: https://www.reactive-web.com/"
         >
         </InputText>
         <FormDropdownSelect

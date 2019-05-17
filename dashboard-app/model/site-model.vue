@@ -7,6 +7,7 @@ import {
   length,
   string,
   min,
+  url,
 } from 'vue-mc/validation'
 import SocketIO from '../lib/socket-io'
 import APP_SETTINGS from '../app-settings'
@@ -60,7 +61,7 @@ class SiteModel extends Model {
           return 'Must have a number between 1 and 40'
         }
       },
-      site_url: string.and(length(2, 150)),
+      site_url: url.and(length(2, 150)),
     }
   }
   options () {
