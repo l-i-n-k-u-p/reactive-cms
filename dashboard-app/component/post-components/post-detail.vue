@@ -52,11 +52,15 @@
           v-bind:inputValue="post.post_title"
           v-bind:onChangeValue="onChangeInputValue"
           propName="post_title"
+          v-bind:errorMessage="post.errors.post_title"
+          helperMessage="At least 2 characters"
         >
         </InputText>
         <editor
           v-bind:content="editorContent"
           v-bind:onChangeContent="onChangeContent"
+          v-bind:errorMessage="post.errors.post_content"
+          helperMessage="At least 2 characters"
         >
         </editor>
         <div class="date-wrapper">
@@ -216,6 +220,9 @@ export default {
       this.$router.replace({ name: 'posts', params: { page: 1 } })
     },
     updatePost: function() {
+      if (Object.keys(this.post.errors).length)
+        return
+
       this.isLoading = true
       this.post
         .put()
@@ -349,7 +356,7 @@ h2 {
 
 .content-wrapper {
   box-sizing: content-box;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
   margin-top: 191px;
   position: relative;
 }

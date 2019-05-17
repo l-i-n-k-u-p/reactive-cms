@@ -43,11 +43,14 @@
           v-bind:inputValue="post.post_title"
           v-bind:onChangeValue="onChangeInputValue"
           propName="post_title"
-        >
-        </InputText>
+          v-bind:errorMessage="post.errors.post_title"
+          helperMessage="At least 2 characters"
+        />
         <editor
           v-bind:content="editorContent"
           v-bind:onChangeContent="onChangeContent"
+          v-bind:errorMessage="post.errors.post_content"
+          helperMessage="At least 2 characters"
         >
         </editor>
       </div>
@@ -132,7 +135,7 @@ export default {
     createPost: function() {
       this.isLoading = true
       this.post
-        .post()
+        .save()
         .then(data => {
           this.isLoading = false
           if (data.response.data.status_code) {
@@ -262,7 +265,7 @@ h2 {
 
 .content-wrapper {
   box-sizing: content-box;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
   margin-top: 191px;
   position: relative;
 }

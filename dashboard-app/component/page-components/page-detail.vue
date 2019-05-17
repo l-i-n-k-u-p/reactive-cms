@@ -500,7 +500,7 @@ h2 {
 
 .content-wrapper {
   box-sizing: content-box;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
   margin-top: 191px;
   position: relative;
 }

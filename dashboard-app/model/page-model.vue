@@ -3,9 +3,7 @@ import {
   Model,
 } from 'vue-mc'
 import {
-  lte,
   length,
-  required,
   string,
 } from 'vue-mc/validation'
 import SocketIO from '../lib/socket-io'
@@ -56,7 +54,7 @@ class PageModel extends Model {
   }
   validation() {
     return {
-      page_title: string.and(length(2, 150)).and(required),
+      page_title: string.and(length(2, 150)),
       page_content: (value) => {
         let valueStrip = value.replace(stripHTMLTagsRegex, '')
         if (valueStrip.length < 5)
@@ -73,13 +71,13 @@ class PageModel extends Model {
       useFirstErrorOnly: true,
     }
   }
-  // post () {
-  //   let method = 'POST'
-  //   let route = this.getRoute('post')
-  //   let url = this.getURL(route, this.getRouteParameters())
-  //   let data = this._attributes
-  //   return this.getRequest({ method, url, data }).send()
-  // }
+  post () {
+    let method = 'POST'
+    let route = this.getRoute('post')
+    let url = this.getURL(route, this.getRouteParameters())
+    let data = this._attributes
+    return this.getRequest({ method, url, data }).send()
+  }
   put () {
     let method = 'PUT'
     let route = this.getRoute('put')

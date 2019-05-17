@@ -2,11 +2,16 @@
 import {
   Model,
 } from 'vue-mc'
+import {
+  length,
+  string,
+} from 'vue-mc/validation'
 import SocketIO from '../lib/socket-io'
 import APP_SETTINGS from '../app-settings'
 
-
 let socketIO = new SocketIO()
+let stripHTMLTagsRegex = /(<([^>]+)>)/gi
+
 
 class PostModel extends Model {
   constructor (props) {
@@ -39,8 +44,30 @@ class PostModel extends Model {
       post_status: '',
     }
   }
+  mutations() {
+    return {
+      post_title: String,
+      post_content: String,
+    }
+  }
+  validation() {
+    return {
+      post_title: string.and(length(2, 150)),
+      post_content: (value) => {
+        let valueStrip = value.replace(stripHTMLTagsRegex, '')
+        if (valueStrip.length < 5)
+          return 'Must have a length of at least 5'
+      }
+    }
+  }
   options () {
-    return {}
+    return {
+      validateOnChange: true,
+      validateOnSave: true,
+      validateRecursively: true,
+      saveUnchanged: true,
+      useFirstErrorOnly: true,
+    }
   }
   post () {
     let method = 'POST'
@@ -66,7 +93,7 @@ class PostModel extends Model {
   routes () {
     return {
       fetch: APP_SETTINGS.appApiBaseURL + '/post/{_id}',
-      post: APP_SETTINGS.appApiBaseURL + '/post/',
+      save: APP_SETTINGS.appApiBaseURL + '/post/',
       put: APP_SETTINGS.appApiBaseURL + '/post/{_id}',
       delete: APP_SETTINGS.appApiBaseURL + '/post/{_id}',
     }
