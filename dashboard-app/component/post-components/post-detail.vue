@@ -49,7 +49,7 @@
         <InputText
           class="input"
           inputName="Post Title"
-          v-bind:inputValue="post.post_title"
+          v-bind:inputValue="post.get('post_title')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="post_title"
           v-bind:errorMessage="post.errors.post_title"

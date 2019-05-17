@@ -31,10 +31,12 @@
             <InputText
                 class="input"
                 inputName="Media Title"
-                v-bind:inputValue="media.media_title"
+                v-bind:inputValue="media.get('media_title')"
                 v-bind:onChangeValue="onChangeInputValue"
-                propName='media_title'>
-            </InputText>
+                propName='media_title'
+                v-bind:errorMessage="media.errors.media_title"
+                helperMessage="At least 2 characters"
+                />
             <div
                 class="date-wrapper">
                 {{ mediaDate }}
@@ -146,6 +148,9 @@ export default {
       this.$router.replace({ name: 'media', params: {page: 1}})
     },
     updateMedia: function() {
+      if (Object.keys(this.media.errors).length)
+        return
+
       this.isLoading = true
       this.media.put()
       .then(data => {
