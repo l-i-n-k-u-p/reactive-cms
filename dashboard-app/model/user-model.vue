@@ -2,11 +2,16 @@
 import {
   Model,
 } from 'vue-mc'
+import {
+  length,
+  string,
+  email,
+} from 'vue-mc/validation'
 import SocketIO from '../lib/socket-io'
 import APP_SETTINGS from '../app-settings'
 
-
 let socketIO = new SocketIO()
+
 
 class UserModel extends Model {
   constructor (props) {
@@ -45,8 +50,30 @@ class UserModel extends Model {
       user_resource: '',
     }
   }
+  mutations() {
+    return {
+      user_name: String,
+      user_pass: String,
+      user_email: String,
+      user_first_name: String,
+    }
+  }
+  validation() {
+    return {
+      user_name: string.and(length(2, 100)),
+      user_pass: string.and(length(2, 100)),
+      user_email: email,
+      user_first_name: string.and(length(2, 100)),
+    }
+  }
   options () {
-    return {}
+    return {
+      validateOnChange: true,
+      validateOnSave: true,
+      validateRecursively: true,
+      saveUnchanged: true,
+      useFirstErrorOnly: true,
+    }
   }
   post () {
     let method = 'POST'
@@ -73,7 +100,7 @@ class UserModel extends Model {
     return {
       fetch: APP_SETTINGS.appApiBaseURL + '/user/{_id}',
       // get: APP_SETTINGS.appApiBaseURL + '/user/{_id}',
-      post: APP_SETTINGS.appApiBaseURL + '/user/',
+      save: APP_SETTINGS.appApiBaseURL + '/user/',
       put: APP_SETTINGS.appApiBaseURL + '/user/{_id}',
       delete: APP_SETTINGS.appApiBaseURL + '/user/{_id}',
     }

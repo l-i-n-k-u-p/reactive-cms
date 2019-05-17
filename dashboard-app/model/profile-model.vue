@@ -2,11 +2,16 @@
 import {
   Model,
 } from 'vue-mc'
+import {
+  length,
+  string,
+  email,
+} from 'vue-mc/validation'
 import SocketIO from '../lib/socket-io'
 import APP_SETTINGS from '../app-settings'
 
-
 let socketIO = new SocketIO()
+
 
 class ProfileModel extends Model {
   constructor (props) {
@@ -32,7 +37,6 @@ class ProfileModel extends Model {
   defaults () {
     return {
       user_name: '',
-      user_pass: '',
       user_email: '',
       user_first_name: '',
       user_last_name: '',
@@ -45,8 +49,29 @@ class ProfileModel extends Model {
       user_resource: '',
     }
   }
+  mutations() {
+    return {
+      user_name: String,
+      user_email: String,
+      user_first_name: String,
+    }
+  }
+  validation() {
+    return {
+      user_name: string.and(length(2, 100)),
+      user_pass: string.and(length(2, 100)),
+      user_email: email,
+      user_first_name: string.and(length(2, 100)),
+    }
+  }
   options () {
-    return {}
+    return {
+      validateOnChange: true,
+      validateOnSave: true,
+      validateRecursively: true,
+      saveUnchanged: true,
+      useFirstErrorOnly: true,
+    }
   }
   put () {
     let method = 'PUT'
