@@ -4,12 +4,10 @@
       <LoadingBar v-if="isLoading"/>
       <div class="box-content">
         <div class="header">
-          <div class="modal-title">
-            {{ modalTitle }}
-          </div>
-          <div class="modal-description">
+          <h2>{{ modalTitle }}</h2>
+          <p id="modal-description">
             {{ modalDescription }}
-          </div>
+          </p>
           <div class="navgation-buttons">
             <Button
               buttonIcon="photo_library"
@@ -29,7 +27,6 @@
         <div class="content">
           <div v-if="activeTab === 0" class="library-wrapper">
             <InputText
-              class="search-input"
               inputName="Search"
               v-bind:inputValue="searchValue"
               v-bind:onChangeValue="onChangeInputValue"
@@ -98,14 +95,18 @@
             </div>
           </div>
           <div class="buttons-wrapper">
-            <Button buttonIcon="clear" v-bind:buttonAction="closeMediaModal">
+            <Button
+              buttonIcon="clear"
+              v-bind:buttonAction="closeMediaModal"
+              style="align-self: flex-end;"
+              >
               Cancel
             </Button>
             <Button
               v-if="activeTab === 0"
               buttonIcon="done"
               v-bind:buttonAction="selectMedia"
-              style="margin-left: 5px;"
+              style="margin-left: 5px; align-self: flex-end;"
             >
               Accept
             </Button>
@@ -290,6 +291,26 @@ export default {
 </script>
 
 <style scoped lang="css">
+h2 {
+  color: #616161;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+}
+
+#modal-description {
+  color: #616161;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 20px;
+  margin-bottom: 5px;
+  margin-top: 0;
+}
+
 .modal-box-wrapper {
   background: rgba(0, 0, 0, 0.32);
   bottom: 0;
@@ -332,27 +353,13 @@ export default {
   flex-grow: 0;
 }
 
+.footer {
+  display: flex;
+}
+
 .content {
   display: flex;
   flex-grow: 1;
-}
-
-.modal-title {
-  color: #616161;
-  font-size: 16px;
-  font-weight: 400;
-  letter-spacing: 0;
-  line-height: 32px;
-}
-
-.modal-description {
-  color: #616161;
-  font-size: 14px;
-  font-weight: 400;
-  letter-spacing: 0;
-  line-height: 20px;
-  margin-bottom: 5px;
-  margin-top: 0;
 }
 
 .navgation-buttons {
@@ -363,11 +370,6 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
-}
-
-.search-input {
-  margin-bottom: 10px;
-  margin-top: 25px;
 }
 
 .media-files-wrapper {
@@ -407,12 +409,13 @@ export default {
 
 .media-file-info-wrapper {
   display: flex;
-  position: absolute;
+  flex-grow: 1;
+  width: 100%;
 }
 
 .media-file-info-wrapper p {
   color: #616161;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 16px;
   margin: 0;
   position: relative;
@@ -423,7 +426,7 @@ export default {
   border-radius: 3px;
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
   height: 30px;
-  width: 30px;
+  min-width: 30px;
 }
 
 .media-file-info-wrapper .avatar span {
@@ -520,28 +523,8 @@ export default {
 }
 
 .buttons-wrapper {
-  bottom: 0;
   display: flex;
-  justify-content: flex-end;
-  padding: 0px;
-  right: 0;
-}
-
-.buttons-wrapper .button {
-  background: transparent;
-  border-radius: 3px;
-  border: none;
-  color: #000;
-  color: #444;
-  cursor: pointer;
-  display: block;
-  font-size: 14px;
-  font-weight: 500;
-  outline: none;
-  padding: 7px;
-  position: relative;
-  right: 0;
-  text-transform: uppercase;
+  flex-grow: 0;
 }
 
 .buttons-wrapper .button:last-child {
