@@ -207,7 +207,7 @@ h2 {
   color: #616161;
   display: flex;
   flex-grow: 1;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   margin: 0;
   text-transform: uppercase;
@@ -264,12 +264,8 @@ form {
 .content-wrapper {
   box-sizing: content-box;
   margin-bottom: 40px;
-  margin-top: 220px;
+  margin-top: 197px;
   position: relative;
-}
-
-.input {
-    margin-top: 15px;
 }
 
 .media-download {

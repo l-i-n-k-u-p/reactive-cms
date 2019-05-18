@@ -312,7 +312,7 @@ h2 {
   color: #616161;
   display: flex;
   flex-grow: 1;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   margin: 0;
   text-transform: uppercase;
@@ -367,7 +367,7 @@ h2 {
 .form-wrapper {
   box-sizing: content-box;
   margin-bottom: 40px;
-  margin-top: 251px;
+  margin-top: 240px;
   position: relative;
 }
 

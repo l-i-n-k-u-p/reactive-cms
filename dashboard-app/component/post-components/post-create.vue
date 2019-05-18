@@ -212,7 +212,7 @@ h2 {
   color: #616161;
   display: flex;
   flex-grow: 1;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   margin: 0;
   text-transform: uppercase;
@@ -265,12 +265,8 @@ h2 {
 .content-wrapper {
   box-sizing: content-box;
   margin-bottom: 50px;
-  margin-top: 191px;
+margin-top: 170px;
   position: relative;
-}
-
-.input {
-  margin-top: 15px;
 }
 
 .header-action-buttons-wrapper {

@@ -173,7 +173,7 @@ export default {
 thead tr td,
 tfoot tr td {
   background-color: white;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   height: 30px;
   padding: 0;
@@ -193,7 +193,7 @@ tfoot tr td {
 
 .table-wrapper tbody tr td {
   cursor: pointer;
-  font-size: 13px;
+  font-size: 14px;
   padding-bottom: 5px;
   padding-top: 5px;
 }

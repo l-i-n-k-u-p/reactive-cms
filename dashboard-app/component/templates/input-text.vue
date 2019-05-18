@@ -77,41 +77,46 @@ export default {
 <style scoped lang="css">
 .input-wrapper {
   background-color: transparent;
-  margin: 0 0 35px 0;
+  display: flex;
+  flex-direction: column;
+  height: 40px;
+  margin: 0;
+  padding-top: 15px;
   position: relative;
 }
 
-.input-wrapper #input-title {
+#input-title {
   background-color: transparent;
   color: #616161;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   pointer-events: none;
   position: absolute;
-  top: 5px;
+  top: 20px;
   transition-duration: 50ms;
 }
 
 .input-wrapper input {
   background: transparent;
   border-bottom: 1px solid #616161;
-  border-top: none;
   border-left: none;
   border-right: none;
+  border-top: none;
   box-sizing: border-box;
   caret-color: black;
   color: #616161;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   margin: 0;
   outline: none;
-  padding-bottom: 5px;
+  padding: 4px 0;
   width: 100%;
 }
 
 .input-wrapper.focus #input-title {
   color: black;
-  top: -15px;
+  top: 4px;
+  font-size: 12px;
 }
 
 .input-wrapper.focus input {
@@ -119,14 +124,15 @@ export default {
 }
 
 .input-wrapper.no-empty #input-title {
-  top: -15px;
+  font-size: 12px;
+  top: 4px;
 }
 
 #input-error-message, #input-helper-message {
   font-size: 12px;
   font-weight: 400;
-  position: absolute;
-  top: calc(100% + 2px);
+  position: relative;
+  top: 0;
   width: 100%;
 }
 

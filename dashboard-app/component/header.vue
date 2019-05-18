@@ -446,7 +446,7 @@ export default {
 .username .menu .option {
   color: #616161;
   display: flex;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   max-width: 100%;
   padding: 10px 7px 10px 7px;
@@ -539,7 +539,7 @@ export default {
   box-sizing: border-box;
   color: #616161;
   display: flex;
-  font-size: 13px;
+  font-size: 14px;
   height: auto;
   padding: 7px 10px;
   width: 100%;
@@ -569,7 +569,7 @@ export default {
 
 .no-results {
   color: #616161;
-  font-size: 13px;
+  font-size: 14px;
   padding: 10px;
 }
 
@@ -586,15 +586,21 @@ export default {
 
 #user-role-name {
   display: block;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 400;
   margin: 0;
 }
 
 #search-close-button {
+  -webkit-user-select: none;
+  align-self: center;
   background-color: white;
   border-radius: 0;
-  position: relative;
+  cursor: pointer;
+  display: flex;
+  position: absolute;
+  right: 5px;
+  user-select: none;
   z-index: 2;
 }
 </style>

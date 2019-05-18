@@ -293,7 +293,7 @@ button {
   cursor: pointer;
   display: block;
   display: flex;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   justify-content: center;
   margin-left: 3px;
@@ -340,7 +340,7 @@ button i {
   border-bottom: 1px solid #616161;
   caret-color: black;
   color: #616161;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   height: 200px;
   margin: 0;

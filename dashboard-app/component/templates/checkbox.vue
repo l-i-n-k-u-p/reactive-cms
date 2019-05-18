@@ -53,7 +53,7 @@ export default {
 .input-wrapper label {
   align-self: center;
   color: #616161;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: bold;
   line-height: 0;
   margin-left: 26px;

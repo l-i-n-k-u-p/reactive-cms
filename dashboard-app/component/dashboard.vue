@@ -232,7 +232,7 @@ h2 {
   color: #616161;
   display: flex;
   flex-grow: 1;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   margin: 0;
   text-transform: uppercase;
@@ -251,7 +251,7 @@ h2 {
 .model {
   background-color: white;
   color: #616161;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: bold;
   padding: 10px;
   position: -webkit-sticky;
@@ -287,7 +287,7 @@ h2 {
   color: #616161;
   display: flex;
   flex-direction: column;
-  font-size: 13px;
+  font-size: 14px;
   margin: 0;
   padding: 10px;
 }
