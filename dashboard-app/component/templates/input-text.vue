@@ -105,7 +105,7 @@ export default {
   box-sizing: border-box;
   caret-color: black;
   color: #616161;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   margin: 0;
   outline: none;

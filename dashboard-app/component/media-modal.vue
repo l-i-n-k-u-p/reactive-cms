@@ -347,7 +347,7 @@ export default {
 
 .modal-description {
   color: #616161;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   letter-spacing: 0;
   line-height: 20px;
@@ -412,7 +412,7 @@ export default {
 
 .media-file-info-wrapper p {
   color: #616161;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 16px;
   margin: 0;
   position: relative;
@@ -535,7 +535,7 @@ export default {
   color: #444;
   cursor: pointer;
   display: block;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   outline: none;
   padding: 7px;

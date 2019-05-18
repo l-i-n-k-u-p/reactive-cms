@@ -163,7 +163,7 @@ export default {
   display: flex;
   flex-direction: row;
   flex-shrink: 0;
-  font-size: 13px;
+  font-size: 14px;
   height: 32px;
   margin-left: 2px;
   margin-right: 2px;

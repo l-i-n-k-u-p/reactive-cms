@@ -207,7 +207,7 @@ h2 {
   color: #616161;
   display: flex;
   flex-grow: 1;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   margin: 0;
   text-transform: uppercase;
@@ -230,7 +230,7 @@ h2 {
 
 .navigation-wrapper .data {
   align-self: center;
-  font-size: 13px;
+  font-size: 14px;
   margin-left: 5px;
   margin-right: 5px;
 }
