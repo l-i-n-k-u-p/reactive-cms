@@ -518,9 +518,8 @@ margin-top: 170px;
 .page-info-wrapper {
   display: flex;
   position: absolute;
-  position: absolute;
   right: 0;
-  top: -67px;
+  top: -46px;
 }
 
 .date-wrapper {

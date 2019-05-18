@@ -373,9 +373,8 @@ margin-top: 170px;
 .post-info-wrapper {
   display: flex;
   position: absolute;
-  position: absolute;
   right: 0px;
-  top: -67px;
+  top: -46px;
 }
 
 .date-wrapper {
