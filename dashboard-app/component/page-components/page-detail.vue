@@ -501,12 +501,8 @@ h2 {
 .content-wrapper {
   box-sizing: content-box;
   margin-bottom: 50px;
-  margin-top: 191px;
+margin-top: 170px;
   position: relative;
-}
-
-.input {
-  margin-top: 15px;
 }
 
 .header-action-buttons-wrapper {

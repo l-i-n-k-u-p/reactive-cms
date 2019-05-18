@@ -6,7 +6,7 @@
     </div>
     <LoadingBar v-if="isLoading"/>
     <BoxWrapper>
-      <div class="content-wrapper">
+      <div id="content-wrapper">
         <h3>Dashboard</h3>
         <InputText
           inputName="Dashboard Title"
@@ -370,8 +370,12 @@ h3 {
   flex-grow: 1;
   font-size: 14px;
   font-weight: 500;
-  margin: 30px 0 15px 0;
+  margin: 30px 0 10px 0;
   text-transform: uppercase;
+}
+
+#content-wrapper h3:first-child {
+  margin: 0 0 10px 0;
 }
 
 .buttons-wrapper {
@@ -389,7 +393,7 @@ h3 {
   z-index: 1;
 }
 
-.content-wrapper {
+#content-wrapper {
   box-sizing: content-box;
   margin-bottom: 40px;
 }

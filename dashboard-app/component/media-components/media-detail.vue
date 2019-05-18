@@ -264,12 +264,8 @@ form {
 .content-wrapper {
   box-sizing: content-box;
   margin-bottom: 40px;
-  margin-top: 220px;
+  margin-top: 197px;
   position: relative;
-}
-
-.input {
-    margin-top: 15px;
 }
 
 .media-download {

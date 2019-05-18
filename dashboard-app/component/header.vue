@@ -586,15 +586,21 @@ export default {
 
 #user-role-name {
   display: block;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 400;
   margin: 0;
 }
 
 #search-close-button {
+  -webkit-user-select: none;
+  align-self: center;
   background-color: white;
   border-radius: 0;
-  position: relative;
+  cursor: pointer;
+  display: flex;
+  position: absolute;
+  right: 5px;
+  user-select: none;
   z-index: 2;
 }
 </style>
