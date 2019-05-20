@@ -198,16 +198,17 @@ exports.websiteIndexView = async (req, res) => {
   let templateHomeID = SITE_CONFIG.siteTemplateHome
   if (templateHomeID) {
     page = await pageQuery.getByID(templateHomeID)
-    if (page.error) {
+    if (page && page.error) {
       res.code(500).send({
         status_code: 1,
         status_msg: 'Page Not Found',
       })
       return
     }
-    if (page.page_template)
+    if (page && page.page_template)
       pageView = 'template/' + page.page_template
   }
+  console.log('awd')
   res.view(pageView, {
     viewFunctions: VIEW_FUNCTIONS,
     title: SITE_CONFIG.siteTitle,
