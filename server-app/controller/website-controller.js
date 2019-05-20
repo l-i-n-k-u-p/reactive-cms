@@ -208,7 +208,6 @@ exports.websiteIndexView = async (req, res) => {
     if (page && page.page_template)
       pageView = 'template/' + page.page_template
   }
-  console.log('awd')
   res.view(pageView, {
     viewFunctions: VIEW_FUNCTIONS,
     title: SITE_CONFIG.siteTitle,
