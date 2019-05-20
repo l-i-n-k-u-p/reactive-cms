@@ -160,7 +160,7 @@
             <div class="options-wrapper">
               <div
                 class="option"
-                v-on:click="showUserDetail(user)"
+                v-on:click="showUserProfile(user)"
                 >
                 <i class="material-icons option-icon">
                   person
@@ -274,6 +274,12 @@ export default {
       this.resultsIsVisible = false
     },
     showUserDetail: function(user) {
+      this.$router.push({
+        name: 'user-detail',
+        params: { id: user.get('_id') },
+      })
+    },
+    showUserProfile: function(user) {
       this.$router.push({
         name: 'profile',
         params: { id: user.get('_id') },
