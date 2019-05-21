@@ -46,7 +46,6 @@ export default {
         {
           position: 0,
           title: 'Dashboard',
-          class: 'option',
           name: 'dashboard',
           icon: 'dashboard',
           resourceName: 'dashboard',
@@ -55,7 +54,6 @@ export default {
         {
           position: 1,
           title: 'Pages',
-          class: 'option',
           name: 'pages',
           icon: 'pages',
           params: { page: 1 },
@@ -65,7 +63,6 @@ export default {
         {
           position: 2,
           title: 'Posts',
-          class: 'option',
           name: 'posts',
           icon: 'pages',
           params: { page: 1 },
@@ -75,7 +72,6 @@ export default {
         {
           position: 3,
           title: 'Media',
-          class: 'option',
           name: 'media',
           icon: 'perm_media',
           params: { page: 1 },
@@ -85,7 +81,6 @@ export default {
         {
           position: 4,
           title: 'Users',
-          class: 'option',
           name: 'users',
           icon: 'people',
           params: { page: 1 },
@@ -95,7 +90,6 @@ export default {
         {
           position: 5,
           title: 'Roles',
-          class: 'option',
           name: 'roles',
           icon: 'security',
           params: { page: 1 },
@@ -105,7 +99,6 @@ export default {
         {
           position: 6,
           title: 'Profile',
-          class: 'option',
           name: 'profile',
           icon: 'person',
           resourceName: '',
@@ -114,7 +107,6 @@ export default {
         {
           position: 7,
           title: 'Settings',
-          class: 'option',
           name: 'settings',
           icon: 'settings',
           resourceName: 'settings',
