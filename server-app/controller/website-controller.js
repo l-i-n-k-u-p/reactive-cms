@@ -45,6 +45,14 @@ exports.websiteSetupPassed = async (req, res, next) => {
 }
 
 exports.websiteSetupSetInitialConfig = async (req, res) => {
+  if (req.validationError) {
+    let fisrtMessage = req.validationError.validation[0]
+    res.view('setup', {
+      title: 'SETUP',
+      error_message: fisrtMessage.message,
+    })
+    return
+  }
   let adminRootRef = '000000000000000000000000'
   let setup_site_name = req.body.setup_site_name
   let setup_site_url = req.body.setup_site_url
@@ -124,6 +132,14 @@ exports.websiteAdminValidateRequestAccess = async (req, res) => {
 }
 
 exports.websiteAdminValidateLoginAccess = async (req, res) => {
+  if (req.validationError) {
+    let fisrtMessage = req.validationError.validation[0]
+    res.view('dashboard-website-login', {
+      title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
+      error_message: fisrtMessage.message,
+    })
+    return
+  }
   let totalUsers = await userQuery.getTotalItems()
   if (!totalUsers)
     return res.redirect('setup')

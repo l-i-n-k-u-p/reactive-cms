@@ -33,6 +33,7 @@ let routes = [
         ],
       },
     },
+    attachValidation: true,
   },
   {
     method: 'GET',
@@ -56,6 +57,7 @@ let routes = [
         ],
       },
     },
+    attachValidation: true,
   },
   {
     method: 'GET',
