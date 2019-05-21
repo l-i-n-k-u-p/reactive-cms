@@ -87,9 +87,10 @@
               </span>
             </div>
             <div class="select-media-data-wrapper">
-              <p>Media title: {{ selectedMedia.get('media_title') }}</p>
               <p>
-                Media original name:
+                {{ selectedMedia.get('media_title') }}
+              </p>
+              <p>
                 {{ selectedMedia.get('media_original_name') }}
               </p>
             </div>
@@ -355,6 +356,7 @@ h2 {
 
 .footer {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .content {
@@ -378,7 +380,7 @@ h2 {
   display: flex;
   flex-flow: row wrap;
   flex-wrap: wrap;
-  height: 280px;
+  height: 270px;
   overflow: scroll;
   width: 100%;
 }
@@ -410,21 +412,24 @@ h2 {
 .media-file-info-wrapper {
   display: flex;
   flex-grow: 1;
-  width: 100%;
 }
 
 .media-file-info-wrapper p {
   color: #616161;
   font-size: 13px;
+  height: 16px;
   line-height: 16px;
   margin: 0;
+  overflow: hidden;
   position: relative;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: calc(100% - 5px);
 }
 
 .media-file-info-wrapper .avatar {
   align-self: center;
   border-radius: 3px;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
   height: 30px;
   min-width: 30px;
 }
@@ -440,7 +445,8 @@ h2 {
 .select-media-data-wrapper {
   display: flex;
   flex-direction: column;
-  margin-left: 10px;
+  left: 5px;
+  position: relative;
 }
 
 .upload-wrapper {
@@ -524,7 +530,8 @@ h2 {
 
 .buttons-wrapper {
   display: flex;
-  flex-grow: 0;
+  flex-grow: 1;
+  justify-content: flex-end;
 }
 
 .buttons-wrapper .button:last-child {
