@@ -12,7 +12,7 @@
 
 #progress {
   background-clip: padding-box;
-  background-color: rgba(0, 106, 195, 0.5);
+  background-color: rgba(15, 147, 232, 0.5);
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
   display: block;
