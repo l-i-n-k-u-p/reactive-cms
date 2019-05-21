@@ -237,7 +237,7 @@ tfoot tr td {
 
 .table-wrapper tbody tr:hover {
   background-color: rgba(200, 200, 200, 0.20);
-  color: #006ac3;
+  color: #0f93e8;
 }
 
 .avatar {

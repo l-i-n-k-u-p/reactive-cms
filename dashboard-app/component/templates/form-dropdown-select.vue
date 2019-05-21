@@ -140,15 +140,15 @@ label {
 
 .select-options li:hover {
   background-color: rgba(200, 200, 200, 0.20);
-  color: #006ac3;
+  color: #0f93e8;
 }
 
 .select-wrapper.open {
   background-color: white;
-  border-bottom: 1px solid #006ac3;
+  border-bottom: 1px solid #0f93e8;
 }
 
 .select-wrapper.open #title {
-  color: #006ac3;
+  color: #0f93e8;
 }
 </style>

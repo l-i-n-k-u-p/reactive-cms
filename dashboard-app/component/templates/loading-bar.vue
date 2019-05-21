@@ -28,7 +28,7 @@
 }
 
 #indeterminate {
-  background-color: #006ac3;
+  background-color: #0f93e8;
 }
 
 #progress #indeterminate:before {

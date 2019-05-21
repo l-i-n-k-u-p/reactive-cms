@@ -203,7 +203,7 @@ export default {
 
 #menu .option:hover {
   background-color: rgba(200, 200, 200, 0.20);
-  color: #006ac3;
+  color: #0f93e8;
 }
 
 #menu .option .icon {
@@ -224,7 +224,7 @@ export default {
 
 #menu .option.current {
   background-color: rgba(200, 200, 200, 0.20);
-  color: #006ac3;
+  color: #0f93e8;
   font-weight: 500;
 }
 </style>

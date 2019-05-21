@@ -146,7 +146,7 @@ export default {
 }
 
 #modal-buttons-wrapper .button:last-child {
-  color: #006ac3;
+  color: #0f93e8;
   margin-left: 10px;
 }
 
