@@ -411,7 +411,6 @@ export default {
 .avatar {
   align-self: center;
   border-radius: 100%;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-grow: 0;
   height: 30px;

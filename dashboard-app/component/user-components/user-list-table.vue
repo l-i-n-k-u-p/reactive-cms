@@ -262,11 +262,11 @@ tfoot tr td {
 
 .table-wrapper tbody tr:hover {
   background-color: rgba(200, 200, 200, 0.20);
+  color: #0f93e8;
 }
 
 .avatar {
   border-radius: 100%;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
   display: flex;
   height: 24px;
   justify-content: center;
