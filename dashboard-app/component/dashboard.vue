@@ -6,7 +6,7 @@
     </div>
     <LoadingBar v-if="isLoading"/>
     <BoxWrapper
-      style="background-color: transparent; box-shadow: none;"
+      style="background-color: transparent; box-shadow: none; padding: 0;"
     >
       <div class="content-wrapper">
         <div class="dashboard-activity">

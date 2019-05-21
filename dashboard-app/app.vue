@@ -36,7 +36,7 @@
       <a href="https://reactive-web.com" target="_blank">
         <img src="/website/assets/reactive-web.png" />
       </a>
-      <span>Version 2.4.2</span>
+      <span>Version 2.7.6</span>
     </footer>
     <MediaModal
       v-if="mediaModalData"

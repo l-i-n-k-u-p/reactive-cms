@@ -14,16 +14,16 @@
         v-if="!isMenuSticky"
         />
       <router-link
-        v-for="option in options"
-        v-acl-show="option.resourceName"
-        v-bind:key="option.position"
-        v-bind:class="option.class"
-        :to="{ name: option.name, params: option.params }"
+        v-for="item in menuItems"
+        v-acl-show="item.resourceName"
+        v-bind:key="item.position"
+        :to="{ name: item.name, params: item.params }"
+        v-bind:class="getMenuItemClass(item)"
       >
         <i class="material-icons icon">
-          {{ option.icon }}
+          {{ item.icon }}
         </i>
-        {{ option.title }}
+        {{ item.title }}
       </router-link>
     </div>
     <div
@@ -41,7 +41,8 @@ export default {
   ],
   data() {
     return {
-      options: [
+      currentItemName: this.$router.currentRoute.name,
+      menuItems: [
         {
           position: 0,
           title: 'Dashboard',
@@ -49,6 +50,7 @@ export default {
           name: 'dashboard',
           icon: 'dashboard',
           resourceName: 'dashboard',
+          keys: 'dashboard',
         },
         {
           position: 1,
@@ -58,6 +60,7 @@ export default {
           icon: 'pages',
           params: { page: 1 },
           resourceName: 'pages',
+          keys: 'pages, page-detail, new-page',
         },
         {
           position: 2,
@@ -67,6 +70,7 @@ export default {
           icon: 'pages',
           params: { page: 1 },
           resourceName: 'posts',
+          keys: 'posts, post-detail, new-post',
         },
         {
           position: 3,
@@ -76,6 +80,7 @@ export default {
           icon: 'perm_media',
           params: { page: 1 },
           resourceName: 'media',
+          keys: 'media, media-detail, new-media',
         },
         {
           position: 4,
@@ -85,6 +90,7 @@ export default {
           icon: 'people',
           params: { page: 1 },
           resourceName: 'users',
+          keys: 'users, user-detail, new-user',
         },
         {
           position: 5,
@@ -94,6 +100,7 @@ export default {
           icon: 'security',
           params: { page: 1 },
           resourceName: 'roles',
+          keys: 'roles, role-detail, new-role',
         },
         {
           position: 6,
@@ -102,6 +109,7 @@ export default {
           name: 'profile',
           icon: 'person',
           resourceName: '',
+          keys: 'profile',
         },
         {
           position: 7,
@@ -110,9 +118,13 @@ export default {
           name: 'settings',
           icon: 'settings',
           resourceName: 'settings',
+          keys: 'settings',
         },
       ],
     }
+  },
+  created() {
+    this.highlightCurrentMenuItem()
   },
   methods: {
     closeMenu: function() {
@@ -120,6 +132,24 @@ export default {
         return
 
       this.$eventHub.$emit('dashboard-app-toggle-menu', '')
+    },
+    highlightCurrentMenuItem: function() {
+      this.$router.beforeResolve((to, from, next) => {
+        let name = ''
+        for (let item of this.menuItems)
+          if (item.keys.indexOf(to.name) >= 0) {
+            name = item.name
+            break
+          }
+        this.currentItemName = name
+        next()
+      })
+    },
+    getMenuItemClass: function(item) {
+      return {
+        'current': item.name == this.currentItemName,
+        'option': true,
+      }
     },
   },
 }
@@ -195,5 +225,10 @@ export default {
   top: 0;
   width: 100%;
   z-index: 0;
+}
+
+#menu .option.current {
+  background-color: rgba(200, 200, 200, 0.20);
+  font-weight: 500;
 }
 </style>
