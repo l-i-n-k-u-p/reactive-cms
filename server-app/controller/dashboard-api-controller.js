@@ -29,6 +29,13 @@ const logQuery = require('../query/log-query')
 
 
 exports.login = async (req, res) => {
+  if (req.validationError) {
+    let fisrtMessage = req.validationError.validation[0]
+    res.send({
+      error_message: fisrtMessage.message,
+    })
+    return
+  }
   const userName = req.body.user_name
   const userPass = req.body.user_pass
   let user = await userQuery.getByUserName(userName)
@@ -183,6 +190,14 @@ exports.getUserByID = async (req, res) => {
 }
 
 exports.addNewUser = async (req, res) => {
+  if (req.validationError) {
+    let fisrtMessage = req.validationError.validation[0]
+    res.send({
+      status_code: 1,
+      status_msg: fisrtMessage.message,
+    })
+    return
+  }
   let hasPermission = permission.canUser({
     permission: 'c',
     req: req,
@@ -325,6 +340,14 @@ exports.getPostByID = async (req, res) => {
 }
 
 exports.addNewPost = async (req, res) => {
+  if (req.validationError) {
+    let fisrtMessage = req.validationError.validation[0]
+    res.send({
+      status_code: 1,
+      status_msg: fisrtMessage.message,
+    })
+    return
+  }
   let hasPermission = permission.canUser({
     permission: 'c',
     req: req,
@@ -522,6 +545,14 @@ exports.getPageByID = async (req, res) => {
 }
 
 exports.addNewPage = async (req, res) => {
+  if (req.validationError) {
+    let fisrtMessage = req.validationError.validation[0]
+    res.send({
+      status_code: 1,
+      status_msg: fisrtMessage.message,
+    })
+    return
+  }
   let hasPermission = permission.canUser({
     permission: 'c',
     req: req,
@@ -1241,6 +1272,14 @@ exports.updateRoleByID = async (req, res) => {
 }
 
 exports.addNewRole = async (req, res) => {
+  if (req.validationError) {
+    let fisrtMessage = req.validationError.validation[0]
+    res.send({
+      status_code: 1,
+      status_msg: fisrtMessage.message,
+    })
+    return
+  }
   let hasPermission = permission.canUser({
     permission: 'c',
     req: req,

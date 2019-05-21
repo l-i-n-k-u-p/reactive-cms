@@ -7,6 +7,20 @@ let routes = [
     method: 'POST',
     url: '/login/',
     handler: dashboardAPIController.login,
+    schema: {
+      body: {
+        type: 'object',
+        properties: {
+          user_name: { type: 'string' },
+          user_pass: { type: 'string' },
+        },
+        required: [
+          'user_name',
+          'user_pass',
+        ],
+      },
+    },
+    attachValidation: true,
   },
   {
     method: 'GET',
@@ -65,6 +79,24 @@ let routes = [
     url: '/user/',
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.addNewUser,
+    schema: {
+      body: {
+        type: 'object',
+        properties: {
+          user_name: { type: 'string' },
+          user_pass: { type: 'string' },
+          user_email: { type: 'string' },
+          user_first_name: { type: 'string' },
+        },
+        required: [
+          'user_name',
+          'user_pass',
+          'user_email',
+          'user_first_name',
+        ],
+      },
+    },
+    attachValidation: true,
     config: { resource_name: 'users', },
   },
   {
@@ -93,6 +125,20 @@ let routes = [
     url: '/post/',
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.addNewPost,
+    schema: {
+      body: {
+        type: 'object',
+        properties: {
+          post_title: { type: 'string' },
+          post_content: { type: 'string' },
+        },
+        required: [
+          'post_title',
+          'post_content',
+        ],
+      },
+    },
+    attachValidation: true,
     config: { resource_name: 'posts', },
   },
   {
@@ -128,6 +174,20 @@ let routes = [
     url: '/page/',
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.addNewPage,
+    schema: {
+      body: {
+        type: 'object',
+        properties: {
+          page_title: { type: 'string' },
+          page_content: { type: 'string' },
+        },
+        required: [
+          'page_title',
+          'page_content',
+        ],
+      },
+    },
+    attachValidation: true,
     config: { resource_name: 'pages', },
   },
   {
@@ -164,6 +224,7 @@ let routes = [
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.addNewMedia,
     config: { resource_name: 'media', },
+    // NOTE: add file validation
   },
   {
     method: 'GET',
@@ -240,6 +301,18 @@ let routes = [
     url: '/role/',
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.addNewRole,
+    schema: {
+      body: {
+        type: 'object',
+        properties: {
+          role_name: { type: 'string' },
+        },
+        required: [
+          'role_name',
+        ],
+      },
+    },
+    attachValidation: true,
     config: { resource_name: 'roles', },
   },
   {
