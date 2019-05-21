@@ -104,6 +104,22 @@ let routes = [
     url: '/user/:id',
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.updateUserByID,
+    schema: {
+      body: {
+        type: 'object',
+        properties: {
+          user_name: { type: 'string' },
+          user_email: { type: 'string' },
+          user_first_name: { type: 'string' },
+        },
+        required: [
+          'user_name',
+          'user_email',
+          'user_first_name',
+        ],
+      },
+    },
+    attachValidation: true,
     config: { resource_name: 'users', },
   },
   {
@@ -153,6 +169,20 @@ let routes = [
     url: '/post/:id',
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.updatePostByID,
+    schema: {
+      body: {
+        type: 'object',
+        properties: {
+          post_title: { type: 'string' },
+          post_content: { type: 'string' },
+        },
+        required: [
+          'post_title',
+          'post_content',
+        ],
+      },
+    },
+    attachValidation: true,
     config: { resource_name: 'posts', },
   },
   {
@@ -202,6 +232,20 @@ let routes = [
     url: '/page/:id',
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.updatePageByID,
+    schema: {
+      body: {
+        type: 'object',
+        properties: {
+          page_title: { type: 'string' },
+          page_content: { type: 'string' },
+        },
+        required: [
+          'page_title',
+          'page_content',
+        ],
+      },
+    },
+    attachValidation: true,
     config: { resource_name: 'pages', },
   },
   {
@@ -238,6 +282,18 @@ let routes = [
     url: '/media-file/:id',
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.updateMediaByID,
+    schema: {
+      body: {
+        type: 'object',
+        properties: {
+          media_title: { type: 'string' },
+        },
+        required: [
+          'media_title',
+        ],
+      },
+    },
+    attachValidation: true,
     config: { resource_name: 'media', },
   },
   {
@@ -259,6 +315,20 @@ let routes = [
     url: '/setting/',
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.updateSettings,
+    schema: {
+      body: {
+        type: 'object',
+        properties: {
+          setting_page_title: { type: 'string' },
+          setting_items_peer_page: { type: 'number' },
+        },
+        required: [
+          'setting_page_title',
+          'setting_items_peer_page',
+        ],
+      },
+    },
+    attachValidation: true,
     config: { resource_name: 'settings', },
   },
   {
@@ -273,6 +343,22 @@ let routes = [
     url: '/site/',
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.updateSiteSettings,
+    schema: {
+      body: {
+        type: 'object',
+        properties: {
+          site_name: { type: 'string' },
+          site_items_peer_page: { type: 'number' },
+          site_url: { type: 'string' },
+        },
+        required: [
+          'site_name',
+          'site_items_peer_page',
+          'site_url',
+        ],
+      },
+    },
+    attachValidation: true,
     config: { resource_name: 'settings', },
   },
   {
@@ -327,6 +413,22 @@ let routes = [
     url: '/role/:id',
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.updateRoleByID,
+    schema: {
+      body: {
+        type: 'object',
+        properties: {
+          role_name: { type: 'string' },
+          role_resources: { type: 'array' },
+          role_user_ref: { type: 'string' },
+        },
+        required: [
+          'role_name',
+          'role_resources',
+          'role_user_ref',
+        ],
+      },
+    },
+    attachValidation: true,
     config: { resource_name: 'roles', },
   },
   {
@@ -354,6 +456,20 @@ let routes = [
     url: '/profile/:id',
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.updateProfileByID,
+    schema: {
+      body: {
+        type: 'object',
+        properties: {
+          user_email: { type: 'string' },
+          user_first_name: { type: 'string' },
+        },
+        required: [
+          'user_email',
+          'user_first_name',
+        ],
+      },
+    },
+    attachValidation: true,
   },
   {
     method: 'GET',

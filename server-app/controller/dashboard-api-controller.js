@@ -235,6 +235,14 @@ exports.addNewUser = async (req, res) => {
 }
 
 exports.updateUserByID = async (req, res) => {
+  if (req.validationError) {
+    let fisrtMessage = req.validationError.validation[0]
+    res.send({
+      status_code: 1,
+      status_msg: fisrtMessage.message,
+    })
+    return
+  }
   let hasPermission = permission.canUser({
     permission: 'u',
     req: req,
@@ -440,6 +448,14 @@ exports.getPostsByPage = async (req, res) => {
 }
 
 exports.updatePostByID = async (req, res) => {
+  if (req.validationError) {
+    let fisrtMessage = req.validationError.validation[0]
+    res.send({
+      status_code: 1,
+      status_msg: fisrtMessage.message,
+    })
+    return
+  }
   let hasPermission = permission.canUser({
     permission: 'u',
     req: req,
@@ -630,6 +646,14 @@ exports.getPagesByPage = async (req, res) => {
 }
 
 exports.updatePageByID = async (req, res) => {
+  if (req.validationError) {
+    let fisrtMessage = req.validationError.validation[0]
+    res.send({
+      status_code: 1,
+      status_msg: fisrtMessage.message,
+    })
+    return
+  }
   let hasPermission = permission.canUser({
     permission: 'u',
     req: req,
@@ -817,6 +841,14 @@ exports.getMediaByPage = async (req, res) => {
 }
 
 exports.updateMediaByID = async (req, res) => {
+  if (req.validationError) {
+    let fisrtMessage = req.validationError.validation[0]
+    res.send({
+      status_code: 1,
+      status_msg: fisrtMessage.message,
+    })
+    return
+  }
   let hasPermission = permission.canUser({
     permission: 'u',
     req: req,
@@ -908,6 +940,14 @@ exports.getSettings = async (req, res) => {
 }
 
 exports.updateSettings = async (req, res) => {
+  if (req.validationError) {
+    let fisrtMessage = req.validationError.validation[0]
+    res.send({
+      status_code: 1,
+      status_msg: fisrtMessage.message,
+    })
+    return
+  }
   let hasPermission = permission.canUser({
     permission: 'u',
     req: req,
@@ -970,6 +1010,14 @@ exports.getSiteSettings = async (req, res) => {
 }
 
 exports.updateSiteSettings = async (req, res) => {
+  if (req.validationError) {
+    let fisrtMessage = req.validationError.validation[0]
+    res.send({
+      status_code: 1,
+      status_msg: fisrtMessage.message,
+    })
+    return
+  }
   let hasPermission = permission.canUser({
     permission: 'u',
     req: req,
@@ -1193,6 +1241,14 @@ exports.getRoleByID = async (req, res) => {
 }
 
 exports.updateRoleByID = async (req, res) => {
+  if (req.validationError) {
+    let fisrtMessage = req.validationError.validation[0]
+    res.send({
+      status_code: 1,
+      status_msg: fisrtMessage.message,
+    })
+    return
+  }
   let hasPermission = permission.canUser({
     permission: 'u',
     req: req,
@@ -1396,6 +1452,14 @@ exports.getProfileByID = async (req, res) => {
 }
 
 exports.updateProfileByID = async (req, res) => {
+  if (req.validationError) {
+    let fisrtMessage = req.validationError.validation[0]
+    res.send({
+      status_code: 1,
+      status_msg: fisrtMessage.message,
+    })
+    return
+  }
   let isSameSessionUserID = req.params.id === req.session.user.user_id
   if (!isSameSessionUserID) {
     res.send({
