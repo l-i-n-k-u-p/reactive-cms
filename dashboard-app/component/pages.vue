@@ -190,6 +190,7 @@ export default {
           this.$eventHub.$emit('dashboard-app-error', err.message)
         })
       this.itemsSelected = {}
+      this.$eventHub.$emit('clear-items-selected', '')
     },
   },
 }

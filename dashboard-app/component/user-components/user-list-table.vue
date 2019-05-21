@@ -4,7 +4,13 @@
       <table class="table-wrapper">
         <thead>
           <tr>
-            <td></td>
+            <td>
+              <Checkbox
+                v-bind:onChangeValue="onChangeValue"
+                item="all"
+                v-bind:currentValue="checkAll"
+              />
+            </td>
             <td>
               Image
             </td>
@@ -27,16 +33,15 @@
         </thead>
         <tbody>
           <tr
-            v-for="user in userListItems"
+            v-for="user in collectionItems"
             :key="$uuid.v1()"
             >
             <td>
               <Checkbox
-                style="margin-right: 10px;"
                 v-bind:onChangeValue="onChangeValue"
                 v-bind:item="user.get('_id')"
-              >
-              </Checkbox>
+                v-bind:currentValue="checkAll"
+              />
             </td>
             <td v-on:click="onClickRow(user)">
               <div
@@ -115,19 +120,20 @@ import Checkbox from '../templates/checkbox.vue'
 
 export default {
   props: [
-    'userList',
+    'collection',
     'onClickRow',
     'navigationBefore',
     'navigationNext',
     'totalPages',
     'currentPage',
     'itemsSkipped',
-    'totalUsers',
+    'totalItems',
   ],
   data() {
     return {
-      userListItems: [],
-      userSelected: {},
+      collectionItems: [],
+      itemSelected: {},
+      checkAll: false,
     }
   },
   components: {
@@ -135,18 +141,37 @@ export default {
     Checkbox,
   },
   watch: {
-    userList: function(newValues, oldValues) {
-      this.userListItems = newValues.models
+    collection: function(newValues, oldValues) {
+      this.collectionItems = newValues.models
     },
   },
   created() {
-    this.userListItems = this.userList.models
+    this.collectionItems = this.collection.models
+    this.$eventHub.$on('clear-items-selected', () => {
+      this.checkAll = false
+    })
   },
   methods: {
-    onChangeValue: function(isChecked, userId) {
-      if (isChecked) this.userSelected[userId] = userId
-      else delete this.userSelected[userId]
-      this.$eventHub.$emit('items-selected', this.userSelected)
+    onChangeValue: function(isChecked, itemId) {
+      if (itemId.toString() === 'all') {
+        this.itemSelected = {}
+        this.checkAll = !this.checkAll
+        if (!this.checkAll) {
+          this.$eventHub.$emit('items-selected', this.itemSelected)
+          return
+        }
+        for (let item of this.collectionItems) {
+          let id = item.get('_id')
+          this.itemSelected[id] = id
+        }
+        this.$eventHub.$emit('items-selected', this.itemSelected)
+        return
+      }
+      if (isChecked)
+        this.itemSelected[itemId] = itemId
+      else
+        delete this.itemSelected[itemId]
+      this.$eventHub.$emit('items-selected', this.itemSelected)
     },
     userIsActive: function(active) {
       return active ? 'Yes' : 'No'

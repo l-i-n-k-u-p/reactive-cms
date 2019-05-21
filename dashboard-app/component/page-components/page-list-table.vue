@@ -4,7 +4,13 @@
       <table class="table-wrapper">
         <thead>
           <tr>
-            <td></td>
+            <td>
+              <Checkbox
+                v-bind:onChangeValue="onChangeValue"
+                item="all"
+                v-bind:currentValue="checkAll"
+              />
+            </td>
             <td>
               Image
             </td>
@@ -26,9 +32,9 @@
             >
             <td>
               <Checkbox
-                style="margin-right: 10px;"
                 v-bind:onChangeValue="onChangeValue"
                 v-bind:item="page._id"
+                v-bind:currentValue="checkAll"
               >
               </Checkbox>
             </td>
@@ -102,6 +108,7 @@ export default {
     return {
       collectionItems: [],
       itemSelected: {},
+      checkAll: false,
     }
   },
   components: {
@@ -115,11 +122,30 @@ export default {
   },
   created() {
     this.collectionItems = this.collection.models
+    this.$eventHub.$on('clear-items-selected', () => {
+      this.checkAll = false
+    })
   },
   methods: {
     onChangeValue: function(isChecked, itemId) {
-      if (isChecked) this.itemSelected[itemId] = itemId
-      else delete this.itemSelected[itemId]
+      if (itemId.toString() === 'all') {
+        this.itemSelected = {}
+        this.checkAll = !this.checkAll
+        if (!this.checkAll) {
+          this.$eventHub.$emit('items-selected', this.itemSelected)
+          return
+        }
+        for (let item of this.collectionItems) {
+          let id = item.get('_id')
+          this.itemSelected[id] = id
+        }
+        this.$eventHub.$emit('items-selected', this.itemSelected)
+        return
+      }
+      if (isChecked)
+        this.itemSelected[itemId] = itemId
+      else
+        delete this.itemSelected[itemId]
       this.$eventHub.$emit('items-selected', this.itemSelected)
     },
     getMomentDate: function(date) {

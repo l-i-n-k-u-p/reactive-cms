@@ -177,13 +177,13 @@ export default {
           if (!responses) {
             this.$eventHub.$emit(
               'dashboard-app-error',
-              "Some pages it doesn't " + typeAction,
+              "Some posts it doesn't " + typeAction,
             )
             return
           }
           this.$eventHub.$emit(
             'dashboard-app-success',
-            success + ' page/s ' + typeAction,
+            success + ' post/s ' + typeAction,
           )
         })
         .catch(err => {
@@ -191,6 +191,7 @@ export default {
           this.$eventHub.$emit('dashboard-app-error', err.message)
         })
       this.itemsSelected = {}
+      this.$eventHub.$emit('clear-items-selected', '')
     },
   },
 }
