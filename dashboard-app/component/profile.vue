@@ -353,7 +353,7 @@ h2 {
 }
 
 .user-thumbnail:after {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(160, 160, 160, 0.5);
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
   bottom: 0;
@@ -399,7 +399,7 @@ h2 {
 }
 
 .user-avatar:after {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(160, 160, 160, 0.5);
   bottom: 0;
   content: "";
   left: 0;

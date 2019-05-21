@@ -110,7 +110,7 @@ export default {
 }
 
 .buttons-wrapper .button:last-child {
-  color: black;
+  color: #006ac3;
   margin-left: 10px;
 }
 

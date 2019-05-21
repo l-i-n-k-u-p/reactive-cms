@@ -41,7 +41,7 @@ export default {
   ],
   data() {
     return {
-      currentItemName: this.$router.currentRoute.name,
+      currentItemName: '',
       menuItems: [
         {
           position: 0,
@@ -116,7 +116,8 @@ export default {
     }
   },
   created() {
-    this.highlightCurrentMenuItem()
+    this.highlightCurrentMenuItem(this.$router.currentRoute.name)
+    this.$router.beforeResolve(this.routerBeforeResolve)
   },
   methods: {
     closeMenu: function() {
@@ -125,23 +126,24 @@ export default {
 
       this.$eventHub.$emit('dashboard-app-toggle-menu', '')
     },
-    highlightCurrentMenuItem: function() {
-      this.$router.beforeResolve((to, from, next) => {
-        let name = ''
-        for (let item of this.menuItems)
-          if (item.keys.indexOf(to.name) >= 0) {
-            name = item.name
-            break
-          }
-        this.currentItemName = name
-        next()
-      })
+    highlightCurrentMenuItem: function(itemName) {
+      let name = ''
+      for (let item of this.menuItems)
+        if (item.keys.indexOf(itemName) >= 0) {
+          name = item.name
+          break
+        }
+      this.currentItemName = name
     },
     getMenuItemClass: function(item) {
       return {
         'current': item.name == this.currentItemName,
         'option': true,
       }
+    },
+    routerBeforeResolve: function(to, from, next) {
+      this.highlightCurrentMenuItem(to.name)
+      next()
     },
   },
 }
@@ -201,6 +203,7 @@ export default {
 
 #menu .option:hover {
   background-color: rgba(200, 200, 200, 0.20);
+  color: #006ac3;
 }
 
 #menu .option .icon {
@@ -221,6 +224,7 @@ export default {
 
 #menu .option.current {
   background-color: rgba(200, 200, 200, 0.20);
+  color: #006ac3;
   font-weight: 500;
 }
 </style>

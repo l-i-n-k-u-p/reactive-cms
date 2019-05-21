@@ -101,6 +101,10 @@ export default {
   background-color: #eee;
 }
 
+.select-wrapper:hover label {
+  color: #006ac3 !important;
+}
+
 .select-wrapper.open .icon,
 .select-wrapper.open label {
   z-index: 3;
@@ -147,6 +151,7 @@ export default {
 
 .select-options li:hover {
   background-color: #eee;
+  color: #006ac3 !important;
 }
 
 .select-wrapper.open {

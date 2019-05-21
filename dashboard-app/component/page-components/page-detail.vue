@@ -489,7 +489,7 @@ h2 {
 }
 
 .page-thumbnail:after {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(160, 160, 160, 0.5);
   bottom: 0;
   content: "";
   left: 0;

@@ -82,6 +82,10 @@ export default {
   background-color: rgba(200, 200, 200, 0.20);
 }
 
+.select-wrapper:hover label {
+  color: #006ac3 !important;
+}
+
 .select-wrapper.open .icon,
 .select-wrapper.open label {
   z-index: 3;
@@ -129,6 +133,7 @@ export default {
 
 .select-options li:hover {
   background-color: rgba(200, 200, 200, 0.20);
+  color: #006ac3 !important;
 }
 
 .select-wrapper.open {
