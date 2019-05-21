@@ -70,7 +70,7 @@ export default {
 
 #button-wrapper:hover {
   background-color: rgba(200, 200, 200, 0.20);
-  color: #0f93e8 !important;
+  color: #0010ff !important;
 }
 
 #button-wrapper .icon {

@@ -24,58 +24,82 @@
           autocomplete="off"
           >
           <div class="input-text">
-            <label>Site Name</label>
             <input
               type="text"
               name="setup_site_name"
-              placeholder="Reactive Web"
               autocomplete="off"
+              onfocus="onInputFocus(this)"
+              onfocusout="onInputFocus(this)"
               />
+            <label>Site Name</label>
+            <span class="hint">
+              Reactive Web
+            </span>
           </div>
           <div class="input-text">
-            <label>Site URL</label>
             <input
               type="text"
               name="setup_site_url"
-              placeholder="https://www.example.com/"
               autocomplete="off"
+              onfocus="onInputFocus(this)"
+              onfocusout="onInputFocus(this)"
               />
+            <label>Site URL</label>
+            <span class="hint">
+              https://www.example.com/
+            </span>
           </div>
           <div class="input-text">
-            <label>User First Name</label>
             <input
               type="text"
               name="setup_first_name"
-              placeholder="Eduardo"
               autocomplete="off"
+              onfocus="onInputFocus(this)"
+              onfocusout="onInputFocus(this)"
               />
+            <label>User First Name</label>
+            <span class="hint">
+              Eduardo
+            </span>
           </div>
           <div class="input-text">
-            <label>User Email</label>
             <input
               type="text"
               name="setup_user_email"
-              placeholder="admin@venom.com"
               autocomplete="off"
+              onfocus="onInputFocus(this)"
+              onfocusout="onInputFocus(this)"
               />
+            <label>User Email</label>
+            <span class="hint">
+              admin@reactive-web.com
+            </span>
           </div>
           <div class="input-text">
-            <label>User Name</label>
             <input
               type="text"
               name="setup_user_name"
-              placeholder="Admin"
               autocomplete="off"
+              onfocus="onInputFocus(this)"
+              onfocusout="onInputFocus(this)"
               />
+            <label>User Name</label>
+            <span class="hint">
+              Admin
+            </span>
           </div>
           <div class="input-text">
-            <label>User Password</label>
             <input
               type="text"
               name="setup_user_pass"
-              placeholder="RW-2018"
               autocomplete="off"
+              onfocus="onInputFocus(this)"
+              onfocusout="onInputFocus(this)"
               />
+            <label>User Password</label>
+            <span class="hint">
+              E5OA5A-RW-2018
+            </span>
           </div>
           <button
             class="button"
@@ -83,9 +107,12 @@
             >
             Start
           </button>
-          <%= error_message %>
+          <p id="error-msg">
+            <%= error_message %>
+          </p>
         </form>
       </div>
     </div>
+    <script src='/website/js/dashboard-login.js' charset="utf-8"></script>
   </body>
 </html>

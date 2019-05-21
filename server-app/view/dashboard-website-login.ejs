@@ -29,20 +29,27 @@
           autocomplete="off"
           >
           <div class="input-text">
-            <label>User</label>
             <input
               type="text"
               name="user_name"
               autocomplete="off"
+              onfocus="onInputFocus(this)"
+              onfocusout="onInputFocus(this)"
               />
+            <label>User</label>
+            <span class="hint">Your user name</span>
           </div>
           <div class="input-text">
-            <label>Password</label>
             <input
               class="input-text"
               type="password"
               name="user_pass"
-              autocomplete="off"/>
+              autocomplete="off"
+              onfocus="onInputFocus(this)"
+              onfocusout="onInputFocus(this)"
+              />
+              <label>Password</label>
+              <span class="hint">Your user password</span>
           </div>
           <button
             class="button"
@@ -50,9 +57,12 @@
             >
             Start
           </button>
-          <%= error_message %>
+          <p id="error-msg">
+            <%= error_message %>
+          </p>
         </form>
       </div>
     </div>
+    <script src='/website/js/dashboard-login.js' charset="utf-8"></script>
   </body>
 </html>

@@ -87,8 +87,8 @@ export default {
 }
 
 .input-wrapper input:checked ~ .checkmark {
-  background-color: #0f93e8;
-  border: 2px solid #0f93e8;
+  background-color: #0010ff;
+  border: 2px solid #0010ff;
 }
 
 .checkmark:after {

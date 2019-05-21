@@ -36,18 +36,19 @@ h2 {
   font-size: 18px;
   font-weight: 400;
   line-height: 1;
-  margin-bottom: 15;
+  margin-bottom: 15px;
   position: relative;
   text-align: center;
   z-index: 1;
 }
 
 .setup-form-wrapper {
+  align-self: center;
   background-color: white;
   border-radius: 3px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
-  margin: 100px auto auto auto;
-  padding: 20px;
+  margin: 50px;
+  padding: 10px;
   position: relative;
   width: 400px;
   z-index: 1;
@@ -57,57 +58,93 @@ h2 {
   width: 100%;
 }
 
+
 .input-text {
-  border-bottom: 1px solid #aaa;
   display: flex;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   position: relative;
   width: 100%;
 }
 
 .input-text label {
   background-color: white;
+  color: #616161;
   font-size: 14px;
   font-weight: 500;
   position: absolute;
-  top: -10px;
+  top: 2px;
+  transition-duration: 50ms;
 }
 
 .input-text input {
   background: transparent;
-  border: none;
-  caret-color: #0f93e8;
+  border-bottom: 1px solid #616161;
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  caret-color: #0010ff;
+  color: #616161;
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 500;
   margin: 0;
   outline: none;
-  padding: 10px 0;
+  padding: 2px 0;
+  transition-duration: 50ms;
   width: 100%;
 }
 
 .input-text input:focus {
-  border: none;
+  border-bottom: 1px solid #0010ff;
   outline: none;
 }
 
+.input-text input.no-empty ~ label {
+  font-size: 12px;
+  top: -14px;
+}
+
+.input-text input.active ~ label {
+  color: #0010ff;
+  font-size: 12px;
+  top: -14px;
+}
+
 .setup-form-wrapper form button {
+  -webkit-user-select: none;
+  align-self: center;
   background: transparent;
-  border-radius: 4px;
+  border-radius: 3px;
   border: none;
-  color: #444;
   cursor: pointer;
   display: block;
+  display: flex;
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 500;
   margin: auto;
-  padding: 7px;
+  outline: none;
+  padding: 7px 20px;
   position: relative;
-  right: 0;
   text-transform: uppercase;
+  user-select: none;
 }
 
 .setup-form-wrapper form button:hover {
-  background-color: #ddd;
+  background-color: rgba(200, 200, 200, 0.20);
+  color: #0010ff;
+}
+
+#error-msg {
+  font-size: 14px;
+  color: red;
+  text-align: center;
+}
+
+.hint {
+  color: #616161;
+  font-size: 12px;
+  font-weight: 400;
+  position: absolute;
+  top: 24px;
 }
 
 @media screen and (max-width: 480px) {
