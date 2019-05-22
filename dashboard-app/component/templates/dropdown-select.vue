@@ -101,7 +101,8 @@ export default {
   background-color: #eee;
 }
 
-.select-wrapper:hover label {
+.select-wrapper:hover label,
+.select-wrapper:hover .icon {
   color: #0010ff !important;
 }
 

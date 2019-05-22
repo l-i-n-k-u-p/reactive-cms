@@ -82,7 +82,8 @@ export default {
   background-color: rgba(200, 200, 200, 0.20);
 }
 
-.select-wrapper:hover label {
+.select-wrapper:hover label,
+.select-wrapper:hover .icon {
   color: #0010ff !important;
 }
 
