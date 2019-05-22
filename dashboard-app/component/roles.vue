@@ -225,7 +225,7 @@ h2 {
 .navigation-wrapper {
   color: #616161;
   display: flex;
-  font-weight: 500;
+  font-weight: 400;
   justify-content: flex-end;
   margin: 5px 20px;
   position: relative;
@@ -233,7 +233,7 @@ h2 {
 
 .navigation-wrapper .data {
   align-self: center;
-  font-size: 14px;
+  font-size: 12px;
   margin-left: 5px;
   margin-right: 5px;
 }
