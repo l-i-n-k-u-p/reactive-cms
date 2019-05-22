@@ -439,7 +439,7 @@ h2 {
   color: white;
   font-size: 16px;
   font-weight: 300;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .select-media-data-wrapper {
@@ -535,7 +535,7 @@ h2 {
 }
 
 .buttons-wrapper .button:last-child {
-  color: #0010ff;
+  color: #0a8ff3;
   margin-left: 10px;
 }
 

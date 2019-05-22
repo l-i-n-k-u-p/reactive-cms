@@ -360,7 +360,7 @@ h2 {
   font-size: 14px;
   font-weight: 500;
   margin: 0;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 h3 {
@@ -371,7 +371,7 @@ h3 {
   font-size: 14px;
   font-weight: 500;
   margin: 30px 0 10px 0;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 #content-wrapper h3:first-child {

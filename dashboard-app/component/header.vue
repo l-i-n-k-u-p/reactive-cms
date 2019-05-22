@@ -403,7 +403,7 @@ export default {
   position: relative;
   text-align: right;
   text-overflow: ellipsis;
-  text-transform: uppercase;
+  text-transform: capitalize;
   white-space: nowrap;
   z-index: 1;
 }
@@ -424,7 +424,7 @@ export default {
   color: white;
   font-size: 16px;
   font-weight: 300;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .username .menu {
@@ -456,12 +456,12 @@ export default {
   max-width: 100%;
   padding: 10px 7px 10px 7px;
   text-decoration: none;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .username .menu .option:hover {
   background-color: rgba(200, 200, 200, 0.20);
-  color: #0010ff;
+  color: #0a8ff3;
 }
 
 .search-wrapper {
@@ -556,7 +556,7 @@ export default {
 }
 
 .results-wrapper .item:hover div {
-  color: #0010ff;
+  color: #0a8ff3;
 }
 
 .results-wrapper .item > div {
@@ -615,6 +615,6 @@ export default {
 }
 
 #search-close-button:hover {
-  color: #0010ff !important;
+  color: #0a8ff3 !important;
 }
 </style>

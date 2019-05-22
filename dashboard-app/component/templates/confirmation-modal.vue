@@ -106,11 +106,11 @@ export default {
   padding: 7px;
   position: relative;
   right: 0;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .buttons-wrapper .button:last-child {
-  color: #0010ff;
+  color: #0a8ff3;
   margin-left: 10px;
 }
 

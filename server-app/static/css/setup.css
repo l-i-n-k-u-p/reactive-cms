@@ -82,7 +82,7 @@ h2 {
   border-left: 0;
   border-right: 0;
   border-top: 0;
-  caret-color: #0010ff;
+  caret-color: #0a8ff3;
   color: #616161;
   font-size: 14px;
   font-weight: 500;
@@ -94,7 +94,7 @@ h2 {
 }
 
 .input-text input:focus {
-  border-bottom: 1px solid #0010ff;
+  border-bottom: 1px solid #0a8ff3;
   outline: none;
 }
 
@@ -104,7 +104,7 @@ h2 {
 }
 
 .input-text input.active ~ label {
-  color: #0010ff;
+  color: #0a8ff3;
   font-size: 12px;
   top: -14px;
 }
@@ -124,13 +124,13 @@ h2 {
   outline: none;
   padding: 7px 20px;
   position: relative;
-  text-transform: uppercase;
+  text-transform: capitalize;
   user-select: none;
 }
 
 .setup-form-wrapper form button:hover {
   background-color: rgba(200, 200, 200, 0.20);
-  color: #0010ff;
+  color: #0a8ff3;
 }
 
 #error-msg {

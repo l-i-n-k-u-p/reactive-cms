@@ -283,7 +283,7 @@ export default {
 
 #menu .option:hover {
   background-color: rgba(200, 200, 200, 0.20);
-  color: #0010ff;
+  color: #0a8ff3;
 }
 
 #menu .option .icon {
@@ -304,7 +304,7 @@ export default {
 
 #menu .option.current {
   background-color: rgba(200, 200, 200, 0.20);
-  color: #0010ff;
+  color: #0a8ff3;
   font-weight: 500;
 }
 
@@ -336,7 +336,7 @@ export default {
 
 .children-item:hover {
   background-color: rgba(200, 200, 200, 0.20);
-  color: #0010ff;
+  color: #0a8ff3;
 }
 
 .children-item .icon {

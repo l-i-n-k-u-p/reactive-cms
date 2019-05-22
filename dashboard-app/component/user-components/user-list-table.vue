@@ -234,7 +234,7 @@ tfoot tr td {
   position: -webkit-sticky;
   position: sticky;
   z-index: 1;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 thead tr td {
@@ -262,7 +262,7 @@ tfoot tr td {
 
 .table-wrapper tbody tr:hover {
   background-color: rgba(200, 200, 200, 0.20);
-  color: #0010ff;
+  color: #0a8ff3;
 }
 
 .avatar {
@@ -279,7 +279,7 @@ tfoot tr td {
   color: white;
   font-size: 16px;
   font-weight: 300;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .item-text {

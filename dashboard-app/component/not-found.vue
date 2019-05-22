@@ -47,7 +47,7 @@ h2 {
   font-size: 14px;
   font-weight: 500;
   margin: 0;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .buttons-wrapper {
@@ -67,7 +67,7 @@ h3 {
   font-weight: 500;
   margin-top: 7px;
   text-align: center;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 </style>

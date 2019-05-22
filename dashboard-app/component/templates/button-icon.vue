@@ -43,13 +43,13 @@ export default {
   outline: none;
   padding: 2px;
   position: relative;
-  text-transform: uppercase;
+  text-transform: capitalize;
   user-select: none;
 }
 
 #button-wrapper:hover{
   background-color: rgba(200, 200, 200, 0.20);
-  color: #0010ff !important;
+  color: #0a8ff3 !important;
 }
 
 #button-wrapper .icon {

@@ -349,7 +349,7 @@ h2 {
   font-size: 14px;
   font-weight: 500;
   margin: 0;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 h3 {
@@ -360,7 +360,7 @@ h3 {
   font-size: 14px;
   font-weight: 500;
   margin: 30px 0 15px 0;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .buttons-wrapper {
