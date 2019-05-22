@@ -23,14 +23,14 @@
       >
       <UserListTable
         v-if="users.models.length"
-        v-bind:userList="users"
+        v-bind:collection="users"
         v-bind:onClickRow="showUserDetail"
         v-bind:navigationBefore="navigationBefore"
         v-bind:navigationNext="navigationNext"
         v-bind:currentPage="currentPage"
         v-bind:totalPages="totalPages"
         v-bind:itemsSkipped="itemsSkipped"
-        v-bind:totalUsers="totalUsers"
+        v-bind:totalItems="totalUsers"
       />
     </BoxWrapper>
     <div class="navigation-wrapper">
@@ -188,6 +188,7 @@ export default {
           this.$eventHub.$emit('dashboard-app-error', err.message)
         })
       this.itemsSelected = {}
+      this.$eventHub.$emit('clear-items-selected', '')
     },
   },
 }
@@ -207,7 +208,7 @@ h2 {
   font-size: 14px;
   font-weight: 500;
   margin: 0;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .buttons-wrapper {

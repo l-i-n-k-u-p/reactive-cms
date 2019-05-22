@@ -6,7 +6,7 @@
     </div>
     <LoadingBar v-if="isLoading"/>
     <BoxWrapper
-      style="background-color: transparent; box-shadow: none;"
+      style="background-color: transparent; box-shadow: none; padding: 0;"
     >
       <div class="content-wrapper">
         <div class="dashboard-activity">
@@ -235,7 +235,7 @@ h2 {
   font-size: 14px;
   font-weight: 500;
   margin: 0;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .buttons-wrapper {

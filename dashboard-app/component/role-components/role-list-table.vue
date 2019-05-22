@@ -4,7 +4,13 @@
       <table class="table-wrapper">
         <thead>
           <tr>
-            <td></td>
+            <td>
+              <Checkbox
+                v-bind:onChangeValue="onChangeValue"
+                item="all"
+                v-bind:currentValue="checkAll"
+              />
+            </td>
             <td>
               Image
             </td>
@@ -20,11 +26,10 @@
             >
             <td>
               <Checkbox
-                style="margin-right: 10px;"
                 v-bind:onChangeValue="onChangeValue"
                 v-bind:item="role.get('_id')"
-              >
-              </Checkbox>
+                v-bind:currentValue="checkAll"
+              />
             </td>
             <td v-on:click="onClickRow(role)">
               <div
@@ -76,6 +81,7 @@ export default {
     return {
       collectionItems: [],
       itemSelected: {},
+      checkAll: false,
     }
   },
   components: {
@@ -89,12 +95,27 @@ export default {
   },
   created() {
     this.collectionItems = this.collection.models
-    this.$eventHub.$on('items-selected-clear', () => {
-      this.itemSelected = {}
+    this.$eventHub.$on('clear-items-selected', () => {
+      this.checkAll = false
     })
   },
   methods: {
     onChangeValue: function(isChecked, itemId) {
+      if (itemId.toString() === 'all') {
+        this.itemSelected = {}
+        this.checkAll = !this.checkAll
+        if (!this.checkAll) {
+          this.$eventHub.$emit('items-selected', this.itemSelected)
+          return
+        }
+        for (let item of this.collectionItems) {
+          let id = item.get('_id')
+          this.itemSelected[id] = id
+        }
+        this.$eventHub.$emit('items-selected', this.itemSelected)
+        console.log(this.itemSelected)
+        return
+      }
       if (isChecked)
         this.itemSelected[itemId] = itemId
       else
@@ -153,7 +174,7 @@ tfoot tr td {
   position: -webkit-sticky;
   position: sticky;
   z-index: 1;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 thead tr td {
@@ -181,11 +202,11 @@ tfoot tr td {
 
 .table-wrapper tbody tr:hover {
   background-color: rgba(200, 200, 200, 0.20);
+  color: #0a8ff3;
 }
 
 .avatar {
   border-radius: 100%;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
   display: flex;
   height: 24px;
   justify-content: center;
@@ -198,7 +219,7 @@ tfoot tr td {
   color: white;
   font-size: 16px;
   font-weight: 300;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .item-text {

@@ -5,7 +5,7 @@
     v-click-outside="clickOutsite"
   >
     <i class="material-icons icon">
-      arrow_drop_down
+      {{ getIconName() }}
     </i>
     <label>
       {{ label + ': ' + getOptionName() }}
@@ -69,6 +69,13 @@ export default {
 
       return option.name
     },
+    getIconName: function() {
+      let iconName = this.show ? 'expand_less' : 'expand_more'
+      if (this.openInTop)
+        return this.show ? 'expand_more' : 'expand_less'
+
+      return iconName
+    },
   },
 }
 </script>
@@ -94,11 +101,16 @@ export default {
 
 .select-wrapper label {
   cursor: pointer;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .select-wrapper:hover {
   background-color: #eee;
+}
+
+.select-wrapper:hover label,
+.select-wrapper:hover .icon {
+  color: #0a8ff3 !important;
 }
 
 .select-wrapper.open .icon,
@@ -142,11 +154,12 @@ export default {
 .select-options li {
   background-color: white;
   padding: 10px 20px 10px 32px;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .select-options li:hover {
   background-color: #eee;
+  color: #0a8ff3 !important;
 }
 
 .select-wrapper.open {

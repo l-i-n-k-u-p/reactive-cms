@@ -11,6 +11,10 @@
 
 <script>
 export default {
+  props: [
+    'onClickCloseAction',
+    'data',
+  ],
   data() {
     return {}
   },
@@ -18,7 +22,7 @@ export default {
   created() {},
   methods: {
     removeRibbonMessage: function() {
-      this.$eventHub.$emit('dashboard-app-error', '')
+      this.onClickCloseAction(this.data)
     },
   },
 }
@@ -29,19 +33,17 @@ export default {
   -webkit-user-select: none;
   background-color: #d32f2f;
   border-radius: 3px;
-  bottom: 10px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   color: white;
   display: flex;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: bold;
   line-height: 14px;
+  margin-top: 5px;
   padding: 10px 0px 10px 0px;
-  position: fixed;
-  right: 10px;
   text-align: center;
   user-select: none;
-  width: 300px;
+  width: 100%;
   z-index: 2;
 }
 

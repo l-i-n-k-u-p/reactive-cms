@@ -12,7 +12,7 @@
 
 #progress {
   background-clip: padding-box;
-  background-color: rgba(150, 150, 150, 0.5);
+  background-color: rgba(10, 143, 243, 0.4);
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
   display: block;
@@ -28,7 +28,7 @@
 }
 
 #indeterminate {
-  background-color: #000;
+  background-color: #0a8ff3;
 }
 
 #progress #indeterminate:before {

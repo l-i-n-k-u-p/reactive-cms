@@ -190,6 +190,7 @@ export default {
           this.$eventHub.$emit('dashboard-app-error', err.message)
         })
       this.itemsSelected = {}
+      this.$eventHub.$emit('clear-items-selected', '')
     },
   },
 }
@@ -209,7 +210,7 @@ h2 {
   font-size: 14px;
   font-weight: 500;
   margin: 0;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .buttons-wrapper {

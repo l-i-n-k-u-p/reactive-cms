@@ -403,7 +403,7 @@ export default {
   position: relative;
   text-align: right;
   text-overflow: ellipsis;
-  text-transform: uppercase;
+  text-transform: capitalize;
   white-space: nowrap;
   z-index: 1;
 }
@@ -411,7 +411,6 @@ export default {
 .avatar {
   align-self: center;
   border-radius: 100%;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-grow: 0;
   height: 30px;
@@ -425,7 +424,7 @@ export default {
   color: white;
   font-size: 16px;
   font-weight: 300;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .username .menu {
@@ -457,11 +456,12 @@ export default {
   max-width: 100%;
   padding: 10px 7px 10px 7px;
   text-decoration: none;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .username .menu .option:hover {
   background-color: rgba(200, 200, 200, 0.20);
+  color: #0a8ff3;
 }
 
 .search-wrapper {
@@ -555,6 +555,10 @@ export default {
   background-color: rgba(200, 200, 200, 0.20);
 }
 
+.results-wrapper .item:hover div {
+  color: #0a8ff3;
+}
+
 .results-wrapper .item > div {
   align-self: center;
   display: flex;
@@ -608,5 +612,9 @@ export default {
   right: 5px;
   user-select: none;
   z-index: 2;
+}
+
+#search-close-button:hover {
+  color: #0a8ff3 !important;
 }
 </style>

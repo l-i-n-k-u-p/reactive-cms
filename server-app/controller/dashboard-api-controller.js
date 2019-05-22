@@ -1278,13 +1278,16 @@ exports.updateRoleByID = async (req, res) => {
   }
   let resourcesToUpate = []
   let resourcesToSave = []
+  let resourceToRemove = []
   for (let resource of roleResources) {
-    if (resource._id)
+    if (resource.removed)
+      resourceToRemove.push(resource)
+    else if (resource._id)
       resourcesToUpate.push(resource)
     else
       resourcesToSave.push(resource)
   }
-  if (resourcesToSave) {
+  if (resourcesToSave)
     for (let res of resourcesToSave) {
       let resourceData = {
         resource_name: res.resource_name,
@@ -1293,8 +1296,7 @@ exports.updateRoleByID = async (req, res) => {
       }
       await resourceQuery.create(resourceData)
     }
-  }
-  if (resourcesToUpate) {
+  if (resourcesToUpate)
     for (let res of resourcesToUpate) {
       let resourceData = {
         id: res._id,
@@ -1305,7 +1307,9 @@ exports.updateRoleByID = async (req, res) => {
       }
       await resourceQuery.updateByID(resourceData)
     }
-  }
+  if (resourceToRemove)
+    for (let res of resourceToRemove)
+      await resourceQuery.deleteByID(res._id)
   let roleUpdated = await roleQuery.getByID(roleID)
   let sessions = await sessionQuery.getSessionsWithRole(roleID)
   if (sessions) {

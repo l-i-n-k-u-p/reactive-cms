@@ -39,6 +39,7 @@
               <ButtonDoubleAction
                 v-for="(resource, index) of this.role.get('role_resources')"
                 buttonIcon="remove"
+                v-if="!resource.removed"
                 v-bind:buttonTextAction="openPermissionsModal"
                 v-bind:buttonIconAction="addToResources"
                 v-bind:data="index"
@@ -190,7 +191,7 @@ export default {
     },
     addToResources: function(index) {
       let currentRoleResources = this.role.get('role_resources')
-      let removed = currentRoleResources.splice(index, 1)
+      currentRoleResources[index].removed = true
       this.role.set('role_resources', currentRoleResources)
       this.setInitialResourceData()
     },
@@ -202,7 +203,8 @@ export default {
       for (let view of this.views.models) {
         isFreeResource = true
         for (let resource of currentRoleResources) {
-          if (resource.resource_name === view.view_name)
+          let resourceRemoved = resource.removed === undefined ? false : resource.removed
+          if (resource.resource_name === view.view_name && !resourceRemoved)
             isFreeResource = false
         }
         if (isFreeResource)
@@ -349,7 +351,7 @@ h2 {
   font-size: 14px;
   font-weight: 500;
   margin: 0;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 h3 {
@@ -360,7 +362,7 @@ h3 {
   font-size: 14px;
   font-weight: 500;
   margin: 30px 0 15px 0;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .buttons-wrapper {

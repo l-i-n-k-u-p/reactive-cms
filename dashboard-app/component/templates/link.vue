@@ -46,12 +46,13 @@ export default {
   outline: none;
   padding: 7px;
   position: relative;
-  text-transform: uppercase;
+  text-transform: capitalize;
   user-select: none;
 }
 
 #link-wrapper:hover {
   background-color: rgba(200, 200, 200, 0.20);
+  color: #0a8ff3 !important;
 }
 
 #link-wrapper .icon {

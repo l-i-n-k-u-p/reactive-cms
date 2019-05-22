@@ -13,18 +13,41 @@
         src="/website/assets/reactive-cms-logo.png"
         v-if="!isMenuSticky"
         />
-      <router-link
-        v-for="option in options"
-        v-acl-show="option.resourceName"
-        v-bind:key="option.position"
-        v-bind:class="option.class"
-        :to="{ name: option.name, params: option.params }"
-      >
-        <i class="material-icons icon">
-          {{ option.icon }}
+      <div
+        v-for="(item, index) in menuItems"
+        v-acl-show="item.resourceName"
+        class="menu-option"
+        >
+        <router-link
+          v-bind:key="item.position"
+          :to="{ name: item.name, params: item.params }"
+          v-bind:class="getMenuItemClass(item)"
+        >
+          <i class="material-icons icon">
+            {{ item.icon }}
+          </i>
+          {{ item.title }}
+        </router-link>
+        <i
+          v-if="item.children"
+          class="material-icons button-more-items"
+          v-on:click="toggleOptions(index)"
+          >
+          {{ item.expanded ? 'expand_less' : 'expand_more' }}
         </i>
-        {{ option.title }}
-      </router-link>
+        <router-link
+          v-if="item.expanded"
+          class="children-item"
+          v-for="(itemChildren) of item.children"
+          v-bind:key="itemChildren.uuid"
+          :to="{ name: itemChildren.name, params: '' }"
+          >
+          <i class="material-icons icon">
+            {{ itemChildren.icon }}
+          </i>
+          {{ itemChildren.title }}
+        </router-link>
+      </div>
     </div>
     <div
       class="shadow"
@@ -41,78 +64,131 @@ export default {
   ],
   data() {
     return {
-      options: [
+      currentItemName: '',
+      menuItems: [
         {
           position: 0,
           title: 'Dashboard',
-          class: 'option',
           name: 'dashboard',
           icon: 'dashboard',
           resourceName: 'dashboard',
+          keys: 'dashboard',
+          expanded: false,
         },
         {
           position: 1,
           title: 'Pages',
-          class: 'option',
           name: 'pages',
           icon: 'pages',
           params: { page: 1 },
           resourceName: 'pages',
+          keys: 'pages, page-detail, new-page',
+          expanded: false,
+          children: [
+            {
+              title: 'Add Page',
+              name: 'new-page',
+              icon: 'add',
+              uuid: this.$uuid.v1(),
+            },
+          ],
         },
         {
           position: 2,
           title: 'Posts',
-          class: 'option',
           name: 'posts',
           icon: 'pages',
           params: { page: 1 },
           resourceName: 'posts',
+          keys: 'posts, post-detail, new-post',
+          expanded: false,
+          children: [
+            {
+              title: 'Add Post',
+              name: 'new-post',
+              icon: 'add',
+              uuid: this.$uuid.v1(),
+            },
+          ],
         },
         {
           position: 3,
           title: 'Media',
-          class: 'option',
           name: 'media',
           icon: 'perm_media',
           params: { page: 1 },
           resourceName: 'media',
+          keys: 'media, media-detail, new-media',
+          expanded: false,
+          children: [
+            {
+              title: 'Add Media',
+              name: 'new-media',
+              icon: 'add',
+              uuid: this.$uuid.v1(),
+            },
+          ],
         },
         {
           position: 4,
           title: 'Users',
-          class: 'option',
           name: 'users',
           icon: 'people',
           params: { page: 1 },
           resourceName: 'users',
+          keys: 'users, user-detail, new-user',
+          expanded: false,
+          children: [
+            {
+              title: 'Add User',
+              name: 'new-user',
+              icon: 'add',
+              uuid: this.$uuid.v1(),
+            },
+          ],
         },
         {
           position: 5,
           title: 'Roles',
-          class: 'option',
           name: 'roles',
           icon: 'security',
           params: { page: 1 },
           resourceName: 'roles',
+          keys: 'roles, role-detail, new-role',
+          expanded: false,
+          children: [
+            {
+              title: 'Add Role',
+              name: 'new-role',
+              icon: 'add',
+              uuid: this.$uuid.v1(),
+            },
+          ],
         },
         {
           position: 6,
           title: 'Profile',
-          class: 'option',
           name: 'profile',
           icon: 'person',
           resourceName: '',
+          keys: 'profile',
+          expanded: false,
         },
         {
           position: 7,
           title: 'Settings',
-          class: 'option',
           name: 'settings',
           icon: 'settings',
           resourceName: 'settings',
+          keys: 'settings',
+          expanded: false,
         },
       ],
     }
+  },
+  created() {
+    this.highlightCurrentMenuItem(this.$router.currentRoute.name)
+    this.$router.beforeResolve(this.routerBeforeResolve)
   },
   methods: {
     closeMenu: function() {
@@ -120,6 +196,36 @@ export default {
         return
 
       this.$eventHub.$emit('dashboard-app-toggle-menu', '')
+    },
+    highlightCurrentMenuItem: function(itemName) {
+      let name = ''
+      let index = -1
+      for (let itemIndex in this.menuItems)
+        if (this.menuItems[itemIndex].keys.indexOf(itemName) >= 0) {
+          name = this.menuItems[itemIndex].name
+          index = itemIndex
+        }
+      this.currentItemName = name
+      if (!this.menuItems[index])
+        return
+
+      this.menuItems[index].expanded = true
+    },
+    getMenuItemClass: function(item) {
+      return {
+        'current': this.isCurrentItem(item),
+        'option': true,
+      }
+    },
+    isCurrentItem: function(item) {
+      return item.name == this.currentItemName
+    },
+    routerBeforeResolve: function(to, from, next) {
+      this.highlightCurrentMenuItem(to.name)
+      next()
+    },
+    toggleOptions: function(index) {
+      this.menuItems[index].expanded = !this.menuItems[index].expanded
     },
   },
 }
@@ -130,6 +236,7 @@ export default {
   flex-grow: 0;
   left: 0;
   min-width: 170px;
+  overflow-y: auto;
   position: fixed;
   z-index: 1;
 }
@@ -163,7 +270,7 @@ export default {
   display: flex;
   flex-direction: row;
   flex-shrink: 0;
-  font-size: 14px;
+  font-size: 13px;
   height: 32px;
   margin-left: 2px;
   margin-right: 2px;
@@ -172,13 +279,14 @@ export default {
   padding-right: 10px;
   position: relative;
   text-decoration: none;
-  text-transform: uppercase;
+  text-transform: capitalize;
   user-select: none;
   z-index: 2;
 }
 
 #menu .option:hover {
   background-color: rgba(200, 200, 200, 0.20);
+  color: #0a8ff3;
 }
 
 #menu .option .icon {
@@ -195,5 +303,68 @@ export default {
   top: 0;
   width: 100%;
   z-index: 0;
+}
+
+#menu .option.current {
+  background-color: rgba(200, 200, 200, 0.20);
+  color: #0a8ff3;
+  font-weight: 500;
+}
+
+.children-item {
+  -webkit-user-select: none;
+  align-items: center;
+  border-bottom: 0;
+  border-radius: 3px;
+  border: 0;
+  color: #616161;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 400;
+  height: 32px;
+  margin-left: 2px;
+  margin-right: 2px;
+  max-width: 100%;
+  padding-left: 30px;
+  padding-right: 10px;
+  position: relative;
+  text-decoration: none;
+  text-transform: capitalize;
+  user-select: none;
+  z-index: 2;
+}
+
+.children-item:hover {
+  background-color: rgba(200, 200, 200, 0.20);
+  color: #0a8ff3;
+}
+
+.children-item .icon {
+  font-size: 18px;
+  margin: 0;
+  padding: 0;
+}
+
+.menu-option {
+  position: relative;
+}
+
+#menu .menu-option:last-child {
+  margin-bottom: 30px;
+}
+
+.button-more-items {
+  -webkit-user-select: none;
+  color: #616161;
+  cursor: pointer;
+  font-size: 18px;
+  position: absolute;
+  right: 8px;
+  top: 7px;
+  user-select: none;
+  z-index: 3;
 }
 </style>

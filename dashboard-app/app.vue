@@ -25,18 +25,33 @@
       <SplashScreen v-if="showSplashScreen" />
     </transition>
     <Login v-if="showLogin"> </Login>
-    <RibbonError v-if="appErrorMessage">
-      <slot>{{ appErrorMessage }}</slot>
-    </RibbonError>
-    <RibbonSuccess v-if="appSuccessMessage">
-      <slot>{{ appSuccessMessage }}</slot>
-    </RibbonSuccess>
+    <div id="ribbon-errors" v-if="statusMessages">
+      <div
+        v-for="(item, index) of statusMessages" v-if="item !== undefined">
+        <RibbonError
+          v-if="item.type == 'error'"
+          v-bind:onClickCloseAction="removeRibbonById"
+          v-bind:data="index.key"
+          :key="index.key"
+          >
+          <slot>{{ item.message }}</slot>
+        </RibbonError>
+        <RibbonSuccess
+          v-if="item.type == 'success'"
+          v-bind:onClickCloseAction="removeRibbonById"
+          v-bind:data="index.key"
+          :key="index.key"
+          >
+          <slot>{{ item.message }}</slot>
+        </RibbonSuccess>
+      </div>
+    </div>
     <footer>
       <span>Development by</span>
       <a href="https://reactive-web.com" target="_blank">
         <img src="/website/assets/reactive-web.png" />
       </a>
-      <span>Version 2.4.2</span>
+      <span>Version 2.7.6</span>
     </footer>
     <MediaModal
       v-if="mediaModalData"
@@ -78,6 +93,8 @@ import MediaModal from './component/media-modal.vue'
 import ConfirmationModal from './component/templates/confirmation-modal.vue'
 import PreviewMediaModal from './component/templates/preview-media-modal.vue'
 
+let windowIntervalRemove = null
+
 export default {
   components: {
     Header,
@@ -95,24 +112,25 @@ export default {
       menuIsOpen: false,
       isMenuSticky: false,
       pageTitle: '',
-      appErrorMessage: '',
-      appSuccessMessage: '',
       showSplashScreen: true,
       showLogin: false,
-      ribbonTimeOut: 5000,
+      ribbonTimeOut: 2500,
       confirmationModalData: null,
       mediaModalData: null,
       previewMediaModalData: null,
       throttleToggleMenu: _.throttle(this.toggleMenu, 100, { 'trailing': false }),
       breakWidth: 1360,
+      statusMessages: [],
     }
   },
   watch: {
-    appErrorMessage: function(newVal, oldVal) {
-      setTimeout(this.hideRibbonErrorNotification, this.ribbonTimeOut)
-    },
-    appSuccessMessage: function(newVal, oldVal) {
-      setTimeout(this.hideRibbonSuccessNotification, this.ribbonTimeOut)
+    statusMessages: function(newVal, oldVal) {
+      if (windowIntervalRemove)
+        return
+
+      windowIntervalRemove = window.setInterval(() => {
+        this.removeLastRibbonStatusNotification()
+      }, this.ribbonTimeOut)
     },
   },
   created () {
@@ -122,10 +140,18 @@ export default {
       else this.pageTitle = title
     })
     this.$eventHub.$on('dashboard-app-error', errorMessage => {
-      this.appErrorMessage = errorMessage
+      this.statusMessages.push({
+        type: 'error',
+        message: errorMessage,
+        key: this.$uuid.v1(),
+      })
     })
     this.$eventHub.$on('dashboard-app-success', successMessage => {
-      this.appSuccessMessage = successMessage
+      this.statusMessages.push({
+        type: 'success',
+        message: successMessage,
+        key: this.$uuid.v1(),
+      })
     })
     this.$eventHub.$on('dashboard-hide-login', () => {
       this.showLogin = false
@@ -168,8 +194,26 @@ export default {
     hideRibbonSuccessNotification: function() {
       this.appSuccessMessage = ''
     },
-    hideRibbonErrorNotification: function() {
-      this.appErrorMessage = ''
+    removeLastRibbonStatusNotification: function() {
+      if (this.statusMessages.length) {
+        this.statusMessages.shift()
+        return
+      }
+      window.clearInterval(windowIntervalRemove)
+      windowIntervalRemove = null
+    },
+    removeRibbonById: function(key) {
+      if (!this.statusMessages.length)
+        return
+
+      let index = -1
+      for (let i in this.statusMessages) {
+        if (key === this.statusMessages[i].key) {
+          index = i
+          return
+        }
+      }
+      this.statusMessages.splice(index, 1)
     },
     toggleMenu: function() {
       if (this.menuIsOpen === true)
@@ -263,5 +307,18 @@ footer img {
 
 .autohide-enter, .autohide-leave-to {
   opacity: 0;
+}
+
+#ribbon-errors {
+  bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  height: 40px;
+  overflow: auto;
+  position: absolute;
+  right: 10px;
+  width: 280px;
+  z-index: 1;
 }
 </style>
