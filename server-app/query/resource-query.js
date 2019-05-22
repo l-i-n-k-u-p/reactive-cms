@@ -44,6 +44,19 @@ const deleteByRoleRef = async (roleID) => {
   }
 }
 
+const deleteByID = async (id) => {
+  try {
+    let item = await ResourceModel.findOneAndRemove({
+      _id: id,
+    })
+    return item
+  } catch (err) {
+    return {
+      error: err
+    }
+  }
+}
+
 const createMany = async (itemsData) => {
   try {
     let items = await ResourceModel.insertMany(itemsData)
@@ -60,4 +73,5 @@ module.exports = {
   updateByID: updateByID,
   deleteByRoleRef: deleteByRoleRef,
   createMany: createMany,
+  deleteByID: deleteByID,
 }

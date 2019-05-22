@@ -206,6 +206,9 @@ export default {
           index = itemIndex
         }
       this.currentItemName = name
+      if (!this.menuItems[index])
+        return
+
       this.menuItems[index].expanded = true
     },
     getMenuItemClass: function(item) {
