@@ -105,12 +105,12 @@ export default {
 }
 
 .select-wrapper:hover {
-  background-color: #eee;
+  background-color: rgba(200, 200, 200, 0.20);
 }
 
 .select-wrapper:hover label,
 .select-wrapper:hover .icon {
-  color: #0a8ff3 !important;
+  color: #193a99 !important;
 }
 
 .select-wrapper.open .icon,
@@ -158,8 +158,8 @@ export default {
 }
 
 .select-options li:hover {
-  background-color: #eee;
-  color: #0a8ff3 !important;
+  background-color: rgba(200, 200, 200, 0.20);
+  color: #193a99 !important;
 }
 
 .select-wrapper.open {

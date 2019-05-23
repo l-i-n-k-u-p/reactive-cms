@@ -52,7 +52,7 @@ export default {
 
 #link-wrapper:hover {
   background-color: rgba(200, 200, 200, 0.20);
-  color: #0a8ff3 !important;
+  color: #193a99 !important;
 }
 
 #link-wrapper .icon {

@@ -239,7 +239,6 @@ export default {
     },
     removeMedia: function() {
       this.page.set('page_thumbnail', '')
-      console.log('== remove media ==', this.page.get('page_thumbnail'))
     },
     getCoverImage: function() {
       return this.$getThumbnailURL(

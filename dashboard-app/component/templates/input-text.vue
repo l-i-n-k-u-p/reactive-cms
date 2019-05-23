@@ -103,7 +103,7 @@ export default {
   border-right: none;
   border-top: none;
   box-sizing: border-box;
-  caret-color: #0a8ff3;
+  caret-color: #193a99;
   color: #616161;
   font-size: 14px;
   font-weight: 500;
@@ -114,13 +114,13 @@ export default {
 }
 
 .input-wrapper.focus #input-title {
-  color: #0a8ff3;
+  color: #193a99;
   top: 4px;
   font-size: 12px;
 }
 
 .input-wrapper.focus input {
-  border-bottom: 1px solid #0a8ff3;
+  border-bottom: 1px solid #193a99;
 }
 
 .input-wrapper.no-empty #input-title {

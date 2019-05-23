@@ -25,7 +25,10 @@
       <SplashScreen v-if="showSplashScreen" />
     </transition>
     <Login v-if="showLogin"> </Login>
-    <div id="ribbon-errors" v-if="statusMessages">
+    <div
+      id="ribbon-errors"
+      v-if="statusMessages.length"
+      >
       <div
         v-for="(item, index) of statusMessages" v-if="item !== undefined">
         <RibbonError
@@ -48,7 +51,10 @@
     </div>
     <footer>
       <span>Development by</span>
-      <a href="https://reactive-web.com" target="_blank">
+      <a
+        href="https://www.reactive-web.com"
+        target="_blank"
+        >
         <img src="/website/assets/reactive-web.png" />
       </a>
       <span>Version 2.7.6</span>
@@ -168,6 +174,9 @@ export default {
     this.$eventHub.$on('preview-media-modal', ObjectData => {
       this.previewMediaModalData = ObjectData
     })
+    this.$eventHub.$on('navigation-button', position => {
+      this.navigationButton = position
+    })
     setTimeout(this.hideSplashScreen, 1000)
     this.onResizeWindow()
   },
@@ -285,7 +294,7 @@ footer {
 footer span {
   align-self: center;
   display: flex;
-  font-size: 12px;
+  font-size: 10px;
   margin: auto 5px auto 5px;
 }
 
@@ -293,7 +302,7 @@ footer img {
   display: flex;
   position: relative;
   top: -1px;
-  width: 130px;
+  width: 100px;
 }
 
 .left-menu-wrapper {
@@ -320,5 +329,9 @@ footer img {
   right: 10px;
   width: 280px;
   z-index: 1;
+}
+
+footer a {
+  outline: none;
 }
 </style>

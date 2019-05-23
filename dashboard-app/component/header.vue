@@ -461,7 +461,7 @@ export default {
 
 .username .menu .option:hover {
   background-color: rgba(200, 200, 200, 0.20);
-  color: #0a8ff3;
+  color: #193a99;
 }
 
 .search-wrapper {
@@ -556,7 +556,7 @@ export default {
 }
 
 .results-wrapper .item:hover div {
-  color: #0a8ff3;
+  color: #193a99;
 }
 
 .results-wrapper .item > div {
@@ -615,6 +615,6 @@ export default {
 }
 
 #search-close-button:hover {
-  color: #0a8ff3 !important;
+  color: #193a99 !important;
 }
 </style>

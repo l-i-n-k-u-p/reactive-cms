@@ -535,11 +535,11 @@ h2 {
 }
 
 .buttons-wrapper .button:last-child {
-  color: #0a8ff3;
+  color: #193a99;
   margin-left: 10px;
 }
 
 .buttons-wrapper .button:hover {
-  background-color: #eee;
+  background-color: rgba(200, 200, 200, 0.20);
 }
 </style>
