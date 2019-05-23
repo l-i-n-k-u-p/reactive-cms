@@ -55,7 +55,7 @@ p {
 .material-icons {
   cursor: pointer;
   flex-grow: 0;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: bold;
   margin-right: 20px;
 }

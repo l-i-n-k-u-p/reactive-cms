@@ -88,7 +88,7 @@ export default {
 #input-title {
   background-color: transparent;
   color: #616161;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   pointer-events: none;
   position: absolute;
@@ -105,7 +105,7 @@ export default {
   box-sizing: border-box;
   caret-color: #193a99;
   color: #616161;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   margin: 0;
   outline: none;

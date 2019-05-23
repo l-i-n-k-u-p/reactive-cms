@@ -102,14 +102,14 @@ export default {
 
 h2 {
   color: #616161;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   margin-bottom: 5px;
 }
 
 #gallery-description {
   color: #616161;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
   margin-top: 0px;
 }
