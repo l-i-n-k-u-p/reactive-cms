@@ -4,7 +4,7 @@
     v-window-resize="setCustomStyle"
     v-bind:style="styleHeight"
     >
-    <slot> </slot>
+    <slot></slot>
   </div>
 </template>
 
@@ -16,7 +16,7 @@ export default {
   data() {
     return {
       styleHeight: 'height: 0',
-      headerHeight: 150,
+      headerHeight: 140,
     }
   },
   created() {

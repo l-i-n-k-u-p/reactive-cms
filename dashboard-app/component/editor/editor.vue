@@ -305,8 +305,8 @@ button {
 }
 
 button:hover {
-  background-color: #eee;
-  color: #0a8ff3;
+  background-color: rgba(200, 200, 200, 0.20);
+  color: #193a99;
 }
 
 button i {
@@ -339,7 +339,7 @@ button i {
 .ProseMirror {
   background: transparent;
   border-bottom: 1px solid #616161;
-  caret-color: #0a8ff3;
+  caret-color: #193a99;
   color: #616161;
   font-size: 14px;
   font-weight: 500;
@@ -352,7 +352,7 @@ button i {
 }
 
 .ProseMirror:focus {
-  border-bottom: 1px solid #0a8ff3;
+  border-bottom: 1px solid #193a99;
 }
 
 .dropdown-wrapper button {
@@ -367,6 +367,6 @@ button i {
 }
 
 button.is-active {
-  background-color: #eee;
+  background-color: rgba(200, 200, 200, 0.20);
 }
 </style>

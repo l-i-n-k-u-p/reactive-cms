@@ -54,7 +54,7 @@ export default {
 
 #button-wrapper:hover {
   background-color: rgba(200, 200, 200, 0.20);
-  color: #0a8ff3 !important;
+  color: #193a99 !important;
 }
 
 #button-wrapper .icon {
