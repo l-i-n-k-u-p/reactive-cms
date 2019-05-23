@@ -106,7 +106,7 @@ export default {
   caret-color: #193a99;
   color: #616161;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 400;
   margin: 0;
   outline: none;
   padding: 4px 0;
