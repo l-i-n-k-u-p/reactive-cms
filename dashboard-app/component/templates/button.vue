@@ -42,7 +42,7 @@ export default {
   cursor: pointer;
   display: block;
   display: flex;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   height: 14px;
   outline: none;

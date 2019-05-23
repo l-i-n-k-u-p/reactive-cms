@@ -90,7 +90,7 @@ export default {
   color: #616161;
   cursor: pointer;
   display: flex;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   height: 14px;
   outline: none;

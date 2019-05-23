@@ -348,7 +348,7 @@ h2 {
   color: #616161;
   display: flex;
   flex-grow: 1;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   margin: 0;
   text-transform: capitalize;
@@ -359,7 +359,7 @@ h3 {
   color: #616161;
   display: flex;
   flex-grow: 1;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   margin: 30px 0 15px 0;
   text-transform: capitalize;
@@ -412,7 +412,7 @@ h3 {
   color: #616161;
   display: flex;
   flex-grow: 1;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   margin: 5px 0;
 }

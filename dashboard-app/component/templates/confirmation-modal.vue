@@ -77,7 +77,7 @@ export default {
 
 .box-content p {
   color: #616161;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
   letter-spacing: 0;
   line-height: 20px;
@@ -100,7 +100,7 @@ export default {
   color: #444;
   cursor: pointer;
   display: block;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   outline: none;
   padding: 7px;

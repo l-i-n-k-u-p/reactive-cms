@@ -441,7 +441,7 @@ export default {
 .username .menu .option {
   color: #616161;
   display: flex;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   max-width: 100%;
   padding: 10px 7px 10px 7px;
@@ -480,7 +480,7 @@ export default {
   box-sizing: border-box;
   color: #616161;
   display: flex;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
   height: 36px;
   outline: none;
@@ -535,7 +535,7 @@ export default {
   box-sizing: border-box;
   color: #616161;
   display: flex;
-  font-size: 14px;
+  font-size: 13px;
   height: auto;
   padding: 7px 10px;
   width: 100%;
@@ -569,7 +569,7 @@ export default {
 
 .no-results {
   color: #616161;
-  font-size: 14px;
+  font-size: 13px;
   padding: 10px;
 }
 
@@ -579,7 +579,7 @@ export default {
 }
 
 #user-first-name {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   margin: 0px;
 }
