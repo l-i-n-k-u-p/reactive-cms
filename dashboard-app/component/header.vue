@@ -14,12 +14,11 @@
           >
           menu
         </i>
-        <label
+        <img
+          id="logo"
+          src="/website/assets/reactive-cms-logo.png"
           v-if="isDesktopScreen"
-          class="page-title"
-          >
-          {{ settings.get('setting_page_title') }}
-        </label>
+          />
       </div>
       <div
         class="search-wrapper"
@@ -374,15 +373,6 @@ export default {
   padding-left: 10px;
 }
 
-.page-title {
-  align-self: center;
-  flex-grow: 0;
-  font-size: 14px;
-  font-weight: 500;
-  padding-left: 7px;
-  padding-right: 10px;
-}
-
 .username {
   align-self: center;
   cursor: pointer;
@@ -616,5 +606,10 @@ export default {
 
 #search-close-button:hover {
   color: #193a99 !important;
+}
+
+#logo {
+  width: 130px;
+  align-self: center;
 }
 </style>
