@@ -140,7 +140,13 @@
         </button>
       </div>
     </editor-menu-bar>
-    <editor-content :editor="editor" />
+    <div
+      id="editor-wrapper"
+      v-bind:class="{ 'focus': hasEditorFocus }">
+      <VuePerfectScrollbar class="scroll-area">
+        <editor-content :editor="editor" />
+      </VuePerfectScrollbar>
+    </div>
     <label
       v-show="errorMessage"
       id="input-error-message">
@@ -155,6 +161,7 @@
 </template>
 
 <script>
+import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import { Editor, EditorContent, EditorMenuBar } from 'tiptap'
 import {
   Blockquote,
@@ -191,6 +198,7 @@ export default {
     return {
       editorContent: '',
       editor: null,
+      hasEditorFocus: false,
       editorProps: {
         extensions: [
           new Blockquote(),
@@ -215,6 +223,8 @@ export default {
         ],
         content: '',
         onUpdate: this.onUpdate,
+        onFocus: this.onFocusEditor,
+        onBlur: this.onBlurEditor,
       },
       colors: [
         '#f44336',
@@ -241,6 +251,7 @@ export default {
     }
   },
   components: {
+    VuePerfectScrollbar,
     EditorMenuBar,
     EditorContent,
     Button,
@@ -248,6 +259,7 @@ export default {
   },
   created() {
     this.editor = new Editor(this.editorProps)
+    console.log(this.editor.view.dom)
   },
   watch: {
     content: function(newVal, oldVal) {
@@ -263,6 +275,12 @@ export default {
       if (src !== null) {
         command({ src })
       }
+    },
+    onFocusEditor: function(event) {
+      this.hasEditorFocus = true
+    },
+    onBlurEditor: function(event) {
+      this.hasEditorFocus = false
     },
   },
   beforeDestroy() {
@@ -332,26 +350,36 @@ button i {
 #input-title.error {
   color: #ff4949;
 }
+
+#editor-wrapper {
+  height: 150px;
+  overflow: auto;
+  border-bottom: 1px solid #616161;
+}
+
+#editor-wrapper.focus {
+  border-bottom: 1px solid #193a99;
+}
 </style>
 
 <style lang="css">
 .ProseMirror {
   background: transparent;
-  border-bottom: 1px solid #616161;
+  /* border-bottom: 1px solid #616161; */
   caret-color: #193a99;
   color: #616161;
   font-size: 13px;
   font-weight: 500;
-  height: 200px;
+  /* height: 200px; */
   margin: 0;
   outline: none;
-  overflow: scroll;
+  /* overflow: scroll; */
   padding: 0;
   width: 100%;
 }
 
 .ProseMirror:focus {
-  border-bottom: 1px solid #193a99;
+  /* border-bottom: 1px solid #193a99; */
 }
 
 .dropdown-wrapper button {
