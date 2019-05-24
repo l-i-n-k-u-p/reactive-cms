@@ -112,6 +112,7 @@ export default {
         _id: this.$route.params.id,
       }),
       editorContent: '',
+      newVersionEditorContent: '',
       selectOptions: [
         {
           name: 'Publish',
@@ -129,6 +130,12 @@ export default {
         modalDescription: 'This action will delete this post',
         cancelAction: this.cancelAction,
         acceptAction: this.acceptAction,
+      },
+      confirmationUpdateContentModalData: {
+        modalTitle: 'There is a new version of the content, do you want update?',
+        modalDescription: 'This action will replate your current editor content',
+        cancelAction: this.cancelAction,
+        acceptAction: this.acceptActionAndReplace,
       },
       mediaModalData: {
         onlyImages: true,
@@ -154,20 +161,22 @@ export default {
     this.getPostData()
     this.setOnChangePost()
   },
-  mounted() {
-    this.post.on('change', ({ attribute, value }) => {
-      if (attribute === 'post_date')
-        this.postDate = moment(value).format('MMMM Do YYYY, h:mm:ss a')
-    })
-  },
   methods: {
     setOnChangePost: function() {
       this.post.on('change', ({ attribute, value }) => {
-        if (attribute === 'post_content') this.editorContent = value
+        let hasUpdate = this.post.getOption('hasNewVersionContent')
+        if (hasUpdate) {
+          this.newVersionEditorContent = value
+          this.post.setOption('initialPostContent', value)
+          this.post.setOption('hasNewVersionContent', false)
+          this.$eventHub.$emit('confirmation-modal', this.confirmationUpdateContentModalData)
+        }
         if (attribute === 'post_status') {
           if (value === 'pending') this.postStatusIndex = 1
           else this.postStatusIndex = 0
         }
+        if (attribute === 'post_date')
+          this.postDate = moment(value).format('MMMM Do YYYY, h:mm:ss a')
       })
     },
     onChangeInputValue: function(propName, value) {
@@ -187,6 +196,7 @@ export default {
             return
           }
           this.editorContent = this.post.get('post_content')
+          this.post.setOption('initialPostContent', this.editorContent)
           if (this.post.get('post_status') === 'pending')
             this.postStatusIndex = 1
         })
@@ -223,6 +233,7 @@ export default {
       if (Object.keys(this.post.errors).length)
         return
 
+      this.post.setOption('initialPostContent', this.post.get('post_content'))
       this.isLoading = true
       this.post
         .put()
@@ -283,6 +294,10 @@ export default {
     },
     getCoverColor: function() {
       return this.$getHexColor(this.post.get('post_title'))
+    },
+    acceptActionAndReplace: function() {
+      this.$eventHub.$emit('confirmation-modal', null)
+      this.editorContent = this.newVersionEditorContent
     },
   },
 }

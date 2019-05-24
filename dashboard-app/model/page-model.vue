@@ -22,8 +22,14 @@ class PageModel extends Model {
     socketIO.registerEvent(
       'page-put',
       (data) => {
-        if (this.get('_id') === data.data._id)
-          this.set(data.data)
+        if (this.get('_id') !== data.data._id)
+          return
+
+        if (this.getOption('initialPageContent').toString() !== data.data.page_content.toString())
+          this.setOption('hasNewVersionContent', true)
+        let currentPageContent = this.get('page_content')
+        this.set(data.data)
+        this.set('page_content', currentPageContent)
       }
     )
     socketIO.registerEvent(
@@ -69,6 +75,8 @@ class PageModel extends Model {
       validateRecursively: true,
       saveUnchanged: true,
       useFirstErrorOnly: true,
+      hasNewVersionContent: false,
+      initialPageContent: '',
     }
   }
   post () {

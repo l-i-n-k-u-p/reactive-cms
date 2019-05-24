@@ -190,7 +190,7 @@ export default {
   data() {
     return {
       editorContent: '',
-      editor: new Editor(),
+      editor: null,
       editorProps: {
         extensions: [
           new Blockquote(),
@@ -251,7 +251,6 @@ export default {
   },
   watch: {
     content: function(newVal, oldVal) {
-      this.editorContent = newVal
       this.editor.setContent(newVal)
     },
   },

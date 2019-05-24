@@ -134,6 +134,7 @@ export default {
         _id: this.$route.params.id,
       }),
       editorContent: '',
+      newVersionEditorContent: '',
       selectOptions: [
         {
           name: 'Publish',
@@ -155,6 +156,12 @@ export default {
         modalDescription: 'This action will delete this page',
         cancelAction: this.cancelAction,
         acceptAction: this.acceptAction,
+      },
+      confirmationUpdateContentModalData: {
+        modalTitle: 'There is a new version of the content, do you want update?',
+        modalDescription: 'This action will replate your current editor content',
+        cancelAction: this.cancelAction,
+        acceptAction: this.acceptActionAndReplace,
       },
       mediaModalData: {
         onlyImages: true,
@@ -189,21 +196,22 @@ export default {
     this.setOnChangePage()
     this.getFileTemplates()
   },
-  mounted() {
-    this.page.on('change', ({ attribute, value }) => {
-      if (attribute === 'page_date') {
-        this.pageDate = moment(value).format('MMMM Do YYYY, h:mm:ss a')
-      }
-    })
-  },
   methods: {
     setOnChangePage: function() {
       this.page.on('change', ({ attribute, value }) => {
-        if (attribute === 'page_content') this.editorContent = value
+        let hasUpdate = this.page.getOption('hasNewVersionContent')
+        if (hasUpdate) {
+          this.newVersionEditorContent = value
+          this.page.setOption('initialPageContent', value)
+          this.page.setOption('hasNewVersionContent', false)
+          this.$eventHub.$emit('confirmation-modal', this.confirmationUpdateContentModalData)
+        }
         if (attribute === 'page_status') {
           if (value === 'pending') this.pageStatusIndex = 1
           else this.pageStatusIndex = 0
         }
+        if (attribute === 'page_date')
+          this.pageDate = moment(value).format('MMMM Do YYYY, h:mm:ss a')
       })
     },
     onChangeInputValue: function(propName, value) {
@@ -223,6 +231,7 @@ export default {
             return
           }
           this.editorContent = this.page.get('page_content')
+          this.page.setOption('initialPageContent', this.editorContent)
           if (this.page.get('page_status') === 'pending')
             this.pageStatusIndex = 1
           this.setPageTemplateIndex()
@@ -260,6 +269,7 @@ export default {
       if (Object.keys(this.page.errors).length)
         return
 
+      this.page.setOption('initialPageContent', this.page.get('page_content'))
       this.isLoading = true
       this.page
         .put()
@@ -428,6 +438,10 @@ export default {
       }
       pageGallery[mediaIndex] = item
       this.closePreviewMediaModal()
+    },
+    acceptActionAndReplace: function() {
+      this.$eventHub.$emit('confirmation-modal', null)
+      this.editorContent = this.newVersionEditorContent
     },
   },
 }

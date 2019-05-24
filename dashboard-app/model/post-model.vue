@@ -22,8 +22,14 @@ class PostModel extends Model {
     socketIO.registerEvent(
       'post-put',
       (data) => {
-        if (this.get('_id') === data.data._id)
-          this.set(data.data)
+        if (this.get('_id') !== data.data._id)
+          return
+
+        if (this.getOption('initialPostContent').toString() !== data.data.post_content.toString())
+          this.setOption('hasNewVersionContent', true)
+        let currentPostContent = this.get('post_content')
+        this.set(data.data)
+        this.set('post_content', currentPostContent)
       }
     )
     socketIO.registerEvent(
@@ -67,6 +73,8 @@ class PostModel extends Model {
       validateRecursively: true,
       saveUnchanged: true,
       useFirstErrorOnly: true,
+      hasNewVersionContent: false,
+      initialPostContent: '',
     }
   }
   post () {
