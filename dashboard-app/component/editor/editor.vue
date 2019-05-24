@@ -365,21 +365,13 @@ button i {
 <style lang="css">
 .ProseMirror {
   background: transparent;
-  /* border-bottom: 1px solid #616161; */
   caret-color: #193a99;
-  color: #616161;
   font-size: 13px;
   font-weight: 500;
-  /* height: 200px; */
   margin: 0;
   outline: none;
-  /* overflow: scroll; */
   padding: 0;
   width: 100%;
-}
-
-.ProseMirror:focus {
-  /* border-bottom: 1px solid #193a99; */
 }
 
 .dropdown-wrapper button {
