@@ -1,33 +1,52 @@
 <template lang="html">
   <div
     id="box-wrapper"
-    v-window-resize="setCustomStyle"
-    v-bind:style="styleHeight"
+    v-window-resize="setcustomHeight"
+    v-bind:style="customHeight"
     >
-    <slot></slot>
+    <VuePerfectScrollbar class="scroll-area">
+      <div
+        id="content"
+        v-bind:style="customPadding">
+        <slot></slot>
+      </div>
+    </VuePerfectScrollbar>
   </div>
 </template>
 
 <script>
+import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+
+
 export default {
   props: [
     'footerSize',
+    'customPaddingStyle',
   ],
+  components: {
+    VuePerfectScrollbar,
+  },
   data() {
     return {
-      styleHeight: 'height: 0',
+      customHeight: 'height: 0',
       headerHeight: 140,
+      customPadding: 'padding: 10px'
     }
   },
   created() {
-    this.setCustomStyle()
+    this.setcustomHeight()
+    this.setCustomPaddingStyle()
   },
   methods: {
-    setCustomStyle: function() {
+    setcustomHeight: function() {
       let height = window.innerHeight - this.headerHeight
       if (this.footerSize)
         height = height - this.footerSize;
-      this.styleHeight = 'height: ' + height + 'px'
+      this.customHeight = 'height: ' + height + 'px;'
+    },
+    setCustomPaddingStyle: function() {
+      if (this.customPaddingStyle)
+        this.customPadding = 'padding: ' + this.customPaddingStyle + ';'
     },
   },
 }
@@ -41,6 +60,10 @@ export default {
   margin-left: 10px;
   margin-right: 10px;
   overflow: auto;
+  position: relative;
+}
+
+#content {
   padding: 10px;
   position: relative;
 }

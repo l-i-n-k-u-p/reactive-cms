@@ -22,7 +22,7 @@
     <LoadingBar v-if="isLoading"/>
     <BoxWrapper
       footerSize="12"
-      style="padding-top: 0; padding-bottom: 0;"
+      customPaddingStyle="0 10px"
       >
       <PageListTable
         v-if="pages.models.length"

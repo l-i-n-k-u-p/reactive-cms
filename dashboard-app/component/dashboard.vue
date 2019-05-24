@@ -19,132 +19,130 @@
               v-bind:options="options"
             />
           </div>
-          <div class="section" v-for="model in dashboard.models">
-            <div class="model">
-              {{ model.get("model") }} - Operations: {{ model.get("total") }}
-            </div>
-            <div class="activity-items">
-              <div
-                class="activity-item"
-                v-if="model.get('model') === 'user'"
-                v-for="item in model.get('items')"
-              >
-                <div>
-                  <span class="tag">
-                    Operation:
-                  </span>
-                  {{ item.log_operation }}
+          <div class="section-wrapper" v-for="model in dashboard.models">
+            <VuePerfectScrollbar class="scroll-area">
+              <div class="model">
+                {{ model.get("model") }} - Operations: {{ model.get("total") }}
+              </div>
+              <div class="activity-item">
+                <div
+                  v-if="model.get('model') === 'media'"
+                  v-for="item in model.get('items')"
+                >
+                  <div>
+                    <span class="tag">
+                      Operation:
+                    </span>
+                    {{ item.log_operation }}
+                  </div>
+                  <div>
+                    <span class="tag">
+                      ID:
+                    </span>
+                    {{ item._id }}
+                  </div>
+                  <div>
+                    <span class="tag">
+                      Name:
+                    </span>
+                    {{ item.log_operation_data.media_original_name }}
+                  </div>
+                  <div>
+                    <span class="tag">
+                      Date:
+                    </span>
+                    {{ item.log_date }}
+                  </div>
                 </div>
-                <div>
-                  <span class="tag">
-                    ID:
-                  </span>
-                  {{ item._id }}
+                <div
+                  v-if="model.get('model') === 'page'"
+                  v-for="item in model.get('items')"
+                >
+                  <div>
+                    <span class="tag">
+                      Operation:
+                    </span>
+                    {{ item.log_operation }}
+                  </div>
+                  <div>
+                    <span class="tag">
+                      ID:
+                    </span>
+                    {{ item._id }}
+                  </div>
+                  <div>
+                    <span class="tag">
+                      Page Title:
+                    </span>
+                    {{ item.log_operation_data.page_title }}
+                  </div>
+                  <div>
+                    <span class="tag">
+                      Date:
+                    </span>
+                    {{ item.log_date }}
+                  </div>
                 </div>
-                <div>
-                  <span class="tag">
-                    Title:
-                  </span>
-                  {{ item.log_operation_data.user_name }}
+                <div
+                  v-if="model.get('model') === 'post'"
+                  v-for="item in model.get('items')"
+                >
+                  <div>
+                    <span class="tag">
+                      Operation:
+                    </span>
+                    {{ item.log_operation }}
+                  </div>
+                  <div>
+                    <span class="tag">
+                      ID:
+                    </span>
+                    {{ item._id }}
+                  </div>
+                  <div>
+                    <span class="tag">
+                      Post Title:
+                    </span>
+                    {{ item.log_operation_data.post_title }}
+                  </div>
+                  <div>
+                    <span class="tag">
+                      Date:
+                    </span>
+                    {{ item.log_date }}
+                  </div>
                 </div>
-                <div>
-                  <span class="tag">
-                    Date:
-                  </span>
-                  {{ item.log_date }}
+                <div
+                  v-if="model.get('model') === 'user'"
+                  v-for="item in model.get('items')"
+                >
+                  <div>
+                    <span class="tag">
+                      Operation:
+                    </span>
+                    {{ item.log_operation }}
+                  </div>
+                  <div>
+                    <span class="tag">
+                      ID:
+                    </span>
+                    {{ item._id }}
+                  </div>
+                  <div>
+                    <span class="tag">
+                      User Name:
+                    </span>
+                    {{ item.log_operation_data.user_name }}
+                  </div>
+                  <div>
+                    <span class="tag">
+                      Date:
+                    </span>
+                    {{ item.log_date }}
+                  </div>
                 </div>
               </div>
-              <div
-                class="activity-item"
-                v-if="model.get('model') === 'post'"
-                v-for="item in model.get('items')"
-              >
-                <div>
-                  <span class="tag">
-                    Operation:
-                  </span>
-                  {{ item.log_operation }}
-                </div>
-                <div>
-                  <span class="tag">
-                    ID:
-                  </span>
-                  {{ item._id }}
-                </div>
-                <div>
-                  <span class="tag">
-                    Title:
-                  </span>
-                  {{ item.log_operation_data.post_title }}
-                </div>
-                <div>
-                  <span class="tag">
-                    Date:
-                  </span>
-                  {{ item.log_date }}
-                </div>
-              </div>
-              <div
-                class="activity-item"
-                v-if="model.get('model') === 'page'"
-                v-for="item in model.get('items')"
-              >
-                <div>
-                  <span class="tag">
-                    Operation:
-                  </span>
-                  {{ item.log_operation }}
-                </div>
-                <div>
-                  <span class="tag">
-                    ID:
-                  </span>
-                  {{ item._id }}
-                </div>
-                <div>
-                  <span class="tag">
-                    Title:
-                  </span>
-                  {{ item.log_operation_data.page_title }}
-                </div>
-                <div>
-                  <span class="tag">
-                    Date:
-                  </span>
-                  {{ item.log_date }}
-                </div>
-              </div>
-              <div
-                class="activity-item"
-                v-if="model.get('model') === 'media'"
-                v-for="item in model.get('items')"
-              >
-                <div>
-                  <span class="tag">
-                    Operation:
-                  </span>
-                  {{ item.log_operation }}
-                </div>
-                <div>
-                  <span class="tag">
-                    ID:
-                  </span>
-                  {{ item._id }}
-                </div>
-                <div>
-                  <span class="tag">
-                    Name:
-                  </span>
-                  {{ item.log_operation_data.media_original_name }}
-                </div>
-                <div>
-                  <span class="tag">
-                    Date:
-                  </span>
-                  {{ item.log_date }}
-                </div>
-              </div>
-            </div>
+            </VuePerfectScrollbar>
           </div>
         </div>
       </div>
@@ -154,6 +152,8 @@
 
 
 <script>
+import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+
 import BoxWrapper from './templates/box-wrapper.vue'
 import NavigationButtons from './templates/navigation-buttons.vue'
 import LoadingBar from './templates/loading-bar.vue'
@@ -177,6 +177,7 @@ export default {
     }
   },
   components: {
+    VuePerfectScrollbar,
     BoxWrapper,
     NavigationButtons,
     LoadingBar,
@@ -251,11 +252,12 @@ h2 {
 .model {
   background-color: white;
   color: #616161;
-  font-size: 13px;
-  font-weight: bold;
+  font-size: 16px;
+  font-weight: 400;
   padding: 10px;
   position: -webkit-sticky;
   position: sticky;
+  text-align: center;
   text-transform: capitalize;
   top: 0;
   width: calc(100% - 30px);
@@ -265,10 +267,10 @@ h2 {
   display: flex;
   flex-flow: row wrap;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-around;
 }
 
-.section {
+.section-wrapper {
   background-color: white;
   border-radius: 3px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;

@@ -50,65 +50,74 @@
             Without Results
           </div>
           <div
-            class="item"
-            v-on:click="onClickResult"
-            v-for="item in searchItems.models"
-          >
-            <div
-              v-if="item.get('model_name') === 'user'"
-              v-on:click="showUserDetail(item)"
+            id="search-results"
+            v-if="searchItems.models.length"
             >
-              <i class="material-icons">
-                person
-              </i>
-              <label>
-                {{ item.get('user_name') }}
-              </label>
-            </div>
-            <div
-              v-if="item.get('model_name') === 'post'"
-              v-on:click="showPostDetail(item)"
-            >
-              <i class="material-icons">
-                insert_drive_file
-              </i>
-              <label>
-                {{ item.get('post_title') }}
-              </label>
-            </div>
-            <div
-              v-if="item.get('model_name') === 'page'"
-              v-on:click="showPageDetail(item)"
-            >
-              <i class="material-icons">
-                insert_drive_file
-              </i>
-              <label>
-                {{ item.get('page_title') }}
-              </label>
-            </div>
-            <div
-              v-if="item.get('model_name') === 'media'"
-              v-on:click="showMediaDetail(item)"
-            >
-              <i class="material-icons">
-                image
-              </i>
-              <label>
-                {{ item.get('media_title') }}
-              </label>
-            </div>
-            <div
-              v-if="item.get('model_name') === 'role'"
-              v-on:click="showRoleDetail(item)"
-            >
-              <i class="material-icons">
-                security
-              </i>
-              <label>
-                {{ item.get('role_name') }}
-              </label>
-            </div>
+            <VuePerfectScrollbar class="scroll-area">
+              <div id="items-wrapper">
+                <div
+                  class="item"
+                  v-on:click="onClickResult"
+                  v-for="item in searchItems.models"
+                >
+                  <div
+                    v-if="item.get('model_name') === 'user'"
+                    v-on:click="showUserDetail(item)"
+                  >
+                    <i class="material-icons">
+                      person
+                    </i>
+                    <label>
+                      {{ item.get('user_name') }}
+                    </label>
+                  </div>
+                  <div
+                    v-if="item.get('model_name') === 'post'"
+                    v-on:click="showPostDetail(item)"
+                  >
+                    <i class="material-icons">
+                      insert_drive_file
+                    </i>
+                    <label>
+                      {{ item.get('post_title') }}
+                    </label>
+                  </div>
+                  <div
+                    v-if="item.get('model_name') === 'page'"
+                    v-on:click="showPageDetail(item)"
+                  >
+                    <i class="material-icons">
+                      insert_drive_file
+                    </i>
+                    <label>
+                      {{ item.get('page_title') }}
+                    </label>
+                  </div>
+                  <div
+                    v-if="item.get('model_name') === 'media'"
+                    v-on:click="showMediaDetail(item)"
+                  >
+                    <i class="material-icons">
+                      image
+                    </i>
+                    <label>
+                      {{ item.get('media_title') }}
+                    </label>
+                  </div>
+                  <div
+                    v-if="item.get('model_name') === 'role'"
+                    v-on:click="showRoleDetail(item)"
+                  >
+                    <i class="material-icons">
+                      security
+                    </i>
+                    <label>
+                      {{ item.get('role_name') }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </VuePerfectScrollbar>
           </div>
         </div>
         <ButtonIcon
@@ -184,8 +193,11 @@
 </template>
 
 <script>
+import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+
 import LoadingBar from './templates/loading-bar.vue'
 import ButtonIcon from './templates/button-icon.vue'
+
 
 export default {
   props: [
@@ -206,6 +218,7 @@ export default {
     }
   },
   components: {
+    VuePerfectScrollbar,
     LoadingBar,
     ButtonIcon,
   },
@@ -521,7 +534,6 @@ export default {
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   color: #616161;
   max-height: 240px;
-  overflow: scroll;
   position: absolute;
   top: 100%;
   width: 100%;
@@ -611,5 +623,15 @@ export default {
 #logo {
   width: 130px;
   align-self: center;
+}
+
+#search-results {
+  height: 100%;
+  overflow: auto;
+  position: relative;
+}
+
+#items-wrapper {
+  max-height: 240px;
 }
 </style>
