@@ -33,18 +33,22 @@
               propName=""
             >
             </InputText>
-            <div
-              class="media-files-wrapper"
-              ref="mediaWrapper"
-              v-on:scroll="onScroll"
-            >
-              <div
-                class="image"
-                v-for="media in mediaFiles.models"
-                v-on:click="selectMediaImage(media)"
-                v-if="showThisMedia(media)"
-                v-bind:style="getPreview(media)"
-              ></div>
+            <div id="media-scroll-wrapper">
+              <VuePerfectScrollbar class="scroll-area">
+                <div
+                  class="media-files-wrapper"
+                  ref="mediaWrapper"
+                  v-on:scroll="onScroll"
+                >
+                  <div
+                    class="image"
+                    v-for="media in mediaFiles.models"
+                    v-on:click="selectMediaImage(media)"
+                    v-if="showThisMedia(media)"
+                    v-bind:style="getPreview(media)"
+                  ></div>
+                </div>
+              </VuePerfectScrollbar>
             </div>
           </div>
           <div v-if="activeTab === 1" class="upload-wrapper">
@@ -119,6 +123,8 @@
 </template>
 
 <script>
+import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+
 import Button from './templates/button.vue'
 import InputText from './templates/input-text.vue'
 import LoadingBar from './templates/loading-bar.vue'
@@ -154,6 +160,7 @@ export default {
     if (this.activeTab) this.addDragEnterAndLeaveEventListener()
   },
   components: {
+    VuePerfectScrollbar,
     Button,
     InputText,
     LoadingBar,
@@ -381,7 +388,6 @@ h2 {
   flex-flow: row wrap;
   flex-wrap: wrap;
   height: 270px;
-  overflow: scroll;
   width: 100%;
 }
 
@@ -541,5 +547,10 @@ h2 {
 
 .buttons-wrapper .button:hover {
   background-color: rgba(200, 200, 200, 0.20);
+}
+
+#media-scroll-wrapper {
+  position: relative;
+  overflow: auto;
 }
 </style>

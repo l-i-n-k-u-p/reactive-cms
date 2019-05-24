@@ -335,3 +335,38 @@ footer a {
   outline: none;
 }
 </style>
+
+<style lang="css">
+/* vue-perfect-scrollbar global styles */
+.scroll-area {
+  height: 100%;
+  margin: 0;
+  position: relative;
+  width: 100%;
+}
+
+.ps>.ps__scrollbar-y-rail {
+  background-color: rgba(200, 200, 200, 0.20) !important;
+  width: 6px !important;
+  z-index: 1;
+}
+.ps>.ps__scrollbar-y-rail>.ps__scrollbar-y {
+  background-color: #193a99 !important;
+  border-radius: 0px !important;
+  right: 0 !important;
+  width: 6px !important;
+}
+
+.ps>.ps__scrollbar-x-rail {
+  background-color: rgba(200, 200, 200, 0.20) !important;
+  height: 6px !important;
+  z-index: 1;
+}
+
+.ps>.ps__scrollbar-x-rail>.ps__scrollbar-x {
+  background-color: #193a99 !important;
+  border-radius: 0px !important;
+  bottom: 0 !important;
+  height: 6px !important;
+}
+</style>

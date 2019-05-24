@@ -8,46 +8,49 @@
         }"
       v-click-outside="closeMenu"
       >
-      <img
-        class="logo"
-        src="/website/assets/reactive-cms-logo.png"
-        v-if="!isMenuSticky"
-        />
-      <div
-        v-for="(item, index) in menuItems"
-        v-acl-show="item.resourceName"
-        class="menu-option"
-        >
-        <router-link
-          v-bind:key="item.position"
-          :to="{ name: item.name, params: item.params }"
-          v-bind:class="getMenuItemClass(item)"
-        >
-          <i class="material-icons icon">
-            {{ item.icon }}
-          </i>
-          {{ item.title }}
-        </router-link>
-        <i
-          v-if="item.children"
-          class="material-icons button-more-items"
-          v-on:click="toggleOptions(index)"
+      <VuePerfectScrollbar class="scroll-area">
+        <img
+          id="logo"
+          src="/website/assets/reactive-cms-logo.png"
+          v-if="!isMenuSticky"
+          />
+        <div
+          v-for="(item, index) in menuItems"
+          v-acl-show="item.resourceName"
+          class="menu-option"
           >
-          {{ item.expanded ? 'expand_less' : 'expand_more' }}
-        </i>
-        <router-link
-          v-if="item.expanded"
-          class="children-item"
-          v-for="(itemChildren) of item.children"
-          v-bind:key="itemChildren.uuid"
-          :to="{ name: itemChildren.name, params: '' }"
+          <router-link
+            v-bind:key="item.position"
+            :to="{ name: item.name, params: item.params }"
+            v-bind:class="getMenuItemClass(item)"
           >
-          <i class="material-icons icon">
-            {{ itemChildren.icon }}
+            <i class="material-icons icon">
+              {{ item.icon }}
+            </i>
+            {{ item.title }}
+          </router-link>
+          <i
+            v-if="item.children"
+            class="material-icons button-more-items"
+            v-on:click="toggleOptions(index)"
+            >
+            {{ item.expanded ? 'expand_less' : 'expand_more' }}
           </i>
-          {{ itemChildren.title }}
-        </router-link>
-      </div>
+          <router-link
+            v-if="item.expanded"
+            class="children-item"
+            v-for="(itemChildren) of item.children"
+            v-bind:key="itemChildren.uuid"
+            :to="{ name: itemChildren.name, params: '' }"
+            >
+            <i class="material-icons icon">
+              {{ itemChildren.icon }}
+            </i>
+            {{ itemChildren.title }}
+          </router-link>
+        </div>
+        <div id="menu-footer"></div>
+      </VuePerfectScrollbar>
     </div>
     <div
       class="shadow"
@@ -58,10 +61,16 @@
 </template>
 
 <script>
+import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+
+
 export default {
   props: [
     'isMenuSticky',
   ],
+  components: {
+    VuePerfectScrollbar,
+  },
   data() {
     return {
       currentItemName: '',
@@ -253,10 +262,11 @@ export default {
   top: 50px;
 }
 
-.logo {
-  margin-bottom: 5px;
-  margin-top: 5px;
-  max-width: 170px;
+#logo {
+  align-self: center;
+  display: flex;
+  margin: 10px auto;
+  width: 130px;
 }
 
 #menu .option {
@@ -352,8 +362,8 @@ export default {
   position: relative;
 }
 
-#menu .menu-option:last-child {
-  margin-bottom: 30px;
+#menu-footer {
+  height: 30px;
 }
 
 .button-more-items {

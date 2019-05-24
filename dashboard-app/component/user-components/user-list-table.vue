@@ -238,11 +238,13 @@ tfoot tr td {
 }
 
 thead tr td {
+  padding-top: 6px;
   top: 0;
 }
 
 tfoot tr td {
   bottom: 0;
+  padding-bottom: 6px;
 }
 
 .table-wrapper tbody tr td {
