@@ -259,7 +259,6 @@ export default {
   },
   created() {
     this.editor = new Editor(this.editorProps)
-    console.log(this.editor.view.dom)
   },
   watch: {
     content: function(newVal, oldVal) {
