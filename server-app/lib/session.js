@@ -17,7 +17,7 @@ const isAuthenticated = (req, res, next) => {
       return
     }
     req.session.lastPath = urlData.path
-    res.view('dashboard-website-login', {
+    res.view('dashboard-login', {
       title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
       error_message: '',
     })

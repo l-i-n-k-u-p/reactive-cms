@@ -125,7 +125,7 @@ exports.websiteAdminValidateRequestAccess = async (req, res) => {
   if (req.session.user && req.session.user.user_role)
     res.redirect('dashboard')
   else
-    res.view('dashboard-website-login', {
+    res.view('dashboard-login', {
       title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
       error_message: '',
     })
@@ -134,7 +134,7 @@ exports.websiteAdminValidateRequestAccess = async (req, res) => {
 exports.websiteAdminValidateLoginAccess = async (req, res) => {
   if (req.validationError) {
     let fisrtMessage = req.validationError.validation[0]
-    res.view('dashboard-website-login', {
+    res.view('dashboard-login', {
       title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
       error_message: fisrtMessage.message,
     })
@@ -149,7 +149,7 @@ exports.websiteAdminValidateLoginAccess = async (req, res) => {
   let roles = await roleQuery.getAll()
   let user = await userQuery.getByUserName(user_name)
   if (!user) {
-    res.view('dashboard-website-login', {
+    res.view('dashboard-login', {
       viewFunctions: VIEW_FUNCTIONS,
       title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
       error_message: 'Not valid user',
@@ -158,7 +158,7 @@ exports.websiteAdminValidateLoginAccess = async (req, res) => {
   }
   let result = await session.passwordIsEqual(user_pass, user.user_pass)
   if (!result) {
-    res.view('dashboard-website-login', {
+    res.view('dashboard-login', {
       title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
       error_message: 'No valid user',
     })
@@ -169,7 +169,7 @@ exports.websiteAdminValidateLoginAccess = async (req, res) => {
     if (role._id.toString() === user.user_role_ref.toString())
       roleExists = true
   if (!roleExists) {
-    res.view('dashboard-website-login', {
+    res.view('dashboard-login', {
       title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
       error_message: 'No valid user',
     })
@@ -200,7 +200,7 @@ exports.websiteDashboardLogout = async (req, res) => {
 exports.websiteDashboardView = async (req, res) => {
   let userID = req.session.user.user_id
   let user = await userQuery.getByID(userID)
-  res.view('dashboard-website-index', {
+  res.view('dashboard-index', {
     viewFunctions: VIEW_FUNCTIONS,
     title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
     user_id: req.session.user.user_id,
