@@ -12,6 +12,17 @@ const APP_CONFIG = {
   ipAddressToListen: '0.0.0.0', // 0.0.0.0 for docker container
   domain: 'localhost', // localhost \ domain.com
   websiteTemplatesPath: 'server-app/view/template/', // change only if edit the structure website directory
+  fastifyOptions: {
+    http2: false,
+    https: null,
+    ignoreTrailingSlash: true,
+    logger: false,
+  },
+  sockerIOOptions: {
+    socketIOpingTimeout: 60000,
+    pingInterval: 10000,
+    pingTimeout: 5000,
+  },
 }
 
 module.exports = APP_CONFIG
