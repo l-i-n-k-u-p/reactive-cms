@@ -46,7 +46,7 @@ const generateTemplateFileNames = (templatesPath) => {
   websiteTemplates.templates = templateFileNames
 }
 
-const getThemes = () => {
+const generateThemeNames = () => {
   let files = fs.readdirSync('server-app/view/')
   let themes = []
   for (let ia in files) {
@@ -71,5 +71,5 @@ const getThemes = () => {
 module.exports = {
   createFolderFromPath: createFolderFromPath,
   generateTemplateFileNames: generateTemplateFileNames,
-  getThemes: getThemes,
+  generateThemeNames: generateThemeNames,
 }
