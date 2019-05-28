@@ -57,7 +57,7 @@
         >
         <img src="/website/assets/reactive-web.png" />
       </a>
-      <span>Version 2.7.6</span>
+      <span>Version 2.8.0</span>
     </footer>
     <MediaModal
       v-if="mediaModalData"
