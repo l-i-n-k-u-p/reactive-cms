@@ -101,6 +101,7 @@ exports.websiteSetupSetInitialConfig = async (req, res) => {
     siteData.site_name = setup_site_name
     siteData.site_items_peer_page = SITE_CONFIG.siteItemsPeerPage
     siteData.site_url = setup_site_url
+    siteData.site_theme = SITE_CONFIG.siteTheme
     await userQuery.create(userData)
     await settingQuery.create(settingsData)
     await siteQuery.create(siteData)
@@ -210,7 +211,7 @@ exports.websiteDashboardView = async (req, res) => {
 
 exports.websiteIndexView = async (req, res) => {
   let page = null
-  let pageView = 'default/index'
+  let pageView = SITE_CONFIG.siteTheme + '/index'
   let templateHomeID = SITE_CONFIG.siteTemplateHome
   if (templateHomeID) {
     page = await pageQuery.getByID(templateHomeID)
@@ -222,10 +223,11 @@ exports.websiteIndexView = async (req, res) => {
       return
     }
     if (page && page.page_template)
-      pageView = 'template/' + page.page_template
+      pageView = SITE_CONFIG.siteTheme + '/'  + page.page_template
   }
   res.view(pageView, {
     viewFunctions: VIEW_FUNCTIONS,
+    themeDir: 'view/' + SITE_CONFIG.siteTheme + '/',
     title: SITE_CONFIG.siteTitle,
     page: page,
   })
@@ -233,7 +235,7 @@ exports.websiteIndexView = async (req, res) => {
 
 exports.websitePageView = async (req, res) => {
   let pageSlug = req.params.slug
-  let pageView = 'default/page-detail'
+  let pageView = SITE_CONFIG.siteTheme + '/page-detail'
   let page = await pageQuery.getBySlug(pageSlug)
   if (!page) {
     const urlData = req.urlData()
@@ -253,9 +255,10 @@ exports.websitePageView = async (req, res) => {
     })
   }
   if (page.page_template)
-    pageView = 'template/' + page.page_template
+    pageView = SITE_CONFIG.siteTheme + '/'  + page.page_template
   res.view(pageView, {
     viewFunctions: VIEW_FUNCTIONS,
+    themeDir: 'view/' + SITE_CONFIG.siteTheme + '/',
     title: SITE_CONFIG.siteTitle,
     page: page,
   })
@@ -284,11 +287,12 @@ exports.websiteBlogArchivePaginatedView = async (req, res) => {
     })
     return
   }
-  let view = 'default/post-list'
+  let view = SITE_CONFIG.siteTheme + '/post-list'
   if (SITE_CONFIG.siteTemplatePosts)
-    view = 'template/' + SITE_CONFIG.siteTemplatePosts
+    view = SITE_CONFIG.siteTheme + '/'  + SITE_CONFIG.siteTemplatePosts
   res.view(view, {
     viewFunctions: VIEW_FUNCTIONS,
+    themeDir: 'view/' + SITE_CONFIG.siteTheme + '/',
     title: SITE_CONFIG.siteTitle,
     items: items,
     total_pages: Math.ceil(totalItems / SITE_CONFIG.siteItemsPeerPage),
@@ -321,8 +325,9 @@ exports.websiteBlogSingleView = async (req, res) => {
     })
     return
   }
-  res.view('default/post-detail', {
+  res.view(SITE_CONFIG.siteTheme + '/post-detail', {
     viewFunctions: VIEW_FUNCTIONS,
+    themeDir: 'view/' + SITE_CONFIG.siteTheme + '/',
     title: SITE_CONFIG.siteTitle,
     post: post,
   })

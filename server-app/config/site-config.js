@@ -10,6 +10,8 @@ const loadSiteSettings = async () => {
   SITE_CONFIG.siteItemsPeerPage = settings.site_items_peer_page
   SITE_CONFIG.siteTemplateHome = settings.site_template_home
   SITE_CONFIG.siteTemplatePosts = settings.site_template_posts
+  if (settings.site_theme)
+    SITE_CONFIG.siteTheme = settings.site_theme
 }
 
 const SITE_CONFIG = {
@@ -17,6 +19,7 @@ const SITE_CONFIG = {
   siteItemsPeerPage: 12,
   siteTemplateHome: '',
   siteTemplatePosts: '',
+  siteTheme: 'theme-default',
   loadSiteSettings,
 }
 

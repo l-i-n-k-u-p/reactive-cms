@@ -27,8 +27,10 @@ const SocketIO = require('./lib/socket-io')
 directory.createFolderFromPath(APP_CONFIG.uploadDirectory)
 // create static directory for upload image sizes
 directory.createFolderFromPath(APP_CONFIG.uploadDirectory + 'sizes/')
+// get themes
+directory.getThemes()
 // get template file names
-directory.generateTemplateFileNames(APP_CONFIG.websiteTemplatesPath)
+directory.generateTemplateFileNames(SITE_CONFIG.siteTheme)
 
 // mongodb connect
 mongodb.connect()

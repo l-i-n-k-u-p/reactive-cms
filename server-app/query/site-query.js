@@ -1,10 +1,19 @@
 const SiteModel = require('../model/site-model')
 
+const websiteThemes = require('../config/website-themes')
+
 
 const getAll = async () => {
   try {
-    let item = await SiteModel.findOne()
-    return item
+    let item = await SiteModel.aggregate([
+      {
+        $addFields: {
+          themes: websiteThemes.themes,
+          id: '$_id',
+        },
+      },
+    ])
+    return item[0]
   } catch (err) {
     return {
       error: err

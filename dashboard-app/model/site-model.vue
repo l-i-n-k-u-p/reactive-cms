@@ -43,6 +43,7 @@ class SiteModel extends Model {
       site_url: '',
       site_template_home: '',
       site_template_posts: '',
+      site_theme: '',
     }
   }
   mutations() {
