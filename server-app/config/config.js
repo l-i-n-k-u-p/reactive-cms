@@ -11,7 +11,6 @@ const APP_CONFIG = {
   sessionMaxAge: 1000 * 60 * 60 * 24 * 3, // 3 days
   ipAddressToListen: '0.0.0.0', // 0.0.0.0 for docker container
   domain: 'localhost', // localhost \ domain.com
-  websiteTemplatesPath: 'server-app/view/template/', // change only if edit the structure website directory
   fastifyOptions: {
     http2: false,
     https: null,

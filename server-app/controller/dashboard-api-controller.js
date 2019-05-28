@@ -1,6 +1,7 @@
 const dateTime = require('node-datetime')
 const slugify = require('slugify')
 const mongoose = require('mongoose')
+const fs = require('fs')
 
 const DASHBOARD_ADMIN_CONFIG = require('../config/dashboard-admin-config')
 const SITE_CONFIG = require('../config/site-config')
@@ -984,7 +985,7 @@ exports.updateSettings = async (req, res) => {
     data: { data: settings },
   })
 }
-
+const directory = require('../lib/directory')
 exports.getSiteSettings = async (req, res) => {
   let hasPermission = permission.canUser({
     permission: 'r',
@@ -1032,7 +1033,6 @@ exports.updateSiteSettings = async (req, res) => {
   }
   if (!req.body)
     return
-
   let siteSettings = await siteQuery.update({
     id: req.body.id,
     update_fields: req.body,

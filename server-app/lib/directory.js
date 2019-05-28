@@ -1,6 +1,9 @@
 const path = require('path')
 const fs = require('fs')
+
 let websiteTemplates = require('../config/website-templates')
+let websiteThemes = require('../config/website-themes')
+
 
 let createFolderFromPath = (path) => {
   let arrDir = path.split('/')
@@ -27,7 +30,7 @@ let createFolderFromPath = (path) => {
 
 // NOTE: use https://www.npmjs.com/package/watch for listen changes on directory and regenerate templateFileNames
 const generateTemplateFileNames = (templatesPath) => {
-  let files = fs.readdirSync(templatesPath)
+  let files = fs.readdirSync('server-app/view/' + templatesPath + '/')
   let templateFileNames = []
   for (let index in files) {
     let file = files[index]
@@ -43,7 +46,30 @@ const generateTemplateFileNames = (templatesPath) => {
   websiteTemplates.templates = templateFileNames
 }
 
+const generateThemeNames = () => {
+  let files = fs.readdirSync('server-app/view/')
+  let themes = []
+  for (let ia in files) {
+    let fileExt = path.extname(files[ia])
+    let fileName = path.basename(files[ia], fileExt)
+    if (!fileExt) {
+      let dir = fileName
+      let subDirFiles = fs.readdirSync('server-app/view/' + dir)
+      for (let ib in subDirFiles) {
+        let fileExt = path.extname(subDirFiles[ib])
+        let fileName = path.basename(subDirFiles[ib], fileExt)
+        if (fileName + fileExt === 'theme.json') {
+          let jsonFile = JSON.parse(fs.readFileSync('server-app/view/' + dir + '/theme.json', 'utf8'))
+          themes.push(jsonFile)
+        }
+      }
+    }
+  }
+  websiteThemes.themes = themes
+}
+
 module.exports = {
   createFolderFromPath: createFolderFromPath,
   generateTemplateFileNames: generateTemplateFileNames,
+  generateThemeNames: generateThemeNames,
 }

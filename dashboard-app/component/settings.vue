@@ -74,6 +74,15 @@
           openInTop="true"
         >
         </FormDropdownSelect>
+        <FormDropdownSelect
+          class="dropdown-select"
+          label="Theme"
+          v-bind:initialIndexOption="themeIndex"
+          v-bind:onSelectOption="onSelectTheme"
+          v-bind:selectOptions="siteThemeOptions"
+          openInTop="true"
+        >
+        </FormDropdownSelect>
       </div>
     </BoxWrapper>
     <div class="buttons-wrapper">
@@ -108,6 +117,8 @@ export default {
       templatePostsIndex: null,
       templateFileOptions: [],
       isLoading: false,
+      themeIndex: null,
+      siteThemeOptions: [],
     }
   },
   components: {
@@ -160,6 +171,7 @@ export default {
         }
         this.setIndexPageTemplate()
         this.setIndexPostsTemplate()
+        this.setInitialThemes()
       })
       .catch(err => {
         this.isLoading = false
@@ -334,6 +346,39 @@ export default {
         let templateFullName = this.templateFileOptions[index].value
         if (templateFullName === pageTemplate) {
           this.templatePostsIndex = index
+          return
+        }
+      }
+    },
+    setInitialThemes: function() {
+      let themes = this.site.get('themes')
+      if (!themes)
+        return
+
+      this.siteThemeOptions.push({
+        name: 'none',
+        value: '',
+      })
+      for (let theme of themes) {
+        this.siteThemeOptions.push({
+          name: theme.theme_name,
+          value: theme.theme_name,
+        })
+      }
+      this.setIndexTheme()
+    },
+    onSelectTheme: function(option) {
+      this.site.set('site_theme', option.value)
+    },
+    setIndexTheme: function() {
+      if (!this.siteThemeOptions) return
+
+      let siteTheme = this.site.get('site_theme')
+      this.themeIndex = 0
+      for (let index in this.siteThemeOptions) {
+        let themeName = this.siteThemeOptions[index].value
+        if (themeName === siteTheme) {
+          this.themeIndex = index
           return
         }
       }

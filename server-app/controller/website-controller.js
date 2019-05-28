@@ -101,6 +101,7 @@ exports.websiteSetupSetInitialConfig = async (req, res) => {
     siteData.site_name = setup_site_name
     siteData.site_items_peer_page = SITE_CONFIG.siteItemsPeerPage
     siteData.site_url = setup_site_url
+    siteData.site_theme = SITE_CONFIG.siteTheme
     await userQuery.create(userData)
     await settingQuery.create(settingsData)
     await siteQuery.create(siteData)
@@ -125,7 +126,7 @@ exports.websiteAdminValidateRequestAccess = async (req, res) => {
   if (req.session.user && req.session.user.user_role)
     res.redirect('dashboard')
   else
-    res.view('dashboard-website-login', {
+    res.view('dashboard-login', {
       title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
       error_message: '',
     })
@@ -134,7 +135,7 @@ exports.websiteAdminValidateRequestAccess = async (req, res) => {
 exports.websiteAdminValidateLoginAccess = async (req, res) => {
   if (req.validationError) {
     let fisrtMessage = req.validationError.validation[0]
-    res.view('dashboard-website-login', {
+    res.view('dashboard-login', {
       title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
       error_message: fisrtMessage.message,
     })
@@ -149,7 +150,7 @@ exports.websiteAdminValidateLoginAccess = async (req, res) => {
   let roles = await roleQuery.getAll()
   let user = await userQuery.getByUserName(user_name)
   if (!user) {
-    res.view('dashboard-website-login', {
+    res.view('dashboard-login', {
       viewFunctions: VIEW_FUNCTIONS,
       title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
       error_message: 'Not valid user',
@@ -158,7 +159,7 @@ exports.websiteAdminValidateLoginAccess = async (req, res) => {
   }
   let result = await session.passwordIsEqual(user_pass, user.user_pass)
   if (!result) {
-    res.view('dashboard-website-login', {
+    res.view('dashboard-login', {
       title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
       error_message: 'No valid user',
     })
@@ -169,7 +170,7 @@ exports.websiteAdminValidateLoginAccess = async (req, res) => {
     if (role._id.toString() === user.user_role_ref.toString())
       roleExists = true
   if (!roleExists) {
-    res.view('dashboard-website-login', {
+    res.view('dashboard-login', {
       title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
       error_message: 'No valid user',
     })
@@ -200,7 +201,7 @@ exports.websiteDashboardLogout = async (req, res) => {
 exports.websiteDashboardView = async (req, res) => {
   let userID = req.session.user.user_id
   let user = await userQuery.getByID(userID)
-  res.view('dashboard-website-index', {
+  res.view('dashboard-index', {
     viewFunctions: VIEW_FUNCTIONS,
     title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
     user_id: req.session.user.user_id,
@@ -210,7 +211,7 @@ exports.websiteDashboardView = async (req, res) => {
 
 exports.websiteIndexView = async (req, res) => {
   let page = null
-  let pageView = 'default/index'
+  let pageView = SITE_CONFIG.siteTheme + '/index'
   let templateHomeID = SITE_CONFIG.siteTemplateHome
   if (templateHomeID) {
     page = await pageQuery.getByID(templateHomeID)
@@ -222,10 +223,11 @@ exports.websiteIndexView = async (req, res) => {
       return
     }
     if (page && page.page_template)
-      pageView = 'template/' + page.page_template
+      pageView = SITE_CONFIG.siteTheme + '/'  + page.page_template
   }
   res.view(pageView, {
     viewFunctions: VIEW_FUNCTIONS,
+    themeDir: 'view/' + SITE_CONFIG.siteTheme + '/',
     title: SITE_CONFIG.siteTitle,
     page: page,
   })
@@ -233,7 +235,7 @@ exports.websiteIndexView = async (req, res) => {
 
 exports.websitePageView = async (req, res) => {
   let pageSlug = req.params.slug
-  let pageView = 'default/page-detail'
+  let pageView = SITE_CONFIG.siteTheme + '/page-detail'
   let page = await pageQuery.getBySlug(pageSlug)
   if (!page) {
     const urlData = req.urlData()
@@ -253,9 +255,10 @@ exports.websitePageView = async (req, res) => {
     })
   }
   if (page.page_template)
-    pageView = 'template/' + page.page_template
+    pageView = SITE_CONFIG.siteTheme + '/'  + page.page_template
   res.view(pageView, {
     viewFunctions: VIEW_FUNCTIONS,
+    themeDir: 'view/' + SITE_CONFIG.siteTheme + '/',
     title: SITE_CONFIG.siteTitle,
     page: page,
   })
@@ -284,11 +287,12 @@ exports.websiteBlogArchivePaginatedView = async (req, res) => {
     })
     return
   }
-  let view = 'default/post-list'
+  let view = SITE_CONFIG.siteTheme + '/post-list'
   if (SITE_CONFIG.siteTemplatePosts)
-    view = 'template/' + SITE_CONFIG.siteTemplatePosts
+    view = SITE_CONFIG.siteTheme + '/'  + SITE_CONFIG.siteTemplatePosts
   res.view(view, {
     viewFunctions: VIEW_FUNCTIONS,
+    themeDir: 'view/' + SITE_CONFIG.siteTheme + '/',
     title: SITE_CONFIG.siteTitle,
     items: items,
     total_pages: Math.ceil(totalItems / SITE_CONFIG.siteItemsPeerPage),
@@ -321,8 +325,9 @@ exports.websiteBlogSingleView = async (req, res) => {
     })
     return
   }
-  res.view('default/post-detail', {
+  res.view(SITE_CONFIG.siteTheme + '/post-detail', {
     viewFunctions: VIEW_FUNCTIONS,
+    themeDir: 'view/' + SITE_CONFIG.siteTheme + '/',
     title: SITE_CONFIG.siteTitle,
     post: post,
   })

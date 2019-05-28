@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+  <%- include(themeDir + 'header') %>
+  <body>
+    <h1>BLOG</h1>
+    <% for(var i=0; i<items.length; i++) {%>
+      <a href="/blog/<%= items[i].post_slug %>">
+        <%= items[i].post_title %>
+      </a>
+      <br>
+    <% } %>
+    <br>
+    <br>
+    <%
+      var paginationTotalPages = Math.ceil(total_items / items_peer_page);
+      var paginationStart = parseInt(current_page) - parseInt(pagination_items);
+      var paginationEnd = parseInt(current_page) + parseInt(pagination_items);
+      if(paginationStart <= 0)
+        paginationStart = 1;
+      if(paginationEnd > paginationTotalPages)
+        paginationEnd = paginationTotalPages;
+    %>
+    <% for(var i=paginationStart; i<=paginationEnd; i++) { %>
+       <a href="<%= i %>">
+           <%= i %>
+       </a>
+       <br>
+    <% } %>
+  </body>
+  <%- include(themeDir + 'footer') %>
+</html>
