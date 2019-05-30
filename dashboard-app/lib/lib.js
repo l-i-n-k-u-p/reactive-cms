@@ -78,10 +78,19 @@ const aclUserCan = (resource) => {
   return false
 }
 
+const getCookie = (name) => {
+  for (let i of document.cookie.split(';')) {
+    let cookie = i.split('=')
+    if (cookie[0].indexOf(name) >= 0)
+      return cookie[1]
+  }
+}
+
 module.exports = {
   getHexColor,
   getAvatarURL,
   getThumbnailURL,
   aclReplaceVNode,
   aclUserCan,
+  getCookie,
 }

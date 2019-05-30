@@ -24,6 +24,7 @@ exports.websiteSetupView = async (req, res) => {
       viewFunctions: VIEW_FUNCTIONS,
       title: 'SETUP',
       error_message: 'Error',
+      csrfToken: req.csrfToken(),
     })
     return
   }
@@ -36,6 +37,7 @@ exports.websiteSetupView = async (req, res) => {
     viewFunctions: VIEW_FUNCTIONS,
     title: 'SETUP',
     error_message: '',
+    csrfToken: req.csrfToken(),
   })
 }
 
@@ -50,6 +52,7 @@ exports.websiteSetupSetInitialConfig = async (req, res) => {
     res.view('setup', {
       title: 'SETUP',
       error_message: fisrtMessage.message,
+      csrfToken: req.csrfToken(),
     })
     return
   }
@@ -64,6 +67,7 @@ exports.websiteSetupSetInitialConfig = async (req, res) => {
     res.view('setup', {
       title: 'SETUP',
       error_message: 'Complete the request data',
+      csrfToken: req.csrfToken(),
     })
   } else {
     let userData = {}
@@ -110,6 +114,7 @@ exports.websiteSetupSetInitialConfig = async (req, res) => {
       res.view('setup', {
         title: 'SETUP',
         error_message: userQuery.error.toString(),
+        csrfToken: req.csrfToken(),
       })
       return
     }
@@ -125,11 +130,13 @@ exports.websiteAdminValidateRequestAccess = async (req, res) => {
 
   if (req.session.user && req.session.user.user_role)
     res.redirect('dashboard')
-  else
+  else {
     res.view('dashboard-login', {
       title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
       error_message: '',
+      csrfToken: req.csrfToken(),
     })
+  }
 }
 
 exports.websiteAdminValidateLoginAccess = async (req, res) => {
@@ -138,6 +145,7 @@ exports.websiteAdminValidateLoginAccess = async (req, res) => {
     res.view('dashboard-login', {
       title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
       error_message: fisrtMessage.message,
+      csrfToken: req.csrfToken(),
     })
     return
   }
@@ -154,6 +162,7 @@ exports.websiteAdminValidateLoginAccess = async (req, res) => {
       viewFunctions: VIEW_FUNCTIONS,
       title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
       error_message: 'Not valid user',
+      csrfToken: req.csrfToken(),
     })
     return
   }
@@ -162,6 +171,7 @@ exports.websiteAdminValidateLoginAccess = async (req, res) => {
     res.view('dashboard-login', {
       title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
       error_message: 'No valid user',
+      csrfToken: req.csrfToken(),
     })
     return
   }
@@ -173,6 +183,7 @@ exports.websiteAdminValidateLoginAccess = async (req, res) => {
     res.view('dashboard-login', {
       title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
       error_message: 'No valid user',
+      csrfToken: req.csrfToken(),
     })
     return
   }

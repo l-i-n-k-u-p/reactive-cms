@@ -15,6 +15,7 @@ const pointOfView = require('point-of-view')
 const path = require('path')
 const ejs = require('ejs')
 const io = require('socket.io')(fastify.server, APP_CONFIG.socketIOpingTimeout)
+const fastifyCSRF = require('fastify-csrf')
 
 const mongodb = require('./db/mongodb')
 const directory = require('./lib/directory')
@@ -62,6 +63,13 @@ fastify.register(fastifySession, {
   },
   store: mongoDBSessionStore,
   saveUninitialized: true,
+})
+// CSRF
+fastify.register(fastifyCSRF, {
+  cookie: {
+    path: '/',
+    domain: APP_CONFIG.domain,
+  },
 })
 
 // template engine
@@ -111,6 +119,15 @@ fastify.register(websiteRouter)
 
 // router website dashboard api
 fastify.register(dashboardAPIRouter, { prefix: '/dashboard/api/v1/' })
+
+// hook to set CSRF token as cookie
+fastify.addHook('onSend', (request, reply, payload, next) => {
+  reply.setCookie('csrf-token', request.csrfToken(), {
+    path: '/',
+    domain: APP_CONFIG.domain,
+  })
+  next()
+})
 
 // 500 global handler
 fastify.setErrorHandler((err, req, res) => {

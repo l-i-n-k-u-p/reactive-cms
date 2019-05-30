@@ -276,20 +276,23 @@ export default {
     createMedia: function() {
       this.isLoading = true
       this.axios
-        .post(this.$appApiBaseURL + '/media-file/', this.formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        })
-        .then(data => {
-          this.isLoading = false
-          this.activeTab = 0
-          this.resetLibraryData()
-          this.getMedia()
-          this.$eventHub.$emit('dashboard-app-success', data.data.status_msg)
-        })
-        .catch(err => {
-          this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', err.message)
-        })
+      .post(this.$appApiBaseURL + '/media-file/', this.formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'csrf-token': this.$getCookie('csrf-token'),
+        },
+      })
+      .then(data => {
+        this.isLoading = false
+        this.activeTab = 0
+        this.resetLibraryData()
+        this.getMedia()
+        this.$eventHub.$emit('dashboard-app-success', data.data.status_msg)
+      })
+      .catch(err => {
+        this.isLoading = false
+        this.$eventHub.$emit('dashboard-app-error', err.message)
+      })
     },
     selectMedia: function() {
       if (this.selectedMedia.get('id')) this.onMediaSelect(this.selectedMedia)

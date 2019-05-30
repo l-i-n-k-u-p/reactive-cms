@@ -11,6 +11,7 @@ import {
   getThumbnailURL,
   aclReplaceVNode,
   aclUserCan,
+  getCookie,
 } from './lib/lib'
 import SocketIO from './lib/socket-io'
 // NOTE: directives
@@ -97,6 +98,7 @@ Vue.prototype.$getAvatarURL = getAvatarURL
 Vue.prototype.$getThumbnailURL = getThumbnailURL
 Vue.prototype.$aclReplaceVNode = aclReplaceVNode
 Vue.prototype.$aclUserCan = aclUserCan
+Vue.prototype.$getCookie = getCookie
 Vue.prototype.$socketIO = new SocketIO()
 
 const routes = [

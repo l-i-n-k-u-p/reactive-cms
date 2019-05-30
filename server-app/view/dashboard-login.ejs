@@ -28,6 +28,11 @@
           method="POST"
           autocomplete="off"
           >
+          <input
+            type="hidden"
+            name="_csrf"
+            value="<%- csrfToken -%>"
+            />
           <div class="input-text">
             <input
               type="text"
