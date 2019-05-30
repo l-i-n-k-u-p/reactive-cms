@@ -28,6 +28,7 @@
     "fastify-auth": "^0.4.0",
     "fastify-cookie": "^2.1.7",
     "fastify-cors": "^2.1.2",
+    "fastify-csrf": "^1.0.2",
     "fastify-formbody": "^3.1.0",
     "fastify-helmet": "^3.0.0",
     "fastify-multipart": "^0.7.0",

@@ -2,12 +2,13 @@
 import {
   Collection,
 } from 'vue-mc'
+
 import SocketIO from '../lib/socket-io'
 import PageModel from './page-model.vue'
 import APP_SETTINGS from '../app-settings'
 
-
 let socketIO = new SocketIO()
+
 
 class PageCollection extends Collection {
   constructor (props) {

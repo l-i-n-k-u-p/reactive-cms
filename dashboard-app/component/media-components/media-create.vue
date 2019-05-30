@@ -127,22 +127,25 @@ export default {
       this.isLoading = true
       this.formData.append('media_title', this.mediaTitle)
       this.axios
-        .post(this.$appApiBaseURL + '/media-file/', this.formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        })
-        .then(data => {
-          this.isLoading = false
-          if (data.data.status_code)
-            return
+      .post(this.$appApiBaseURL + '/media-file/', this.formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'csrf-token': this.$getCookie('csrf-token'),
+        },
+      })
+      .then(data => {
+        this.isLoading = false
+        if (data.data.status_code)
+          return
 
-          this.$router.replace({
-            name: 'media-detail',
-            params: { id: data.data.data.id },
-          })
+        this.$router.replace({
+          name: 'media-detail',
+          params: { id: data.data.data.id },
         })
-        .catch(err => {
-          this.isLoading = false
-        })
+      })
+      .catch(err => {
+        this.isLoading = false
+      })
     },
     cancelCreateMedia: function() {
       this.$router.back()

@@ -20,6 +20,7 @@ const isAuthenticated = (req, res, next) => {
     res.view('dashboard-login', {
       title: DASHBOARD_ADMIN_CONFIG.dashboardTitle,
       error_message: '',
+      csrfToken: req.csrfToken(),
     })
     return
   }

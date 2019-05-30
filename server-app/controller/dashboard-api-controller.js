@@ -793,7 +793,7 @@ exports.addNewMedia = async (req, res) => {
   }
   res.send({
     status_code: 0,
-    status_msg: '',
+    status_msg: 'New media created',
     data: {
       id: newMedia.id
     },

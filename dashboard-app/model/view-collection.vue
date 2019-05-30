@@ -2,12 +2,13 @@
 import {
   Collection,
 } from 'vue-mc'
+
 import SocketIO from '../lib/socket-io'
 import ViewModel from './view-model.vue'
 import APP_SETTINGS from '../app-settings'
 
-
 let socketIO = new SocketIO()
+
 
 class ViewCollection extends Collection {
   constructor (props) {
