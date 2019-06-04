@@ -75,6 +75,18 @@ const views = [
     view_name: 'search-media',
     view_description: '',
   },
+  {
+    view_name: 'views',
+    view_description: '',
+  },
+  {
+    view_name: 'new-view',
+    view_description: '',
+  },
+  {
+    view_name: 'view-detail',
+    view_description: '',
+  },
 ]
 
 module.exports = views

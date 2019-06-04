@@ -125,7 +125,7 @@ export default {
       this.isLoading = true
       this.views
         .page(1)
-        .fetch()
+        .fetchAll()
         .then(data => {
           this.isLoading = false
           if (data.getData().status_code) {

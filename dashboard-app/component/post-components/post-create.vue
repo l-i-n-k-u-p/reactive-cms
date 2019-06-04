@@ -67,7 +67,7 @@
       <Button
         style="margin-left: 5px;"
         buttonIcon="close"
-        v-bind:buttonAction="cancelCrateUser"
+        v-bind:buttonAction="cancelCrate"
       >
         Cancel
       </Button>
@@ -158,7 +158,7 @@ export default {
           this.isLoading = false
         })
     },
-    cancelCrateUser: function() {
+    cancelCrate: function() {
       this.$router.back()
     },
     onSelectOption: function(option) {

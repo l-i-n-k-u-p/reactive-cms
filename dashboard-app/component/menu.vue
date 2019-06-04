@@ -158,6 +158,24 @@ export default {
         },
         {
           position: 5,
+          title: 'Views',
+          name: 'views',
+          icon: 'pages',
+          params: { page: 1 },
+          resourceName: 'views',
+          keys: 'views, view-detail, new-view',
+          expanded: false,
+          children: [
+            {
+              title: 'Add View',
+              name: 'new-view',
+              icon: 'add',
+              uuid: this.$uuid.v1(),
+            },
+          ],
+        },
+        {
+          position: 6,
           title: 'Roles',
           name: 'roles',
           icon: 'security',
@@ -175,7 +193,7 @@ export default {
           ],
         },
         {
-          position: 6,
+          position: 7,
           title: 'Profile',
           name: 'profile',
           icon: 'person',
@@ -184,7 +202,7 @@ export default {
           expanded: false,
         },
         {
-          position: 7,
+          position: 8,
           title: 'Settings',
           name: 'settings',
           icon: 'settings',

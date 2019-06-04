@@ -47,6 +47,7 @@ import Posts from './component/posts.vue'
 import Media from './component/media.vue'
 import Users from './component/users.vue'
 import Roles from './component/roles.vue'
+import Views from './component/views.vue'
 import Settings from './component/settings.vue'
 import UserDetail from './component/user-components/user-detail.vue'
 import UserCreate from './component/user-components/user-create.vue'
@@ -60,6 +61,8 @@ import RoleDetail from './component/role-components/role-detail.vue'
 import RoleCreate from './component/role-components/role-create.vue'
 import NotFound from './component/not-found.vue'
 import Profile from './component/profile.vue'
+import ViewDetail from './component/view-components/view-detail.vue'
+import ViewCreate from './component/view-components/view-create.vue'
 
 
 for (let directive of GLOBAL_DIRECTIVES.directives)
@@ -196,6 +199,21 @@ const routes = [
     name: 'profile',
     path: APP_SETTINGS.appBaseURL + '/profile',
     component: Profile,
+  },
+  {
+    name: 'views',
+    path: APP_SETTINGS.appBaseURL + '/views/:page',
+    component: Views,
+  },
+  {
+    name: 'view-detail',
+    path: APP_SETTINGS.appBaseURL + '/view/:id',
+    component: ViewDetail,
+  },
+  {
+    name: 'new-view',
+    path: APP_SETTINGS.appBaseURL + '/new-view/',
+    component: ViewCreate,
   },
 ]
 
