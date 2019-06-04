@@ -58,7 +58,7 @@
       <Button
         style="margin-left: 5px;"
         buttonIcon="close"
-        v-bind:buttonAction="cancelCrateRole"
+        v-bind:buttonAction="cancelCreateRole"
       >
         Cancel
       </Button>
@@ -125,7 +125,7 @@ export default {
       this.isLoading = true
       this.views
         .page(1)
-        .fetch()
+        .fetchAll()
         .then(data => {
           this.isLoading = false
           if (data.getData().status_code) {
@@ -270,7 +270,7 @@ export default {
       currentRoleResources[this.currentResourceModalIndex].resource_permission = permissions
       this.role.set('role_resources', currentRoleResources)
     },
-    cancelCrateRole: function() {
+    cancelCreateRole: function() {
       this.$router.back()
     },
   },

@@ -31,9 +31,22 @@ class ViewCollection extends Collection {
   getModelsFromResponse (response) {
     return response.getData().items
   }
+  fetchAll (params) {
+    let method = 'GET'
+    let route = this.getRoute('fetchAll')
+    let url = this.getURL(route, this.getRouteParameters())
+    let data = params
+    let request = this.getRequest({ method, url, data }).send()
+    request.then(data => {
+      for (let item of data.response.data.items)
+        this.add(item)
+    })
+    return request
+  }
   routes () {
     return {
       fetch: APP_SETTINGS.appApiBaseURL + '/views/{page}',
+      fetchAll: APP_SETTINGS.appApiBaseURL + '/views-all/{page}',
     }
   }
 }
