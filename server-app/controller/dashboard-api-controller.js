@@ -1534,15 +1534,15 @@ exports.getViewByID = async (req, res) => {
     })
     return
   }
-  let post = await viewQuery.getByID(req.params.id)
-  if (post.error) {
+  let view = await viewQuery.getByID(req.params.id)
+  if (view.error) {
     res.send({
       status_code: 1,
       status_msg: 'View not found',
     })
     return
   }
-  res.send(post)
+  res.send(view)
 }
 
 exports.addNewView = async (req, res) => {
@@ -1653,8 +1653,8 @@ exports.updateViewByID = async (req, res) => {
       view_description: req.body.view_description,
     }
   }
-  let post = await viewQuery.updateByID(objectData)
-  if (post.error) {
+  let view = await viewQuery.updateByID(objectData)
+  if (view.error) {
     res.send({
       status_code: 1,
       status_msg: 'It was not updated',
@@ -1667,7 +1667,7 @@ exports.updateViewByID = async (req, res) => {
   })
   req.pushBroadcastMessage({
     channel: 'view-put',
-    data: { data: post },
+    data: { data: view },
   })
 }
 
@@ -1684,8 +1684,8 @@ exports.deleteViewByID = async (req, res) => {
     })
     return
   }
-  let post = await viewQuery.deleteByID(req.params.id)
-  if (post.error) {
+  let view = await viewQuery.deleteByID(req.params.id)
+  if (view.error) {
     res.send({
       status_code: 1,
       status_msg: 'Error deleting view',
@@ -1698,6 +1698,6 @@ exports.deleteViewByID = async (req, res) => {
   })
   req.pushBroadcastMessage({
     channel: 'view-delete',
-    data: { data: post },
+    data: { data: view },
   })
 }
