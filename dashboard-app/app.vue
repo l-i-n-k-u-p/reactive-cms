@@ -57,7 +57,7 @@
         >
         <img src="/website/assets/reactive-web.png" />
       </a>
-      <span>Version 2.8.0</span>
+      <span>{{ version }}</span>
     </footer>
     <MediaModal
       v-if="mediaModalData"
@@ -127,6 +127,7 @@ export default {
       throttleToggleMenu: _.throttle(this.toggleMenu, 100, { 'trailing': false }),
       breakWidth: 1360,
       statusMessages: [],
+      version: 'Version 21.82.2',
     }
   },
   watch: {
