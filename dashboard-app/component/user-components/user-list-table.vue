@@ -250,8 +250,7 @@ tfoot tr td {
 .table-wrapper tbody tr td {
   cursor: pointer;
   font-size: 13px;
-  padding-bottom: 5px;
-  padding-top: 5px;
+  padding: 3px 0 3px 0;
 }
 
 .table-wrapper tbody tr {

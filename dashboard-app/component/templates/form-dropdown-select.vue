@@ -135,7 +135,7 @@ label {
 
 .select-options li {
   background-color: white;
-  padding: 10px;
+  padding: 5px 15px 5px 40px;
 }
 
 .select-options li:hover {
