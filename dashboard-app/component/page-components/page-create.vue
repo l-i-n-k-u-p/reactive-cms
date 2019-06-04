@@ -76,7 +76,7 @@
       </DropdownSelect>
       <Button
         buttonIcon="close"
-        v-bind:buttonAction="cancelCrate"
+        v-bind:buttonAction="cancelCreate"
         style="margin-left: 5px;"
       >
         Cancel
@@ -174,7 +174,7 @@ export default {
           this.isLoading = false
         })
     },
-    cancelCrate: function() {
+    cancelCreate: function() {
       this.$router.back()
     },
     onSelectOption: function(option) {
