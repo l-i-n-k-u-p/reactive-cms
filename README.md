@@ -38,7 +38,7 @@ Initial Configuration
 ```javascript
 const APP_CONFIG = {
   port: 3000,
-  mongoDBURI: 'mongodb://172.17.0.2:27017/reactivecms',
+  mongoDBURI: 'mongodb://192.168.1.8:27017/reactivecms',
   bcryptSaltRounds: 12,
   appSecret: 'iCD5e@rx$3-9rR_QZwIW2Dg-Zn^h&heS', // 32 characters
   staticUploadPath: 'site-static',
@@ -49,7 +49,17 @@ const APP_CONFIG = {
   sessionMaxAge: 1000 * 60 * 60 * 24 * 3, // 3 days
   ipAddressToListen: '0.0.0.0', // 0.0.0.0 for docker container
   domain: 'localhost', // localhost \ domain.com
-  websiteTemplatesPath: 'server-app/view/template/', // change only if edit the structure website directory
+  fastifyOptions: {
+    http2: false,
+    https: null,
+    ignoreTrailingSlash: true,
+    logger: false,
+  },
+  sockerIOOptions: {
+    socketIOpingTimeout: 60000,
+    pingInterval: 10000,
+    pingTimeout: 5000,
+  },
 }
 ```
 
@@ -59,6 +69,7 @@ Running App
 npm run start # compile dashboard and run server in production mode
 npm run server-production # only run server in production mode
 npm run server-development # run server in development mode and watch for file changes
+npm run server-monit # show all server logs with PM2
 npm run server-logs # show all server logs
 npm run server-stop # stop all server instances
 npm run dashboard-development # compile dashboard in development mode and watch for file changes
