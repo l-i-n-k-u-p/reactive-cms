@@ -44,7 +44,7 @@ export default {
   font-weight: 500;
   height: 14px;
   outline: none;
-  padding: 7px;
+  padding: 5px 15px;
   position: relative;
   text-transform: capitalize;
   user-select: none;

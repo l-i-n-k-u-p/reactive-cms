@@ -457,7 +457,7 @@ export default {
   font-size: 13px;
   font-weight: 500;
   max-width: 100%;
-  padding: 10px 7px 10px 7px;
+  padding: 5px 15px;
   text-decoration: none;
   text-transform: capitalize;
 }
@@ -495,10 +495,9 @@ export default {
   display: flex;
   font-size: 13px;
   font-weight: 400;
-  height: 36px;
+  height: 30px;
   outline: none;
-  padding-left: 35px;
-  padding-right: 10px;
+  padding: 0 10px 0 35px;
   position: absolute;
   width: 100%;
 }
@@ -511,7 +510,7 @@ export default {
   align-self: center;
   background: white;
   border-radius: 3px;
-  height: 36px;
+  height: 30px;
   width: 100%;
 }
 
@@ -549,7 +548,7 @@ export default {
   display: flex;
   font-size: 13px;
   height: auto;
-  padding: 7px 10px;
+  padding: 5px 10px;
   width: 100%;
 }
 

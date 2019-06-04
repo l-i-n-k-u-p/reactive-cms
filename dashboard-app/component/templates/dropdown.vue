@@ -75,7 +75,7 @@ export default {
   font-weight: 500;
   height: 14px;
   outline: none;
-  padding: 7px;
+  padding: 5px 15px;
   position: relative;
   user-select: none;
 }
@@ -134,7 +134,7 @@ export default {
 
 .select-options li {
   background-color: white;
-  padding: 10px 20px 10px 32px;
+  padding: 5px 15px 5px 40px;
   text-transform: capitalize;
   text-transform: capitalize;
 }

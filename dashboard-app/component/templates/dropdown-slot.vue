@@ -45,7 +45,7 @@ export default {
   color: #616161;
   cursor: pointer;
   display: flex;
-  padding: 7px;
+  padding: 5px 15px;
   position: relative;
   user-select: none;
 }

@@ -103,7 +103,7 @@ export default {
   font-size: 13px;
   font-weight: 500;
   outline: none;
-  padding: 7px;
+  padding: 5px 15px;
   position: relative;
   right: 0;
   text-transform: capitalize;
