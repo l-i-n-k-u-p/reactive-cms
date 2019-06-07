@@ -60,6 +60,11 @@ const APP_CONFIG = {
     pingInterval: 10000,
     pingTimeout: 5000,
   },
+  emailOptions: {
+    emailService: 'gmail',
+    emailAccount: '',
+    emailAccountPassword: '',
+  },
 }
 ```
 
