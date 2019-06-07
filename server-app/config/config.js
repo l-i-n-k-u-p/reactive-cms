@@ -1,6 +1,6 @@
 const APP_CONFIG = {
   port: 3000,
-  mongoDBURI: 'mongodb://192.168.1.8:27017/reactivecms',
+  mongoDBURI: 'mongodb://192.168.1.8:27017/testingmail',
   bcryptSaltRounds: 12,
   appSecret: 'iCD5e@rx$3-9rR_QZwIW2Dg-Zn^h&heS', // 32 characters
   staticUploadPath: 'site-static',
@@ -21,6 +21,11 @@ const APP_CONFIG = {
     socketIOpingTimeout: 60000,
     pingInterval: 10000,
     pingTimeout: 5000,
+  },
+  emailOptions: {
+    emailService: 'gmail',
+    emailAccount: '',
+    emailAccountPassword: '',
   },
 }
 

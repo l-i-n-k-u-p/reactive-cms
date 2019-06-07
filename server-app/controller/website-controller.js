@@ -6,6 +6,7 @@ const SITE_CONFIG = require('../config/site-config')
 const VIEW_FUNCTIONS = require('../lib/view-functions')
 const VIEWS = require('../config/views')
 const session = require('../lib/session')
+const mail = require('../lib/mail')
 
 const userQuery = require('../query/user-query')
 const postQuery = require('../query/post-query')
@@ -118,7 +119,17 @@ exports.websiteSetupSetInitialConfig = async (req, res) => {
       })
       return
     }
+    let emailHTMLMessage = '<h1>Hi ' + userData.user_first_name + '!</h1><br /><br />'
+    emailHTMLMessage += 'Your new site is ready!<br />'
+    emailHTMLMessage += 'You can access to Dashboard in: ' + siteData.site_url + '/admin<br />'
+    emailHTMLMessage += '<br />Thank you for use Reactive CMS :)<br />'
+    let emailSubject = 'Reactive CMS - ' + siteData.site_name
     DASHBOARD_ADMIN_CONFIG.setupPasse = true
+    mail.sendEmail({
+      to: userData.user_email,
+      subject: emailSubject,
+      html: emailHTMLMessage,
+    })
     res.redirect('admin')
   }
 }
