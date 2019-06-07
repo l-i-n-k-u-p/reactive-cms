@@ -71,6 +71,50 @@ let routes = [
   },
   {
     method: 'GET',
+    url: '/recover-account',
+    handler: websiteController.websiteRecoverAccountView,
+  },
+  {
+    method: 'POST',
+    url: '/recover-account',
+    handler: websiteController.websiteRecoverAccount,
+    schema: {
+      body: {
+        type: 'object',
+        properties: {
+          email_address: { type: 'string' },
+        },
+        required: [
+          'email_address',
+        ],
+      },
+    },
+    attachValidation: true,
+  },
+  {
+    method: 'GET',
+    url: '/reset-password/:token',
+    handler: websiteController.websiteResetPasswordView,
+  },
+  {
+    method: 'POST',
+    url: '/reset-password/',
+    handler: websiteController.websiteResetPassword,
+    schema: {
+      body: {
+        type: 'object',
+        properties: {
+          new_password: { type: 'string' },
+        },
+        required: [
+          'new_password',
+        ],
+      },
+    },
+    attachValidation: true,
+  },
+  {
+    method: 'GET',
     url: '/',
     handler: websiteController.websiteIndexView,
   },
