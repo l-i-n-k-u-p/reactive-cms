@@ -134,8 +134,9 @@ h2 {
 }
 
 #error-msg {
-  font-size: 13px;
   color: red;
+  font-size: 13px;
+  margin: 0;
   text-align: center;
 }
 
@@ -145,6 +146,20 @@ h2 {
   font-weight: 400;
   position: absolute;
   top: 24px;
+}
+
+#description {
+  color: #616161;
+  font-size: 14px;
+  margin-bottom: 0 0 15px 0;
+  text-align: center;
+}
+
+#success-msg {
+  color: #4caf50;
+  font-size: 13px;
+  margin: 0;
+  text-align: center;
 }
 
 @media screen and (max-width: 480px) {

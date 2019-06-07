@@ -1,10 +1,12 @@
 const dateTime = require('node-datetime')
 const mongoose = require('mongoose')
+const crypto = require('crypto')
 
 const DASHBOARD_ADMIN_CONFIG = require('../config/dashboard-admin-config')
 const SITE_CONFIG = require('../config/site-config')
 const VIEW_FUNCTIONS = require('../lib/view-functions')
 const VIEWS = require('../config/views')
+const APP_CONFIG = require('../config/config')
 const session = require('../lib/session')
 const mail = require('../lib/mail')
 
@@ -119,7 +121,7 @@ exports.websiteSetupSetInitialConfig = async (req, res) => {
       })
       return
     }
-    let emailHTMLMessage = '<h1>Hi ' + userData.user_first_name + '!</h1><br /><br />'
+    let emailHTMLMessage = '<h1>Hi ' + userData.user_first_name + '!</h1><br />'
     emailHTMLMessage += 'Your new site is ready!<br />'
     emailHTMLMessage += 'You can access to Dashboard in: ' + siteData.site_url + '/admin<br />'
     emailHTMLMessage += '<br />Thank you for use Reactive CMS :)<br />'
@@ -353,4 +355,138 @@ exports.websiteBlogSingleView = async (req, res) => {
     title: SITE_CONFIG.siteTitle,
     post: post,
   })
+}
+
+exports.websiteRecoverAccountView = async (req, res) => {
+  res.view('recover-account', {
+    viewFunctions: VIEW_FUNCTIONS,
+    title: 'RECOVER ACCOUNT',
+    error_message: req.query.error_message,
+    success_message: req.query.success_message,
+    csrfToken: req.csrfToken(),
+  })
+}
+
+exports.websiteRecoverAccount = async (req, res) => {
+  if (req.validationError) {
+    let fisrtMessage = req.validationError.validation[0]
+    res.view('recover-account', {
+      title: 'RECOVER ACCOUNT',
+      error_message: fisrtMessage.message,
+      success_message: '',
+      csrfToken: req.csrfToken(),
+    })
+    return
+  }
+  if (!req.body.email_address) {
+    let errorMessage = 'Enter a email'
+    res.redirect('/recover-account/?error_message=' + errorMessage)
+    return
+  }
+  let user = await userQuery.getByEmail(req.body.email_address)
+  if (!user.length) {
+    let errorMessage = 'Not email address found'
+    res.redirect('/recover-account/?error_message=' + errorMessage)
+    return
+  }
+  crypto.pseudoRandomBytes(16, (err, raw) => {
+    if (err) {
+      let errorMessage = 'Try Again'
+      res.redirect('/recover-account/?error_message=' + errorMessage)
+      return
+    }
+    user = user[0]
+    let emailSubject = 'Reactive CMS - Recover Account'
+    let hexString = raw.toString('hex') + dateTime.create().format('YmdHMS')
+    let emailURL = APP_CONFIG.domain + '/reset-password/' + hexString
+    req.session.recoverAccountToken = hexString
+    req.session.recoverAccountUserId = user._id
+    let emailHTMLMessage = '<h1>Hi ' + user.user_first_name + '!</h1><br />'
+    emailHTMLMessage += 'You requested the reset password of your account<br />'
+    emailHTMLMessage += 'You can reset your password using the next URL in the same browser where you requested the reset password<br />'
+    emailHTMLMessage += emailURL + '<br />'
+    emailHTMLMessage += '<br />Thank you for use Reactive CMS :)<br />'
+    mail.sendEmail({
+      to: user.user_email,
+      subject: emailSubject,
+      html: emailHTMLMessage,
+    })
+    let successMessage = 'We sent a email to: ' + user.user_email
+    res.redirect('/recover-account/?success_message=' + successMessage)
+  })
+}
+
+exports.websiteResetPasswordView = async (req, res) => {
+  let error = false
+  if (!req.params.token)
+    error = true
+
+  if (req.session.recoverAccountToken === req.params.token) {
+    res.view('reset-password', {
+      viewFunctions: VIEW_FUNCTIONS,
+      title: 'RESET PASSOWRD',
+      error_message: '',
+      success_message: '',
+      csrfToken: req.csrfToken(),
+    })
+  } else
+    error = true
+  if (error) {
+    const urlData = req.urlData()
+    res.code(404).view('404', {
+      title: SITE_CONFIG.siteTitle,
+      status: 'Page not found',
+      error_message: 'Route: ' + urlData.path + ' Not found.',
+    })
+  }
+}
+
+exports.websiteResetPassword = async (req, res) => {
+  if (req.validationError) {
+    let fisrtMessage = req.validationError.validation[0]
+    res.view('recover-account', {
+      title: 'RECOVER ACCOUNT',
+      error_message: fisrtMessage.message,
+      success_message: '',
+      csrfToken: req.csrfToken(),
+    })
+    return
+  }
+  if (!req.session.recoverAccountUserId || !req.session.recoverAccountToken) {
+    res.code(500).view('500', {
+      title: SITE_CONFIG.siteTitle,
+      status: 'Error!',
+      error_message: 'Internal server error',
+    })
+    return
+  }
+  if (!req.body.new_password) {
+    res.view('reset-password', {
+      viewFunctions: VIEW_FUNCTIONS,
+      title: 'RESET PASSOWRD',
+      error_message: 'Fill password field',
+      success_message: '',
+      csrfToken: req.csrfToken(),
+    })
+    return
+  }
+  let newPassword = await session.hashPassword(req.body.new_password)
+  let userUpdated = await userQuery.updateByID({
+    id: req.session.recoverAccountUserId,
+    update_fields: {
+      user_pass: newPassword,
+    },
+  })
+  req.session.recoverAccountToken = null
+  req.session.recoverAccountUserId = null
+  let emailSubject = 'Reactive CMS - Recover Account'
+  let emailHTMLMessage = '<h1>Hi ' + userUpdated.user_first_name + '!</h1><br />'
+  emailHTMLMessage += 'Your password has been changed<br />'
+  emailHTMLMessage += '<br />Thank you for use Reactive CMS :)<br />'
+  mail.sendEmail({
+    to: userUpdated.user_email,
+    subject: emailSubject,
+    html: emailHTMLMessage,
+  })
+  res.redirect('/admin')
 }

@@ -193,6 +193,19 @@ const deleteByID = async (id) => {
   }
 }
 
+const getByEmail = async (email) => {
+  try {
+    let user = await UserModel.find({
+      user_email: email
+    })
+    return user
+  } catch (err) {
+    return {
+      error: err
+    }
+  }
+}
+
 module.exports = {
   getByUserName: getByUserName,
   getItemsByPage: getItemsByPage,
@@ -201,4 +214,5 @@ module.exports = {
   create: create,
   updateByID: updateByID,
   deleteByID: deleteByID,
+  getByEmail: getByEmail,
 }
