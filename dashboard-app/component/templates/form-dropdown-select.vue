@@ -10,25 +10,31 @@
     <label>
       {{ getOptionName() }}
     </label>
-    <ul
+    <div
+      id="select-options"
       v-bind:class="{
-        'select-options': true,
         'top': openInTop,
         'bottom': !openInTop,
       }"
       v-if="show"
       >
-      <li
-        v-for="(option, index) in selectOptions"
-        v-on:click="onSelect(index)"
-      >
-        {{ option.name }}
-      </li>
-    </ul>
+      <VuePerfectScrollbar class="scroll-area">
+        <div
+          class="item"
+          v-for="(option, index) in selectOptions"
+          v-on:click="onSelect(index)"
+        >
+          {{ option.name }}
+        </div>
+      </VuePerfectScrollbar>
+    </div>
   </div>
 </template>
 
 <script>
+import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+
+
 export default {
   props: [
     'onSelectOption',
@@ -43,6 +49,9 @@ export default {
       show: false,
       currentOptionLabel: '',
     }
+  },
+  components: {
+    VuePerfectScrollbar,
   },
   watch: {
     initialIndexOption: function(newVal, oldVal) {
@@ -74,6 +83,27 @@ export default {
 </script>
 
 <style scoped lang="css">
+#select-options {
+  background-color: white;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  left: 0;
+  list-style: none;
+  margin: 0;
+  max-height: 150px;
+  min-width: 112px;
+  overflow: auto;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  z-index: 1;
+}
+
+#select-options .scroll-area {
+  max-height: 150px;
+}
+
 .select-wrapper {
   -webkit-user-select: none;
   align-self: center;
@@ -108,23 +138,6 @@ label {
   top: -2px;
 }
 
-.select-options {
-  background-color: white;
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
-  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
-  left: 0;
-  list-style: none;
-  margin: 0;
-  max-height: 150px;
-  min-width: 112px;
-  overflow: auto;
-  padding: 0;
-  position: absolute;
-  right: 0;
-  z-index: 9;
-}
-
 .top {
   bottom: 0;
 }
@@ -133,12 +146,12 @@ label {
   top: 0;
 }
 
-.select-options li {
+#select-options .item {
   background-color: white;
   padding: 5px 15px 5px 40px;
 }
 
-.select-options li:hover {
+#select-options .item:hover {
   background-color: rgba(200, 200, 200, 0.20);
   color: #193a99;
 }
