@@ -85,8 +85,6 @@ export default {
 <style scoped lang="css">
 #select-options {
   background-color: white;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   left: 0;
   list-style: none;
@@ -144,6 +142,16 @@ label {
 
 .bottom {
   top: 0;
+}
+
+#select-options.top {
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
+#select-options.bottom {
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
 }
 
 #select-options .item {
