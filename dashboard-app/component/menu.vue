@@ -27,7 +27,7 @@
             <i class="material-icons icon">
               {{ item.icon }}
             </i>
-            {{ item.title }}
+            {{ $t(item.title) }}
           </router-link>
           <i
             v-if="item.children"
@@ -77,7 +77,7 @@ export default {
       menuItems: [
         {
           position: 0,
-          title: 'Dashboard',
+          title: 'dashboard',
           name: 'dashboard',
           icon: 'dashboard',
           resourceName: 'dashboard',
@@ -86,7 +86,7 @@ export default {
         },
         {
           position: 1,
-          title: 'Pages',
+          title: 'pages',
           name: 'pages',
           icon: 'pages',
           params: { page: 1 },
@@ -104,7 +104,7 @@ export default {
         },
         {
           position: 2,
-          title: 'Posts',
+          title: 'posts',
           name: 'posts',
           icon: 'pages',
           params: { page: 1 },
@@ -122,7 +122,7 @@ export default {
         },
         {
           position: 3,
-          title: 'Media',
+          title: 'media',
           name: 'media',
           icon: 'perm_media',
           params: { page: 1 },
@@ -140,7 +140,7 @@ export default {
         },
         {
           position: 4,
-          title: 'Users',
+          title: 'users',
           name: 'users',
           icon: 'people',
           params: { page: 1 },
@@ -158,7 +158,7 @@ export default {
         },
         {
           position: 5,
-          title: 'Views',
+          title: 'views',
           name: 'views',
           icon: 'pages',
           params: { page: 1 },
@@ -176,7 +176,7 @@ export default {
         },
         {
           position: 6,
-          title: 'Roles',
+          title: 'roles',
           name: 'roles',
           icon: 'security',
           params: { page: 1 },
@@ -194,7 +194,7 @@ export default {
         },
         {
           position: 7,
-          title: 'Profile',
+          title: 'profile',
           name: 'profile',
           icon: 'person',
           resourceName: '',
@@ -203,7 +203,7 @@ export default {
         },
         {
           position: 8,
-          title: 'Settings',
+          title: 'settings',
           name: 'settings',
           icon: 'settings',
           resourceName: 'settings',

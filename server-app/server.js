@@ -62,8 +62,9 @@ fastify.register(fastifySession, {
     secure: false,
   },
   store: mongoDBSessionStore,
-  saveUninitialized: true,
+  saveUninitialized: false,
 })
+
 // CSRF
 fastify.register(fastifyCSRF, {
   cookie: {

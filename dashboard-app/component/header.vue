@@ -239,6 +239,7 @@ export default {
     setOnChangeModel: function() {
       this.user.on('change', ({ attribute, value }) => {
         window.user_data = this.user
+        this.$i18n.locale = this.user.get('user_locale')
       })
     },
     onResizeWindow: function() {

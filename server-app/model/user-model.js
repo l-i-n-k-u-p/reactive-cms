@@ -52,6 +52,11 @@ const UserModel = new Schema({
     ref: 'user',
     required: true,
   },
+  user_locale: {
+    type: String,
+    required: true,
+    default: 'en',
+  },
 }, {
   collection: 'user'
 })

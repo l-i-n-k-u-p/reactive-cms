@@ -137,6 +137,7 @@ const getByID = async (id) => {
           user_role_ref: true,
           user_role: true,
           user_resource: true,
+          user_locale: true,
         },
       },
       {
