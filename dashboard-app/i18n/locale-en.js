@@ -54,6 +54,8 @@ const messages = {
   results: 'results',
   without: 'without',
   development: 'development',
+  of: 'of',
+  to: 'to',
   'add page': 'add page',
   'add post': 'add post',
   'add media': 'add media',
@@ -63,6 +65,7 @@ const messages = {
   'bulk actions': 'bulk actions',
   'without results': 'without results',
   'user name': 'user name',
+  'rows from': 'rows from',
 }
 
 export default messages

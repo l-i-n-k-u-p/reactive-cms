@@ -1,6 +1,6 @@
 const messages = {
   dashboard: 'tablero',
-  pages: 'paginas',
+  pages: 'páginas',
   posts: 'entradas',
   media: 'medios',
   users: 'usuarios',
@@ -54,6 +54,8 @@ const messages = {
   results: 'resultados',
   without: 'sin',
   development: 'desarrollo',
+  of: 'de',
+  to: 'a',
   'add page': 'agregar página',
   'add post': 'agregar entrada',
   'add media': 'agregar archivo',
@@ -63,6 +65,7 @@ const messages = {
   'bulk actions': 'actiones masivas',
   'without results': 'sin resultados',
   'user name': 'nombre de usuario',
+  'rows from': 'filas',
 }
 
 export default messages
