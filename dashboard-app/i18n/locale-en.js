@@ -62,6 +62,7 @@ const messages = {
   'add role': 'add role',
   'bulk actions': 'bulk actions',
   'without results': 'without results',
+  'user name': 'user name',
 }
 
 export default messages

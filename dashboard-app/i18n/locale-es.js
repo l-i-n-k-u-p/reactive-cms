@@ -62,6 +62,7 @@ const messages = {
   'add role': 'agregar papel',
   'bulk actions': 'actiones masivas',
   'without results': 'sin resultados',
+  'user name': 'nombre de usuario',
 }
 
 export default messages
