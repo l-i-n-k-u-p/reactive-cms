@@ -46,7 +46,7 @@
             <i class="material-icons icon">
               {{ itemChildren.icon }}
             </i>
-            {{ itemChildren.title }}
+            {{ $t(itemChildren.title) }}
           </router-link>
         </div>
         <div id="menu-footer"></div>
@@ -95,7 +95,7 @@ export default {
           expanded: false,
           children: [
             {
-              title: 'Add Page',
+              title: 'add page',
               name: 'new-page',
               icon: 'add',
               uuid: this.$uuid.v1(),
@@ -113,7 +113,7 @@ export default {
           expanded: false,
           children: [
             {
-              title: 'Add Post',
+              title: 'add post',
               name: 'new-post',
               icon: 'add',
               uuid: this.$uuid.v1(),
@@ -131,7 +131,7 @@ export default {
           expanded: false,
           children: [
             {
-              title: 'Add Media',
+              title: 'add media',
               name: 'new-media',
               icon: 'add',
               uuid: this.$uuid.v1(),
@@ -149,7 +149,7 @@ export default {
           expanded: false,
           children: [
             {
-              title: 'Add User',
+              title: 'add user',
               name: 'new-user',
               icon: 'add',
               uuid: this.$uuid.v1(),
@@ -167,7 +167,7 @@ export default {
           expanded: false,
           children: [
             {
-              title: 'Add View',
+              title: 'add view',
               name: 'new-view',
               icon: 'add',
               uuid: this.$uuid.v1(),
@@ -185,7 +185,7 @@ export default {
           expanded: false,
           children: [
             {
-              title: 'Add Role',
+              title: 'add role',
               name: 'new-role',
               icon: 'add',
               uuid: this.$uuid.v1(),

@@ -34,7 +34,7 @@
         </i>
         <input
           type="text"
-          placeholder="Search"
+          v-bind:placeholder="$t('search')"
           v-model="searchValue"
           v-on:focus="onChangeSearchValueThrottle"
         />
@@ -47,7 +47,7 @@
             class="no-results"
             v-if="!searchItems.models.length"
             >
-            Without Results
+            {{ $t('without results') }}
           </div>
           <div
             id="search-results"

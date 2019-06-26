@@ -127,7 +127,7 @@
           v-bind:onSelectOption="onSelectLocale"
           v-bind:selectOptions="localeOptions"
           openInTop="true"
-          helperMessage="Select one language"
+          helperMessage="Select a language"
         >
         </FormDropdownSelect>
         <div class="date-wrapper">
