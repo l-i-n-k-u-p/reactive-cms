@@ -6,7 +6,7 @@
       v-click-outside="clickOutsite"
     >
       <label id="title">
-        {{ label + ':' }}
+        {{ $t(label) + ':' }}
       </label>
       <label>
         {{ getOptionName() }}
@@ -25,7 +25,7 @@
             v-for="(option, index) in selectOptions"
             v-on:click="onSelect(index)"
           >
-            {{ option.name }}
+            {{ $t(option.name) }}
           </div>
         </VuePerfectScrollbar>
       </div>
@@ -33,12 +33,12 @@
     <label
       v-show="errorMessage"
       id="input-error-message">
-      {{ errorMessage }}
+      {{ $t(errorMessage) }}
     </label>
     <label
       v-show="!errorMessage"
       id="input-helper-message">
-      {{ helperMessage }}
+      {{ $t(helperMessage) }}
     </label>
   </div>
 </template>

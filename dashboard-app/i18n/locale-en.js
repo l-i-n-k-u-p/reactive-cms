@@ -56,6 +56,9 @@ const messages = {
   development: 'development',
   of: 'of',
   to: 'to',
+  cancel: 'cancel',
+  accept: 'accept',
+  close: 'close',
   'add page': 'add page',
   'add post': 'add post',
   'add media': 'add media',
@@ -66,6 +69,9 @@ const messages = {
   'without results': 'without results',
   'user name': 'user name',
   'rows from': 'rows from',
+  'Do you want delete this page?': 'Do you want delete this page? ',
+  'This action will delete this page': 'This action will delete this page',
+  'user language': 'user language',
 }
 
 export default messages

@@ -56,6 +56,9 @@ const messages = {
   development: 'desarrollo',
   of: 'de',
   to: 'a',
+  cancel: 'cancelar',
+  accept: 'aceptar',
+  close: 'cerrar',
   'add page': 'agregar página',
   'add post': 'agregar entrada',
   'add media': 'agregar archivo',
@@ -66,6 +69,9 @@ const messages = {
   'without results': 'sin resultados',
   'user name': 'nombre de usuario',
   'rows from': 'filas',
+  'Do you want delete this page?': '¿Quieres borrar esta página?',
+  'This action will delete this page': 'Esta acción borrará esta página',
+  'user language': 'Idioma de usuario',
 }
 
 export default messages

@@ -1,10 +1,10 @@
 <template lang="html">
   <div id="gallery-wrapper">
     <h2>
-      {{ title }}
+      {{ $t(title) }}
     </h2>
     <p id="gallery-description">
-      {{ description }}
+      {{ $t(description) }}
     </p>
     <div id="items-wrapper">
       <div

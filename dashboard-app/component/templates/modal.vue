@@ -2,10 +2,10 @@
   <div id="modal-box-wrapper">
     <div id="modal-box-content">
       <div id="modal-title">
-        {{ modalTitle }}
+        {{ $t(modalTitle) }}
       </div>
       <p id="modal-description">
-        {{ modalDescription }}
+        {{ $t(modalDescription) }}
       </p>
       <div id="content-wrapper">
         <div
@@ -18,20 +18,20 @@
             v-bind:currentValue="item.value"
           />
           <p class="item-name">
-            {{ item.name }}
+            {{ $t(item.name) }}
           </p>
         </div>
       </div>
       <div id="modal-buttons-wrapper">
         <Button buttonIcon="clear" v-bind:buttonAction="cancelAction">
-          Cancel
+          {{ $t('cancel') }}
         </Button>
         <Button
           buttonIcon="done"
           v-bind:buttonAction="onAcceptAction"
           style="margin-left: 5px;"
         >
-          Accept
+          {{ $t('accept') }}
         </Button>
       </div>
     </div>
