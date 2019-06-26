@@ -120,6 +120,16 @@
           disabled="true"
         >
         </InputText>
+        <FormDropdownSelect
+          class="dropdown-select"
+          label="User Language"
+          v-bind:initialIndexOption="userLocaleIndex"
+          v-bind:onSelectOption="onSelectLocale"
+          v-bind:selectOptions="localeOptions"
+          openInTop="true"
+          helperMessage="Select one language"
+        >
+        </FormDropdownSelect>
         <div class="date-wrapper">
           {{ userDate }}
         </div>
@@ -143,6 +153,7 @@ import Button from './templates/button.vue'
 import InputText from './templates/input-text.vue'
 import NavigationButtons from './templates/navigation-buttons.vue'
 import LoadingBar from './templates/loading-bar.vue'
+import FormDropdownSelect from './templates/form-dropdown-select.vue'
 
 export default {
   data() {
@@ -167,6 +178,8 @@ export default {
         onMediaSelect: this.onMediaAvatarSelect,
       },
       isLoading: false,
+      userLocaleIndex: null,
+      localeOptions: [],
     }
   },
   components: {
@@ -175,6 +188,7 @@ export default {
     InputText,
     NavigationButtons,
     LoadingBar,
+    FormDropdownSelect,
   },
   created() {
     this.getUserData()
@@ -185,6 +199,8 @@ export default {
       this.user.on('change', ({ attribute, value }) => {
         if (attribute === 'user_registration_date')
           this.setUserFormatDate()
+        if (attribute === 'user_locale')
+          this.setInitialLocations()
       })
     },
     onSetNewPassword: function(propName, value) {
@@ -208,6 +224,7 @@ export default {
             return
           }
           this.setUserFormatDate()
+          this.setInitialLocations()
         })
         .catch(err => {
           this.isLoading = false
@@ -296,6 +313,31 @@ export default {
     },
     setUserFormatDate: function() {
       this.userDate = moment(this.user.get('user_registration_date')).format('MMMM Do YYYY, h:mm:ss a')
+    },
+    setInitialLocations: function() {
+      this.localeOptions = []
+      let locales = Object.keys(this.$i18n.messages)
+      for (let locale of locales)
+        this.localeOptions.push({
+          name: locale,
+          value: locale,
+        })
+      this.setInitialLocationIndex()
+    },
+    setInitialLocationIndex: function() {
+      let currentUserLocale = this.user.get('user_locale')
+      if (!currentUserLocale)
+        return
+
+      let locales = Object.keys(this.$i18n.messages)
+      for (let index in locales)
+        if (locales[index] === currentUserLocale)
+          this.userLocaleIndex = index
+    },
+    onSelectLocale: function(option) {
+      this.user.set({
+        'user_locale': option.value,
+      })
     },
   },
 }
@@ -452,7 +494,4 @@ h2 {
   text-align: right;
 }
 
-.dropdown-select {
-  margin-top: 10px;
-}
 </style>
