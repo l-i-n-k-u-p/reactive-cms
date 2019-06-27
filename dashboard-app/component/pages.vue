@@ -5,7 +5,7 @@
       <h2>{{ $t('pages') }}</h2>
       <div class="buttons-wrapper">
         <Dropdown
-          label="bulk actions"
+          label="Bulk actions"
           v-bind:onSelectOption="onSelectOption"
           v-bind:selectOptions="selectOptions"
         >
@@ -15,7 +15,7 @@
           v-bind:buttonAction="openNewPageForm"
           style="margin-left: 5px;"
         >
-          {{ $t('add page') }}
+          {{ $t('Add Page') }}
         </Button>
       </div>
     </div>
@@ -38,10 +38,10 @@
     </BoxWrapper>
     <div class="navigation-wrapper">
       <div class="data">
-        {{ $t('rows from') }} {{ itemsSkipped + 1 }} {{ $t('to') }}
+        {{ $t('Rows from') }} {{ itemsSkipped + 1 }} {{ $t('to') }}
         {{ itemsSkipped + pages.models.length }} {{ $t('of') }} {{ totalItems }}
       </div>
-      <div class="data">{{ $t('page') }} {{ currentPage }} {{ $t('of') }} {{ totalPages }}</div>
+      <div class="data">{{ $t('Page') }} {{ currentPage }} {{ $t('of') }} {{ totalPages }}</div>
       <ButtonIcon
         buttonIcon="navigate_before"
         v-bind:buttonAction="navigationBefore"
