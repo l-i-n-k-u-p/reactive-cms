@@ -34,7 +34,7 @@
         </i>
         <input
           type="text"
-          v-bind:placeholder="$t('search')"
+          v-bind:placeholder="$t('Search')"
           v-model="searchValue"
           v-on:focus="onChangeSearchValueThrottle"
         />

@@ -51,7 +51,7 @@ const messages = {
   sign: 'firmar',
   out: 'afuera',
   operation: 'operación',
-  search: 'buscar',
+  Search: 'Buscar',
   results: 'resultados',
   without: 'sin',
   development: 'desarrollo',

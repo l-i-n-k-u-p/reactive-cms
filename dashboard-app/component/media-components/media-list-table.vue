@@ -12,16 +12,16 @@
               />
             </td>
             <td>
-              Image
+              {{ $t('image') }}
             </td>
             <td>
-              Media Title
+              {{ $t('title') }}
             </td>
             <td>
-              Media Original Name
+              {{ $t('name') }}
             </td>
             <td>
-              Media Date
+              {{ $t('Date') }}
             </td>
           </tr>
         </thead>
@@ -74,16 +74,16 @@
           <tr>
             <td></td>
             <td>
-              Image
+              {{ $t('image') }}
             </td>
             <td>
-              Media Title
+              {{ $t('title') }}
             </td>
             <td>
-              Media Original Name
+              {{ $t('name') }}
             </td>
             <td>
-              Media Date
+              {{ $t('Date') }}
             </td>
           </tr>
         </tfoot>
