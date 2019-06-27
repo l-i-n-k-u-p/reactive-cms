@@ -2,17 +2,17 @@
   <div>
     <div class="header">
       <NavigationButtons />
-      <h2>Users</h2>
+      <h2>{{ $t('users') }}</h2>
       <div class="buttons-wrapper">
         <Dropdown
-          label="Bulk Actions"
+          label="Bulk actions"
           v-bind:onSelectOption="onSelectOption"
           v-bind:selectOptions="selectOptions"
           style="margin-left: 5px;"
         >
         </Dropdown>
         <Button buttonIcon="add" v-bind:buttonAction="openNewUserForm">
-          Add User
+          {{ $t('Add User') }}
         </Button>
       </div>
     </div>
@@ -30,15 +30,17 @@
         v-bind:currentPage="currentPage"
         v-bind:totalPages="totalPages"
         v-bind:itemsSkipped="itemsSkipped"
-        v-bind:totalItems="totalUsers"
+        v-bind:totalItems="totalItems"
       />
     </BoxWrapper>
     <div class="navigation-wrapper">
       <div class="data">
-        Rows from {{ itemsSkipped + 1 }} to
-        {{ itemsSkipped + users.models.length }} of {{ totalUsers }}
+        {{ $t('Rows from') }} {{ itemsSkipped + 1 }} {{ $t('to') }}
+        {{ itemsSkipped + users.models.length }} {{ $t('of') }} {{ totalItems }}
       </div>
-      <div class="data">Page {{ currentPage }} of {{ totalPages }}</div>
+      <div class="data">
+        {{ $t('Page') }} {{ currentPage }} {{ $t('of') }} {{ totalPages }}
+      </div>
       <ButtonIcon
         buttonIcon="navigate_before"
         v-bind:buttonAction="navigationBefore"
@@ -70,19 +72,19 @@ export default {
       currentPage: this.$route.params.page,
       totalPages: 1,
       itemsSkipped: -1,
-      totalUsers: 0,
+      totalItems: 0,
       itemsSelected: {},
       selectOptions: [
         {
-          name: 'Activate',
+          name: 'activate',
           value: 'activate',
         },
         {
-          name: 'Deactivate',
+          name: 'deactivate',
           value: 'deactivate',
         },
         {
-          name: 'Delete',
+          name: 'delete',
           value: 'delete',
         },
       ],
@@ -115,7 +117,7 @@ export default {
           this.isLoading = false
           this.totalPages = data.getData().total_pages
           this.itemsSkipped = data.getData().items_skipped
-          this.totalUsers = data.getData().total_items
+          this.totalItems = data.getData().total_items
         })
         .catch(err => {
           this.isLoading = false
