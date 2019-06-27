@@ -12,13 +12,13 @@
               />
             </td>
             <td>
-              Image
+              {{ $t('image') }}
             </td>
             <td>
-              View Name
+              {{ $t('Name') }}
             </td>
             <td>
-              View Description
+              {{ $t('description') }}
             </td>
           </tr>
         </thead>
@@ -60,13 +60,13 @@
           <tr>
             <td></td>
             <td>
-              Image
+              {{ $t('image') }}
             </td>
             <td>
-              View Name
+              {{ $t('Name') }}
             </td>
             <td>
-              View Description
+              {{ $t('description') }}
             </td>
           </tr>
         </tfoot>

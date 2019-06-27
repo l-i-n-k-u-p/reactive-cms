@@ -41,7 +41,9 @@
         {{ $t('Rows from') }} {{ itemsSkipped + 1 }} {{ $t('to') }}
         {{ itemsSkipped + posts.models.length }} {{ $t('of') }} {{ totalItems }}
       </div>
-      <div class="data">{{ $t('Page') }} {{ currentPage }} {{ $t('of') }} {{ totalPages }}</div>
+      <div class="data">
+        {{ $t('Page') }} {{ currentPage }} {{ $t('of') }} {{ totalPages }}
+      </div>
       <ButtonIcon
         buttonIcon="navigate_before"
         v-bind:buttonAction="navigationBefore"
