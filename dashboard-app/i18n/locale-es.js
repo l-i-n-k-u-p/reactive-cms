@@ -73,6 +73,8 @@ const messages = {
   'Do you want delete this page?': '¿Quieres borrar esta página?',
   'This action will delete this page': 'Esta acción borrará esta página',
   'User language': 'Idioma de usuario',
+  'User Profile': 'Perfil del usuario',
+  'Sign Out': 'Desconectar',
 }
 
 export default messages

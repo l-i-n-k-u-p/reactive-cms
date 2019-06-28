@@ -47,7 +47,7 @@
             class="no-results"
             v-if="!searchItems.models.length"
             >
-            {{ $t('without results') }}
+            {{ $t('Without results') }}
           </div>
           <div
             id="search-results"
@@ -173,7 +173,7 @@
                 <i class="material-icons option-icon">
                   person
                 </i>
-                User Profile
+                {{ $t('User Profile') }}
               </div>
               <a
                 class="option"
@@ -182,7 +182,7 @@
                 <i class="material-icons option-icon">
                   input
                 </i>
-                Sign Out
+                {{ $t('Sign Out') }}
               </a>
             </div>
           </div>
