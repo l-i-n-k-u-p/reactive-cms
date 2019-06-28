@@ -2,10 +2,10 @@
   <div class="login-box-wrapper">
     <div class="box-content">
       <div class="title">
-        LOGIN
+        {{ $t('Login') }}
       </div>
       <p>
-        {{ loginErrorMessage }}
+        {{ $t(loginErrorMessage) }}
       </p>
       <div class="form-wrapper">
         <InputText
@@ -34,7 +34,7 @@
           v-bind:buttonAction="acceptAction"
           class="button"
         >
-          enter
+          {{ $t('Enter') }}
         </Button>
       </div>
     </div>

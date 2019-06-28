@@ -2,11 +2,15 @@
   <div class="error-wrapper">
     <div class="header">
       <NavigationButtons />
-      <h2>Resource Not Found</h2>
+      <h2>
+        {{ $t('Resource not found') }}
+      </h2>
     </div>
     <BoxWrapper>
       <div class="content-wrapper">
-        <h3>RESOURCE NOT FOUND OR YOU DON'T HAVE PERMISSIONS TO SEE THIS CONTENT</h3>
+        <h3>
+          {{ $t('RESOURCE NOT FOUND OR YOU DON\'T HAVE PERMISSIONS TO SEE THIS CONTENT') }}
+        </h3>
       </div>
     </BoxWrapper>
   </div>

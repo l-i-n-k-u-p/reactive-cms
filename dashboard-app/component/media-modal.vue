@@ -4,23 +4,23 @@
       <LoadingBar v-if="isLoading"/>
       <div class="box-content">
         <div class="header">
-          <h2>{{ modalTitle }}</h2>
+          <h2>{{ $t(modalTitle) }}</h2>
           <p id="modal-description">
-            {{ modalDescription }}
+            {{ $t(modalDescription) }}
           </p>
           <div class="navgation-buttons">
             <Button
               buttonIcon="photo_library"
               v-bind:buttonAction="activeLibrary"
             >
-              Library
+              {{ $t('Library') }}
             </Button>
             <Button
               buttonIcon="cloud_upload"
               v-bind:buttonAction="activeUpload"
               style="margin-left: 5px;"
             >
-              Upload
+              {{ $t('Upload') }}
             </Button>
           </div>
         </div>
@@ -55,7 +55,7 @@
             <div class="dropzone" ref="dropzone">
               <div>
                 <p class="upload-description">
-                  Choose a file or drag it here
+                  {{ $t('Choose a file or drag it here') }}
                 </p>
                 <p class="upload-media-name">
                   {{ mediaName }}
@@ -105,7 +105,7 @@
               v-bind:buttonAction="closeMediaModal"
               style="align-self: flex-end;"
               >
-              Cancel
+              {{ $t('Cancel') }}
             </Button>
             <Button
               v-if="activeTab === 0"
@@ -113,7 +113,7 @@
               v-bind:buttonAction="selectMedia"
               style="margin-left: 5px; align-self: flex-end;"
             >
-              Accept
+              {{ $t('Accept') }}
             </Button>
           </div>
         </div>
