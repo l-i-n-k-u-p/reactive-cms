@@ -3,7 +3,7 @@
     <div class="header">
       <NavigationButtons/>
       <h2>
-        Create media
+        {{ $t('Create media') }}
       </h2>
     </div>
     <LoadingBar v-if="isLoading"/>
@@ -17,7 +17,7 @@
           ref="dropzone">
           <div>
             <p class="description">
-              Choose a file or drag it here
+              {{ $t('Choose a file or drag it here') }}
             </p>
             <p class="media-name">
               {{ mediaName }}
@@ -38,7 +38,7 @@
       <div class="content-wrapper">
         <InputText
           class="input"
-          inputName="Media Title"
+          inputName="Title"
           v-bind:inputValue="mediaTitle"
           v-bind:onChangeValue="onChangeInputValue"
           propName=""
@@ -50,14 +50,14 @@
     </BoxWrapper>
     <div class="buttons-wrapper">
       <Button buttonIcon="close" v-bind:buttonAction="cancelCreateMedia">
-        Cancel
+        {{ $t('cancel') }}
       </Button>
       <Button
         buttonIcon="save"
         v-bind:buttonAction="createMedia"
         style="margin-left: 5px;"
       >
-        Create
+        {{ $t('create') }}
       </Button>
     </div>
   </div>

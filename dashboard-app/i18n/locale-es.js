@@ -98,6 +98,12 @@ const messages = {
   'Post detail': 'Detalle de entrada',
   'Do you want delete this post?': '¿Quieres borrar esta entrada?',
   'This action will delete this post': 'Esta acción borrará esta entrada',
+  'open': 'abrir',
+  'Media detail': 'Detalle de archivo',
+  'Do you want delete this media?': 'Quieres borrar este archivo',
+  'This action will delete this media': 'Esta acción borrará el archivo',
+  'Create media': 'Crear archivo',
+  'Choose a file or drag it here': 'Elija un archivo o arrástrelo aquí',
 }
 
 export default messages
