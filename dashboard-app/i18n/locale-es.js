@@ -87,6 +87,14 @@ const messages = {
   'This action will replate your current editor content': 'Esta acción reemplazará el contenido de tu editor actual',
   'Set Featured Image': 'Establecer imagen destacada',
   'none': 'ninguno',
+  'add page': 'agregar página',
+  'add post': 'agregar entrada',
+  'add media': 'agregar archivo',
+  'add user': 'agregar usuario',
+  'add view': 'agregar vista',
+  'add role': 'agregar papel',
+  'New page': 'Nueva página',
+  'create': 'crear',
 }
 
 export default messages
