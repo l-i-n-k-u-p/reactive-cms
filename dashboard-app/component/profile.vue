@@ -3,7 +3,7 @@
     <div class="header">
       <NavigationButtons/>
       <h2>
-        Profile
+        {{ $t('Profile') }}
       </h2>
     </div>
     <LoadingBar v-if="isLoading"/>
@@ -15,7 +15,7 @@
           v-bind:buttonAction="removeMedia"
           buttonColor="#f0f0f0"
         >
-          Remove Image
+          {{ $t('Remove image') }}
         </Button>
         <Button
           buttonIcon="image"
@@ -23,7 +23,7 @@
           buttonColor="#f0f0f0"
           style="margin-left: 5px;"
         >
-          Set Image
+          {{ $t('Set image') }}
         </Button>
       </div>
       <div
@@ -60,7 +60,7 @@
               v-bind:buttonAction="removeMediaAvatar"
               buttonColor="#f0f0f0"
             >
-              Remove Avatar
+              {{ $t('Remove avatar') }}
             </Button>
             <Button
               class="buttom-bottom"
@@ -68,14 +68,14 @@
               v-bind:buttonAction="openMediaAvatarModal"
               buttonColor="#f0f0f0"
             >
-              Set Avatar
+              {{ $t('Set avatar') }}
             </Button>
           </div>
         </div>
       </div>
       <div class="form-wrapper">
         <InputText
-          inputName="User First Name"
+          inputName="First name"
           v-bind:inputValue="user.get('user_first_name')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="user_first_name"
@@ -84,20 +84,20 @@
         >
         </InputText>
         <InputText
-          inputName="User Last Name"
+          inputName="Last name"
           v-bind:inputValue="user.get('user_last_name')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="user_last_name"
         >
         </InputText>
         <InputText
-          inputName="User Name"
+          inputName="User name"
           v-bind:inputValue="user.get('user_name')"
           disabled="true"
         >
         </InputText>
         <InputText
-          inputName="User New Password"
+          inputName="New password"
           v-bind:inputValue="newPassword"
           v-bind:onChangeValue="onSetNewPassword"
           propName=""
@@ -106,23 +106,23 @@
         >
         </InputText>
         <InputText
-          inputName="User Email"
+          inputName="Email"
           v-bind:inputValue="user.get('user_email')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="user_email"
           v-bind:errorMessage="user.errors.user_email"
-          helperMessage="Example: eduardobc.88@gmail.com"
+          helperMessage="Example: user@reactivecms.com"
         >
         </InputText>
         <InputText
-          inputName="User Role"
+          inputName="Role"
           v-bind:inputValue="user.get('user_role').role_name"
           disabled="true"
         >
         </InputText>
         <FormDropdownSelect
           class="dropdown-select"
-          label="User Language"
+          label="Language"
           v-bind:initialIndexOption="userLocaleIndex"
           v-bind:onSelectOption="onSelectLocale"
           v-bind:selectOptions="localeOptions"
@@ -141,7 +141,7 @@
         v-bind:buttonAction="updateUser"
         style="margin-left: 5px;"
       >
-        Update
+        {{ $t('Update') }}
       </Button>
     </div>
   </div>
@@ -357,7 +357,6 @@ h2 {
   font-size: 13px;
   font-weight: 500;
   margin: 0;
-  text-transform: capitalize;
 }
 
 .buttons-wrapper {

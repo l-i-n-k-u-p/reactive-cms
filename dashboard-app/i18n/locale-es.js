@@ -119,6 +119,10 @@ const messages = {
   'Create view': 'Crear vista',
   'Current resources': 'Recursos actuales',
   'Resources': 'Recursos',
+  'Language': 'Lenguaje',
+  'Select a language': 'Selecciona un lenguaje',
+  'Example: user@reactivecms.com': 'Ejemplo: user@reactivecms.com',
+  'Name': 'Nombre',
 }
 
 export default messages
