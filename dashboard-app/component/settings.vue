@@ -2,14 +2,16 @@
   <div class="settings-wrapper">
     <div class="header">
       <NavigationButtons />
-      <h2>Settings</h2>
+      <h2>
+        {{ $t('Settings') }}
+      </h2>
     </div>
     <LoadingBar v-if="isLoading"/>
     <BoxWrapper>
       <div id="content-wrapper">
-        <h3>Dashboard</h3>
+        <h3>{{ $t('Dashboard') }}</h3>
         <InputText
-          inputName="Dashboard Title"
+          inputName="Dashboard title"
           v-bind:inputValue="settings.get('setting_page_title')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="setting_page_title"
@@ -18,7 +20,7 @@
         >
         </InputText>
         <InputText
-          inputName="Dashboard Items Peer Page"
+          inputName="Items by page"
           v-bind:inputValue="settings.get('setting_items_peer_page')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="setting_items_peer_page"
@@ -27,9 +29,9 @@
           helperMessage="Number of items by page from 1 to 40"
         >
         </InputText>
-        <h3>Site</h3>
+        <h3>{{ $t('Site') }}</h3>
         <InputText
-          inputName="Site Title"
+          inputName="Site title"
           v-bind:inputValue="site.get('site_name')"
           v-bind:onChangeValue="onChangeInputSiteValue"
           propName="site_name"
@@ -38,7 +40,7 @@
         >
         </InputText>
         <InputText
-          inputName="Site Items Peer Page"
+          inputName="Items by page"
           v-bind:inputValue="site.get('site_items_peer_page')"
           v-bind:onChangeValue="onChangeInputSiteValue"
           propName="site_items_peer_page"
@@ -67,7 +69,7 @@
         </FormDropdownSelect>
         <FormDropdownSelect
           class="dropdown-select"
-          label="Listview Posts Template"
+          label="Listview posts template"
           v-bind:initialIndexOption="templatePostsIndex"
           v-bind:onSelectOption="onSelectPostsTemplate"
           v-bind:selectOptions="templateFileOptions"
@@ -91,7 +93,7 @@
         v-bind:buttonAction="saveSetting"
         style="margin-left: 10px;"
       >
-        Update
+        {{ $t('Update') }}
       </Button>
     </div>
   </div>
@@ -405,7 +407,6 @@ h2 {
   font-size: 13px;
   font-weight: 500;
   margin: 0;
-  text-transform: capitalize;
 }
 
 h3 {

@@ -139,7 +139,6 @@ label {
 
 .select-wrapper #title {
   margin-right: 5px;
-  text-transform: capitalize;
 }
 
 .select-wrapper .icon {

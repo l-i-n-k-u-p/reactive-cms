@@ -123,6 +123,17 @@ const messages = {
   'Select a language': 'Selecciona un lenguaje',
   'Example: user@reactivecms.com': 'Ejemplo: user@reactivecms.com',
   'Name': 'Nombre',
+  'Settings': 'Configuración',
+  'Site': 'Sitio',
+  'Dashboard title': 'Título del dashboard',
+  'Items by page': 'Elementos por página',
+  'Site title': 'Título del sitio',
+  'Site URL': 'URL del sitio',
+  'Home page template': 'Template de página de inicio',
+  'Listview post template': 'Template de archivo de entradas',
+  'Theme': 'Tema',
+  'Number of items by page from 1 to 40': 'Número de artículos por página de 1 - 40',
+  'Example: https://www.reactive-web.com/': 'Ejemplo: https://www.reactive-web.com/',
 }
 
 export default messages
