@@ -47,14 +47,13 @@
           <Button
               buttonIcon="remove"
               v-bind:buttonAction="showConfirmationModal">
-              {{ $t('delete') }}
+              {{ $t('Delete') }}
           </Button>
           <Button
               buttonIcon="save"
               v-bind:buttonAction="updateMedia"
               style="margin-left: 5px;">
-              Update
-              {{ $t('update') }}
+              {{ $t('Update') }}
           </Button>
       </div>
   </div>

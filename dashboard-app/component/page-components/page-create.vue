@@ -79,14 +79,14 @@
         v-bind:buttonAction="cancelCreate"
         style="margin-left: 5px;"
       >
-        {{ $t('cancel') }}
+        {{ $t('Cancel') }}
       </Button>
       <Button
         buttonIcon="save"
         v-bind:buttonAction="createPage"
         style="margin-left: 5px;"
       >
-        {{ $t('create') }}
+        {{ $t('Create') }}
       </Button>
     </div>
   </div>

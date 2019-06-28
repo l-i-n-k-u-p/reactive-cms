@@ -50,14 +50,14 @@
     </BoxWrapper>
     <div class="buttons-wrapper">
       <Button buttonIcon="close" v-bind:buttonAction="cancelCreateMedia">
-        {{ $t('cancel') }}
+        {{ $t('Cancel') }}
       </Button>
       <Button
         buttonIcon="save"
         v-bind:buttonAction="createMedia"
         style="margin-left: 5px;"
       >
-        {{ $t('create') }}
+        {{ $t('Create') }}
       </Button>
     </div>
   </div>

@@ -82,14 +82,14 @@
         v-bind:buttonAction="showConfirmationModal"
         style="margin-left: 5px;"
       >
-        {{ $t('delete') }}
+        {{ $t('Delete') }}
       </Button>
       <Button
         buttonIcon="save"
         v-bind:buttonAction="updatePost"
         style="margin-left: 5px;"
       >
-        {{ $t('update') }}
+        {{ $t('Update') }}
       </Button>
     </div>
   </div>
