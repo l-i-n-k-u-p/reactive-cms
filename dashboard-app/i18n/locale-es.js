@@ -114,6 +114,9 @@ const messages = {
   'Password': 'Contraseña',
   'Set avatar': 'Poner imagen',
   'Remove avatar': 'Remove imagen',
+  'View detail': 'Detalle de vista',
+  'At least 2 characters without spaces': 'Al menos 2 caracteres sin espacios',
+  'Create view': 'Crear vista',
 }
 
 export default messages

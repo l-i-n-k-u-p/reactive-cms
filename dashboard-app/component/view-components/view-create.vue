@@ -3,7 +3,7 @@
     <div class="header">
       <NavigationButtons/>
       <h2>
-        Create view
+        {{ $t('Create view') }}
       </h2>
     </div>
     <LoadingBar v-if="isLoading"/>
@@ -36,14 +36,14 @@
         buttonIcon="close"
         v-bind:buttonAction="cancelCreate"
       >
-        Cancel
+        {{ $t('Cancel') }}
       </Button>
       <Button
         buttonIcon="save"
         v-bind:buttonAction="createView"
         style="margin-left: 5px;"
       >
-        Create
+        {{ $t('Create') }}
       </Button>
     </div>
   </div>
