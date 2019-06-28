@@ -1,33 +1,45 @@
 <template lang="html">
-  <div
-    v-bind:class="{ 'select-wrapper': true, open: show }"
-    v-on:click="showOptions"
-    v-click-outside="clickOutsite"
-  >
-    <label id="title">
-      {{ label + ':' }}
-    </label>
-    <label>
-      {{ getOptionName() }}
-    </label>
+  <div>
     <div
-      id="select-options"
-      v-bind:class="{
-        'top': openInTop,
-        'bottom': !openInTop,
-      }"
-      v-if="show"
-      >
-      <VuePerfectScrollbar class="scroll-area">
-        <div
-          class="item"
-          v-for="(option, index) in selectOptions"
-          v-on:click="onSelect(index)"
+      v-bind:class="{ 'select-wrapper': true, open: show }"
+      v-on:click="showOptions"
+      v-click-outside="clickOutsite"
+    >
+      <label id="title">
+        {{ $t(label) + ':' }}
+      </label>
+      <label>
+        {{ getOptionName() }}
+      </label>
+      <div
+        id="select-options"
+        v-bind:class="{
+          'top': openInTop,
+          'bottom': !openInTop,
+        }"
+        v-if="show"
         >
-          {{ option.name }}
-        </div>
-      </VuePerfectScrollbar>
+        <VuePerfectScrollbar class="scroll-area">
+          <div
+            class="item"
+            v-for="(option, index) in selectOptions"
+            v-on:click="onSelect(index)"
+          >
+            {{ $t(option.name) }}
+          </div>
+        </VuePerfectScrollbar>
+      </div>
     </div>
+    <label
+      v-show="errorMessage"
+      id="input-error-message">
+      {{ $t(errorMessage) }}
+    </label>
+    <label
+      v-show="!errorMessage"
+      id="input-helper-message">
+      {{ $t(helperMessage) }}
+    </label>
   </div>
 </template>
 
@@ -42,6 +54,8 @@ export default {
     'initialIndexOption',
     'label',
     'openInTop',
+    'helperMessage',
+    'errorMessage',
   ],
   data() {
     return {
@@ -125,7 +139,6 @@ label {
 
 .select-wrapper #title {
   margin-right: 5px;
-  text-transform: capitalize;
 }
 
 .select-wrapper .icon {
@@ -171,5 +184,25 @@ label {
 
 .select-wrapper.open #title {
   color: #193a99;
+}
+
+#input-error-message, #input-helper-message {
+  font-size: 12px;
+  font-weight: 400;
+  position: relative;
+  top: 0;
+  width: 100%;
+}
+
+#input-error-message {
+  color: #ff4949;
+}
+
+#input-helper-message {
+  color: #777;
+}
+
+.input-wrapper #input-title.error {
+  color: #ff4949;
 }
 </style>

@@ -2,10 +2,10 @@
   <div>
     <div class="header">
       <NavigationButtons />
-      <h2>Media</h2>
+      <h2>{{ $t('media') }}</h2>
       <div class="buttons-wrapper">
         <Dropdown
-          label="Bulk Actions"
+          label="Bulk actions"
           v-bind:onSelectOption="onSelectOption"
           v-bind:selectOptions="selectOptions"
         >
@@ -15,7 +15,7 @@
           v-bind:buttonAction="openNewMediaForm"
           style="margin-left: 5px;"
         >
-          Add Media
+          {{ $t('Add Media') }}
         </Button>
       </div>
     </div>
@@ -38,10 +38,12 @@
     </BoxWrapper>
     <div class="navigation-wrapper">
       <div class="data">
-        Rows from {{ itemsSkipped + 1 }} to
-        {{ itemsSkipped + mediaFiles.models.length }} of {{ totalItems }}
+        {{ $t('Rows from') }} {{ itemsSkipped + 1 }} {{ $t('to') }}
+        {{ itemsSkipped + mediaFiles.models.length }} {{ $t('of') }} {{ totalItems }}
       </div>
-      <div class="data">Page {{ currentPage }} of {{ totalPages }}</div>
+      <div class="data">
+        {{ $t('Page') }} {{ currentPage }} {{ $t('of') }} {{ totalPages }}
+      </div>
       <ButtonIcon
         buttonIcon="navigate_before"
         v-bind:buttonAction="navigationBefore"
@@ -77,7 +79,7 @@ export default {
       itemsSelected: {},
       selectOptions: [
         {
-          name: 'Delete',
+          name: 'delete',
           value: 'delete',
         },
       ],

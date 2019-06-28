@@ -10,7 +10,7 @@ const APP_CONFIG = {
   staticFilesPrefix: 'website',
   sessionMaxAge: 1000 * 60 * 60 * 24 * 3, // 3 days
   ipAddressToListen: '0.0.0.0', // 0.0.0.0 for docker container
-  domain: 'localhost', // localhost \ domain.com
+  domain: '192.168.1.74', // localhost \ ip address \ domain.com
   fastifyOptions: {
     http2: false,
     https: null,

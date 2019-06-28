@@ -9,7 +9,7 @@
     <label
       id="input-title"
       v-bind:class="{ 'error': errorMessage }">
-      {{ inputName }}
+      {{ $t(inputName) }}
     </label>
     <input
       v-bind:type="inputType"
@@ -22,12 +22,12 @@
     <label
       v-show="errorMessage"
       id="input-error-message">
-      {{ errorMessage }}
+      {{ $t(errorMessage) }}
     </label>
     <label
       v-show="!errorMessage"
       id="input-helper-message">
-      {{ helperMessage }}
+      {{ $t(helperMessage) }}
     </label>
   </div>
 </template>

@@ -23,21 +23,21 @@
       </div>
       <div class="buttons-wrapper">
         <Button buttonIcon="close" v-bind:buttonAction="onClose">
-          Close
+          {{ $t('close') }}
         </Button>
         <Button
           buttonIcon="delete"
           v-bind:buttonAction="onClickRemove"
           style="margin-left: 5px;"
         >
-          Remove
+          {{ $t('remove') }}
         </Button>
         <Button
           buttonIcon="done"
           v-bind:buttonAction="onClickSave"
           style="margin-left: 5px;"
         >
-          Accept
+          {{ $t('accept') }}
         </Button>
       </div>
     </div>

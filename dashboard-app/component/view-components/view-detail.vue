@@ -3,7 +3,7 @@
     <div class="header">
       <NavigationButtons/>
       <h2>
-        View Detail
+        {{ $t('View detail') }}
       </h2>
     </div>
     <LoadingBar v-if="isLoading"/>
@@ -11,16 +11,16 @@
       <div class="content-wrapper">
         <InputText
           class="input"
-          inputName="View Name"
+          inputName="Name"
           v-bind:inputValue="view.view_name"
           v-bind:onChangeValue="onChangeInputValue"
           propName="view_name"
           v-bind:errorMessage="view.errors.view_name"
-          helperMessage="At least 2 characters without spaces only 'word-word'"
+          helperMessage="At least 2 characters without spaces"
         />
         <InputText
           class="input"
-          inputName="View Description"
+          inputName="Description"
           v-bind:inputValue="view.view_description"
           v-bind:onChangeValue="onChangeInputValue"
           propName="view_description"
@@ -36,14 +36,14 @@
         buttonIcon="remove"
         v-bind:buttonAction="showConfirmationModal"
       >
-        Delete
+        {{ $t('Delete') }}
       </Button>
       <Button
         buttonIcon="save"
         v-bind:buttonAction="updateView"
         style="margin-left: 5px;"
       >
-        Update
+        {{ $t('Update') }}
       </Button>
     </div>
   </div>
@@ -186,7 +186,6 @@ h2 {
   font-size: 13px;
   font-weight: 500;
   margin: 0;
-  text-transform: capitalize;
 }
 
 .buttons-wrapper {

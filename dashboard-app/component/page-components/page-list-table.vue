@@ -12,16 +12,16 @@
               />
             </td>
             <td>
-              Image
+              {{ $t('image') }}
             </td>
             <td>
-              Page Title
+              {{ $t('title') }}
             </td>
             <td>
-              Page Date
+              {{ $t('date') }}
             </td>
             <td>
-              Page Status
+              {{ $t('status') }}
             </td>
           </tr>
         </thead>
@@ -64,23 +64,25 @@
                 {{ getMomentDate(page.get('page_date')) }}
               </p>
             </td>
-            <td v-on:click="onClickRow(page)">{{ page.get('page_status') }}</td>
+            <td v-on:click="onClickRow(page)">
+              {{ $t(page.get('page_status')) }}
+            </td>
           </tr>
         </tbody>
         <tfoot>
           <tr>
             <td></td>
             <td>
-              Image
+              {{ $t('image') }}
             </td>
             <td>
-              Page Title
+              {{ $t('title') }}
             </td>
             <td>
-              Page Date
+              {{ $t('date') }}
             </td>
             <td>
-              Page Status
+              {{ $t('status') }}
             </td>
           </tr>
         </tfoot>

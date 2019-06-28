@@ -12,16 +12,16 @@
               />
             </td>
             <td>
-              Image
+              {{ $t('image') }}
             </td>
             <td>
-              Post Title
+              {{ $t('title') }}
             </td>
             <td>
-              Post Date
+              {{ $t('date') }}
             </td>
             <td>
-              Post Status
+              {{ $t('status') }}
             </td>
           </tr>
         </thead>
@@ -65,7 +65,7 @@
             </td>
             <td v-on:click="onClickRow(post)">
               <p class="item-text">
-                {{ post.post_status }}
+                {{ $t(post.post_status) }}
               </p>
             </td>
           </tr>
@@ -74,16 +74,16 @@
           <tr>
             <td></td>
             <td>
-              Image
+              {{ $t('image') }}
             </td>
             <td>
-              Post Title
+              {{ $t('title') }}
             </td>
             <td>
-              Post Date
+              {{ $t('date') }}
             </td>
             <td>
-              Post Status
+              {{ $t('status') }}
             </td>
           </tr>
         </tfoot>

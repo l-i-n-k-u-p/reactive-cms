@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import VueAxios from 'vue-axios'
 import UUID from 'vue-uuid'
 import axios from 'axios'
+import VueI18n from 'vue-i18n'
 
 // NOTE: libraries
 import {
@@ -14,6 +15,8 @@ import {
   getCookie,
 } from './lib/lib'
 import SocketIO from './lib/socket-io'
+import localeEN from './i18n/locale-en'
+import localeES from './i18n/locale-es'
 // NOTE: directives
 import APP_SETTINGS from './app-settings'
 import GLOBAL_DIRECTIVES from './directive/global-directives.vue'
@@ -72,6 +75,7 @@ for (let directive of ACL_DIRECTIVES.directives)
 Vue.use(VueRouter)
 Vue.use(VueAxios, axios)
 Vue.use(UUID)
+Vue.use(VueI18n)
 Vue.prototype.$eventHub = new Vue()
 Vue.prototype.$models = {
   User: UserModel.model,
@@ -103,6 +107,15 @@ Vue.prototype.$aclReplaceVNode = aclReplaceVNode
 Vue.prototype.$aclUserCan = aclUserCan
 Vue.prototype.$getCookie = getCookie
 Vue.prototype.$socketIO = new SocketIO()
+
+const i18n = new VueI18n({
+  locale: 'en',
+  fallbackLocale: 'en',
+  messages: {
+    en: localeEN,
+    es: localeES,
+  },
+})
 
 const routes = [
   {
@@ -241,4 +254,9 @@ router.beforeResolve((to, from, next) => {
   })
 })
 
-new Vue(Vue.util.extend({ router }, App)).$mount('#app')
+const app = new Vue({
+  el: '#app',
+  i18n: i18n,
+  router: router,
+  render: h => h(App),
+})

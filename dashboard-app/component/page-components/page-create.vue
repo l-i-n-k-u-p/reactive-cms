@@ -3,7 +3,7 @@
     <div class="header">
       <NavigationButtons/>
       <h2>
-        Create page
+        {{ $t('New page') }}
       </h2>
     </div>
     <LoadingBar v-if="isLoading"/>
@@ -15,7 +15,7 @@
           v-bind:buttonAction="removeMedia"
           buttonColor="#f0f0f0"
         >
-          Remove Image
+          {{ $t('Remove image') }}
         </Button>
         <Button
           buttonIcon="update"
@@ -23,7 +23,7 @@
           buttonColor="#f0f0f0"
           style="margin-left: 5px;"
         >
-          Set Image
+          {{ $t('Set image') }}
         </Button>
       </div>
       <div
@@ -39,7 +39,7 @@
       <div class="content-wrapper">
         <InputText
           class="input"
-          inputName="Page Title"
+          inputName="Title"
           v-bind:inputValue="page.page_title"
           v-bind:onChangeValue="onChangeInputValue"
           propName="page_title"
@@ -57,7 +57,7 @@
     </BoxWrapper>
     <div class="buttons-wrapper">
       <DropdownSelect
-        label="Template"
+        label="template"
         v-bind:initialIndexOption="currentPageTemplateIndex"
         v-bind:onSelectOption="onSelectPageTemplateOption"
         v-bind:selectOptions="pageTemplateOptions"
@@ -66,7 +66,7 @@
       >
       </DropdownSelect>
       <DropdownSelect
-        label="Status"
+        label="status"
         initialIndexOption="0"
         v-bind:onSelectOption="onSelectOption"
         v-bind:selectOptions="selectOptions"
@@ -79,14 +79,14 @@
         v-bind:buttonAction="cancelCreate"
         style="margin-left: 5px;"
       >
-        Cancel
+        {{ $t('Cancel') }}
       </Button>
       <Button
         buttonIcon="save"
         v-bind:buttonAction="createPage"
         style="margin-left: 5px;"
       >
-        Create
+        {{ $t('Create') }}
       </Button>
     </div>
   </div>
@@ -110,11 +110,11 @@ export default {
       page_content: '',
       selectOptions: [
         {
-          name: 'Publish',
+          name: 'publish',
           value: 'publish',
         },
         {
-          name: 'Pending',
+          name: 'pending',
           value: 'pending',
         },
       ],

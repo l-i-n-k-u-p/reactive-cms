@@ -12,10 +12,10 @@
               />
             </td>
             <td>
-              Image
+              {{ $t('image') }}
             </td>
             <td>
-              Role Name
+              {{ $t('name') }}
             </td>
           </tr>
         </thead>
@@ -50,10 +50,10 @@
           <tr>
             <td></td>
             <td>
-              Image
+              {{ $t('image') }}
             </td>
             <td>
-              Role Name
+              {{ $t('name') }}
             </td>
           </tr>
         </tfoot>

@@ -61,6 +61,7 @@ class UserModel extends Model {
       user_role_ref: '',
       user_role: '',
       user_resource: '',
+      user_locale: '',
     }
   }
   mutations() {

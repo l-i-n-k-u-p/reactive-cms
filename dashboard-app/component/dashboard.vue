@@ -2,7 +2,7 @@
   <div class="settings-wrapper">
     <div class="header">
       <NavigationButtons />
-      <h2>Dashboard</h2>
+      <h2>{{ $t('dashboard') }}</h2>
     </div>
     <LoadingBar v-if="isLoading"/>
     <BoxWrapper
@@ -22,7 +22,7 @@
           <div class="section-wrapper" v-for="model in dashboard.models">
             <VuePerfectScrollbar class="scroll-area">
               <div class="model">
-                {{ model.get("model") }} - Operations: {{ model.get("total") }}
+                {{ $t(model.get('model')) }} - {{ $t('operations') }}: {{ model.get("total") }}
               </div>
               <div class="activity-item">
                 <div
@@ -31,7 +31,7 @@
                 >
                   <div>
                     <span class="tag">
-                      Operation:
+                      {{ $t('operation') }}:
                     </span>
                     {{ item.log_operation }}
                   </div>
@@ -43,13 +43,13 @@
                   </div>
                   <div>
                     <span class="tag">
-                      Name:
+                      {{ $t('name') }}:
                     </span>
                     {{ item.log_operation_data.media_original_name }}
                   </div>
                   <div>
                     <span class="tag">
-                      Date:
+                      {{ $t('date') }}:
                     </span>
                     {{ item.log_date }}
                   </div>
@@ -60,7 +60,7 @@
                 >
                   <div>
                     <span class="tag">
-                      Operation:
+                      {{ $t('operation') }}:
                     </span>
                     {{ item.log_operation }}
                   </div>
@@ -72,13 +72,13 @@
                   </div>
                   <div>
                     <span class="tag">
-                      Page Title:
+                      {{ $t('title') }}:
                     </span>
                     {{ item.log_operation_data.page_title }}
                   </div>
                   <div>
                     <span class="tag">
-                      Date:
+                      {{ $t('date') }}:
                     </span>
                     {{ item.log_date }}
                   </div>
@@ -89,7 +89,7 @@
                 >
                   <div>
                     <span class="tag">
-                      Operation:
+                      {{ $t('operation') }}:
                     </span>
                     {{ item.log_operation }}
                   </div>
@@ -101,13 +101,13 @@
                   </div>
                   <div>
                     <span class="tag">
-                      Post Title:
+                      {{ $t('title') }}:
                     </span>
                     {{ item.log_operation_data.post_title }}
                   </div>
                   <div>
                     <span class="tag">
-                      Date:
+                      {{ $t('date') }}:
                     </span>
                     {{ item.log_date }}
                   </div>
@@ -118,7 +118,7 @@
                 >
                   <div>
                     <span class="tag">
-                      Operation:
+                      {{ $t('operation') }}:
                     </span>
                     {{ item.log_operation }}
                   </div>
@@ -130,13 +130,13 @@
                   </div>
                   <div>
                     <span class="tag">
-                      User Name:
+                      {{ $t('user name') }}:
                     </span>
                     {{ item.log_operation_data.user_name }}
                   </div>
                   <div>
                     <span class="tag">
-                      Date:
+                      {{ $t('date') }}:
                     </span>
                     {{ item.log_date }}
                   </div>

@@ -12,22 +12,22 @@
               />
             </td>
             <td>
-              Image
+              {{ $t('image') }}
             </td>
             <td>
-              User Name
+              {{ $t('name') }}
             </td>
             <td>
-              User Email
+              {{ $t('email') }}
             </td>
             <td>
-              User Role
+              {{ $t('role') }}
             </td>
             <td>
-              User Registered
+              {{ $t('registered') }}
             </td>
             <td>
-              User Active
+              {{ $t('active') }}
             </td>
           </tr>
         </thead>
@@ -90,22 +90,22 @@
           <tr>
             <td></td>
             <td>
-              Image
+              {{ $t('image') }}
             </td>
             <td>
-              User Name
+              {{ $t('name') }}
             </td>
             <td>
-              User Email
+              {{ $t('email') }}
             </td>
             <td>
-              User Role
+              {{ $t('role') }}
             </td>
             <td>
-              User Registered
+              {{ $t('registered') }}
             </td>
             <td>
-              User Active
+              {{ $t('active') }}
             </td>
           </tr>
         </tfoot>

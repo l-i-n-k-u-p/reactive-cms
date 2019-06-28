@@ -4,7 +4,7 @@
       {{ linkIcon }}
     </i>
     <a v-bind:href="linkURL" class="link-url" :target="linkTarget">
-      {{ linkLabel }}
+      {{ $t(linkLabel) }}
     </a>
   </div>
 </template>

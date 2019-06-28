@@ -3,7 +3,7 @@
     <div class="header">
       <NavigationButtons/>
       <h2>
-        Page Detail
+        {{ $t('Page detail') }}
       </h2>
     </div>
     <LoadingBar v-if="isLoading"/>
@@ -15,7 +15,7 @@
           v-bind:buttonAction="removeMedia"
           buttonColor="#f0f0f0"
         >
-          Remove Image
+          {{ $t('Remove image') }}
         </Button>
         <Button
           buttonIcon="image"
@@ -23,7 +23,7 @@
           style="margin-left: 5px;"
           buttonColor="#f0f0f0"
         >
-          Set Image
+          {{ $t('Set image') }}
         </Button>
       </div>
       <div
@@ -49,7 +49,7 @@
         </div>
         <InputText
           class="input"
-          inputName="Page Title"
+          inputName="Title"
           v-bind:inputValue="page.page_title"
           v-bind:onChangeValue="onChangeInputValue"
           propName="page_title"
@@ -81,7 +81,7 @@
     </BoxWrapper>
     <div class="buttons-wrapper">
       <DropdownSelect
-        label="Template"
+        label="template"
         v-bind:initialIndexOption="currentPageTemplateIndex"
         v-bind:onSelectOption="onSelectPageTemplateOption"
         v-bind:selectOptions="pageTemplateOptions"
@@ -90,7 +90,7 @@
       >
       </DropdownSelect>
       <DropdownSelect
-        label="Status"
+        label="status"
         v-bind:initialIndexOption="pageStatusIndex"
         v-bind:onSelectOption="onSelectOption"
         v-bind:selectOptions="selectOptions"
@@ -103,14 +103,14 @@
         v-bind:buttonAction="showConfirmationModal"
         style="margin-left: 5px;"
       >
-        Delete
+        {{ $t('Delete') }}
       </Button>
       <Button
         buttonIcon="save"
         v-bind:buttonAction="updatePage"
         style="margin-left: 5px;"
       >
-        Update
+        {{ $t('Update') }}
       </Button>
     </div>
   </div>
@@ -137,11 +137,11 @@ export default {
       newVersionEditorContent: '',
       selectOptions: [
         {
-          name: 'Publish',
+          name: 'publish',
           value: 'publish',
         },
         {
-          name: 'Pending',
+          name: 'pending',
           value: 'pending',
         },
       ],
@@ -465,7 +465,6 @@ h2 {
   font-size: 13px;
   font-weight: 500;
   margin: 0;
-  text-transform: capitalize;
 }
 
 .buttons-wrapper {

@@ -3,7 +3,7 @@
     <div class="header">
       <NavigationButtons/>
       <h2>
-        Post detail
+        {{ $t('Post detail') }}
       </h2>
     </div>
     <LoadingBar v-if="isLoading"/>
@@ -15,7 +15,7 @@
           v-bind:buttonAction="removeMedia"
           buttonColor="#f0f0f0"
         >
-          Remove Image
+          {{ $t('Remove image') }}
         </Button>
         <Button
           buttonIcon="image"
@@ -23,7 +23,7 @@
           buttonColor="#f0f0f0"
           style="margin-left: 5px;"
         >
-          Set Image
+          {{ $t('Set image') }}
         </Button>
       </div>
       <div
@@ -48,7 +48,7 @@
         </div>
         <InputText
           class="input"
-          inputName="Post Title"
+          inputName="Title"
           v-bind:inputValue="post.get('post_title')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="post_title"
@@ -70,7 +70,7 @@
     </BoxWrapper>
     <div class="buttons-wrapper">
       <DropdownSelect
-        label="Status"
+        label="status"
         v-bind:initialIndexOption="postStatusIndex"
         v-bind:onSelectOption="onSelectOption"
         v-bind:selectOptions="selectOptions"
@@ -82,14 +82,14 @@
         v-bind:buttonAction="showConfirmationModal"
         style="margin-left: 5px;"
       >
-        Delete
+        {{ $t('Delete') }}
       </Button>
       <Button
         buttonIcon="save"
         v-bind:buttonAction="updatePost"
         style="margin-left: 5px;"
       >
-        Update
+        {{ $t('Update') }}
       </Button>
     </div>
   </div>
@@ -115,11 +115,11 @@ export default {
       newVersionEditorContent: '',
       selectOptions: [
         {
-          name: 'Publish',
+          name: 'publish',
           value: 'publish',
         },
         {
-          name: 'Pending',
+          name: 'pending',
           value: 'pending',
         },
       ],
@@ -321,7 +321,6 @@ h2 {
   font-size: 13px;
   font-weight: 500;
   margin: 0;
-  text-transform: capitalize;
 }
 
 .buttons-wrapper {

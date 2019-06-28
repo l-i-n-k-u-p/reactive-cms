@@ -4,7 +4,7 @@
           class="header">
           <NavigationButtons/>
           <h2>
-              Media detail
+              {{ $t('Media detail') }}
           </h2>
       </div>
       <LoadingBar v-if="isLoading"/>
@@ -24,13 +24,13 @@
             buttonColor="#f0f0f0"
             buttonIcon="cloud_download"
             v-bind:buttonAction="openMediaFile">
-            Open
+            {{ $t('open') }}
         </Button>
         <div
             class="content-wrapper">
             <InputText
                 class="input"
-                inputName="Media Title"
+                inputName="Title"
                 v-bind:inputValue="media.get('media_title')"
                 v-bind:onChangeValue="onChangeInputValue"
                 propName='media_title'
@@ -47,13 +47,13 @@
           <Button
               buttonIcon="remove"
               v-bind:buttonAction="showConfirmationModal">
-              Delete
+              {{ $t('Delete') }}
           </Button>
           <Button
               buttonIcon="save"
               v-bind:buttonAction="updateMedia"
               style="margin-left: 5px;">
-              Update
+              {{ $t('Update') }}
           </Button>
       </div>
   </div>
@@ -210,7 +210,6 @@ h2 {
   font-size: 13px;
   font-weight: 500;
   margin: 0;
-  text-transform: capitalize;
 }
 
 .buttons-wrapper {

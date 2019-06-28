@@ -34,7 +34,7 @@
         </i>
         <input
           type="text"
-          placeholder="Search"
+          v-bind:placeholder="$t('Search')"
           v-model="searchValue"
           v-on:focus="onChangeSearchValueThrottle"
         />
@@ -47,7 +47,7 @@
             class="no-results"
             v-if="!searchItems.models.length"
             >
-            Without Results
+            {{ $t('Without results') }}
           </div>
           <div
             id="search-results"
@@ -173,7 +173,7 @@
                 <i class="material-icons option-icon">
                   person
                 </i>
-                User Profile
+                {{ $t('User Profile') }}
               </div>
               <a
                 class="option"
@@ -182,7 +182,7 @@
                 <i class="material-icons option-icon">
                   input
                 </i>
-                Sign Out
+                {{ $t('Sign Out') }}
               </a>
             </div>
           </div>
@@ -239,6 +239,7 @@ export default {
     setOnChangeModel: function() {
       this.user.on('change', ({ attribute, value }) => {
         window.user_data = this.user
+        this.$i18n.locale = this.user.get('user_locale')
       })
     },
     onResizeWindow: function() {

@@ -8,7 +8,7 @@
       {{ getIconName() }}
     </i>
     <label>
-      {{ label + ': ' + getOptionName() }}
+      {{ $t(label) + ': ' + $t(getOptionName()) }}
     </label>
     <div
       id="select-options"
@@ -24,7 +24,7 @@
           v-for="(option, index) in selectOptions"
           v-on:click="onSelect(index)"
         >
-          {{ option.name }}
+          {{ $t(option.name) }}
         </div>
       </VuePerfectScrollbar>
     </div>
