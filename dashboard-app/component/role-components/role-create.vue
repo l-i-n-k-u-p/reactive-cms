@@ -2,13 +2,15 @@
   <div class="role-wrapper">
     <div class="header">
       <NavigationButtons />
-      <h2>Role Detail</h2>
+      <h2>
+        {{ $t('Create role') }}
+      </h2>
     </div>
     <LoadingBar v-if="isLoading"/>
     <BoxWrapper>
       <div class="content-wrapper">
         <InputText
-          inputName="Role Name"
+          inputName="Name"
           v-bind:inputValue="role.get('role_name')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="role_name"
@@ -16,10 +18,11 @@
           helperMessage="At least 2 characters"
         >
         </InputText>
-        </InputText>
         <div id="doubleBoxWrapper">
           <div id="leftBox">
-            <p class="sub-title">Resources</p>
+            <p class="sub-title">
+              {{ $t('Resources') }}
+            </p>
             <div class="boxlist-wrapper">
               <ButtonDoubleAction
                 v-for="(resourceName, index) of this.resourceNames"
@@ -34,7 +37,9 @@
             </div>
           </div>
           <div id="rightBox">
-            <p class="sub-title">Role Resources</p>
+            <p class="sub-title">
+              {{ $t('Current resources') }}
+            </p>
             <div class="boxlist-wrapper">
               <ButtonDoubleAction
                 v-for="(resource, index) of this.role.get('role_resources')"
@@ -60,14 +65,14 @@
         buttonIcon="close"
         v-bind:buttonAction="cancelCreateRole"
       >
-        Cancel
+        {{ $t('Cancel') }}
       </Button>
       <Button
         buttonIcon="save"
         v-bind:buttonAction="saveRole"
         style="margin-left: 10px;"
       >
-        Create
+        {{ $t('Create') }}
       </Button>
     </div>
     <Modal
