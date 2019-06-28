@@ -104,6 +104,16 @@ const messages = {
   'This action will delete this media': 'Esta acción borrará el archivo',
   'Create media': 'Crear archivo',
   'Choose a file or drag it here': 'Elija un archivo o arrástrelo aquí',
+  'User detail': 'Detalle de usuario',
+  'First name': 'Nombre',
+  'Last name': 'Apellido',
+  'User name': 'Nombre de usuario',
+  'New password': 'Nueva contraseña',
+  'Email': 'Correo',
+  'Role': 'Papel',
+  'Password': 'Contraseña',
+  'Set avatar': 'Poner imagen',
+  'Remove avatar': 'Remove imagen',
 }
 
 export default messages

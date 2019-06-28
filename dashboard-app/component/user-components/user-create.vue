@@ -3,7 +3,7 @@
     <div class="header">
       <NavigationButtons/>
       <h2>
-        Create user
+        {{ $t('Create user') }}
       </h2>
     </div>
     <LoadingBar v-if="isLoading"/>
@@ -15,7 +15,7 @@
           v-bind:buttonAction="removeMedia"
           buttonColor="#f0f0f0"
         >
-          Remove Image
+          {{ $t('Remove image') }}
         </Button>
         <Button
           buttonIcon="image"
@@ -23,7 +23,7 @@
           buttonColor="#f0f0f0"
           style="margin-left: 5px;"
         >
-          Set Image
+          {{ $t('Set image') }}
         </Button>
       </div>
       <div
@@ -60,7 +60,7 @@
               v-bind:buttonAction="removeMediaAvatar"
               buttonColor="#f0f0f0"
             >
-              Remove Avatar
+              {{ $t('Remove avatar') }}
             </Button>
             <Button
               class="buttom-bottom"
@@ -68,14 +68,14 @@
               v-bind:buttonAction="openMediaAvatarModal"
               buttonColor="#f0f0f0"
             >
-              Set Avatar
+              {{ $t('Set avatar') }}
             </Button>
           </div>
         </div>
       </div>
       <div class="form-wrapper">
         <InputText
-          inputName="User First Name"
+          inputName="First name"
           v-bind:inputValue="user.get('user_first_name')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="user_first_name"
@@ -84,14 +84,14 @@
         >
         </InputText>
         <InputText
-          inputName="User Last Name"
+          inputName="Last name"
           v-bind:inputValue="user.get('user_last_name')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="user_last_name"
         >
         </InputText>
         <InputText
-          inputName="User Name"
+          inputName="User name"
           v-bind:inputValue="user.get('user_name')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="user_name"
@@ -100,7 +100,7 @@
         >
         </InputText>
         <InputText
-          inputName="User Password"
+          inputName="Password"
           v-bind:inputValue="newPassword"
           v-bind:onChangeValue="onSetNewPassword"
           propName=""
@@ -109,7 +109,7 @@
         >
         </InputText>
         <InputText
-          inputName="User Email"
+          inputName="Email"
           v-bind:inputValue="user.get('user_email')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="user_email"
@@ -119,7 +119,7 @@
         </InputText>
         <FormDropdownSelect
           class="dropdown-select"
-          label="User Role"
+          label="Role"
           v-bind:initialIndexOption="noop"
           v-bind:onSelectOption="onSelectRole"
           v-bind:selectOptions="roleOptions"
@@ -130,14 +130,14 @@
     </BoxWrapper>
     <div class="buttons-wrapper">
       <Button buttonIcon="close" v-bind:buttonAction="cancelCreateUser">
-        Cancel
+        {{ $t('Cancel') }}
       </Button>
       <Button
         buttonIcon="save"
         v-bind:buttonAction="createUser"
         style="margin-left: 5px;"
       >
-        Create
+        {{ $t('Create') }}
       </Button>
     </div>
   </div>
