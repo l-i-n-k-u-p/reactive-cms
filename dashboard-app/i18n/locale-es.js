@@ -75,6 +75,18 @@ const messages = {
   'User language': 'Idioma de usuario',
   'User Profile': 'Perfil del usuario',
   'Sign Out': 'Desconectar',
+  'Page detail': 'Detalle de página',
+  'Remove image': 'Remover imagen',
+  'Set image': 'Poner imagen',
+  'Title': 'Título',
+  'At least 2 characters': 'Al menos 2 caracteres',
+  'Gallery': 'Galería',
+  'Gallery description': 'Descripción de galería',
+  'Description': 'Descripción',
+  'There is a new version of the content, do you want update?': 'Hay una nueva versión del contenido, ¿quieres actualizar?',
+  'This action will replate your current editor content': 'Esta acción reemplazará el contenido de tu editor actual',
+  'Set Featured Image': 'Establecer imagen destacada',
+  'none': 'ninguno',
 }
 
 export default messages
