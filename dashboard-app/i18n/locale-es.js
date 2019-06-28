@@ -95,6 +95,9 @@ const messages = {
   'add role': 'agregar papel',
   'New page': 'Nueva página',
   'create': 'crear',
+  'Post detail': 'Detalle de entrada',
+  'Do you want delete this post?': '¿Quieres borrar esta entrada?',
+  'This action will delete this post': 'Esta acción borrará esta entrada',
 }
 
 export default messages

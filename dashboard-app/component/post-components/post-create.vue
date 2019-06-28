@@ -3,7 +3,7 @@
     <div class="header">
       <NavigationButtons/>
       <h2>
-        Create post
+        {{ $t('Create post') }}
       </h2>
     </div>
     <LoadingBar v-if="isLoading"/>
@@ -15,7 +15,7 @@
           v-bind:buttonAction="removeMedia"
           buttonColor="#f0f0f0"
         >
-          Remove Image
+          {{ $t('Remove image') }}
         </Button>
         <Button
           buttonIcon="update"
@@ -23,7 +23,7 @@
           buttonColor="#f0f0f0"
           style="margin-left: 5px;"
         >
-          Set Image
+          {{ $t('Set image') }}
         </Button>
       </div>
       <div
@@ -39,7 +39,7 @@
       <div class="content-wrapper">
         <InputText
           class="input"
-          inputName="Post Title"
+          inputName="Title"
           v-bind:inputValue="post.post_title"
           v-bind:onChangeValue="onChangeInputValue"
           propName="post_title"
@@ -57,7 +57,7 @@
     </BoxWrapper>
     <div class="buttons-wrapper">
       <DropdownSelect
-        label="Status"
+        label="status"
         initialIndexOption="0"
         v-bind:onSelectOption="onSelectOption"
         v-bind:selectOptions="selectOptions"
@@ -69,14 +69,14 @@
         buttonIcon="close"
         v-bind:buttonAction="cancelCreate"
       >
-        Cancel
+        {{ $t('cancel') }}
       </Button>
       <Button
         buttonIcon="save"
         v-bind:buttonAction="createPost"
         style="margin-left: 5px;"
       >
-        Create
+        {{ $t('create') }}
       </Button>
     </div>
   </div>
@@ -100,11 +100,11 @@ export default {
       post_content: '',
       selectOptions: [
         {
-          name: 'Publish',
+          name: 'publish',
           value: 'publish',
         },
         {
-          name: 'Pending',
+          name: 'pending',
           value: 'pending',
         },
       ],
