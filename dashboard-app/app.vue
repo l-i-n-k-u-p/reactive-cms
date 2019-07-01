@@ -35,17 +35,17 @@
           v-if="item.type == 'error'"
           v-bind:onClickCloseAction="removeRibbonById"
           v-bind:data="index.key"
+          v-bind:message="item.message"
           :key="index.key"
           >
-          <slot>{{ item.message }}</slot>
         </RibbonError>
         <RibbonSuccess
           v-if="item.type == 'success'"
           v-bind:onClickCloseAction="removeRibbonById"
           v-bind:data="index.key"
+          v-bind:message="item.message"
           :key="index.key"
           >
-          <slot>{{ item.message }}</slot>
         </RibbonSuccess>
       </div>
     </div>

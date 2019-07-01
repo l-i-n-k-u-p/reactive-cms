@@ -1,9 +1,12 @@
 <template lang="html">
   <div id="ribbon-success-wrapper">
     <p>
-      <slot></slot>
+      {{ $t(message) }}
     </p>
-    <i class="material-icons" v-on:click="removeRibbonMessage">
+    <i
+      class="material-icons"
+      v-on:click="removeRibbonMessage"
+      >
       close
     </i>
   </div>
@@ -14,6 +17,7 @@ export default {
   props: [
     'onClickCloseAction',
     'data',
+    'message',
   ],
   data() {
     return {}
