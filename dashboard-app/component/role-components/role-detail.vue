@@ -178,14 +178,7 @@ export default {
     },
     addToRoleResources: function(index) {
       let selectedResourceName = this.resourceNames[index]
-      let resourceExists = false
       let currentRoleResources = this.role.get('role_resources')
-      for(let resource of currentRoleResources)
-        if (resource.resource_name === selectedResourceName)
-          resourceExists = true
-      if (resourceExists)
-        return
-
       let resource = {
         resource_name: selectedResourceName,
         resource_permission: [],
