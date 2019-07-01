@@ -721,7 +721,7 @@ exports.deletePageByID = async (req, res) => {
   }
   res.send({
     status_code: 0,
-    status_msg: 'Post deleted',
+    status_msg: 'Page deleted',
   })
   req.pushBroadcastMessage({
     channel: 'page-delete',
@@ -1272,7 +1272,7 @@ exports.updateRoleByID = async (req, res) => {
   if (role.error) {
     res.send({
       status_code: 1,
-      status_msg: 'It was not updatedss',
+      status_msg: 'It was not updated',
     })
     return
   }
