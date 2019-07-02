@@ -12,14 +12,14 @@
           buttonIcon="clear"
           v-bind:buttonAction="cancelAction"
           >
-          {{ $t('cancel') }}
+          {{ $t('Cancel') }}
         </Button>
         <Button
           buttonIcon="done"
           v-bind:buttonAction="acceptAction"
           style="margin-left: 5px;"
         >
-          {{ $t('accept') }}
+          {{ $t('Accept') }}
         </Button>
       </div>
     </div>
