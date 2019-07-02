@@ -460,7 +460,6 @@ export default {
   max-width: 100%;
   padding: 5px 15px;
   text-decoration: none;
-  text-transform: capitalize;
 }
 
 .username .menu .option:hover {

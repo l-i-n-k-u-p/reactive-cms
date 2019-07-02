@@ -77,7 +77,7 @@ export default {
       menuItems: [
         {
           position: 0,
-          title: 'dashboard',
+          title: 'Dashboard',
           name: 'dashboard',
           icon: 'dashboard',
           resourceName: 'dashboard',
@@ -86,7 +86,7 @@ export default {
         },
         {
           position: 1,
-          title: 'pages',
+          title: 'Pages',
           name: 'pages',
           icon: 'pages',
           params: { page: 1 },
@@ -95,7 +95,7 @@ export default {
           expanded: false,
           children: [
             {
-              title: 'add page',
+              title: 'Add page',
               name: 'new-page',
               icon: 'add',
               uuid: this.$uuid.v1(),
@@ -104,7 +104,7 @@ export default {
         },
         {
           position: 2,
-          title: 'posts',
+          title: 'Posts',
           name: 'posts',
           icon: 'pages',
           params: { page: 1 },
@@ -113,7 +113,7 @@ export default {
           expanded: false,
           children: [
             {
-              title: 'add post',
+              title: 'Add post',
               name: 'new-post',
               icon: 'add',
               uuid: this.$uuid.v1(),
@@ -122,7 +122,7 @@ export default {
         },
         {
           position: 3,
-          title: 'media',
+          title: 'Media',
           name: 'media',
           icon: 'perm_media',
           params: { page: 1 },
@@ -131,7 +131,7 @@ export default {
           expanded: false,
           children: [
             {
-              title: 'add media',
+              title: 'Add media',
               name: 'new-media',
               icon: 'add',
               uuid: this.$uuid.v1(),
@@ -140,7 +140,7 @@ export default {
         },
         {
           position: 4,
-          title: 'users',
+          title: 'Users',
           name: 'users',
           icon: 'people',
           params: { page: 1 },
@@ -149,7 +149,7 @@ export default {
           expanded: false,
           children: [
             {
-              title: 'add user',
+              title: 'Add user',
               name: 'new-user',
               icon: 'add',
               uuid: this.$uuid.v1(),
@@ -158,7 +158,7 @@ export default {
         },
         {
           position: 5,
-          title: 'views',
+          title: 'Views',
           name: 'views',
           icon: 'pages',
           params: { page: 1 },
@@ -167,7 +167,7 @@ export default {
           expanded: false,
           children: [
             {
-              title: 'add view',
+              title: 'Add view',
               name: 'new-view',
               icon: 'add',
               uuid: this.$uuid.v1(),
@@ -176,7 +176,7 @@ export default {
         },
         {
           position: 6,
-          title: 'roles',
+          title: 'Roles',
           name: 'roles',
           icon: 'security',
           params: { page: 1 },
@@ -185,7 +185,7 @@ export default {
           expanded: false,
           children: [
             {
-              title: 'add role',
+              title: 'Add role',
               name: 'new-role',
               icon: 'add',
               uuid: this.$uuid.v1(),
@@ -194,7 +194,7 @@ export default {
         },
         {
           position: 7,
-          title: 'profile',
+          title: 'Profile',
           name: 'profile',
           icon: 'person',
           resourceName: '',
@@ -203,7 +203,7 @@ export default {
         },
         {
           position: 8,
-          title: 'settings',
+          title: 'Settings',
           name: 'settings',
           icon: 'settings',
           resourceName: 'settings',
@@ -356,7 +356,6 @@ export default {
   padding: 0 10px 0 30px;
   position: relative;
   text-decoration: none;
-  text-transform: capitalize;
   user-select: none;
   z-index: 2;
 }
