@@ -15,7 +15,7 @@
           v-bind:buttonAction="openNewPostForm"
           style="margin-left: 5px;"
         >
-          {{ $t('Add Post') }}
+          {{ $t('Add post') }}
         </Button>
       </div>
     </div>

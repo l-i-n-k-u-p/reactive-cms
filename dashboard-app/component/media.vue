@@ -15,7 +15,7 @@
           v-bind:buttonAction="openNewMediaForm"
           style="margin-left: 5px;"
         >
-          {{ $t('Add Media') }}
+          {{ $t('Add media') }}
         </Button>
       </div>
     </div>
