@@ -43,7 +43,6 @@ export default {
   outline: none;
   padding: 2px;
   position: relative;
-  text-transform: capitalize;
   user-select: none;
 }
 

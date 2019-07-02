@@ -11,7 +11,7 @@
       <div class="content-wrapper">
         <InputText
           class="input"
-          inputName="View Name"
+          inputName="Name"
           v-bind:inputValue="view.view_name"
           v-bind:onChangeValue="onChangeInputValue"
           propName="view_name"
@@ -20,7 +20,7 @@
         />
         <InputText
           class="input"
-          inputName="View Description"
+          inputName="Description"
           v-bind:inputValue="view.view_description"
           v-bind:onChangeValue="onChangeInputValue"
           propName="view_description"
@@ -125,7 +125,6 @@ h2 {
   font-size: 13px;
   font-weight: 500;
   margin: 0;
-  text-transform: capitalize;
 }
 
 .buttons-wrapper {

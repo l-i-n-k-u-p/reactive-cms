@@ -2,7 +2,7 @@
   <div>
     <div class="header">
       <NavigationButtons />
-      <h2>{{ $t('pages') }}</h2>
+      <h2>{{ $t('Pages') }}</h2>
       <div class="buttons-wrapper">
         <Dropdown
           label="Bulk actions"
@@ -15,7 +15,7 @@
           v-bind:buttonAction="openNewPageForm"
           style="margin-left: 5px;"
         >
-          {{ $t('Add Page') }}
+          {{ $t('Add page') }}
         </Button>
       </div>
     </div>
@@ -212,7 +212,6 @@ h2 {
   font-size: 13px;
   font-weight: 500;
   margin: 0;
-  text-transform: capitalize;
 }
 
 .buttons-wrapper {

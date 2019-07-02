@@ -11,8 +11,11 @@
           style="margin-left: 5px;"
         >
         </Dropdown>
-        <Button buttonIcon="add" v-bind:buttonAction="openNewUserForm">
-          {{ $t('Add User') }}
+        <Button
+          buttonIcon="add"
+          v-bind:buttonAction="openNewUserForm"
+          >
+          {{ $t('Add user') }}
         </Button>
       </div>
     </div>
@@ -210,7 +213,6 @@ h2 {
   font-size: 13px;
   font-weight: 500;
   margin: 0;
-  text-transform: capitalize;
 }
 
 .buttons-wrapper {

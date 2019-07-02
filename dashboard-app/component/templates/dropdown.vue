@@ -94,7 +94,6 @@ export default {
 
 .select-wrapper label {
   cursor: pointer;
-  text-transform: capitalize;
 }
 
 .select-wrapper:hover {
