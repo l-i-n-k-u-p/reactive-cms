@@ -305,6 +305,14 @@ exports.deleteUserByID = async (req, res) => {
     })
     return
   }
+  let userToDelete = await userQuery.getByID(req.params.id)
+  if (userToDelete.user_role.role_user_ref.toString() === '000000000000000000000000') {
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
   let userDeleted = await userQuery.deleteByID(req.params.id)
   if (userDeleted.error) {
     res.send({

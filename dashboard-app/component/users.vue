@@ -2,7 +2,7 @@
   <div>
     <div class="header">
       <NavigationButtons />
-      <h2>{{ $t('users') }}</h2>
+      <h2>{{ $t('Users') }}</h2>
       <div class="buttons-wrapper">
         <Dropdown
           label="Bulk actions"
