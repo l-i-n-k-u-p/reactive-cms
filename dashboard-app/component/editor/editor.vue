@@ -322,7 +322,7 @@ button {
 
 button:hover {
   background-color: rgba(200, 200, 200, 0.20);
-  color: #193a99;
+  color: #077ed6;
 }
 
 button i {
@@ -357,14 +357,14 @@ button i {
 }
 
 #editor-wrapper.focus {
-  border-bottom: 1px solid #193a99;
+  border-bottom: 1px solid #077ed6;
 }
 </style>
 
 <style lang="css">
 .ProseMirror {
   background: transparent;
-  caret-color: #193a99;
+  caret-color: #077ed6;
   font-size: 13px;
   font-weight: 500;
   margin: 0;

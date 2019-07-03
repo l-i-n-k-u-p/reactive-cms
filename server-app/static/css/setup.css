@@ -82,7 +82,7 @@ h2 {
   border-left: 0;
   border-right: 0;
   border-top: 0;
-  caret-color: #193a99;
+  caret-color: #077ed6;
   color: #616161;
   font-size: 13px;
   font-weight: 500;
@@ -94,7 +94,7 @@ h2 {
 }
 
 .input-text input:focus {
-  border-bottom: 1px solid #193a99;
+  border-bottom: 1px solid #077ed6;
   outline: none;
 }
 
@@ -104,7 +104,7 @@ h2 {
 }
 
 .input-text input.active ~ label {
-  color: #193a99;
+  color: #077ed6;
   font-size: 12px;
   top: -14px;
 }
@@ -130,7 +130,7 @@ h2 {
 
 .setup-form-wrapper form button:hover {
   background-color: rgba(200, 200, 200, 0.20);
-  color: #193a99;
+  color: #077ed6;
 }
 
 #error-msg {

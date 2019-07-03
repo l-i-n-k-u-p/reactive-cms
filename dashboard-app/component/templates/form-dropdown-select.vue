@@ -174,16 +174,16 @@ label {
 
 #select-options .item:hover {
   background-color: rgba(200, 200, 200, 0.20);
-  color: #193a99;
+  color: #077ed6;
 }
 
 .select-wrapper.open {
   background-color: white;
-  border-bottom: 1px solid #193a99;
+  border-bottom: 1px solid #077ed6;
 }
 
 .select-wrapper.open #title {
-  color: #193a99;
+  color: #077ed6;
 }
 
 #input-error-message, #input-helper-message {
