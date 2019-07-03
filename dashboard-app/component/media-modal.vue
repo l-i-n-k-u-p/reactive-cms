@@ -544,7 +544,7 @@ h2 {
 }
 
 .buttons-wrapper .button:last-child {
-  color: #193a99;
+  color: #077ed6;
   margin-left: 10px;
 }
 
