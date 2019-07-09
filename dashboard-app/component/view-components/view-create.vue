@@ -27,7 +27,6 @@
           v-bind:errorMessage="view.errors.view_description"
           helperMessage="At least 2 characters"
         />
-        </editor>
       </div>
     </BoxWrapper>
     <div class="buttons-wrapper">

@@ -55,7 +55,7 @@
             </td>
             <td v-on:click="onClickRow(post)">
               <p class="item-text">
-                {{ post.post_title }}
+                {{ post.get('post_title') }}
               </p>
             </td>
             <td v-on:click="onClickRow(post)">
@@ -65,7 +65,7 @@
             </td>
             <td v-on:click="onClickRow(post)">
               <p class="item-text">
-                {{ $t(post.post_status) }}
+                {{ $t(post.get('post_status')) }}
               </p>
             </td>
           </tr>
