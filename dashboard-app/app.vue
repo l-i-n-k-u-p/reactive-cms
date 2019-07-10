@@ -347,7 +347,7 @@ footer a {
 }
 
 .ps>.ps__scrollbar-y-rail {
-  background-color: rgba(200, 200, 200, 0.20) !important;
+  background-color: #077ed645 !important;
   width: 6px !important;
   z-index: 1;
 }
