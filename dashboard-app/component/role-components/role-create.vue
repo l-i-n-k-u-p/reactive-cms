@@ -23,38 +23,42 @@
             <p class="sub-title">
               {{ $t('Resources') }}
             </p>
-            <div class="boxlist-wrapper">
-              <ButtonDoubleAction
-                v-for="(resourceName, index) of this.resourceNames"
-                buttonIcon="add"
-                v-bind:buttonTextAction="addToRoleResources"
-                v-bind:buttonIconAction="addToRoleResources"
-                v-bind:data="index"
-                :key="$uuid.v1()"
-              >
-                {{ resourceName }}
-              </ButtonDoubleAction>
-            </div>
+            <VuePerfectScrollbar class="scroll-area">
+              <div class="boxlist-wrapper">
+                <ButtonDoubleAction
+                  v-for="(resourceName, index) of this.resourceNames"
+                  buttonIcon="add"
+                  v-bind:buttonTextAction="addToRoleResources"
+                  v-bind:buttonIconAction="addToRoleResources"
+                  v-bind:data="index"
+                  :key="$uuid.v1()"
+                >
+                  {{ resourceName }}
+                </ButtonDoubleAction>
+              </div>
+            </VuePerfectScrollbar>
           </div>
           <div id="rightBox">
             <p class="sub-title">
               {{ $t('Current resources') }}
             </p>
-            <div class="boxlist-wrapper">
-              <ButtonDoubleAction
-                v-for="(resource, index) of this.role.get('role_resources')"
-                buttonIcon="remove"
-                v-bind:buttonTextAction="openPermissionsModal"
-                v-bind:buttonIconAction="addToResources"
-                v-bind:data="index"
-                :key="$uuid.v1()"
-              >
-                {{ resource.resource_name }}
-                <label class="item-permissions">
-                  {{ resource.resource_permission.join(',') }}
-                </label>
-              </ButtonDoubleAction>
-            </div>
+            <VuePerfectScrollbar class="scroll-area">
+              <div class="boxlist-wrapper">
+                <ButtonDoubleAction
+                  v-for="(resource, index) of this.role.get('role_resources')"
+                  buttonIcon="remove"
+                  v-bind:buttonTextAction="openPermissionsModal"
+                  v-bind:buttonIconAction="addToResources"
+                  v-bind:data="index"
+                  :key="$uuid.v1()"
+                >
+                  {{ resource.resource_name }}
+                  <label class="item-permissions">
+                    {{ resource.resource_permission.join(',') }}
+                  </label>
+                </ButtonDoubleAction>
+              </div>
+            </VuePerfectScrollbar>
           </div>
         </div>
       </div>
@@ -87,6 +91,8 @@
 </template>
 
 <script>
+import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+
 import BoxWrapper from '../templates/box-wrapper.vue'
 import Button from '../templates/button.vue'
 import InputText from '../templates/input-text.vue'
@@ -114,6 +120,7 @@ export default {
     }
   },
   components: {
+    VuePerfectScrollbar,
     BoxWrapper,
     Button,
     InputText,
@@ -362,7 +369,6 @@ h3 {
   box-sizing: border-box;
   display: block;
   max-height: 100px;
-  overflow: auto;
   padding: 10px;
   width: 100%;
 }
