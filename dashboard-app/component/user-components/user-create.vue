@@ -126,6 +126,16 @@
           openInTop="true"
         >
         </FormDropdownSelect>
+        <FormDropdownSelect
+          class="dropdown-select"
+          label="Language"
+          v-bind:initialIndexOption="userLocaleIndex"
+          v-bind:onSelectOption="onSelectLocale"
+          v-bind:selectOptions="localeOptions"
+          openInTop="true"
+          helperMessage="Select a language"
+        >
+        </FormDropdownSelect>
       </div>
     </BoxWrapper>
     <div class="buttons-wrapper">
@@ -156,6 +166,7 @@ export default {
     return {
       user: new this.$models.User({
         user_active: true,
+        user_locale: 'en',
       }),
       roles: new this.$models.RoleCollection(),
       newPassword: '',
@@ -176,6 +187,8 @@ export default {
         onMediaSelect: this.onMediaAvatarSelect,
       },
       isLoading: false,
+      userLocaleIndex: null,
+      localeOptions: [],
     }
   },
   components: {
@@ -188,6 +201,7 @@ export default {
   },
   created() {
     this.getRolesData()
+    this.setInitialLocations()
   },
   methods: {
     onSetNewPassword: function(propName, value) {
@@ -320,6 +334,31 @@ export default {
     },
     noop: function() {
       return
+    },
+    setInitialLocations: function() {
+      this.localeOptions = []
+      let locales = Object.keys(this.$i18n.messages)
+      for (let locale of locales)
+        this.localeOptions.push({
+          name: locale,
+          value: locale,
+        })
+      this.setInitialLocationIndex()
+    },
+    setInitialLocationIndex: function() {
+      let currentUserLocale = this.user.get('user_locale')
+      if (!currentUserLocale)
+        return
+
+      let locales = Object.keys(this.$i18n.messages)
+      for (let index in locales)
+        if (locales[index] === currentUserLocale)
+          this.userLocaleIndex = index
+    },
+    onSelectLocale: function(option) {
+      this.user.set({
+        'user_locale': option.value,
+      })
     },
   },
 }
