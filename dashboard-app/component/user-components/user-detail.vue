@@ -126,6 +126,16 @@
           openInTop="true"
         >
         </FormDropdownSelect>
+        <FormDropdownSelect
+          class="dropdown-select"
+          label="Language"
+          v-bind:initialIndexOption="userLocaleIndex"
+          v-bind:onSelectOption="onSelectLocale"
+          v-bind:selectOptions="localeOptions"
+          openInTop="true"
+          helperMessage="Select a language"
+        >
+        </FormDropdownSelect>
         <div class="date-wrapper">
           {{ userDate }}
         </div>
@@ -189,6 +199,8 @@ export default {
         onMediaSelect: this.onMediaAvatarSelect,
       },
       isLoading: false,
+      userLocaleIndex: null,
+      localeOptions: [],
     }
   },
   components: {
@@ -212,6 +224,8 @@ export default {
           this.setUserFormatDate()
         if (attribute === 'user_role_ref')
           this.setInitialRolesIndex()
+        if (attribute === 'user_locale')
+          this.setInitialLocations()
       })
     },
     onSetNewPassword: function(propName, value) {
@@ -409,6 +423,31 @@ export default {
     },
     setUserFormatDate: function() {
       this.userDate = moment(this.user.get('user_registration_date')).format('MMMM Do YYYY, h:mm:ss a')
+    },
+    setInitialLocations: function() {
+      this.localeOptions = []
+      let locales = Object.keys(this.$i18n.messages)
+      for (let locale of locales)
+        this.localeOptions.push({
+          name: locale,
+          value: locale,
+        })
+      this.setInitialLocationIndex()
+    },
+    setInitialLocationIndex: function() {
+      let currentUserLocale = this.user.get('user_locale')
+      if (!currentUserLocale)
+        return
+
+      let locales = Object.keys(this.$i18n.messages)
+      for (let index in locales)
+        if (locales[index] === currentUserLocale)
+          this.userLocaleIndex = index
+    },
+    onSelectLocale: function(option) {
+      this.user.set({
+        'user_locale': option.value,
+      })
     },
   },
 }
