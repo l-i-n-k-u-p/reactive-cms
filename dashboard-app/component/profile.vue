@@ -159,7 +159,7 @@ export default {
   data() {
     return {
       user: new this.$models.Profile({
-        _id: window.user_id,
+        _id: this.$getCookie('user_id'),
       }),
       newPassword: '',
       userDate: '',
