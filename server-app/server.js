@@ -105,8 +105,8 @@ fastify.register((instance, opts, next) => {
 
 // socket.io instance
 const socketIO = new SocketIO(io)
-fastify.decorateRequest('pushBroadcastMessage', (data) => {
-  socketIO.pushBroadcastMessage(data)
+fastify.decorateReply('pushBroadcastMessage', (payload) => {
+  socketIO.pushBroadcastMessage(payload)
 })
 
 // multipart data for upload files
@@ -121,8 +121,13 @@ fastify.register(websiteRouter)
 // router website dashboard api
 fastify.register(dashboardAPIRouter, { prefix: '/dashboard/api/v1/' })
 
-// hook to set CSRF token as cookie
+// hook for set cookie data
 fastify.addHook('onSend', (request, reply, payload, next) => {
+  if (request.session !== null && request.session.user !== undefined)
+    reply.setCookie('user_id', request.session.user.user_id, {
+      path: '/',
+      domain: APP_CONFIG.domain,
+    })
   reply.setCookie('csrf-token', request.csrfToken(), {
     path: '/',
     domain: APP_CONFIG.domain,
