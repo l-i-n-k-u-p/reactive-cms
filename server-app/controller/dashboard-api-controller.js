@@ -229,7 +229,7 @@ exports.addNewUser = async (req, res) => {
       id: newUser.id
     }
   })
-  req.pushBroadcastMessage({
+  res.pushBroadcastMessage({
     channel: 'user-post',
     data: { data: newUser },
   })
@@ -286,7 +286,7 @@ exports.updateUserByID = async (req, res) => {
     status_code: 0,
     status_msg: message,
   })
-  req.pushBroadcastMessage({
+  res.pushBroadcastMessage({
     channel: 'user-put',
     data: { data: newUserData },
   })
@@ -326,7 +326,7 @@ exports.deleteUserByID = async (req, res) => {
     status_code: 0,
     status_msg: 'User deleted',
   })
-  req.pushBroadcastMessage({
+  res.pushBroadcastMessage({
     channel: 'user-delete',
     data: { data: userDeleted },
   })
@@ -412,7 +412,7 @@ exports.addNewPost = async (req, res) => {
       id: post.id
     },
   })
-  req.pushBroadcastMessage({
+  res.pushBroadcastMessage({
     channel: 'post-post',
     data: { data: post },
   })
@@ -508,7 +508,7 @@ exports.updatePostByID = async (req, res) => {
     status_code: 0,
     status_msg: 'Post updated',
   })
-  req.pushBroadcastMessage({
+  res.pushBroadcastMessage({
     channel: 'post-put',
     data: { data: post },
   })
@@ -539,7 +539,7 @@ exports.deletePostByID = async (req, res) => {
     status_code: 0,
     status_msg: 'Post deleted',
   })
-  req.pushBroadcastMessage({
+  res.pushBroadcastMessage({
     channel: 'post-delete',
     data: { data: post },
   })
@@ -610,7 +610,7 @@ exports.addNewPage = async (req, res) => {
       id: page.id
     },
   })
-  req.pushBroadcastMessage({
+  res.pushBroadcastMessage({
     channel: 'page-post',
     data: { data: page },
   })
@@ -700,7 +700,7 @@ exports.updatePageByID = async (req, res) => {
     status_code: 0,
     status_msg: 'Page updated',
   })
-  req.pushBroadcastMessage({
+  res.pushBroadcastMessage({
     channel: 'page-put',
     data: { data: page },
   })
@@ -731,7 +731,7 @@ exports.deletePageByID = async (req, res) => {
     status_code: 0,
     status_msg: 'Page deleted',
   })
-  req.pushBroadcastMessage({
+  res.pushBroadcastMessage({
     channel: 'page-delete',
     data: { data: page },
   })
@@ -806,7 +806,7 @@ exports.addNewMedia = async (req, res) => {
       id: newMedia.id
     },
   })
-  req.pushBroadcastMessage({
+  res.pushBroadcastMessage({
     channel: 'media-post',
     data: { data: newMedia },
   })
@@ -887,7 +887,7 @@ exports.updateMediaByID = async (req, res) => {
     status_code: 0,
     status_msg: 'Media updated',
   })
-  req.pushBroadcastMessage({
+  res.pushBroadcastMessage({
     channel: 'media-put',
     data: { data: media },
   })
@@ -918,7 +918,7 @@ exports.deleteMediaByID = async (req, res) => {
     status_code: 0,
     status_msg: 'Media deleted',
   })
-  req.pushBroadcastMessage({
+  res.pushBroadcastMessage({
     channel: 'media-delete',
     data: { data: media },
   })
@@ -988,7 +988,7 @@ exports.updateSettings = async (req, res) => {
     status_code: 0,
     status_msg: 'Settings updated',
   })
-  req.pushBroadcastMessage({
+  res.pushBroadcastMessage({
     channel: 'settings-put',
     data: { data: settings },
   })
@@ -1057,7 +1057,7 @@ exports.updateSiteSettings = async (req, res) => {
     status_code: 0,
     status_msg: 'Settings updated',
   })
-  req.pushBroadcastMessage({
+  res.pushBroadcastMessage({
     channel: 'site-settings-put',
     data: { data: siteSettings },
   })
@@ -1331,7 +1331,7 @@ exports.updateRoleByID = async (req, res) => {
     status_code: 0,
     status_msg: 'Role updated',
   })
-  req.pushBroadcastMessage({
+  res.pushBroadcastMessage({
     channel: 'role-put',
     data: {
       data: roleUpdated,
@@ -1386,7 +1386,7 @@ exports.addNewRole = async (req, res) => {
     status_code: 0,
     status_msg: 'New role registered',
   })
-  req.pushBroadcastMessage({
+  res.pushBroadcastMessage({
     channel: 'role-post',
     data: { data: roleCreated },
   })
@@ -1419,7 +1419,7 @@ exports.deleteRoleByID = async (req, res) => {
     status_code: 0,
     status_msg: 'Role deleted',
   })
-  req.pushBroadcastMessage({
+  res.pushBroadcastMessage({
     channel: 'role-delete',
     data: {
       data: role,
@@ -1511,7 +1511,7 @@ exports.updateProfileByID = async (req, res) => {
     status_code: 0,
     status_msg: message,
   })
-  req.pushBroadcastMessage({
+  res.pushBroadcastMessage({
     channel: 'user-put',
     data: { data: newUserData },
   })
@@ -1589,7 +1589,7 @@ exports.addNewView = async (req, res) => {
       id: view.id
     },
   })
-  req.pushBroadcastMessage({
+  res.pushBroadcastMessage({
     channel: 'view-post',
     data: { data: view },
   })
@@ -1673,7 +1673,7 @@ exports.updateViewByID = async (req, res) => {
     status_code: 0,
     status_msg: 'View updated',
   })
-  req.pushBroadcastMessage({
+  res.pushBroadcastMessage({
     channel: 'view-put',
     data: { data: view },
   })
@@ -1704,7 +1704,7 @@ exports.deleteViewByID = async (req, res) => {
     status_code: 0,
     status_msg: 'View deleted',
   })
-  req.pushBroadcastMessage({
+  res.pushBroadcastMessage({
     channel: 'view-delete',
     data: { data: view },
   })
