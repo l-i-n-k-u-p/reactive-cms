@@ -329,7 +329,7 @@ export default {
       this.userMenuOpen = false
     },
     getSessionUserData: function() {
-      this.user.set('_id', window.user_id)
+      this.user.set('_id', this.$getCookie('user_id'))
       this.user.fetch()
       .catch(err => {
         this.$eventHub.$emit('dashboard-app-error', err.message)

@@ -89,9 +89,6 @@ export default {
             this.loginErrorMessage = error_message
             return
           }
-          // NOTE: improve this avoid refresh page
-          let user_id = data.data.user_id
-          window.user_id = user_id
           this.$eventHub.$emit('dashboard-hide-login', '')
           this.$router.go()
         })
