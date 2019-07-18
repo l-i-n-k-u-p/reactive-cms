@@ -27,7 +27,7 @@ const SocketIO = require('./lib/socket-io')
 // create static directory for uploads
 directory.createFolderFromPath(APP_CONFIG.uploadDirectory)
 // create static directory for upload image sizes
-directory.createFolderFromPath(APP_CONFIG.uploadDirectory + 'sizes/')
+directory.createFolderFromPath(`${ APP_CONFIG.uploadDirectory }sizes/`)
 
 // mongodb connect
 mongodb.connect()
@@ -88,8 +88,8 @@ fastify.register(pointOfView, {
 // static directory
 fastify.register((instance, opts, next) => {
   instance.register(fastifyStatic, {
-    root: path.join(__dirname, '/' + APP_CONFIG.staticFilesPath),
-    prefix: '/' + APP_CONFIG.staticFilesPrefix,
+    root: path.join(__dirname, `/${ APP_CONFIG.staticFilesPath }`),
+    prefix: `/${ APP_CONFIG.staticFilesPrefix }`,
   })
   next()
 })
@@ -97,8 +97,8 @@ fastify.register((instance, opts, next) => {
 // static directory
 fastify.register((instance, opts, next) => {
   instance.register(fastifyStatic, {
-    root: path.join(__dirname, '/../' + APP_CONFIG.staticUploadPath),
-    prefix: '/' + APP_CONFIG.staticUploadPrefix,
+    root: path.join(__dirname, `/../${ APP_CONFIG.staticUploadPath }`),
+    prefix: `/${ APP_CONFIG.staticUploadPrefix }`,
   })
   next()
 })
@@ -152,7 +152,7 @@ fastify.setNotFoundHandler((req, res) => {
   res.code(404).view('404', {
     title: SITE_CONFIG.siteTitle,
     status: 'Page not found',
-    error_message: 'Route: ' + urlData.path + ' Not found.',
+    error_message: `Route: ${ urlData.path } Not found.`,
   })
 })
 
@@ -162,7 +162,5 @@ fastify.listen(APP_CONFIG.port, APP_CONFIG.ipAddressToListen, (err, address) => 
     fastify.log.error(err)
     process.exit(1)
   }
-  fastify.log.info('Server listening on port: ', address)
+  fastify.log.info('== Server listening on port ==', address)
 })
-
-// TODO: finish session stored
