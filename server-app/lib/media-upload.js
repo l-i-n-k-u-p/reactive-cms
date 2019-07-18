@@ -19,8 +19,8 @@ const mediaUpload = (req, res) => {
       crypto.pseudoRandomBytes(16, (err, raw) => {
         if (err)
           reject(err)
-        let newfileName = raw.toString('hex') + dateTime.create().format('YmdHMS') + path.extname(fileName)
-        let filePath = APP_CONFIG.uploadDirectory + newfileName
+        let newfileName = `${ raw.toString('hex') }${ dateTime.create().format('YmdHMS') }${ path.extname(fileName) }`
+        let filePath = `${ APP_CONFIG.uploadDirectory }${ newfileName }`
         fileData.originalName = fileName
         fileData.fileName = newfileName
         fileData.mimeType = mimeType
@@ -58,9 +58,9 @@ const mediaUpload = (req, res) => {
 }
 
 const resizeImage = (destination, fileName, width, height) => {
-  let sourceFilePath = destination + fileName
+  let sourceFilePath = `${ destination }${ fileName }`
   let fileExt = path.extname(fileName)
-  let resizeFilePath = destination + 'sizes/' + path.basename(fileName, fileExt) + '-' + width + 'x' + height + fileExt
+  let resizeFilePath = `${ destination }sizes/${ path.basename(fileName, fileExt) }-${ width }x${ height }${ fileExt }`
   return sharp(sourceFilePath)
     .resize(width, height)
     .toFile(resizeFilePath)
