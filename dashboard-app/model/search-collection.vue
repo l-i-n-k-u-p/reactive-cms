@@ -15,7 +15,7 @@ class SearchCollection extends Collection {
   }
   routes () {
     return {
-      fetch: APP_SETTINGS.appApiBaseURL + '/search/',
+      fetch: `${ APP_SETTINGS.appApiBaseURL }/search/`,
     }
   }
 }

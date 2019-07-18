@@ -15,7 +15,7 @@ class DashboardCollection extends Collection {
   }
   routes () {
     return {
-      fetch: APP_SETTINGS.appApiBaseURL + '/dashboard/',
+      fetch: `${ APP_SETTINGS.appApiBaseURL }/dashboard/`,
     }
   }
 }

@@ -109,10 +109,10 @@ class ViewModel extends Model {
   }
   routes () {
     return {
-      fetch: APP_SETTINGS.appApiBaseURL + '/view/{_id}',
-      save: APP_SETTINGS.appApiBaseURL + '/view/',
-      put: APP_SETTINGS.appApiBaseURL + '/view/{_id}',
-      delete: APP_SETTINGS.appApiBaseURL + '/view/{_id}',
+      fetch: `${ APP_SETTINGS.appApiBaseURL }/view/{_id}`,
+      save: `${ APP_SETTINGS.appApiBaseURL }/view/`,
+      put: `${ APP_SETTINGS.appApiBaseURL }/view/{_id}`,
+      delete: `${ APP_SETTINGS.appApiBaseURL }/view/{_id}`,
     }
   }
 }

@@ -48,9 +48,9 @@ class RoleCollection extends Collection {
   }
   routes () {
     return {
-      fetch: APP_SETTINGS.appApiBaseURL + '/roles/{page}',
-      bulkDelete: APP_SETTINGS.appApiBaseURL + '/roles/',
-      bulkUpdate: APP_SETTINGS.appApiBaseURL + '/roles/',
+      fetch: `${ APP_SETTINGS.appApiBaseURL }/roles/{page}`,
+      bulkDelete: `${ APP_SETTINGS.appApiBaseURL }/roles/`,
+      bulkUpdate: `${ APP_SETTINGS.appApiBaseURL }/roles/`,
     }
   }
 }

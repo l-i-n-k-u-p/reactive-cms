@@ -48,9 +48,9 @@ class PostCollection extends Collection {
   }
   routes () {
     return {
-      fetch: APP_SETTINGS.appApiBaseURL + '/posts/{page}',
-      bulkDelete: APP_SETTINGS.appApiBaseURL + '/posts/',
-      bulkUpdate: APP_SETTINGS.appApiBaseURL + '/posts/',
+      fetch: `${ APP_SETTINGS.appApiBaseURL }/posts/{page}`,
+      bulkDelete: `${ APP_SETTINGS.appApiBaseURL }/posts/`,
+      bulkUpdate: `${ APP_SETTINGS.appApiBaseURL }/posts/`,
     }
   }
 }

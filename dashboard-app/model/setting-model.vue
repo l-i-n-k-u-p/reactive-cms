@@ -102,10 +102,10 @@ class SettingModel extends Model {
   }
   routes () {
     return {
-      fetch: APP_SETTINGS.appApiBaseURL + '/setting/',
-      // post: APP_SETTINGS.appApiBaseURL + '/setting/',
-      put: APP_SETTINGS.appApiBaseURL + '/setting/',
-      delete: APP_SETTINGS.appApiBaseURL + '/setting/',
+      fetch: `${ APP_SETTINGS.appApiBaseURL }/setting/`,
+      // post: `${ APP_SETTINGS.appApiBaseURL }/setting/`,
+      put: `${ APP_SETTINGS.appApiBaseURL }/setting/`,
+      delete: `${ APP_SETTINGS.appApiBaseURL }/setting/`,
     }
   }
 }

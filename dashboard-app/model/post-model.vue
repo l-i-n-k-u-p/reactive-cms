@@ -113,10 +113,10 @@ class PostModel extends Model {
   }
   routes () {
     return {
-      fetch: APP_SETTINGS.appApiBaseURL + '/post/{_id}',
-      save: APP_SETTINGS.appApiBaseURL + '/post/',
-      put: APP_SETTINGS.appApiBaseURL + '/post/{_id}',
-      delete: APP_SETTINGS.appApiBaseURL + '/post/{_id}',
+      fetch: `${ APP_SETTINGS.appApiBaseURL }/post/{_id}`,
+      save: `${ APP_SETTINGS.appApiBaseURL }/post/`,
+      put: `${ APP_SETTINGS.appApiBaseURL }/post/{_id}`,
+      delete: `${ APP_SETTINGS.appApiBaseURL }/post/{_id}`,
     }
   }
 }

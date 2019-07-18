@@ -95,8 +95,8 @@ class ProfileModel extends Model {
   }
   routes () {
     return {
-      fetch: APP_SETTINGS.appApiBaseURL + '/profile/{_id}',
-      put: APP_SETTINGS.appApiBaseURL + '/profile/{_id}',
+      fetch: `${ APP_SETTINGS.appApiBaseURL }/profile/{_id}`,
+      put: `${ APP_SETTINGS.appApiBaseURL }/profile/{_id}`,
     }
   }
 }

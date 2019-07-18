@@ -15,7 +15,7 @@ class SearchMediaCollection extends Collection {
   }
   routes () {
     return {
-      fetch: APP_SETTINGS.appApiBaseURL + '/search-media/',
+      fetch: `${ APP_SETTINGS.appApiBaseURL }/search-media/`,
     }
   }
 }

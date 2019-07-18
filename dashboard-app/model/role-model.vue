@@ -95,10 +95,10 @@ class RoleModel extends Model {
   }
   routes () {
     return {
-      fetch: APP_SETTINGS.appApiBaseURL + '/role/{_id}',
-      save: APP_SETTINGS.appApiBaseURL + '/role/',
-      put: APP_SETTINGS.appApiBaseURL + '/role/{_id}',
-      delete: APP_SETTINGS.appApiBaseURL + '/role/{_id}',
+      fetch: `${ APP_SETTINGS.appApiBaseURL }/role/{_id}`,
+      save: `${ APP_SETTINGS.appApiBaseURL }/role/`,
+      put: `${ APP_SETTINGS.appApiBaseURL }/role/{_id}`,
+      delete: `${ APP_SETTINGS.appApiBaseURL }/role/{_id}`,
     }
   }
 }

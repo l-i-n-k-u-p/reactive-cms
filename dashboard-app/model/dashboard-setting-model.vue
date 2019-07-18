@@ -53,7 +53,7 @@ class DashboardSettingModel extends Model {
   }
   routes () {
     return {
-      fetch: APP_SETTINGS.appApiBaseURL + '/dashboard-settings/',
+      fetch: `${ APP_SETTINGS.appApiBaseURL }/dashboard-settings/`,
     }
   }
 }
