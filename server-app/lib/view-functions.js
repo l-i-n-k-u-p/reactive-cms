@@ -1,7 +1,7 @@
 const APP_CONFIG = require('../config/config')
 
-const STATIC_UPLOADS_URL = APP_CONFIG.staticUploadPathPrefix + '/uploads/'
-const STATIC_UPLOADS_SIZES_URL = APP_CONFIG.staticUploadPathPrefix + '/uploads/sizes'
+const STATIC_UPLOADS_URL = `${ APP_CONFIG.staticUploadPathPrefix }/uploads/`
+const STATIC_UPLOADS_SIZES_URL = `${ APP_CONFIG.staticUploadPathPrefix }/uploads/sizes`
 
 
 const getHexColorFromString = (str) => {
@@ -24,12 +24,11 @@ const getImageURL = (fileName, Size) => {
   let url = ''
   let fileNameArray = fileName.split('.')
   if (Size)
-    url = STATIC_UPLOADS_SIZES_URL + fileNameArray.shift() + '-' + Size + '.' + fileNameArray.pop()
+    url = `${ STATIC_UPLOADS_SIZES_URL }${ fileNameArray.shift() }-${ Size }.${ fileNameArray.pop() }`
   else
-    url = STATIC_UPLOADS_URL + fileName
+    url = `${ STATIC_UPLOADS_URL }${ fileName }`
   return url
 }
-
 
 module.exports.getHexColorFromString = getHexColorFromString
 module.exports.getImageURL = getImageURL
