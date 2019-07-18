@@ -15,7 +15,7 @@ let createFolderFromPath = (path) => {
     if (index === 0)
       dirPath = arrDir[index]
     else
-      dirPath = dirPath + '/' + arrDir[index]
+      dirPath = `${ dirPath }/${ arrDir[index] }`
     if (dirPath[0] === '/')
       dirPath = dirPath.substring(1)
     if (!fs.existsSync(dirPath)) {
@@ -30,7 +30,7 @@ let createFolderFromPath = (path) => {
 
 // NOTE: use https://www.npmjs.com/package/watch for listen changes on directory and regenerate templateFileNames
 const generateTemplateFileNames = (templatesPath) => {
-  let files = fs.readdirSync('server-app/view/' + templatesPath + '/')
+  let files = fs.readdirSync(`server-app/view/${ templatesPath }/`)
   let templateFileNames = []
   for (let index in files) {
     let file = files[index]
@@ -54,12 +54,13 @@ const generateThemeNames = () => {
     let fileName = path.basename(files[ia], fileExt)
     if (!fileExt) {
       let dir = fileName
-      let subDirFiles = fs.readdirSync('server-app/view/' + dir)
+      let subDirFiles = fs.readdirSync(`server-app/view/${ dir }`)
       for (let ib in subDirFiles) {
         let fileExt = path.extname(subDirFiles[ib])
         let fileName = path.basename(subDirFiles[ib], fileExt)
-        if (fileName + fileExt === 'theme.json') {
-          let jsonFile = JSON.parse(fs.readFileSync('server-app/view/' + dir + '/theme.json', 'utf8'))
+        let fullFileName = `${ fileName }${ fileExt }`
+        if (fullFileName === 'theme.json') {
+          let jsonFile = JSON.parse(fs.readFileSync(`server-app/view/${ dir }/theme.json`, 'utf8'))
           themes.push(jsonFile)
         }
       }
