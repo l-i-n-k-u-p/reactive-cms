@@ -13,7 +13,7 @@ export default {}
 <style scoped lang="css">
 
 .splash-screen-wrapper {
-  background-color: white;
+  background-color: #fdfdfd;
   display: flex;
   height: 100%;
   position: fixed;
