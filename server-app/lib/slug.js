@@ -7,7 +7,7 @@ const generatePostSlug = async (id, slug) => {
     const slugRegex = new RegExp(slug, 'i')
     let post = await PostModel.find({ 'post_slug': slugRegex, '_id': { $ne: id } })
       if(post.length)
-        return slug + '-' + post.length
+        return `${ slug }-${ post.length}`
 
       return slug
   } catch (err) {
@@ -23,7 +23,7 @@ const generatePageSlug = (id, slug) => {
     PageModel.find({ 'page_slug': slugRegex, '_id': { $ne: id } })
       .then(page => {
         if (page.length)
-          resolve(slug + '-' + page.length)
+          resolve(`${ slug }-${ page.length}`)
         else
           resolve(slug)
       })
