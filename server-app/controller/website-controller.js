@@ -121,11 +121,11 @@ exports.websiteSetupSetInitialConfig = async (req, res) => {
       })
       return
     }
-    let emailHTMLMessage = '<h1>Hi ' + userData.user_first_name + '!</h1><br />'
+    let emailHTMLMessage = `<h1>Hi ${ userData.user_first_name }!</h1><br />`
     emailHTMLMessage += 'Your new site is ready!<br />'
-    emailHTMLMessage += 'You can access to Dashboard in: ' + siteData.site_url + '/admin<br />'
+    emailHTMLMessage += `You can access to Dashboard in: ${ siteData.site_url }/admin<br />`
     emailHTMLMessage += '<br />Thank you for use Reactive CMS :)<br />'
-    let emailSubject = 'Reactive CMS - ' + siteData.site_name
+    let emailSubject = `${ DASHBOARD_ADMIN_CONFIG.dashboardTitle } - ${ siteData.site_name }`
     DASHBOARD_ADMIN_CONFIG.setupPasse = true
     mail.sendEmail({
       to: userData.user_email,
@@ -235,7 +235,7 @@ exports.websiteDashboardView = async (req, res) => {
 
 exports.websiteIndexView = async (req, res) => {
   let page = null
-  let pageView = SITE_CONFIG.siteTheme + '/index'
+  let pageView = `${ SITE_CONFIG.siteTheme }/index`
   let templateHomeID = SITE_CONFIG.siteTemplateHome
   if (templateHomeID) {
     page = await pageQuery.getByID(templateHomeID)
@@ -247,11 +247,11 @@ exports.websiteIndexView = async (req, res) => {
       return
     }
     if (page && page.page_template)
-      pageView = SITE_CONFIG.siteTheme + '/'  + page.page_template
+      `${ SITE_CONFIG.siteTheme }/${ page.page_template }`
   }
   res.view(pageView, {
     viewFunctions: VIEW_FUNCTIONS,
-    themeDir: 'view/' + SITE_CONFIG.siteTheme + '/',
+    themeDir: `view/${ SITE_CONFIG.siteTheme }/`,
     title: SITE_CONFIG.siteTitle,
     page: page,
   })
@@ -259,14 +259,14 @@ exports.websiteIndexView = async (req, res) => {
 
 exports.websitePageView = async (req, res) => {
   let pageSlug = req.params.slug
-  let pageView = SITE_CONFIG.siteTheme + '/page-detail'
+  let pageView = `${ SITE_CONFIG.siteTheme }/page-detail`
   let page = await pageQuery.getBySlug(pageSlug)
   if (!page) {
     const urlData = req.urlData()
     res.code(404).view('404', {
       title: SITE_CONFIG.siteTitle,
       status: 'Page not found',
-      error_message: 'Route: ' + urlData.path + ' Not found.',
+      error_message: `Route: ${ urlData.path } Not found.`,
     })
     return
   }
@@ -279,10 +279,10 @@ exports.websitePageView = async (req, res) => {
     })
   }
   if (page.page_template)
-    pageView = SITE_CONFIG.siteTheme + '/'  + page.page_template
+    pageView = `${ SITE_CONFIG.siteTheme }/${ page.page_template }`
   res.view(pageView, {
     viewFunctions: VIEW_FUNCTIONS,
-    themeDir: 'view/' + SITE_CONFIG.siteTheme + '/',
+    themeDir: `view/${ SITE_CONFIG.siteTheme }/`,
     title: SITE_CONFIG.siteTitle,
     page: page,
   })
@@ -311,12 +311,12 @@ exports.websiteBlogArchivePaginatedView = async (req, res) => {
     })
     return
   }
-  let view = SITE_CONFIG.siteTheme + '/post-list'
+  let view = `${ SITE_CONFIG.siteTheme }/post-list`
   if (SITE_CONFIG.siteTemplatePosts)
-    view = SITE_CONFIG.siteTheme + '/'  + SITE_CONFIG.siteTemplatePosts
+    view = `${ SITE_CONFIG.siteTheme }/${ SITE_CONFIG.siteTemplatePosts }`
   res.view(view, {
     viewFunctions: VIEW_FUNCTIONS,
-    themeDir: 'view/' + SITE_CONFIG.siteTheme + '/',
+    themeDir: `view/${ SITE_CONFIG.siteTheme }/`,
     title: SITE_CONFIG.siteTitle,
     items: items,
     total_pages: Math.ceil(totalItems / SITE_CONFIG.siteItemsPeerPage),
@@ -336,7 +336,7 @@ exports.websiteBlogSingleView = async (req, res) => {
     res.code(404).view('404', {
       title: SITE_CONFIG.siteTitle,
       status: 'Page not found',
-      error_message: 'Route: ' + urlData.path + ' Not found.',
+      error_message: `Route: ${ urlData.path } Not found.`,
     })
     return
   }
@@ -349,9 +349,9 @@ exports.websiteBlogSingleView = async (req, res) => {
     })
     return
   }
-  res.view(SITE_CONFIG.siteTheme + '/post-detail', {
+  res.view(`${ SITE_CONFIG.siteTheme }/post-detail`, {
     viewFunctions: VIEW_FUNCTIONS,
-    themeDir: 'view/' + SITE_CONFIG.siteTheme + '/',
+    themeDir: `view/${ SITE_CONFIG.siteTheme }/`,
     title: SITE_CONFIG.siteTitle,
     post: post,
   })
@@ -380,39 +380,39 @@ exports.websiteRecoverAccount = async (req, res) => {
   }
   if (!req.body.email_address) {
     let errorMessage = 'Enter a email'
-    res.redirect('/recover-account/?error_message=' + errorMessage)
+    res.redirect(`/recover-account/?error_message=${ errorMessage }`)
     return
   }
   let user = await userQuery.getByEmail(req.body.email_address)
   if (!user.length) {
     let errorMessage = 'Not email address found'
-    res.redirect('/recover-account/?error_message=' + errorMessage)
+    res.redirect(`/recover-account/?error_message=${ errorMessage }`)
     return
   }
   crypto.pseudoRandomBytes(16, (err, raw) => {
     if (err) {
       let errorMessage = 'Try Again'
-      res.redirect('/recover-account/?error_message=' + errorMessage)
+      res.redirect(`/recover-account/?error_message=${ errorMessage }`)
       return
     }
     user = user[0]
     let emailSubject = 'Reactive CMS - Recover Account'
-    let hexString = raw.toString('hex') + dateTime.create().format('YmdHMS')
-    let emailURL = APP_CONFIG.domain + '/reset-password/' + hexString
+    let hexString = `${ raw.toString('hex') }${ dateTime.create().format('YmdHMS') }`
+    let emailURL = `${ APP_CONFIG.domain }/reset-password/${ hexString }`
     req.session.recoverAccountToken = hexString
     req.session.recoverAccountUserId = user._id
-    let emailHTMLMessage = '<h1>Hi ' + user.user_first_name + '!</h1><br />'
+    let emailHTMLMessage = `<h1>Hi ${ user.user_first_name }!</h1><br />`
     emailHTMLMessage += 'You requested the reset password of your account<br />'
     emailHTMLMessage += 'You can reset your password using the next URL in the same browser where you requested the reset password<br />'
-    emailHTMLMessage += emailURL + '<br />'
+    emailHTMLMessage += `${ emailURL }<br />`
     emailHTMLMessage += '<br />Thank you for use Reactive CMS :)<br />'
     mail.sendEmail({
       to: user.user_email,
       subject: emailSubject,
       html: emailHTMLMessage,
     })
-    let successMessage = 'We sent a email to: ' + user.user_email
-    res.redirect('/recover-account/?success_message=' + successMessage)
+    let successMessage = `We sent a email to: ${ user.user_email }`
+    res.redirect(`/recover-account/?success_message=${ successMessage }`)
   })
 }
 
@@ -436,7 +436,7 @@ exports.websiteResetPasswordView = async (req, res) => {
     res.code(404).view('404', {
       title: SITE_CONFIG.siteTitle,
       status: 'Page not found',
-      error_message: 'Route: ' + urlData.path + ' Not found.',
+      error_message: `Route: ${ urlData.path } Not found.`,
     })
   }
 }
@@ -479,10 +479,10 @@ exports.websiteResetPassword = async (req, res) => {
   })
   req.session.recoverAccountToken = null
   req.session.recoverAccountUserId = null
-  let emailSubject = 'Reactive CMS - Recover Account'
-  let emailHTMLMessage = '<h1>Hi ' + userUpdated.user_first_name + '!</h1><br />'
+  let emailSubject = `${ DASHBOARD_ADMIN_CONFIG.dashboardTitle } - Recover Account`
+  let emailHTMLMessage = `<h1>Hi ${ userUpdated.user_first_name }!</h1><br />`
   emailHTMLMessage += 'Your password has been changed<br />'
-  emailHTMLMessage += '<br />Thank you for use Reactive CMS :)<br />'
+  emailHTMLMessage += `<br />Thank you for use ${ DASHBOARD_ADMIN_CONFIG.dashboardTitle } :)<br />`
   mail.sendEmail({
     to: userUpdated.user_email,
     subject: emailSubject,
