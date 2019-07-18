@@ -181,13 +181,13 @@ export default {
           if (!responses) {
             this.$eventHub.$emit(
               'dashboard-app-error',
-              "Some roles it doesn't " + typeAction,
+              `Some roles it doesn't ${ typeAction }`,
             )
             return
           }
           this.$eventHub.$emit(
             'dashboard-app-success',
-            success + ' role/s ' + typeAction,
+            `${ success } role/s ${ typeAction }`,
           )
         })
         .catch(err => {

@@ -154,13 +154,13 @@ export default {
           if (!responses) {
             this.$eventHub.$emit(
               'dashboard-app-error',
-              "Some views it doesn't " + typeAction,
+              `Some views/s it doesn't ${ typeAction }`,
             )
             return
           }
           this.$eventHub.$emit(
             'dashboard-app-success',
-            success + ' view/s ' + typeAction,
+            `${ success } view/s ${ typeAction }`,
           )
         })
         .catch(err => {
