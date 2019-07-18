@@ -6,7 +6,7 @@
       v-click-outside="clickOutsite"
     >
       <label id="title">
-        {{ $t(label) + ':' }}
+        {{ `${ $t(label) }:` }}
       </label>
       <label>
         {{ getOptionName() }}
