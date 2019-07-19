@@ -78,7 +78,7 @@ export default {
       this.formData.append('user_name', this.loginUserName)
       this.formData.append('user_pass', this.loginUserPassword)
       this.axios
-        .post(this.$appApiBaseURL + '/login/', this.formData, {
+        .post(`${ this.$appApiBaseURL }/login/`, this.formData, {
           headers: {
             'csrf-token': this.$getCookie('csrf-token'),
           },

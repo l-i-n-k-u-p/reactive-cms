@@ -276,7 +276,7 @@ export default {
     createMedia: function() {
       this.isLoading = true
       this.axios
-      .post(this.$appApiBaseURL + '/media-file/', this.formData, {
+      .post(`${ this.$appApiBaseURL }/media-file/`, this.formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'csrf-token': this.$getCookie('csrf-token'),
