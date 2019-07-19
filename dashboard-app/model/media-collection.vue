@@ -48,9 +48,9 @@ class MediaCollection extends Collection {
   }
   routes () {
     return {
-      fetch: APP_SETTINGS.appApiBaseURL + '/media-files/{page}',
-      bulkDelete: APP_SETTINGS.appApiBaseURL + '/media-files/',
-      bulkUpdate: APP_SETTINGS.appApiBaseURL + '/media-files/',
+      fetch: `${ APP_SETTINGS.appApiBaseURL }/media-files/{page}`,
+      bulkDelete: `${ APP_SETTINGS.appApiBaseURL }/media-files/`,
+      bulkUpdate: `${ APP_SETTINGS.appApiBaseURL }/media-files/`,
     }
   }
 }

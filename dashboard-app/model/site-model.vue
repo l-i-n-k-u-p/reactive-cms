@@ -110,10 +110,10 @@ class SiteModel extends Model {
   }
   routes () {
     return {
-      fetch: APP_SETTINGS.appApiBaseURL + '/site/',
-      post: APP_SETTINGS.appApiBaseURL + '/site/',
-      put: APP_SETTINGS.appApiBaseURL + '/site/',
-      delete: APP_SETTINGS.appApiBaseURL + '/site/',
+      fetch: `${ APP_SETTINGS.appApiBaseURL }/site/`,
+      post: `${ APP_SETTINGS.appApiBaseURL }/site/`,
+      put: `${ APP_SETTINGS.appApiBaseURL }/site/`,
+      delete: `${ APP_SETTINGS.appApiBaseURL }/site/`,
     }
   }
 }

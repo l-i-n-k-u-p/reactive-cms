@@ -8,7 +8,7 @@
       {{ getIconName() }}
     </i>
     <label>
-      {{ $t(label) + ': ' + $t(getOptionName()) }}
+      {{ `${ $t(label) }: ${ $t(getOptionName()) }` }}
     </label>
     <div
       id="select-options"

@@ -16,7 +16,7 @@ class FileTemplateCollection extends Collection {
 
   routes () {
     return {
-      fetch: APP_SETTINGS.appApiBaseURL + '/page/template-files/',
+      fetch: `${ APP_SETTINGS.appApiBaseURL }/page/template-files/`,
     }
   }
 }

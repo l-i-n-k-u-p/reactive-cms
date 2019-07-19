@@ -24,7 +24,9 @@ export default {
   created() {},
   methods: {
     getColor: function() {
-      if (this.buttonColor) return 'color: ' + this.buttonColor
+      if (this.buttonColor)
+        return `color: ${ this.buttonColor }`
+
       return 'color: #616161'
     },
   },

@@ -24,7 +24,9 @@ export default {
   created() {},
   methods: {
     getColor: function() {
-      if (this.linkColor) return 'color: ' + this.linkColor
+      if (this.linkColor)
+        return `color: ${ this.linkColor }`
+
       return 'color: #616161'
     },
   },

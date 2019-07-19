@@ -40,9 +40,9 @@
         <div class="post-info-wrapper">
           <Link
             linkColor="#f0f0f0"
-            :linkURL="'/blog/' + post.get('post_slug')"
+            :linkURL="`/blog/${ post.get('post_slug') }`"
             linkIcon="link"
-            :linkLabel="'/blog/' + post.get('post_slug')"
+            :linkLabel="`/blog/${ post.get('post_slug') }`"
             linkTarget="_blank"
           />
         </div>

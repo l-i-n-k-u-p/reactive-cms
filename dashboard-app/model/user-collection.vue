@@ -49,9 +49,9 @@ class UserCollection extends Collection {
   }
   routes () {
     return {
-      fetch: APP_SETTINGS.appApiBaseURL + '/users/{page}',
-      bulkDelete: APP_SETTINGS.appApiBaseURL + '/users/',
-      bulkUpdate: APP_SETTINGS.appApiBaseURL + '/users/',
+      fetch: `${ APP_SETTINGS.appApiBaseURL }/users/{page}`,
+      bulkDelete: `${ APP_SETTINGS.appApiBaseURL }/users/`,
+      bulkUpdate: `${ APP_SETTINGS.appApiBaseURL }/users/`,
     }
   }
 }

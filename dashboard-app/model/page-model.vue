@@ -115,10 +115,10 @@ class PageModel extends Model {
   }
   routes () {
     return {
-      fetch: APP_SETTINGS.appApiBaseURL + '/page/{_id}',
-      save: APP_SETTINGS.appApiBaseURL + '/page/',
-      put: APP_SETTINGS.appApiBaseURL + '/page/{_id}',
-      delete: APP_SETTINGS.appApiBaseURL + '/page/{_id}',
+      fetch: `${ APP_SETTINGS.appApiBaseURL }/page/{_id}`,
+      save: `${ APP_SETTINGS.appApiBaseURL }/page/`,
+      put: `${ APP_SETTINGS.appApiBaseURL }/page/{_id}`,
+      delete: `${ APP_SETTINGS.appApiBaseURL }/page/{_id}`,
     }
   }
 }

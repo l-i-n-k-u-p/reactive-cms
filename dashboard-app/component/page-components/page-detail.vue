@@ -41,9 +41,9 @@
           <Link
             class="page-url-wrapper"
             linkColor="#f0f0f0"
-            :linkURL="'/' + page.get('page_slug')"
+            :linkURL="`/${ page.get('page_slug') }`"
             linkIcon="link"
-            :linkLabel="'/' + page.get('page_slug')"
+            :linkLabel="`/${ page.get('page_slug') }`"
             linkTarget="_blank"
           />
         </div>

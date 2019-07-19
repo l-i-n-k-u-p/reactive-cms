@@ -42,11 +42,11 @@ export default {
       let height = window.innerHeight - this.headerHeight
       if (this.footerSize)
         height = height - this.footerSize;
-      this.customHeight = 'height: ' + height + 'px;'
+      this.customHeight = `height: ${ height }px;`
     },
     setCustomPaddingStyle: function() {
       if (this.customPaddingStyle)
-        this.customPadding = 'padding: ' + this.customPaddingStyle + ';'
+        this.customPadding = `padding: ${ this.customPaddingStyle };`
     },
   },
 }

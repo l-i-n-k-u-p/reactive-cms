@@ -12,9 +12,9 @@ const getHexColor = (str, plain) => {
     colour += ('00' + value.toString(16)).substr(-2)
   }
   if (plain)
-    return '#' + colour + '80'
+    return `#${ colour }80`
 
-  return 'background-color: #' + colour + '80;'
+  return `background-color: #${ colour }80;`
 }
 
 const getAvatarURL = (fileURL) => {
@@ -23,7 +23,7 @@ const getAvatarURL = (fileURL) => {
 
   let fileNameArray = fileURL.split('.')
   let style = ''
-  style += 'background-image: url(' + '/public/uploads/sizes/' + fileNameArray[0] + '-150x150.' + fileNameArray[1] + ');'
+  style += `background-image: url(/public/uploads/sizes/${ fileNameArray[0] }-150x150.${ fileNameArray[1] });`
   style += 'background-size: cover;'
   style += 'background-position: center;'
   return style
@@ -35,7 +35,7 @@ const getThumbnailURL = (fileURL) => {
 
   let fileNameArray = fileURL.split('.')
   let style = ''
-  style += 'background-image: url(' + '/public/uploads/sizes/' + fileNameArray[0] + '-600x200.' + fileNameArray[1] + ');'
+  style += `background-image: url(/public/uploads/sizes/${ fileNameArray[0] }-600x200.${ fileNameArray[1] });`
   style += 'background-size: cover;'
   style += 'background-position: center;'
   return style

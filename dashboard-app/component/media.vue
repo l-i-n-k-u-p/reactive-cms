@@ -154,13 +154,13 @@ export default {
           if (!responses) {
             this.$eventHub.$emit(
               'dashboard-app-error',
-              "Some mediaFiles it doesn't " + typeAction,
+              `Some media files it doesn't ${ typeAction }`,
             )
             return
           }
           this.$eventHub.$emit(
             'dashboard-app-success',
-            success + ' files/s ' + typeAction,
+            `${ success } files/s ${ typeAction }`,
           )
         })
         .catch(err => {

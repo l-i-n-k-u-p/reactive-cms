@@ -99,10 +99,10 @@ class MediaModel extends Model {
   }
   routes () {
     return {
-      fetch: APP_SETTINGS.appApiBaseURL + '/media-file/{_id}',
-      save: APP_SETTINGS.appApiBaseURL + '/media-file/',
-      put: APP_SETTINGS.appApiBaseURL + '/media-file/{_id}',
-      delete: APP_SETTINGS.appApiBaseURL + '/media-file/{_id}',
+      fetch: `${ APP_SETTINGS.appApiBaseURL }/media-file/{_id}`,
+      save: `${ APP_SETTINGS.appApiBaseURL }/media-file/`,
+      put: `${ APP_SETTINGS.appApiBaseURL }/media-file/{_id}`,
+      delete: `${ APP_SETTINGS.appApiBaseURL }/media-file/{_id}`,
     }
   }
   isImage () {

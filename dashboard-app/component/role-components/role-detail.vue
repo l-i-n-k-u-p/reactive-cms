@@ -246,7 +246,7 @@ export default {
       this.currentResourceModalIndex = index
       let resource = this.role.get('role_resources')[index]
       let resourcePermissions =  resource.resource_permission.join(',')
-      this.modalPermissionsTitle = 'Permissions for ' + resource.resource_name
+      this.modalPermissionsTitle = `Permissions for ${ resource.resource_name }`
       this.modalPermissionsCheckboxNames = [
         {
           name: 'Create',

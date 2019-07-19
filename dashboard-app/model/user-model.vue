@@ -112,11 +112,11 @@ class UserModel extends Model {
   }
   routes () {
     return {
-      fetch: APP_SETTINGS.appApiBaseURL + '/user/{_id}',
-      // get: APP_SETTINGS.appApiBaseURL + '/user/{_id}',
-      save: APP_SETTINGS.appApiBaseURL + '/user/',
-      put: APP_SETTINGS.appApiBaseURL + '/user/{_id}',
-      delete: APP_SETTINGS.appApiBaseURL + '/user/{_id}',
+      fetch: `${ APP_SETTINGS.appApiBaseURL }/user/{_id}`,
+      // get: `${ APP_SETTINGS.appApiBaseURL }/user/{_id}`,
+      save: `${ APP_SETTINGS.appApiBaseURL }/user/`,
+      put: `${ APP_SETTINGS.appApiBaseURL }/user/{_id}`,
+      delete: `${ APP_SETTINGS.appApiBaseURL }/user/{_id}`,
     }
   }
 }
