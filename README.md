@@ -21,8 +21,8 @@ Technologies and Design
 
 Requeriments
 -
-- NodeJS
-- MongoDB
+- NodeJS v10.16.0
+- MongoDB 
 
 Installation
 -
