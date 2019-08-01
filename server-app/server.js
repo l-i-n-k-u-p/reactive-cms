@@ -14,7 +14,7 @@ const fastifyHelmet = require('fastify-helmet')
 const pointOfView = require('point-of-view')
 const path = require('path')
 const ejs = require('ejs')
-const io = require('socket.io')(fastify.server, APP_CONFIG.socketIOpingTimeout)
+const io = require('socket.io')(fastify.server, APP_CONFIG.socketIOOptions)
 const fastifyCSRF = require('fastify-csrf')
 
 const mongodb = require('./db/mongodb')

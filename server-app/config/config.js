@@ -17,7 +17,7 @@ const APP_CONFIG = {
     ignoreTrailingSlash: true,
     logger: false,
   },
-  sockerIOOptions: {
+  socketIOOptions: {
     socketIOpingTimeout: 60000,
     pingInterval: 10000,
     pingTimeout: 5000,
