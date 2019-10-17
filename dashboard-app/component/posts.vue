@@ -24,7 +24,7 @@
       footerSize="12"
       customPaddingStyle="0 10px"
       >
-      <PostListTable
+      <!-- <PostListTable
         v-if="posts.models.length"
         v-bind:collection="posts"
         v-bind:onClickRow="showPostDetail"
@@ -34,7 +34,20 @@
         v-bind:totalPages="totalPages"
         v-bind:itemsSkipped="itemsSkipped"
         v-bind:totalItems="totalItems"
-      />
+      /> -->
+      <ListTable
+        v-if="posts.models.length"
+        v-bind:collection="posts"
+        v-bind:onClickRow="showPostDetail"
+        v-bind:navigationBefore="navigationBefore"
+        v-bind:navigationNext="navigationNext"
+        v-bind:currentPage="currentPage"
+        v-bind:totalPages="totalPages"
+        v-bind:itemsSkipped="itemsSkipped"
+        v-bind:totalItems="totalItems"
+        v-bind:columnNames="columnNames"
+        v-bind:itemPropNames="itemPropNames"
+        v-bind:keyThumbnail="keyThumbnail"/>
     </BoxWrapper>
     <div class="navigation-wrapper">
       <div class="data">
@@ -67,6 +80,7 @@ import NavigationButtons from './templates/navigation-buttons.vue'
 import Dropdown from './templates/dropdown.vue'
 import ButtonIcon from './templates/button-icon.vue'
 import LoadingBar from './templates/loading-bar.vue'
+import ListTable from './templates/list-table.vue'
 
 export default {
   data() {
@@ -92,6 +106,20 @@ export default {
         },
       ],
       isLoading: false,
+      columnNames: [
+        'Title',
+        'Date',
+        'Status',
+      ],
+      itemPropNames: [
+        'post_title',
+        'post_date',
+        'post_status',
+      ],
+      keyThumbnail: [
+        'post_thumbnail',
+        'media_file_name',
+      ],
     }
   },
   components: {
@@ -102,6 +130,7 @@ export default {
     NavigationButtons,
     ButtonIcon,
     LoadingBar,
+    ListTable,
   },
   created() {
     this.$eventHub.$emit('dashboard-app-page-title', 'Posts')
