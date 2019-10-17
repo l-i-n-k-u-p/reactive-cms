@@ -35,6 +35,19 @@
         v-bind:itemsSkipped="itemsSkipped"
         v-bind:totalItems="totalItems"
       />
+      <ListTable
+        v-if="pages.models.length"
+        v-bind:collection="pages"
+        v-bind:onClickRow="showPostDetail"
+        v-bind:navigationBefore="navigationBefore"
+        v-bind:navigationNext="navigationNext"
+        v-bind:currentPage="currentPage"
+        v-bind:totalPages="totalPages"
+        v-bind:itemsSkipped="itemsSkipped"
+        v-bind:totalItems="totalItems"
+        v-bind:columnNames="columnNames"
+        v-bind:itemPropNames="itemPropNames"
+        v-bind:keyThumbnail="keyThumbnail"/>
     </BoxWrapper>
     <div class="navigation-wrapper">
       <div class="data">
@@ -60,13 +73,13 @@
 </template>
 
 <script>
-import PageListTable from './page-components/page-list-table.vue'
 import BoxWrapper from './templates/box-wrapper.vue'
 import Button from './templates/button.vue'
 import Dropdown from './templates/dropdown.vue'
 import NavigationButtons from './templates/navigation-buttons.vue'
 import ButtonIcon from './templates/button-icon.vue'
 import LoadingBar from './templates/loading-bar.vue'
+import ListTable from './templates/list-table.vue'
 
 export default {
   data() {
@@ -92,16 +105,30 @@ export default {
         },
       ],
       isLoading: false,
+      columnNames: [
+        'Title',
+        'Date',
+        'Status',
+      ],
+      itemPropNames: [
+        'page_title',
+        'page_date',
+        'page_status',
+      ],
+      keyThumbnail: [
+        'page_thumbnail',
+        'media_file_name',
+      ],
     }
   },
   components: {
-    PageListTable,
     BoxWrapper,
     Button,
     Dropdown,
     NavigationButtons,
     ButtonIcon,
     LoadingBar,
+    ListTable,
   },
   created() {
     this.getPages()
