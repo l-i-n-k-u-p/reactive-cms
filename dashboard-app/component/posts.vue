@@ -24,17 +24,6 @@
       footerSize="12"
       customPaddingStyle="0 10px"
       >
-      <!-- <PostListTable
-        v-if="posts.models.length"
-        v-bind:collection="posts"
-        v-bind:onClickRow="showPostDetail"
-        v-bind:navigationBefore="navigationBefore"
-        v-bind:navigationNext="navigationNext"
-        v-bind:currentPage="currentPage"
-        v-bind:totalPages="totalPages"
-        v-bind:itemsSkipped="itemsSkipped"
-        v-bind:totalItems="totalItems"
-      /> -->
       <ListTable
         v-if="posts.models.length"
         v-bind:collection="posts"
@@ -73,7 +62,6 @@
 </template>
 
 <script>
-import PostListTable from './post-components/post-list-table.vue'
 import BoxWrapper from './templates/box-wrapper.vue'
 import Button from './templates/button.vue'
 import NavigationButtons from './templates/navigation-buttons.vue'
@@ -123,7 +111,6 @@ export default {
     }
   },
   components: {
-    PostListTable,
     BoxWrapper,
     Button,
     Dropdown,
