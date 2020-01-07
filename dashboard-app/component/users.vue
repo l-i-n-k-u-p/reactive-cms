@@ -24,7 +24,7 @@
       footerSize="12"
       customPaddingStyle="0 10px"
       >
-      <UserListTable
+      <ListTable
         v-if="users.models.length"
         v-bind:collection="users"
         v-bind:onClickRow="showUserDetail"
@@ -34,7 +34,9 @@
         v-bind:totalPages="totalPages"
         v-bind:itemsSkipped="itemsSkipped"
         v-bind:totalItems="totalItems"
-      />
+        v-bind:columnNames="columnNames"
+        v-bind:itemPropNames="itemPropNames"
+        v-bind:keyThumbnail="keyThumbnail"/>
     </BoxWrapper>
     <div class="navigation-wrapper">
       <div class="data">
@@ -60,13 +62,13 @@
 </template>
 
 <script>
-import UserListTable from './user-components/user-list-table.vue'
 import BoxWrapper from './templates/box-wrapper.vue'
 import Button from './templates/button.vue'
 import Dropdown from './templates/dropdown.vue'
 import NavigationButtons from './templates/navigation-buttons.vue'
 import ButtonIcon from './templates/button-icon.vue'
 import LoadingBar from './templates/loading-bar.vue'
+import ListTable from './templates/list-table.vue'
 
 export default {
   data() {
@@ -92,16 +94,32 @@ export default {
         },
       ],
       isLoading: false,
+      columnNames: [
+        'Name',
+        'Email',
+        'Registered',
+        'Active',
+      ],
+      itemPropNames: [
+        'user_name',
+        'user_email',
+        'user_registration_date',
+        'user_active',
+      ],
+      keyThumbnail: [
+        'user_avatar',
+        'media_file_name',
+      ],
     }
   },
   components: {
-    UserListTable,
     BoxWrapper,
     Button,
     Dropdown,
     NavigationButtons,
     ButtonIcon,
     LoadingBar,
+    ListTable,
   },
   created() {
     this.$eventHub.$emit('dashboard-app-page-title', 'Users')

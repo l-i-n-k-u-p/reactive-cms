@@ -24,21 +24,10 @@
       footerSize="12"
       customPaddingStyle="0 10px"
       >
-      <PageListTable
-        v-if="pages.models.length"
-        v-bind:collection="pages"
-        v-bind:onClickRow="showPageDetail"
-        v-bind:navigationBefore="navigationBefore"
-        v-bind:navigationNext="navigationNext"
-        v-bind:currentPage="currentPage"
-        v-bind:totalPages="totalPages"
-        v-bind:itemsSkipped="itemsSkipped"
-        v-bind:totalItems="totalItems"
-      />
       <ListTable
         v-if="pages.models.length"
         v-bind:collection="pages"
-        v-bind:onClickRow="showPostDetail"
+        v-bind:onClickRow="showPageDetail"
         v-bind:navigationBefore="navigationBefore"
         v-bind:navigationNext="navigationNext"
         v-bind:currentPage="currentPage"
