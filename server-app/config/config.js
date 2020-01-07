@@ -1,6 +1,6 @@
 const APP_CONFIG = {
   port: 80,
-  mongoDBURI: 'mongodb://192.168.1.8:27017/reactivecms',
+  mongoDBURI: 'mongodb://172.17.0.2:27017/reactivecms',
   bcryptSaltRounds: 12,
   appSecret: 'iCD5e@rx$3-9rR_QZwIW2Dg-Zn^h&heS', // 32 characters
   staticUploadPath: 'site-static',

@@ -24,7 +24,7 @@
       footerSize="12"
       customPaddingStyle="0 10px"
       >
-      <PostListTable
+      <ListTable
         v-if="roles.models.length"
         v-bind:collection="roles"
         v-bind:onClickRow="showRoleDetail"
@@ -34,7 +34,9 @@
         v-bind:totalPages="totalPages"
         v-bind:itemsSkipped="itemsSkipped"
         v-bind:totalItems="totalItems"
-      />
+        v-bind:columnNames="columnNames"
+        v-bind:itemPropNames="itemPropNames"
+        v-bind:keyThumbnail="keyThumbnail"/>
     </BoxWrapper>
     <div class="navigation-wrapper">
       <div class="data">
@@ -60,13 +62,13 @@
 </template>
 
 <script>
-import PostListTable from './role-components/role-list-table.vue'
 import BoxWrapper from './templates/box-wrapper.vue'
 import Button from './templates/button.vue'
 import NavigationButtons from './templates/navigation-buttons.vue'
 import Dropdown from './templates/dropdown.vue'
 import ButtonIcon from './templates/button-icon.vue'
 import LoadingBar from './templates/loading-bar.vue'
+import ListTable from './templates/list-table.vue'
 
 export default {
   data() {
@@ -84,10 +86,17 @@ export default {
         },
       ],
       isLoading: false,
+      columnNames: [
+        'Name',
+      ],
+      itemPropNames: [
+        'role_name',
+      ],
+      keyThumbnail: [],
     }
   },
   components: {
-    PostListTable,
+    ListTable,
     BoxWrapper,
     Button,
     Dropdown,

@@ -152,10 +152,14 @@ export default {
       return this.$getHexColor(string)
     },
     getCoverImage: function(item, itemPropName, index) {
+      if (!itemPropName)
+        return false
+
       if (Array.isArray(itemPropName))
         return this.getCoverImage(item[itemPropName[index]], itemPropName[index + 1], index + 1)
 
       let imageName = item[itemPropName]
+
       if (!imageName)
         return false
 

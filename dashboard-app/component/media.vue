@@ -24,7 +24,7 @@
       footerSize="12"
       customPaddingStyle="0 10px"
       >
-      <MediaListTable
+      <ListTable
         v-if="mediaFiles.models.length"
         v-bind:collection="mediaFiles"
         v-bind:onClickRow="showPageDetail"
@@ -34,7 +34,9 @@
         v-bind:totalPages="totalPages"
         v-bind:itemsSkipped="itemsSkipped"
         v-bind:totalItems="totalItems"
-      />
+        v-bind:columnNames="columnNames"
+        v-bind:itemPropNames="itemPropNames"
+        v-bind:keyThumbnail="keyThumbnail"/>
     </BoxWrapper>
     <div class="navigation-wrapper">
       <div class="data">
@@ -60,13 +62,13 @@
 </template>
 
 <script>
-import MediaListTable from './media-components/media-list-table.vue'
 import BoxWrapper from './templates/box-wrapper.vue'
 import Button from './templates/button.vue'
 import Dropdown from './templates/dropdown.vue'
 import NavigationButtons from './templates/navigation-buttons.vue'
 import ButtonIcon from './templates/button-icon.vue'
 import LoadingBar from './templates/loading-bar.vue'
+import ListTable from './templates/list-table.vue'
 
 export default {
   data() {
@@ -84,16 +86,27 @@ export default {
         },
       ],
       isLoading: false,
+      columnNames: [
+        'Title',
+        'Name',
+        'Date',
+      ],
+      itemPropNames: [
+        'media_title',
+        'media_original_name',
+        'media_date',
+      ],
+      keyThumbnail: 'media_name',
     }
   },
   components: {
-    MediaListTable,
     BoxWrapper,
     Button,
     Dropdown,
     NavigationButtons,
     ButtonIcon,
     LoadingBar,
+    ListTable,
   },
   created() {
     this.getMedia()
