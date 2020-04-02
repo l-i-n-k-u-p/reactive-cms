@@ -1,0 +1,17 @@
+version: '2'
+services:
+  rcms-base:
+    image: rcms-nodejs-img:latest
+    volumes:
+      - ~/Docker/reactive-cms/:/reactive-cms/
+    working_dir: /reactive-cms/
+  rcms-install:
+    extends:
+      service: rcms-base
+    command: >
+      bash -c "npm i;
+        "
+  rcms-finish:
+    extends:
+      service: rcms-base
+    command: exit

@@ -15,6 +15,8 @@ module.exports = {
       'dashboard-app',
       'site-static',
       'server-app/static',
+      'database',
+      'docker',
     ],
     watch_options: {
       followSymlinks: false

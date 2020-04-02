@@ -1,0 +1,15 @@
+# Use the official image as a parent image
+FROM centos:7 AS rcms-nodejs-build
+
+MAINTAINER eduardobc.88@gmail.com
+
+# Set the working directory
+WORKDIR /reactive-cms/
+
+# Run the command inside your image filesystem
+RUN yum update -y && curl -sL https://rpm.nodesource.com/setup_13.x | bash -
+RUN yum install -y gcc-c++ make
+RUN yum install nodejs -y
+
+# Volumes to share with host
+VOLUME /reactive-cms/

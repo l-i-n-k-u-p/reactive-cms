@@ -1,0 +1,16 @@
+# Use the official image as a parent image
+FROM centos:7 AS rcms-mongodb-build
+
+MAINTAINER eduardobc.88@gmail.com
+
+# Set the working directory
+WORKDIR /reactive-cms/
+
+# Run the command inside your image filesystem
+ADD ./docker/mongodb-org.repo /etc/yum.repos.d/mongodb-org.repo
+RUN yum update -y && yum install mongodb-org -y
+RUN mkdir /data && mkdir /data/mongodb && mkdir /data/db
+
+# Volumes to share with host
+VOLUME /reactive-cms/
+VOLUME /database/data/

@@ -1,0 +1,62 @@
+version: '3.5'
+services:
+  rcms-nginx-service:
+    image: rcms-nginx-img:latest
+    restart: "no"
+    hostname: rcms-nginx-service
+    container_name: rcms-nginx-service
+    networks:
+      reactive-cms-network:
+        ipv4_address: 192.168.3.2
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ~/Docker/reactive-cms/:/reactive-cms/
+    working_dir: /reactive-cms/
+    env_file:
+      - rcms-environment-vars.env
+    tty: true
+  rcms-app-service:
+    image: rcms-nodejs-img:latest
+    restart: "no"
+    hostname: rcms-app-service
+    container_name: rcms-app-service
+    networks:
+      reactive-cms-network:
+        ipv4_address: 192.168.3.3
+    volumes:
+      - ~/Docker/reactive-cms/:/reactive-cms/
+    working_dir: /reactive-cms/
+    env_file:
+      - rcms-environment-vars.env
+    command: npm run server-production
+    depends_on:
+      - rcms-mongodb-service
+    tty: true
+  rcms-mongodb-service:
+    image: rcms-mongodb-img:latest
+    restart: "no"
+    hostname: rcms-mongodb-service
+    container_name: rcms-mongodb-service
+    networks:
+      reactive-cms-network:
+        ipv4_address: 192.168.3.4
+    ports:
+      - "27017:27017"
+      - "27018:27018"
+    volumes:
+      - ~/Docker/reactive-cms/:/reactive-cms/
+      - ~/Docker/reactive-cms/database/data/:/data/
+    working_dir: /reactive-cms/
+    env_file:
+      - rcms-environment-vars.env
+    command: mongod --bind_ip_all
+    tty: true
+networks:
+  reactive-cms-network:
+    name: reactive-cms-network
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.3.0/24

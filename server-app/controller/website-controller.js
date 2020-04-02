@@ -247,7 +247,7 @@ exports.websiteIndexView = async (req, res) => {
       return
     }
     if (page && page.page_template)
-      `${ SITE_CONFIG.siteTheme }/${ page.page_template }`
+      pageView = `${ SITE_CONFIG.siteTheme }/${ page.page_template }`
   }
   res.view(pageView, {
     viewFunctions: VIEW_FUNCTIONS,
