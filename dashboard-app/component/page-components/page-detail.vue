@@ -351,7 +351,7 @@ export default {
     setPageTemplateIndex: function() {
       if (!this.pageTemplateOptions) return
 
-      let templates = this.fileTemplates.models
+      let templates = this.fileTemplates.getModels()
       let pageTemplate = this.page.get('page_template')
       this.currentPageTemplateIndex = 0
       for (let index in this.pageTemplateOptions) {
@@ -363,7 +363,7 @@ export default {
       }
     },
     setPageTemplateOptions: function() {
-      let templates = this.fileTemplates.models
+      let templates = this.fileTemplates.getModels()
       this.pageTemplateOptions.push({
         name: 'none',
         value: '',

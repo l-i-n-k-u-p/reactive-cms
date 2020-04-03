@@ -382,7 +382,7 @@ export default {
     },
     setInitialRoles: function() {
       this.roleOptions = []
-      for (let role of this.roles.models) {
+      for (let role of this.roles.getModels()) {
         this.roleOptions.push({
           name: role.get('role_name'),
           value: {
@@ -399,7 +399,7 @@ export default {
       if (!currentUserRoleId)
         return
 
-      let roles = this.roles.models
+      let roles = this.roles.getModels()
       for (let index in roles) {
         let roleId = roles[index].get('_id')
         if (roleId === currentUserRoleId) this.userRoleIndex = index

@@ -305,7 +305,7 @@ export default {
     },
     setInitialRoles: function() {
       this.roleOptions = []
-      for (let role of this.roles.models) {
+      for (let role of this.roles.getModels()) {
         this.roleOptions.push({
           name: role.get('role_name'),
           value: {

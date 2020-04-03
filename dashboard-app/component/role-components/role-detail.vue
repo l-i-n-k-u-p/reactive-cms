@@ -203,10 +203,10 @@ export default {
     },
     setInitialResourceData: function() {
       this.resourceNames = []
-      let views = this.views.models
+      let views = this.views.getModels()
       let currentRoleResources = this.role.get('role_resources')
       let isFreeResource = true
-      for (let view of this.views.models) {
+      for (let view of this.views.getModels()) {
         isFreeResource = true
         for (let resource of currentRoleResources) {
           let resourceRemoved = resource.removed === undefined ? false : resource.removed

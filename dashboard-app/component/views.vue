@@ -25,7 +25,7 @@
       customPaddingStyle="0 10px"
       >
       <ListTable
-        v-if="views.models.length"
+        v-if="views.getModels().length"
         v-bind:collection="views"
         v-bind:onClickRow="showViewDetail"
         v-bind:navigationBefore="navigationBefore"
@@ -41,7 +41,7 @@
     <div class="navigation-wrapper">
       <div class="data">
         {{ $t('Rows from') }} {{ itemsSkipped + 1 }} {{ $t('to') }}
-        {{ itemsSkipped + views.models.length }} {{ $t('of') }} {{ totalItems }}
+        {{ itemsSkipped + views.getModels().length }} {{ $t('of') }} {{ totalItems }}
       </div>
       <div class="data">
         {{ $t('Page') }} {{ currentPage }} {{ $t('of') }} {{ totalPages }}
