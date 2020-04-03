@@ -45,20 +45,20 @@
           >
           <div
             class="no-results"
-            v-if="!searchItems.models.length"
+            v-if="!searchItems.getModels().length"
             >
             {{ $t('Without results') }}
           </div>
           <div
             id="search-results"
-            v-if="searchItems.models.length"
+            v-if="searchItems.getModels().length"
             >
             <VuePerfectScrollbar class="scroll-area">
               <div id="items-wrapper">
                 <div
                   class="item"
                   v-on:click="onClickResult"
-                  v-for="item in searchItems.models"
+                  v-for="item in searchItems.getModels()"
                 >
                   <div
                     v-if="item.get('model_name') === 'user'"

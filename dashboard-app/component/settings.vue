@@ -290,7 +290,7 @@ export default {
       })
     },
     setInitialSelectPages: function() {
-      let templates = this.settingPages.models
+      let templates = this.settingPages.getModels()
       this.templateHomeOptions.push({
         name: 'none',
         value: '',
@@ -308,7 +308,7 @@ export default {
     setIndexPageTemplate: function() {
       if (!this.templateHomeOptions) return
 
-      let templates = this.settingPages.models
+      let templates = this.settingPages.getModels()
       let pageTemplate = this.site.get('site_template_home')
       this.templateHomeIndex = 0
       for (let index in this.templateHomeOptions) {
@@ -323,7 +323,7 @@ export default {
       this.site.set('site_template_posts', option.value)
     },
     setInitialSelectPostsTemplates: function() {
-      let templates = this.fileTemplates.models
+      let templates = this.fileTemplates.getModels()
       this.templateFileOptions.push({
         name: 'none',
         value: '',
@@ -341,7 +341,7 @@ export default {
     setIndexPostsTemplate: function() {
       if (!this.templateFileOptions) return
 
-      let templates = this.fileTemplates.models
+      let templates = this.fileTemplates.getModels()
       let pageTemplate = this.site.get('site_template_posts')
       this.templatePostsIndex = 0
       for (let index in this.templateFileOptions) {

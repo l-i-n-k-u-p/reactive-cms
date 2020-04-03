@@ -114,11 +114,11 @@ export default {
   },
   watch: {
     collection: function (newValues, oldValues) {
-      this.collectionItems = newValues.models
+      this.collectionItems = newValues.getModels()
     },
   },
   created() {
-    this.collectionItems = this.collection.models
+    this.collectionItems = this.collection.getModels()
     this.$eventHub.$on('clear-items-selected', () => {
       this.checkAll = false
     })

@@ -222,7 +222,7 @@ export default {
       this.page.set('page_template', option.value)
     },
     setPageTemplateOptions: function() {
-      let templates = this.fileTemplates.models
+      let templates = this.fileTemplates.getModels()
       this.pageTemplateOptions.push({
         name: 'none',
         value: '',

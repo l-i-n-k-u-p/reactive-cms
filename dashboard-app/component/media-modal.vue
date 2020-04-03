@@ -42,7 +42,7 @@
                 >
                   <div
                     class="image"
-                    v-for="media in mediaFiles.models"
+                    v-for="media in mediaFiles.getModels()"
                     v-on:click="selectMediaImage(media)"
                     v-if="showThisMedia(media)"
                     v-bind:style="getPreview(media)"
@@ -230,7 +230,7 @@ export default {
         .then(data => {
           this.isLoading = false
           this.mediaFiles.clear()
-          this.searchMediaItems.models.forEach(item => {
+          this.searchMediaItems.getModels().forEach(item => {
             let mediaItem = new this.$models.Media(item._attributes)
             this.mediaFiles.add(mediaItem)
           })

@@ -20,8 +20,8 @@ class UserCollection extends Collection {
       'user-post',
       (data) => {
         this.add(data.data)
-        let lastModel = this.models.pop()
-        this.models.unshift(lastModel)
+        let lastModel = this.getModels().pop()
+        this.getModels().unshift(lastModel)
       }
     )
   }

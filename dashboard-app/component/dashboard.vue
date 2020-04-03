@@ -19,7 +19,7 @@
               v-bind:options="options"
             />
           </div>
-          <div class="section-wrapper" v-for="model in dashboard.models">
+          <div class="section-wrapper" v-for="model in dashboard.getModels()">
             <VuePerfectScrollbar class="scroll-area">
               <div class="model">
                 {{ $t(model.get('model')) }} - {{ $t('operations') }}: {{ model.get("total") }}
@@ -203,7 +203,7 @@ export default {
       let labels = []
       let colors = []
       let values = []
-      for (let item of this.dashboard.models) {
+      for (let item of this.dashboard.getModels()) {
         labels.push(item.model)
         colors.push(this.$getHexColor(item.model, true))
         values.push(item.total)
