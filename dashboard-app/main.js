@@ -64,8 +64,7 @@ import RoleDetail from './component/role-components/role-detail.vue'
 import RoleCreate from './component/role-components/role-create.vue'
 import NotFound from './component/not-found.vue'
 import Profile from './component/profile.vue'
-import ViewDetail from './component/view-components/view-detail.vue'
-import ViewCreate from './component/view-components/view-create.vue'
+import View from './component/view-components/view.vue'
 
 
 for (let directive of GLOBAL_DIRECTIVES.directives)
@@ -215,18 +214,18 @@ const routes = [
   },
   {
     name: 'views',
-    path: `${ APP_SETTINGS.appBaseURL }/views/:page`,
+    path: `${ APP_SETTINGS.appBaseURL }/views/:page/`,
     component: Views,
   },
   {
     name: 'view-detail',
-    path: `${ APP_SETTINGS.appBaseURL }/view/:id`,
-    component: ViewDetail,
+    path: `${ APP_SETTINGS.appBaseURL }/view/:id/`,
+    component: View,
   },
   {
     name: 'new-view',
-    path: `${ APP_SETTINGS.appBaseURL }/new-view/`,
-    component: ViewCreate,
+    path: `${ APP_SETTINGS.appBaseURL }/view/`,
+    component: View,
   },
 ]
 
