@@ -163,7 +163,7 @@ export default {
           icon: 'pages',
           params: { page: 1 },
           resourceName: 'views',
-          keys: 'views, view-detail, new-view',
+          keys: 'views, view',
           expanded: false,
           children: [
             {

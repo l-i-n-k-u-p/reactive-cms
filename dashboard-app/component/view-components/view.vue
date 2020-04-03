@@ -3,7 +3,7 @@
     <div class="header">
       <NavigationButtons/>
       <h2>
-        {{ $t('Create view') }}
+        {{ $t('View') }}
       </h2>
     </div>
     <LoadingBar v-if="isLoading"/>
@@ -16,7 +16,7 @@
           v-bind:onChangeValue="onChangeInputValue"
           propName="view_name"
           v-bind:errorMessage="view.errors.view_name"
-          helperMessage="At least 2 characters without spaces only 'word-word'"
+          helperMessage="At least 2 characters without spaces"
         />
         <InputText
           class="input"
@@ -31,18 +31,36 @@
     </BoxWrapper>
     <div class="buttons-wrapper">
       <Button
+        v-if="isNew"
         style="margin-left: 5px;"
         buttonIcon="close"
-        v-bind:buttonAction="cancelCreate"
+        v-bind:buttonAction="cancelCreateView"
       >
         {{ $t('Cancel') }}
       </Button>
       <Button
+        v-if="isNew"
         buttonIcon="save"
         v-bind:buttonAction="createView"
         style="margin-left: 5px;"
       >
         {{ $t('Create') }}
+      </Button>
+      <Button
+        v-if="!isNew"
+        style="margin-left: 5px;"
+        buttonIcon="remove"
+        v-bind:buttonAction="showConfirmationModal"
+      >
+        {{ $t('Delete') }}
+      </Button>
+      <Button
+        v-if="!isNew"
+        buttonIcon="save"
+        v-bind:buttonAction="updateView"
+        style="margin-left: 5px;"
+      >
+        {{ $t('Update') }}
       </Button>
     </div>
   </div>
@@ -58,7 +76,14 @@ import LoadingBar from '../templates/loading-bar.vue'
 export default {
   data() {
     return {
+      isNew: true,
       view: new this.$models.View(),
+      confirmationModalData: {
+        modalTitle: 'Do you want delete this view?',
+        modalDescription: 'This action will delete this view',
+        cancelAction: this.cancelAction,
+        acceptAction: this.acceptAction,
+      },
       isLoading: false,
     }
   },
@@ -69,27 +94,78 @@ export default {
     NavigationButtons,
     LoadingBar,
   },
+  created() {
+    let routeParamId = this.$route.params.id
+    if (routeParamId !== undefined) {
+      this.isNew = false
+      this.view.set('_id', routeParamId)
+      this.getViewData()
+    }
+  },
   methods: {
     onChangeInputValue: function(propName, value) {
       this.view.set(propName, value)
     },
-    createView: function() {
+    getViewData: function() {
       this.isLoading = true
       this.view
-        .save()
+        .fetch()
         .then(data => {
           this.isLoading = false
-          if (data.response.data.status_code) {
+          if (data.getData().status_code) {
             this.$eventHub.$emit(
               'dashboard-app-error',
               data.getData().status_msg,
             )
             return
           }
-          this.$router.replace({
-            name: 'view-detail',
-            params: { id: data.getData().data.id },
-          })
+        })
+        .catch(err => {
+          this.isLoading = false
+          this.$eventHub.$emit('dashboard-app-error', err.message)
+        })
+    },
+    deleteView: function() {
+      this.isLoading = true
+      this.view
+        .delete()
+        .then(data => {
+          this.isLoading = false
+          if (data.getData().status_code) {
+            this.$eventHub.$emit(
+              'dashboard-app-error',
+              data.getData().status_msg,
+            )
+            return
+          }
+          this.$eventHub.$emit(
+            'dashboard-app-success',
+            data.getData().status_msg,
+          )
+        })
+        .catch(err => {
+          this.isLoading = false
+          this.$eventHub.$emit('dashboard-app-error', err.message)
+        })
+      this.$router.replace({ name: 'views', params: { page: 1 } })
+    },
+    updateView: function() {
+      if (Object.keys(this.view.errors).length)
+        return
+
+      this.view.setOption('initialViewContent', this.view.get('view_content'))
+      this.isLoading = true
+      this.view
+        .put()
+        .then(data => {
+          this.isLoading = false
+          if (data.getData().status_code) {
+            this.$eventHub.$emit(
+              'dashboard-app-error',
+              data.getData().status_msg,
+            )
+            return
+          }
           this.$eventHub.$emit(
             'dashboard-app-success',
             data.getData().status_msg,
@@ -99,7 +175,43 @@ export default {
           this.isLoading = false
         })
     },
-    cancelCreate: function() {
+    showConfirmationModal: function() {
+      this.$eventHub.$emit('confirmation-modal', this.confirmationModalData)
+    },
+    cancelAction: function() {
+      this.$eventHub.$emit('confirmation-modal', null)
+    },
+    acceptAction: function() {
+      this.$eventHub.$emit('confirmation-modal', null)
+      this.deleteView()
+    },
+    createView: function() {
+      this.isLoading = true
+      this.view
+      .save()
+      .then(data => {
+        this.isLoading = false
+        if (data.getData().status_code) {
+          this.$eventHub.$emit(
+            'dashboard-app-error',
+            data.getData().status_msg,
+          )
+          return
+        }
+        this.$router.replace({
+          name: 'view-detail',
+          params: { id: data.getData().data.id },
+        })
+        this.$eventHub.$emit(
+          'dashboard-app-success',
+          data.getData().status_msg,
+        )
+      })
+      .catch(err => {
+        this.isLoading = false
+      })
+    },
+    cancelCreateView: function() {
       this.$router.back()
     },
   },
