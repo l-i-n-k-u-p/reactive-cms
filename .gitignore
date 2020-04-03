@@ -79,3 +79,6 @@ typings/
 # VENoM static
 site-static/uploads/
 server-app/static/js/dashboard-app-bundle.js
+
+# Database dir
+database

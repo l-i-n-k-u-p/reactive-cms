@@ -5,8 +5,8 @@
   "main": "server-app/server.js",
   "scripts": {
     "start": "webpack --config webpack-dashboard-config.js --mode=production && node_modules/pm2/bin/pm2 start ecosystem.config.js --env production",
-    "server-production": "node_modules/pm2/bin/pm2 start ecosystem.config.js --env production",
-    "server-development": "node_modules/pm2/bin/pm2 start ecosystem.config.js --env development --watch",
+    "server-production": "node_modules/pm2/bin/pm2 start ecosystem.config.js --env production && node_modules/pm2/bin/pm2 logs",
+    "server-development": "node_modules/pm2/bin/pm2 start ecosystem.config.js --env development --watch && node_modules/pm2/bin/pm2 logs",
     "server-monit": "node_modules/pm2/bin/pm2 monit",
     "server-logs": "node_modules/pm2/bin/pm2 logs",
     "server-stop": "node_modules/pm2/bin/pm2 kill",
