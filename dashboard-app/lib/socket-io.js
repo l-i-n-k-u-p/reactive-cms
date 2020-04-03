@@ -1,44 +1,53 @@
-class SocketIO {
-  constructor () {
-    this.io = io('/', {
-      reconnection: true,
-      reconnectionDelay: 3000,
-      reconnectionDelayMax: 6000,
-      reconnectionAttempts: Infinity,
-      transports: ['websocket'],
-    })
-    this.events = []
-    this.socketIOEventManager()
-  }
-  socketIOEventManager () {
-    // this.io.on('connect', () => {
-    // })
-    // this.io.on('disconnect', (reason) => {
-    //   console.log('== socketIO - connect ==', this.io.connected, reason)
-    // })
-    // this.io.on('reconnecting', (attemptNumber) => {
-    //   console.log('== socketIO - reconnecting ==', attemptNumber)
-    // })
-    // this.io.on('reconnect_error', (error) => {
-    //   console.log('== socketIO - reconnect_error ==', error)
-    // })
-    // this.io.on('reconnect_failed', () => {
-    //   console.log('== socketIO - reconnect_failed ==')
-    // })
-    // this.io.on('error', (error) => {
-    //   console.log('== socketIO - error ==', error)
-    // })
-    // this.io.on('connect_timeout', (timeout) => {
-    //   console.log('== socketIO - connect_timeout ==', timeout)
-    // })
-  }
-  registerEvent (event, callback) {
-    this.events.push({
-      event: event,
-      callback: callback,
-    })
-    this.io.on(event, callback)
-  }
+const getTransportMethod = () => {
+  let transportMethod = ['polling']
+  if ('WebSocket' in window)
+    transportMethod[0] = 'websocket'
+  return transportMethod
 }
 
-export default SocketIO
+const IO_INSTANCE = io('/', {
+  reconnection: true,
+  reconnectionDelay: 3000,
+  reconnectionDelayMax: 6000,
+  reconnectionAttempts: Infinity,
+  transports: getTransportMethod(),
+})
+
+export default class IO {
+  constructor () {
+    // NOTE: uncomment to show logs 
+    // this.socketIOEventManager()
+  }
+  socketIOEventManager () {
+    IO_INSTANCE.on('connect', () => {
+      console.log('== socketIO - connect ==')
+    })
+    IO_INSTANCE.on('disconnect', (reason) => {
+      console.log('== socketIO - disconnect ==', reason)
+    })
+    IO_INSTANCE.on('reconnecting', (attemptNumber) => {
+      console.log('== socketIO - reconnecting ==', attemptNumber)
+    })
+    IO_INSTANCE.on('reconnect_error', (error) => {
+      console.log('== socketIO - reconnect_error ==', error)
+    })
+    IO_INSTANCE.on('reconnect_failed', () => {
+      console.log('== socketIO - reconnect_failed ==')
+    })
+    IO_INSTANCE.on('error', (error) => {
+      console.log('== socketIO - error ==', error)
+    })
+    IO_INSTANCE.on('connect_timeout', (timeout) => {
+      console.log('== socketIO - connect_timeout ==', timeout.$events)
+    })
+  }
+  registerEvent (eventName, callback) {
+    if (eventName.indexOf('undefined') === 0)
+      return
+
+    IO_INSTANCE.on(eventName, callback)
+  }
+  unregisterEvent (eventName) {
+    IO_INSTANCE.off(event)
+  }
+}
