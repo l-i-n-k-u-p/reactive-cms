@@ -28,9 +28,9 @@ rcms_deployment()
   mkdir -p ${base_dir}../database/data/db/;
   mkdir -p ${base_dir}../database/data/mongodb/;
   docker build -f ${base_dir}dockerfile/dockerfile-mongodb -t rcms-mongodb-img .;
-  # docker build -f ${base_dir}dockerfile/dockerfile-nginx -t rcms-nginx-img .;
-  # docker build -f ${base_dir}dockerfile/dockerfile-nodejs -t rcms-nodejs-img .;
-  # docker-compose -f ${base_dir}build/rcms-nodejs-builder.yml run --rm rcms-install;
+  docker build -f ${base_dir}dockerfile/dockerfile-nginx -t rcms-nginx-img .;
+  docker build -f ${base_dir}dockerfile/dockerfile-nodejs -t rcms-nodejs-img .;
+  docker-compose -f ${base_dir}build/rcms-nodejs-builder.yml run --rm rcms-install;
   echo "Deployment finished";
   echo "For next steps run: rcms.sh after-deploying"
 }
