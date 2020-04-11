@@ -50,7 +50,7 @@
     "vue-chartjs": "^3.4.2",
     "vue-i18n": "^8.11.2",
     "vue-loader": "^15.6.4",
-    "vue-mc": "^0.5.0",
+    "vue-mc": "^0.6.0",
     "vue-perfect-scrollbar": "^0.1.0",
     "vue-uuid": "^1.1.1"
   },

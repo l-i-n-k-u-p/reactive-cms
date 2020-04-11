@@ -182,18 +182,21 @@ export default {
     this.onResizeWindow()
   },
   methods: {
-    initAxiosListenEvent: function() {
+    initAxiosListenEvent: function () {
       this.axios.interceptors.response.use(
         response => {
           let statusCode = response.data.status_code
           let statusMessage = response.data.status_msg
-          if (statusCode === 1)
+          if (statusCode === 0 && statusMessage)
+            this.$eventHub.$emit('dashboard-app-success', statusMessage)
+          else if (statusCode === 1)
             this.$eventHub.$emit('dashboard-app-error', statusMessage)
-          if (statusCode === 3)
+          else if (statusCode === 3)
             this.showLogin = true
           return response
         },
         error => {
+          this.$eventHub.$emit('dashboard-app-error', error.message)
           return Promise.reject(error)
         },
       )

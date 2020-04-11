@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import VueAxios from 'vue-axios'
 import UUID from 'vue-uuid'
 import axios from 'axios'
+import lodash from  'lodash'
 import VueI18n from 'vue-i18n'
 
 // NOTE: libraries
@@ -72,6 +73,7 @@ for (let directive of GLOBAL_DIRECTIVES.directives)
 for (let directive of ACL_DIRECTIVES.directives)
   Vue.directive(directive.name, directive.action)
 Vue.use(VueRouter)
+Vue.use(lodash)
 Vue.use(VueAxios, axios)
 Vue.use(UUID)
 Vue.use(VueI18n)
