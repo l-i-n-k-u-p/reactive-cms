@@ -15,7 +15,7 @@ import {
   aclUserCan,
   getCookie,
 } from './lib/lib'
-import SocketIO from './lib/socket-io'
+import sockerIO from './lib/socket-io.vue'
 import localeEN from './i18n/locale-en'
 import localeES from './i18n/locale-es'
 // NOTE: directives
@@ -107,7 +107,7 @@ Vue.prototype.$getThumbnailURL = getThumbnailURL
 Vue.prototype.$aclReplaceVNode = aclReplaceVNode
 Vue.prototype.$aclUserCan = aclUserCan
 Vue.prototype.$getCookie = getCookie
-Vue.prototype.$socketIO = new SocketIO()
+Vue.prototype.$socketIO = new sockerIO.IO()
 
 const i18n = new VueI18n({
   locale: 'en',

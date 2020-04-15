@@ -1,46 +1,12 @@
 <script>
-import {
-  Model,
-} from 'vue-mc'
-
-import SocketIO from '../lib/socket-io'
+import BaseModel from './structure/base-model'
 import APP_SETTINGS from '../app-settings'
-import lib from '../lib/lib'
-
-let socketIO = new SocketIO()
 
 
-class DashboardSettingModel extends Model {
+class DashboardSettingModel extends BaseModel {
   constructor (props) {
     super(props)
-    this.listenPushMessages()
-    this.setupListeners()
-    this.setCSRFToken()
-  }
-  setCSRFToken () {
-    let csrf = lib.getCookie('csrf-token')
-    this.set('_csrf', csrf)
-  }
-  setupListeners () {
-    this.on('fetch', (event) => {
-      this.setCSRFToken()
-    })
-  }
-  listenPushMessages () {
-    socketIO.registerEvent(
-      'settings-put',
-      (data) => {
-        if (this.get('_id') === data.data._id)
-          this.set(data.data)
-      }
-    )
-    socketIO.registerEvent(
-      'settings-delete',
-      (data) => {
-        if (this.get('_id') === data.data._id)
-          this.removeFromAllCollections()
-      }
-    )
+    this.listenPushMessages('settings')
   }
   defaults () {
     return {
@@ -61,5 +27,4 @@ class DashboardSettingModel extends Model {
 export default {
   model: DashboardSettingModel,
 }
-
 </script>

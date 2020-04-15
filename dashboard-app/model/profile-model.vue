@@ -1,51 +1,18 @@
 <script>
 import {
-  Model,
-} from 'vue-mc'
-import {
   length,
   string,
   email,
 } from 'vue-mc/validation'
 
-import SocketIO from '../lib/socket-io'
+import BaseModel from './structure/base-model'
 import APP_SETTINGS from '../app-settings'
-import lib from '../lib/lib'
-
-let socketIO = new SocketIO()
 
 
-class ProfileModel extends Model {
+class ProfileModel extends BaseModel {
   constructor (props) {
     super(props)
-    this.listenPushMessages()
-    this.setupListeners()
-    this.setCSRFToken()
-  }
-  setCSRFToken () {
-    let csrf = lib.getCookie('csrf-token')
-    this.set('_csrf', csrf)
-  }
-  setupListeners () {
-    this.on('fetch', (event) => {
-      this.setCSRFToken()
-    })
-  }
-  listenPushMessages () {
-    socketIO.registerEvent(
-      'user-put',
-      (data) => {
-        if (this.get('_id') === data.data._id)
-          this.set(data.data)
-      }
-    )
-    socketIO.registerEvent(
-      'user-delete',
-      (data) => {
-        if (this.get('_id') === data.data._id)
-          this.removeFromAllCollections()
-      }
-    )
+    this.listenPushMessages('user')
   }
   defaults () {
     return {
@@ -76,22 +43,6 @@ class ProfileModel extends Model {
       user_email: email,
       user_first_name: string.and(length(2, 100)),
     }
-  }
-  options () {
-    return {
-      validateOnChange: true,
-      validateOnSave: true,
-      validateRecursively: true,
-      saveUnchanged: true,
-      useFirstErrorOnly: true,
-    }
-  }
-  put () {
-    let method = 'PUT'
-    let route = this.getRoute('put')
-    let url = this.getURL(route, this.getRouteParameters())
-    let data = this._attributes
-    return this.getRequest({ method, url, data }).send()
   }
   routes () {
     return {
