@@ -128,9 +128,8 @@ export default {
   methods: {
     getPages: function() {
       this.isLoading = true
-      this.pages
-        .page(this.currentPage)
-        .fetch()
+      this.pages.set('page', this.currentPage)
+      this.pages.fetch()
         .then(data => {
           this.isLoading = false
           this.totalPages = data.getData().total_pages

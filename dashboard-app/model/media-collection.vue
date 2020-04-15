@@ -1,6 +1,7 @@
 <script>
 import BaseCollection from './structure/base-collection'
 import MediaModel from './media-model.vue'
+import APP_SETTINGS from '../app-settings'
 
 
 class MediaCollection extends BaseCollection {

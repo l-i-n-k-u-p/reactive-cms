@@ -58,5 +58,4 @@ class MediaModel extends BaseModel {
 export default {
   model: MediaModel,
 }
-
 </script>
