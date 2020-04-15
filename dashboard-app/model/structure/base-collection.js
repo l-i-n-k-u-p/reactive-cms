@@ -3,8 +3,8 @@ import {
   Collection,
 } from 'vue-mc'
 
-import lib from '../lib/lib.vue'
-import Socket from '../lib/socket.vue'
+import lib from '../../lib/lib.js'
+import Socket from '../../lib/socket-io.vue'
 
 
 let io = new Socket.IO()
