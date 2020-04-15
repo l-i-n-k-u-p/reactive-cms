@@ -1,18 +1,9 @@
 <script>
-import {
-  Collection,
-} from 'vue-mc'
-
-import SocketIO from '../lib/socket-io'
+import BaseCollection from './structure/base-collection'
 import APP_SETTINGS from '../app-settings'
 
-let socketIO = new SocketIO()
 
-
-class DashboardCollection extends Collection {
-  getModelsFromResponse (response) {
-    return response.getData().items
-  }
+class DashboardCollection extends BaseCollection {
   routes () {
     return {
       fetch: `${ APP_SETTINGS.appApiBaseURL }/dashboard/`,
@@ -23,5 +14,4 @@ class DashboardCollection extends Collection {
 export default {
   model: DashboardCollection,
 }
-
 </script>
