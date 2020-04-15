@@ -1,19 +1,9 @@
 <script>
-import {
-  Collection,
-} from 'vue-mc'
-
-import SocketIO from '../lib/socket-io'
+import BaseCollection from './structure/base-collection'
 import APP_SETTINGS from '../app-settings'
 
-let socketIO = new SocketIO()
 
-
-class FileTemplateCollection extends Collection {
-  getModelsFromResponse (response) {
-    return response.getData().items
-  }
-
+class FileTemplateCollection extends BaseCollection {
   routes () {
     return {
       fetch: `${ APP_SETTINGS.appApiBaseURL }/page/template-files/`,
@@ -24,5 +14,4 @@ class FileTemplateCollection extends Collection {
 export default {
   model: FileTemplateCollection,
 }
-
 </script>

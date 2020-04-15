@@ -113,9 +113,8 @@ export default {
   methods: {
     getRoles: function() {
       this.isLoading = true
-      this.roles
-        .page(this.currentPage)
-        .fetch()
+      this.roles.set('page', this.currentPage)
+      this.roles.fetch()
         .then(data => {
           this.isLoading = false
           if (data.getData().status_code) {

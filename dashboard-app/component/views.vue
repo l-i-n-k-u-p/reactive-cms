@@ -115,9 +115,8 @@ export default {
   methods: {
     getViews: function() {
       this.isLoading = true
-      this.views
-        .page(this.currentPage)
-        .fetch()
+      this.views.set('page', this.currentPage)
+      this.views.fetch()
         .then(data => {
           this.isLoading = false
           this.totalPages = data.getData().total_pages

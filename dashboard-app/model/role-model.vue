@@ -1,50 +1,17 @@
 <script>
 import {
-  Model,
-} from 'vue-mc'
-import {
   length,
   string,
 } from 'vue-mc/validation'
 
-import SocketIO from '../lib/socket-io'
+import BaseModel from './structure/base-model'
 import APP_SETTINGS from '../app-settings'
-import lib from '../lib/lib'
-
-let socketIO = new SocketIO()
 
 
-class RoleModel extends Model {
+class RoleModel extends BaseModel {
   constructor (props) {
     super(props)
-    this.listenPushMessages()
-    this.setupListeners()
-    this.setCSRFToken()
-  }
-  setCSRFToken () {
-    let csrf = lib.getCookie('csrf-token')
-    this.set('_csrf', csrf)
-  }
-  setupListeners () {
-    this.on('fetch', (event) => {
-      this.setCSRFToken()
-    })
-  }
-  listenPushMessages () {
-    socketIO.registerEvent(
-      'role-put',
-      (data) => {
-        if (this.get('_id') === data.data._id)
-          this.set(data.data)
-      }
-    )
-    socketIO.registerEvent(
-      'role-delete',
-      (data) => {
-        if (this.get('_id') === data.data._id)
-          this.removeFromAllCollections()
-      }
-    )
+    this.listenPushMessages('role')
   }
   defaults () {
     return {
@@ -53,45 +20,15 @@ class RoleModel extends Model {
       role_user_ref: '',
     }
   }
-  mutations() {
+  mutations () {
     return {
       role_name: String,
     }
   }
-  validation() {
+  validation () {
     return {
       role_name: string.and(length(2, 150)),
     }
-  }
-  options () {
-    return {
-      validateOnChange: true,
-      validateOnSave: true,
-      validateRecursively: true,
-      saveUnchanged: true,
-      useFirstErrorOnly: true,
-    }
-  }
-  post () {
-    let method = 'POST'
-    let route = this.getRoute('post')
-    let url = this.getURL(route, this.getRouteParameters())
-    let data = this._attributes
-    return this.getRequest({ method, url, data }).send()
-  }
-  put () {
-    let method = 'PUT'
-    let route = this.getRoute('put')
-    let url = this.getURL(route, this.getRouteParameters())
-    let data = this._attributes
-    return this.getRequest({ method, url, data }).send()
-  }
-  delete () {
-    let method = 'DELETE'
-    let route = this.getRoute('delete')
-    let url = this.getURL(route, this.getRouteParameters())
-    let data = this._attributes
-    return this.getRequest({ method, url, data }).send()
   }
   routes () {
     return {

@@ -3,8 +3,8 @@ import {
   Model,
 } from 'vue-mc'
 
-import lib from '../lib/lib.vue'
-import Socket from '../lib/socket.vue'
+import lib from '../../lib/lib.js'
+import Socket from '../../lib/socket-io.vue'
 
 
 let io = new Socket.IO()
@@ -30,9 +30,9 @@ export default class BaseModel extends Model {
       return
 
     io.registerEvent(
-      `${ window.user_client_id }-${ modelName }-put`,
-      (data) => {
-        if (this.get('id') !== data.data.id)
+      `${ modelName }-put`,
+      data => {
+        if (this.get('_id') !== data.data._id)
           return
 
         this.set(data.data)
@@ -40,9 +40,9 @@ export default class BaseModel extends Model {
       }
     )
     io.registerEvent(
-      `${ window.user_client_id }-${ modelName }-delete`,
-      (data) => {
-        if (this.get('id') !== data.data.id)
+      `${ modelName }-delete`,
+      data => {
+        if (this.get('_id') !== data.data._id)
           return
 
         this.removeFromAllCollections()
@@ -53,7 +53,7 @@ export default class BaseModel extends Model {
   listenPushGlobalMessages (modelName = '', event = '') {
     io.registerEvent(
       `${ modelName }-${ event }`,
-      (data) => {
+      data => {
         if (this.get('_id') === data.data._id)
           this.set(data.data)
       }
@@ -73,7 +73,7 @@ export default class BaseModel extends Model {
   }
   onFetchSuccess (response) {
     // overriding - onFetchSuccess
-    let attributes = response.getData().data
+    let attributes = response.getData()
     this.assign(attributes)
   }
   options () {

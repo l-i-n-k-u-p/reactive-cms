@@ -131,9 +131,8 @@ export default {
   methods: {
     getUsers: function() {
       this.isLoading = true
-      this.users
-        .page(this.currentPage)
-        .fetch()
+      this.users.set('page', this.currentPage)
+      this.users.fetch()
         .then(data => {
           this.isLoading = false
           this.totalPages = data.getData().total_pages

@@ -1,21 +1,20 @@
+<script>
 const getTransportMethod = () => {
   let transportMethod = ['polling']
   if ('WebSocket' in window)
     transportMethod[0] = 'websocket'
   return transportMethod
 }
-
 const IO_INSTANCE = io('/', {
+  // path: '/',
   reconnection: true,
   reconnectionDelay: 3000,
   reconnectionDelayMax: 6000,
   reconnectionAttempts: Infinity,
   transports: getTransportMethod(),
 })
-
-export default class IO {
+class IO {
   constructor () {
-    // NOTE: uncomment to show logs 
     // this.socketIOEventManager()
   }
   socketIOEventManager () {
@@ -51,3 +50,7 @@ export default class IO {
     IO_INSTANCE.off(event)
   }
 }
+export default {
+  IO: IO,
+}
+</script>
