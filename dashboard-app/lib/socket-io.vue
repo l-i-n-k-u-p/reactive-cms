@@ -43,6 +43,7 @@ class IO {
   registerEvent (eventName, callback) {
     if (eventName.indexOf('undefined') === 0)
       return
+
     IO_INSTANCE.on(eventName, callback)
   }
   unregisterEvent (eventName) {

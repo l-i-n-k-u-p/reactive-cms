@@ -30,9 +30,9 @@ export default class BaseModel extends Model {
       return
 
     io.registerEvent(
-      `${ window.user_client_id }-${ modelName }-put`,
-      (data) => {
-        if (this.get('id') !== data.data.id)
+      `${ modelName }-put`,
+      data => {
+        if (this.get('_id') !== data.data._id)
           return
 
         this.set(data.data)
@@ -40,9 +40,9 @@ export default class BaseModel extends Model {
       }
     )
     io.registerEvent(
-      `${ window.user_client_id }-${ modelName }-delete`,
-      (data) => {
-        if (this.get('id') !== data.data.id)
+      `${ modelName }-delete`,
+      data => {
+        if (this.get('_id') !== data.data._id)
           return
 
         this.removeFromAllCollections()
@@ -53,7 +53,7 @@ export default class BaseModel extends Model {
   listenPushGlobalMessages (modelName = '', event = '') {
     io.registerEvent(
       `${ modelName }-${ event }`,
-      (data) => {
+      data => {
         if (this.get('_id') === data.data._id)
           this.set(data.data)
       }

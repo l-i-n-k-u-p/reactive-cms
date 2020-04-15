@@ -30,8 +30,8 @@ export default class BaseCollection extends Collection {
       return
 
     io.registerEvent(
-      `${ window.user_client_id }-${ modelName }-post`,
-      (data) => {
+      `${ modelName }-post`,
+      data => {
         this.add(data.data)
         let lastModel = this.models.pop()
         this.models.unshift(lastModel)
@@ -39,14 +39,14 @@ export default class BaseCollection extends Collection {
       }
     )
     io.registerEvent(
-    `${ window.user_client_id }-${ modelName }-put`,
-      (data) => {
+    `${ modelName }-put`,
+      data => {
         this.emit('notification', { method: 'put' })
       }
     )
     io.registerEvent(
-      `${ window.user_client_id }-${ modelName }-delete`,
-      (data) => {
+      `${ modelName }-delete`,
+      data => {
         this.emit('notification', {method: 'delete'})
       }
     )
@@ -54,7 +54,7 @@ export default class BaseCollection extends Collection {
   listenPushGlobalMessages (modelName = '', event = '') {
     io.registerEvent(
       `${ modelName }-${ event }`,
-      (data) => {
+      data => {
         this.emit('notification', { method: event })
       }
     )
