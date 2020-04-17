@@ -795,7 +795,7 @@ exports.addNewMedia = async (req, res) => {
   if (newMedia.error) {
     res.send({
       status_code: 1,
-      status_msg: 'Error seving media',
+      status_msg: newMedia.error.toString(),
     })
     return
   }

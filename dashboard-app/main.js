@@ -48,7 +48,7 @@ import App from './app.vue'
 import Dashboard from './component/dashboard.vue'
 import Pages from './component/pages.vue'
 import Posts from './component/posts.vue'
-import Media from './component/media.vue'
+import MediaFiles from './component/media.vue'
 import Users from './component/users.vue'
 import Roles from './component/roles.vue'
 import Views from './component/views.vue'
@@ -59,8 +59,7 @@ import PostDetail from './component/post-components/post-detail.vue'
 import PostCreate from './component/post-components/post-create.vue'
 import PageDetail from './component/page-components/page-detail.vue'
 import PageCreate from './component/page-components/page-create.vue'
-import MediaDetail from './component/media-components/media-detail.vue'
-import MediaCreate from './component/media-components/media-create.vue'
+import Media from './component/media-components/media.vue'
 import RoleDetail from './component/role-components/role-detail.vue'
 import RoleCreate from './component/role-components/role-create.vue'
 import NotFound from './component/not-found.vue'
@@ -142,7 +141,7 @@ const routes = [
   {
     name: 'media',
     path: `${ APP_SETTINGS.appBaseURL }/media-files/:page`,
-    component: Media,
+    component: MediaFiles,
   },
   {
     name: 'users',
@@ -192,12 +191,12 @@ const routes = [
   {
     name: 'media-detail',
     path: `${ APP_SETTINGS.appBaseURL }/media/:id`,
-    component: MediaDetail,
+    component: Media,
   },
   {
     name: 'new-media',
-    path: `${ APP_SETTINGS.appBaseURL }/new-media/`,
-    component: MediaCreate,
+    path: `${ APP_SETTINGS.appBaseURL }/media/`,
+    component: Media,
   },
   {
     name: 'role-detail',
