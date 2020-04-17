@@ -37,7 +37,7 @@ class MediaModel extends BaseModel {
   isImage () {
     let mimetype = this.get('media_mime_type')
     if (mimetype === 'image/jpeg' || mimetype === 'image/png')
-    return true
+      return true
 
     return false
   }
