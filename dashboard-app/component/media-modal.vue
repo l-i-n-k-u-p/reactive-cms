@@ -166,7 +166,7 @@ export default {
     LoadingBar,
   },
   methods: {
-    getMedia: function() {
+    getMedia: function () {
       if (this.mediaPage <= this.totalPages) {
         this.isLoading = true
         this.mediaFiles
@@ -184,10 +184,10 @@ export default {
           })
       }
     },
-    selectMediaImage: function(media) {
+    selectMediaImage: function (media) {
       this.selectedMedia = media
     },
-    onScroll: function(el) {
+    onScroll: function (el) {
       let mediaWrapper = this.$refs.mediaWrapper
       if (
         mediaWrapper.clientHeight + mediaWrapper.scrollTop >=
@@ -195,23 +195,23 @@ export default {
       )
         this.getMedia()
     },
-    showThisMedia: function(media) {
+    showThisMedia: function (media) {
       if (this.onlyImages === media.isImage()) return true
 
       return false
     },
-    getPreview: function(media) {
+    getPreview: function (media) {
       if (media.isImage()) return this.$getAvatarURL(media.get('media_name'))
 
       return this.$getHexColor(media.get('media_title'))
     },
-    resetLibraryData: function() {
+    resetLibraryData: function () {
       this.mediaFiles.clear()
       this.mediaPage = 1
       this.totalItems = 0
       this.totalPages = 1
     },
-    onChangeInputValue: function(propName, value) {
+    onChangeInputValue: function (propName, value) {
       this.searchValue = value
       if (!this.searchValue) {
         this.resetLibraryData()
@@ -239,13 +239,13 @@ export default {
           this.isLoading = false
         })
     },
-    activeLibrary: function() {
+    activeLibrary: function () {
       this.activeTab = 0
     },
-    activeUpload: function() {
+    activeUpload: function () {
       this.activeTab = 1
     },
-    addFile: function() {
+    addFile: function () {
       this.formData.delete('name')
       this.formData.delete('type')
       this.formData.delete('size')
@@ -258,7 +258,7 @@ export default {
       this.mediaName = this.$refs.file.files[0].name
       this.createMedia()
     },
-    addDragEnterAndLeaveEventListener: function() {
+    addDragEnterAndLeaveEventListener: function () {
       this.$refs.file.addEventListener('dragover', e => {
         e.preventDefault()
         e.stopPropagation()
@@ -273,7 +273,7 @@ export default {
         this.$refs.dropzone.classList.remove('dragover')
       })
     },
-    createMedia: function() {
+    createMedia: function () {
       this.isLoading = true
       this.axios
       .post(`${ this.$appApiBaseURL }/media-file/`, this.formData, {
@@ -294,7 +294,7 @@ export default {
         this.$eventHub.$emit('dashboard-app-error', err.message)
       })
     },
-    selectMedia: function() {
+    selectMedia: function () {
       if (this.selectedMedia.get('id')) this.onMediaSelect(this.selectedMedia)
     },
   },

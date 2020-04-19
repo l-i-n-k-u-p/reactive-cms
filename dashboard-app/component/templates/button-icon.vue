@@ -23,7 +23,7 @@ export default {
   components: {},
   created() {},
   methods: {
-    getColor: function() {
+    getColor: function () {
       if (this.buttonColor)
         return `color: ${ this.buttonColor }`
 

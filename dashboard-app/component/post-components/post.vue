@@ -174,7 +174,7 @@ export default {
       this.post.set('post_status', 'publish')
   },
   methods: {
-    setOnChangePost: function() {
+    setOnChangePost: function () {
       this.post.on('change', ({ attribute, value }) => {
         let hasUpdate = this.post.getOption('hasNewVersionContent')
         if (hasUpdate) {
@@ -191,10 +191,10 @@ export default {
           this.postDate = moment(value).format('MMMM Do YYYY, h:mm:ss a')
       })
     },
-    onChangeInputValue: function(propName, value) {
+    onChangeInputValue: function (propName, value) {
       this.post.set(propName, value)
     },
-    getPostData: function() {
+    getPostData: function () {
       this.isLoading = true
       this.post.fetch()
         .then(data => {
@@ -207,7 +207,7 @@ export default {
           this.isLoading = false
         })
     },
-    deletePost: function() {
+    deletePost: function () {
       this.isLoading = true
       this.post.delete()
         .finally(() => {
@@ -215,7 +215,7 @@ export default {
           this.$router.replace({ name: 'posts', params: { page: 1 } })
         })
     },
-    updatePost: function() {
+    updatePost: function () {
       if (Object.keys(this.post.errors).length)
         return
 
@@ -226,7 +226,7 @@ export default {
           this.isLoading = false
         })
     },
-    createPost: function() {
+    createPost: function () {
       this.isLoading = true
       this.post.save()
         .then(data => {
@@ -239,32 +239,32 @@ export default {
           this.isLoading = false
         })
     },
-    cancelCreate: function() {
+    cancelCreate: function () {
       this.$router.back()
     },
-    showConfirmationModal: function() {
+    showConfirmationModal: function () {
       this.$eventHub.$emit('confirmation-modal', this.confirmationModalData)
     },
-    cancelAction: function() {
+    cancelAction: function () {
       this.$eventHub.$emit('confirmation-modal', null)
     },
-    acceptAction: function() {
+    acceptAction: function () {
       this.$eventHub.$emit('confirmation-modal', null)
       this.deletePost()
     },
-    onSelectOption: function(option) {
+    onSelectOption: function (option) {
       this.post.set('post_status', option.value)
     },
-    onChangeContent: function({ getJSON, getHTML }) {
+    onChangeContent: function ({ getJSON, getHTML }) {
       this.post.set('post_content', getHTML())
     },
-    openMediaModal: function() {
+    openMediaModal: function () {
       this.$eventHub.$emit('media-modal', this.mediaModalData)
     },
-    closeMediaModal: function() {
+    closeMediaModal: function () {
       this.$eventHub.$emit('media-modal', null)
     },
-    onMediaSelect: function(media) {
+    onMediaSelect: function (media) {
       let mediaData = {
         media_id: media.get('id'),
         media_file_name: media.get('media_name'),
@@ -273,16 +273,16 @@ export default {
       this.post.set('post_thumbnail', mediaData)
       this.closeMediaModal()
     },
-    removeMedia: function() {
+    removeMedia: function () {
       this.post.set('post_thumbnail', '')
     },
-    getCoverImage: function() {
+    getCoverImage: function () {
       return this.$getThumbnailURL(this.post.get('post_thumbnail').media_file_name)
     },
-    getCoverColor: function() {
+    getCoverColor: function () {
       return this.$getHexColor(this.post.get('post_title'))
     },
-    acceptActionAndReplace: function() {
+    acceptActionAndReplace: function () {
       this.$eventHub.$emit('confirmation-modal', null)
       this.editorContent = this.newVersionEditorContent
     },

@@ -218,7 +218,7 @@ export default {
     this.getRolesData()
   },
   methods: {
-    setOnChangeUser: function() {
+    setOnChangeUser: function () {
       this.user.on('change', ({ attribute, value }) => {
         if (attribute === 'user_registration_date')
           this.setUserFormatDate()
@@ -228,14 +228,14 @@ export default {
           this.setInitialLocations()
       })
     },
-    onSetNewPassword: function(propName, value) {
+    onSetNewPassword: function (propName, value) {
       this.newPassword = value
       this.user.set('user_pass', value)
     },
-    onChangeInputValue: function(propName, value) {
+    onChangeInputValue: function (propName, value) {
       this.user.set(propName, value)
     },
-    getUserData: function() {
+    getUserData: function () {
       this.isLoading = true
       this.user
         .fetch()
@@ -256,7 +256,7 @@ export default {
           this.$eventHub.$emit('dashboard-app-error', err.toString())
         })
     },
-    getRolesData: function() {
+    getRolesData: function () {
       this.isLoading = true
       this.roles
       .page(-1)
@@ -277,7 +277,7 @@ export default {
         this.$eventHub.$emit('dashboard-app-error', err.toString())
       })
     },
-    deleteUser: function() {
+    deleteUser: function () {
       this.isLoading = true
       this.user
         .delete()
@@ -301,7 +301,7 @@ export default {
         })
       this.$router.replace({ name: 'users', params: { page: 1 } })
     },
-    updateUser: function() {
+    updateUser: function () {
       if (Object.keys(this.user.errors).length)
         return
 
@@ -328,23 +328,23 @@ export default {
         this.isLoading = false
       })
     },
-    showConfirmationModal: function() {
+    showConfirmationModal: function () {
       this.$eventHub.$emit('confirmation-modal', this.confirmationModalData)
     },
-    cancelAction: function() {
+    cancelAction: function () {
       this.$eventHub.$emit('confirmation-modal', null)
     },
-    acceptAction: function() {
+    acceptAction: function () {
       this.$eventHub.$emit('confirmation-modal', null)
       this.deleteUser()
     },
-    openMediaModal: function() {
+    openMediaModal: function () {
       this.$eventHub.$emit('media-modal', this.mediaModalData)
     },
-    closeMediaModal: function() {
+    closeMediaModal: function () {
       this.$eventHub.$emit('media-modal', null)
     },
-    onMediaSelect: function(media) {
+    onMediaSelect: function (media) {
       let mediaData = {
         media_id: media.get('id'),
         media_file_name: media.get('media_name'),
@@ -353,10 +353,10 @@ export default {
       this.user.set('user_thumbnail', mediaData)
       this.closeMediaModal()
     },
-    removeMedia: function() {
+    removeMedia: function () {
       this.user.set('user_thumbnail', '')
     },
-    onMediaAvatarSelect: function(media) {
+    onMediaAvatarSelect: function (media) {
       let mediaData = {
         media_id: media.get('id'),
         media_file_name: media.get('media_name'),
@@ -365,22 +365,22 @@ export default {
       this.user.set('user_avatar', mediaData)
       this.closeMediaAvatarModal()
     },
-    openMediaAvatarModal: function() {
+    openMediaAvatarModal: function () {
       this.$eventHub.$emit('media-modal', this.mediaModalAvatarData)
     },
-    closeMediaAvatarModal: function() {
+    closeMediaAvatarModal: function () {
       this.$eventHub.$emit('media-modal', null)
     },
-    removeMediaAvatar: function() {
+    removeMediaAvatar: function () {
       this.user.set('user_avatar', '')
     },
-    onSelectRole: function(option) {
+    onSelectRole: function (option) {
       this.user.set({
         'user_role': option.value,
         'user_role_ref': option.value._id,
       })
     },
-    setInitialRoles: function() {
+    setInitialRoles: function () {
       this.roleOptions = []
       for (let role of this.roles.getModels()) {
         this.roleOptions.push({
@@ -394,7 +394,7 @@ export default {
       }
       this.setInitialRolesIndex()
     },
-    setInitialRolesIndex: function() {
+    setInitialRolesIndex: function () {
       let currentUserRoleId = this.user.get('user_role_ref')
       if (!currentUserRoleId)
         return
@@ -405,26 +405,26 @@ export default {
         if (roleId === currentUserRoleId) this.userRoleIndex = index
       }
     },
-    getCoverImage: function() {
+    getCoverImage: function () {
       return this.$getThumbnailURL(
         this.user.get('user_thumbnail').media_file_name,
       )
     },
-    getAvatarImage: function() {
+    getAvatarImage: function () {
       return this.$getAvatarURL(this.user.get('user_avatar').media_file_name)
     },
-    getCoverColor: function() {
+    getCoverColor: function () {
       return this.$getHexColor(this.user.get('user_first_name'))
     },
-    getUserFirstLetter: function(user) {
+    getUserFirstLetter: function (user) {
       if (!user.get('user_first_name')) return
 
       return user.get('user_first_name')[0]
     },
-    setUserFormatDate: function() {
+    setUserFormatDate: function () {
       this.userDate = moment(this.user.get('user_registration_date')).format('MMMM Do YYYY, h:mm:ss a')
     },
-    setInitialLocations: function() {
+    setInitialLocations: function () {
       this.localeOptions = []
       let locales = Object.keys(this.$i18n.messages)
       for (let locale of locales)
@@ -434,7 +434,7 @@ export default {
         })
       this.setInitialLocationIndex()
     },
-    setInitialLocationIndex: function() {
+    setInitialLocationIndex: function () {
       let currentUserLocale = this.user.get('user_locale')
       if (!currentUserLocale)
         return
@@ -444,7 +444,7 @@ export default {
         if (locales[index] === currentUserLocale)
           this.userLocaleIndex = index
     },
-    onSelectLocale: function(option) {
+    onSelectLocale: function (option) {
       this.user.set({
         'user_locale': option.value,
       })

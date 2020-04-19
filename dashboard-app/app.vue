@@ -113,7 +113,7 @@ export default {
     MediaModal,
     PreviewMediaModal,
   },
-  data: function() {
+  data: function () {
     return {
       menuIsOpen: false,
       isMenuSticky: false,
@@ -131,7 +131,7 @@ export default {
     }
   },
   watch: {
-    statusMessages: function(newVal, oldVal) {
+    statusMessages: function (newVal, oldVal) {
       if (windowIntervalRemove)
         return
 
@@ -201,13 +201,13 @@ export default {
         },
       )
     },
-    hideSplashScreen: function() {
+    hideSplashScreen: function () {
       this.showSplashScreen = false
     },
-    hideRibbonSuccessNotification: function() {
+    hideRibbonSuccessNotification: function () {
       this.appSuccessMessage = ''
     },
-    removeLastRibbonStatusNotification: function() {
+    removeLastRibbonStatusNotification: function () {
       if (this.statusMessages.length) {
         this.statusMessages.shift()
         return
@@ -215,7 +215,7 @@ export default {
       window.clearInterval(windowIntervalRemove)
       windowIntervalRemove = null
     },
-    removeRibbonById: function(key) {
+    removeRibbonById: function (key) {
       if (!this.statusMessages.length)
         return
 
@@ -228,13 +228,13 @@ export default {
       }
       this.statusMessages.splice(index, 1)
     },
-    toggleMenu: function() {
+    toggleMenu: function () {
       if (this.menuIsOpen === true)
         this.menuIsOpen = false
       else
         this.menuIsOpen = true
     },
-    onResizeWindow: function() {
+    onResizeWindow: function () {
       if (this.isMenuSticky && window.innerWidth >= this.breakWidth)
         return
 

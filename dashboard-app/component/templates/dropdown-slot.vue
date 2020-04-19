@@ -25,10 +25,10 @@ export default {
     }
   },
   methods: {
-    showOptions: function() {
+    showOptions: function () {
       this.show = !this.show
     },
-    clickOutsite: function(event) {
+    clickOutsite: function (event) {
       this.show = false
     },
   },

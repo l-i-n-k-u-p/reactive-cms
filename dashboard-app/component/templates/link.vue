@@ -23,7 +23,7 @@ export default {
   },
   created() {},
   methods: {
-    getColor: function() {
+    getColor: function () {
       if (this.linkColor)
         return `color: ${ this.linkColor }`
 

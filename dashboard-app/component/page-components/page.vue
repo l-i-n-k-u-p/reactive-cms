@@ -225,10 +225,10 @@ export default {
           this.pageDate = moment(value).format('MMMM Do YYYY, h:mm:ss a')
       })
     },
-    onChangeInputValue: function(propName, value) {
+    onChangeInputValue: function (propName, value) {
       this.page.set(propName, value)
     },
-    getPageData: function() {
+    getPageData: function () {
       this.isLoading = true
       this.page.fetch()
         .then(data => {
@@ -242,7 +242,7 @@ export default {
           this.isLoading = false
         })
     },
-    deletePage: function() {
+    deletePage: function () {
       this.isLoading = true
       this.page.delete()
         .finally(err => {
@@ -250,7 +250,7 @@ export default {
           this.$router.replace({ name: 'pages', params: { page: 1 } })
         })
     },
-    updatePage: function() {
+    updatePage: function () {
       if (Object.keys(this.page.errors).length)
         return
 
@@ -261,7 +261,7 @@ export default {
           this.isLoading = false
         })
     },
-    createPage: function() {
+    createPage: function () {
       this.isLoading = true
       this.page.save()
         .then(data => {
@@ -274,32 +274,32 @@ export default {
           this.isLoading = false
         })
     },
-    cancelCreate: function() {
+    cancelCreate: function () {
       this.$router.back()
     },
-    showConfirmationModal: function() {
+    showConfirmationModal: function () {
       this.$eventHub.$emit('confirmation-modal', this.confirmationModalData)
     },
-    cancelAction: function() {
+    cancelAction: function () {
       this.$eventHub.$emit('confirmation-modal', null)
     },
-    acceptAction: function() {
+    acceptAction: function () {
       this.$eventHub.$emit('confirmation-modal', null)
       this.deletePage()
     },
-    onSelectOption: function(option) {
+    onSelectOption: function (option) {
       this.page.set('page_status', option.value)
     },
-    onChangeContent: function({ getJSON, getHTML }) {
+    onChangeContent: function ({ getJSON, getHTML }) {
       this.page.set('page_content', getHTML())
     },
-    openMediaModal: function() {
+    openMediaModal: function () {
       this.$eventHub.$emit('media-modal', this.mediaModalData)
     },
-    closeMediaModal: function() {
+    closeMediaModal: function () {
       this.$eventHub.$emit('media-modal', null)
     },
-    onMediaSelect: function(media) {
+    onMediaSelect: function (media) {
       let mediaData = {
         media_id: media.get('id'),
         media_file_name: media.get('media_name'),
@@ -308,10 +308,10 @@ export default {
       this.page.set('page_thumbnail', mediaData)
       this.closeMediaModal()
     },
-    removeMedia: function() {
+    removeMedia: function () {
       this.page.set('page_thumbnail', '')
     },
-    getFileTemplates: function() {
+    getFileTemplates: function () {
       this.isLoading = true
       this.fileTemplates.fetch()
         .then(data => {
@@ -322,10 +322,10 @@ export default {
           this.isLoading = false
         })
     },
-    onSelectPageTemplateOption: function(option) {
+    onSelectPageTemplateOption: function (option) {
       this.page.set('page_template', option.value)
     },
-    setPageTemplateIndex: function() {
+    setPageTemplateIndex: function () {
       if (!this.pageTemplateOptions) return
 
       let templates = this.fileTemplates.getModels()
@@ -339,7 +339,7 @@ export default {
         }
       }
     },
-    setPageTemplateOptions: function() {
+    setPageTemplateOptions: function () {
       let templates = this.fileTemplates.getModels()
       this.pageTemplateOptions.push({
         name: 'none',
@@ -355,20 +355,20 @@ export default {
       }
       this.setPageTemplateIndex()
     },
-    getCoverImage: function() {
+    getCoverImage: function () {
       return this.$getThumbnailURL(
         this.page.get('page_thumbnail').media_file_name,
       )
     },
-    getCoverColor: function() {
+    getCoverColor: function () {
       return this.$getHexColor(this.page.get('page_title'))
     },
-    galleryOnAddItem: function(item) {
+    galleryOnAddItem: function (item) {
       let gallery = this.page.get('page_gallery')
       gallery.push(item)
       this.page.set('page_gallery', gallery)
     },
-    galleryOnClickItem: function(item) {
+    galleryOnClickItem: function (item) {
       this.previewMediaMetaFields = []
       if (item.meta_fields)
         for (let metaField of item.meta_fields)
@@ -379,7 +379,7 @@ export default {
       this.previewMediaModalData.metaFields = this.previewMediaMetaFields
       this.$eventHub.$emit('preview-media-modal', this.previewMediaModalData)
     },
-    setGalleryItemMetaFields: function() {
+    setGalleryItemMetaFields: function () {
       this.previewMediaMetaFields = [
         {
           meta_title: 'Title',
@@ -393,10 +393,10 @@ export default {
         },
       ]
     },
-    closePreviewMediaModal: function() {
+    closePreviewMediaModal: function () {
       this.$eventHub.$emit('preview-media-modal', null)
     },
-    removePreviewMediaModal: function(item) {
+    removePreviewMediaModal: function (item) {
       let pageGallery = this.page.get('page_gallery')
       let mediaIndex = null
       for (let index in pageGallery)
@@ -406,7 +406,7 @@ export default {
       this.page.set('page_gallery', pageGallery)
       this.closePreviewMediaModal()
     },
-    savePreviewMediaModal: function(item, metaFields) {
+    savePreviewMediaModal: function (item, metaFields) {
       item.meta_fields = metaFields
       let pageGallery = this.page.get('page_gallery')
       let mediaIndex = null
@@ -416,7 +416,7 @@ export default {
       pageGallery[mediaIndex] = item
       this.closePreviewMediaModal()
     },
-    acceptActionAndReplace: function() {
+    acceptActionAndReplace: function () {
       this.$eventHub.$emit('confirmation-modal', null)
       this.editorContent = this.newVersionEditorContent
     },

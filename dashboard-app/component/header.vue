@@ -223,7 +223,7 @@ export default {
     ButtonIcon,
   },
   watch: {
-    searchValue: function(newVal, oldVal) {
+    searchValue: function (newVal, oldVal) {
       this.onChangeSearchValueThrottle()
     },
   },
@@ -232,17 +232,17 @@ export default {
     this.getSessionUserData()
     this.getDashboardData()
   },
-  mounted: function() {
+  mounted: function () {
     this.onResizeWindow()
   },
   methods: {
-    setOnChangeModel: function() {
+    setOnChangeModel: function () {
       this.user.on('change', ({ attribute, value }) => {
         window.user_data = this.user
         this.$i18n.locale = this.user.get('user_locale')
       })
     },
-    onResizeWindow: function() {
+    onResizeWindow: function () {
       if (window.innerWidth <= 640) {
         this.isDesktopScreen = false
         this.headerLeftRightStyle = 'min-width: 50px;'
@@ -251,11 +251,11 @@ export default {
         this.headerLeftRightStyle = 'min-width: 180px;'
       }
     },
-    toggleMenu: function(e) {
+    toggleMenu: function (e) {
       e.preventDefault()
       this.$eventHub.$emit('dashboard-app-toggle-menu', '')
     },
-    onChangeSearchValue: function() {
+    onChangeSearchValue: function () {
       if (!this.searchValue) return
 
       this.isLoading = true
@@ -274,79 +274,79 @@ export default {
         this.isLoading = false
       })
     },
-    onClickResult: function() {
+    onClickResult: function () {
       this.hideResults()
     },
-    clickOutsite: function() {
+    clickOutsite: function () {
       this.hideResults()
     },
-    showResults: function() {
+    showResults: function () {
       this.resultsIsVisible = true
     },
-    hideResults: function() {
+    hideResults: function () {
       this.resultsIsVisible = false
     },
-    showUserDetail: function(user) {
+    showUserDetail: function (user) {
       this.$router.push({
         name: 'user-detail',
         params: { id: user.get('_id') },
       })
     },
-    showUserProfile: function(user) {
+    showUserProfile: function (user) {
       this.$router.push({
         name: 'profile',
         params: { id: user.get('_id') },
       })
     },
-    showPostDetail: function(post) {
+    showPostDetail: function (post) {
       this.$router.push({
         name: 'post-detail',
         params: { id: post.get('_id') },
       })
     },
-    showPageDetail: function(page) {
+    showPageDetail: function (page) {
       this.$router.push({
         name: 'page-detail',
         params: { id: page.get('_id') },
       })
     },
-    showMediaDetail: function(media) {
+    showMediaDetail: function (media) {
       this.$router.push({
         name: 'media-detail',
         params: { id: media.get('_id') },
       })
     },
-    showRoleDetail: function(role) {
+    showRoleDetail: function (role) {
       this.$router.push({
         name: 'role-detail',
         params: { id: role.get('_id') },
       })
     },
-    showUserMenu: function() {
+    showUserMenu: function () {
       this.userMenuOpen = true
     },
-    hideUserMenu: function() {
+    hideUserMenu: function () {
       this.userMenuOpen = false
     },
-    getSessionUserData: function() {
+    getSessionUserData: function () {
       this.user.set('_id', this.$getCookie('user_id'))
       this.user.fetch()
       .catch(err => {
         this.$eventHub.$emit('dashboard-app-error', err.message)
       })
     },
-    getDashboardData: function() {
+    getDashboardData: function () {
       this.settings.fetch().catch(err => {
         this.$eventHub.$emit('dashboard-app-error', err.message)
       })
     },
-    getCoverImage: function() {
+    getCoverImage: function () {
       return this.$getAvatarURL(this.user.get('user_avatar').media_file_name)
     },
-    getCoverColor: function() {
+    getCoverColor: function () {
       return this.$getHexColor(this.user.get('user_first_name'))
     },
-    getUserFirstLetter: function(user) {
+    getUserFirstLetter: function (user) {
       if (!user.get('user_first_name')) return
 
       return user.get('user_first_name')[0]

@@ -133,7 +133,7 @@ export default {
     this.getViewsData()
   },
   methods: {
-    getViewsData: function() {
+    getViewsData: function () {
       this.isLoading = true
       this.views
         .page(1)
@@ -154,10 +154,10 @@ export default {
           this.$eventHub.$emit('dashboard-app-error', err.message)
         })
     },
-    onChangeInputValue: function(propName, value) {
+    onChangeInputValue: function (propName, value) {
       this.role.set(propName, value)
     },
-    addToRoleResources: function(index) {
+    addToRoleResources: function (index) {
       let selectedResourceName = this.resourceNames[index]
       let currentRoleResources = this.role.get('role_resources')
       let resource = {
@@ -169,13 +169,13 @@ export default {
       this.role.set('role_resources', currentRoleResources)
       this.setInitialResourceData()
     },
-    addToResources: function(index) {
+    addToResources: function (index) {
       let currentRoleResources = this.role.get('role_resources')
       let removed = currentRoleResources.splice(index, 1)
       this.role.set('role_resources', currentRoleResources)
       this.setInitialResourceData()
     },
-    setInitialResourceData: function() {
+    setInitialResourceData: function () {
       this.resourceNames = []
       let views = this.views.getModels()
       let currentRoleResources = this.role.get('role_resources')
@@ -190,7 +190,7 @@ export default {
           this.resourceNames.push(view.view_name)
       }
     },
-    saveRole: function() {
+    saveRole: function () {
       this.isLoading = true
       this.role
         .save()
@@ -218,7 +218,7 @@ export default {
           this.isLoading = false
         })
     },
-    openPermissionsModal: function(index) {
+    openPermissionsModal: function (index) {
       this.currentResourceModalIndex = index
       let resource = this.role.get('role_resources')[index]
       let resourcePermissions =  resource.resource_permission.join(',')
@@ -252,10 +252,10 @@ export default {
       ]
       this.modalPermissionsIsVisible = true
     },
-    modalPermissionsClose: function() {
+    modalPermissionsClose: function () {
       this.modalPermissionsIsVisible = false
     },
-    modalPermissionsAccept: function(data) {
+    modalPermissionsAccept: function (data) {
       let currentRoleResources = this.role.get('role_resources')
       let currentResourcePermission = currentRoleResources[this.currentResourceModalIndex]
       let permissions = []
@@ -275,7 +275,7 @@ export default {
       currentRoleResources[this.currentResourceModalIndex].resource_permission = permissions
       this.role.set('role_resources', currentRoleResources)
     },
-    cancelCreateRole: function() {
+    cancelCreateRole: function () {
       this.$router.back()
     },
   },

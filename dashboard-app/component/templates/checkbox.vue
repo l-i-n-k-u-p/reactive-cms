@@ -22,7 +22,7 @@ export default {
     'currentValue',
   ],
   watch: {
-    currentValue: function(newVal, oldVal) {
+    currentValue: function (newVal, oldVal) {
       this.isChecked = newVal
     },
   },
@@ -32,7 +32,7 @@ export default {
     }
   },
   methods: {
-    onChange: function() {
+    onChange: function () {
       this.onChangeValue(this.isChecked, this.item)
     },
   },

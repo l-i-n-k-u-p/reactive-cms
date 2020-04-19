@@ -63,7 +63,7 @@ export default {
     },
   },
   methods: {
-    focus: function() {
+    focus: function () {
       if (this.hasFocus) {
         this.hasFocus = false
         return

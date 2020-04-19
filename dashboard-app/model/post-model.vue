@@ -35,7 +35,7 @@ class PostModel extends BaseModel {
   validation() {
     return {
       post_title: string.and(length(2, 150)),
-      post_content: (value) => {
+      post_content: value => {
         let valueStrip = value.replace(stripHTMLTagsRegex, '')
         if (valueStrip.length < 5)
           return 'Must have a length of at least 5'

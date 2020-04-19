@@ -25,7 +25,7 @@ export default {
   components: {},
   created() {},
   methods: {
-    removeRibbonMessage: function() {
+    removeRibbonMessage: function () {
       this.onClickCloseAction(this.data)
     },
   },

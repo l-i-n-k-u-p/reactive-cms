@@ -204,14 +204,14 @@ export default {
     this.setInitialLocations()
   },
   methods: {
-    onSetNewPassword: function(propName, value) {
+    onSetNewPassword: function (propName, value) {
       this.newPassword = value
       this.user.set('user_pass', value)
     },
-    onChangeInputValue: function(propName, value) {
+    onChangeInputValue: function (propName, value) {
       this.user.set(propName, value)
     },
-    createUser: function() {
+    createUser: function () {
       this.isLoading = true
       this.user
       .save()
@@ -237,7 +237,7 @@ export default {
         this.isLoading = false
       })
     },
-    onMediaSelect: function(media) {
+    onMediaSelect: function (media) {
       let mediaData = {
         media_id: media.get('id'),
         media_file_name: media.get('media_name'),
@@ -246,19 +246,19 @@ export default {
       this.user.set('user_thumbnail', mediaData)
       this.closeMediaModal()
     },
-    cancelCreateUser: function() {
+    cancelCreateUser: function () {
       this.$router.back()
     },
-    removeMedia: function() {
+    removeMedia: function () {
       this.user.set('user_thumbnail', '')
     },
-    openMediaModal: function() {
+    openMediaModal: function () {
       this.$eventHub.$emit('media-modal', this.mediaModalData)
     },
-    closeMediaModal: function() {
+    closeMediaModal: function () {
       this.$eventHub.$emit('media-modal', null)
     },
-    onMediaAvatarSelect: function(media) {
+    onMediaAvatarSelect: function (media) {
       let mediaData = {
         media_id: media.get('id'),
         media_file_name: media.get('media_name'),
@@ -267,16 +267,16 @@ export default {
       this.user.set('user_avatar', mediaData)
       this.closeMediaAvatarModal()
     },
-    openMediaAvatarModal: function() {
+    openMediaAvatarModal: function () {
       this.$eventHub.$emit('media-modal', this.mediaModalAvatarData)
     },
-    closeMediaAvatarModal: function() {
+    closeMediaAvatarModal: function () {
       this.$eventHub.$emit('media-modal', null)
     },
-    removeMediaAvatar: function() {
+    removeMediaAvatar: function () {
       this.user.set('user_avatar', '')
     },
-    getRolesData: function() {
+    getRolesData: function () {
       this.isLoading = true
       this.roles
       .page(-1)
@@ -297,13 +297,13 @@ export default {
         this.$eventHub.$emit('dashboard-app-error', err.toString())
       })
     },
-    onSelectRole: function(option) {
+    onSelectRole: function (option) {
       this.user.set({
         'user_role': option.value,
         'user_role_ref': option.value._id,
       })
     },
-    setInitialRoles: function() {
+    setInitialRoles: function () {
       this.roleOptions = []
       for (let role of this.roles.getModels()) {
         this.roleOptions.push({
@@ -316,26 +316,26 @@ export default {
         })
       }
     },
-    getCoverImage: function() {
+    getCoverImage: function () {
       return this.$getThumbnailURL(
         this.user.get('user_thumbnail').media_file_name,
       )
     },
-    getAvatarImage: function() {
+    getAvatarImage: function () {
       return this.$getAvatarURL(this.user.get('user_avatar').media_file_name)
     },
-    getCoverColor: function() {
+    getCoverColor: function () {
       return this.$getHexColor(this.user.get('user_first_name'))
     },
-    getUserFirstLetter: function(user) {
+    getUserFirstLetter: function (user) {
       if (!user.get('user_first_name')) return
 
       return user.get('user_first_name')[0]
     },
-    noop: function() {
+    noop: function () {
       return
     },
-    setInitialLocations: function() {
+    setInitialLocations: function () {
       this.localeOptions = []
       let locales = Object.keys(this.$i18n.messages)
       for (let locale of locales)
@@ -345,7 +345,7 @@ export default {
         })
       this.setInitialLocationIndex()
     },
-    setInitialLocationIndex: function() {
+    setInitialLocationIndex: function () {
       let currentUserLocale = this.user.get('user_locale')
       if (!currentUserLocale)
         return
@@ -355,7 +355,7 @@ export default {
         if (locales[index] === currentUserLocale)
           this.userLocaleIndex = index
     },
-    onSelectLocale: function(option) {
+    onSelectLocale: function (option) {
       this.user.set({
         'user_locale': option.value,
       })

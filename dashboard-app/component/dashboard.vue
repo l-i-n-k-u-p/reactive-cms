@@ -187,7 +187,7 @@ export default {
     this.getDashboardData()
   },
   methods: {
-    getDashboardData: function() {
+    getDashboardData: function () {
       this.isLoading = true
       this.dashboard
         .fetch()
@@ -199,7 +199,7 @@ export default {
           this.isLoading = false
         })
     },
-    generateChartData: function() {
+    generateChartData: function () {
       let labels = []
       let colors = []
       let values = []

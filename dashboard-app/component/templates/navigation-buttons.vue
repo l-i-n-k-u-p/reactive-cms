@@ -35,10 +35,10 @@ export default {
   components: {},
   created() {},
   methods: {
-    routerHistory: function(position) {
+    routerHistory: function (position) {
       this.$router.go(position)
     },
-    getColor: function() {
+    getColor: function () {
       if (this.buttonColor)
         return `color: ${ this.buttonColor }`
 

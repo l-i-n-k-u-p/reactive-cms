@@ -64,18 +64,18 @@ export default {
     InputText,
   },
   methods: {
-    getCoverImage: function() {
+    getCoverImage: function () {
       if (this.file.media_image)
         return this.$getThumbnailURL(this.file.media_file_name)
       else return this.$getHexColor(this.file.media_file_name)
     },
-    onClickRemove: function() {
+    onClickRemove: function () {
       this.onRemove(this.file)
     },
-    onChangeInputValue: function(propName, value) {
+    onChangeInputValue: function (propName, value) {
       this.metaFields[propName].meta_value = value
     },
-    onClickSave: function() {
+    onClickSave: function () {
       this.onSave(this.file, this.metaFields)
     },
   },
