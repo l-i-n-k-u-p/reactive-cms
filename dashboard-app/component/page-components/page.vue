@@ -3,7 +3,7 @@
     <div class="header">
       <NavigationButtons/>
       <h2>
-        {{ $t('Page detail') }}
+        {{ $t('Page') }}
       </h2>
     </div>
     <LoadingBar v-if="isLoading"/>
@@ -13,16 +13,14 @@
           v-if="page.get('page_thumbnail')"
           buttonIcon="broken_image"
           v-bind:buttonAction="removeMedia"
-          buttonColor="#f0f0f0"
-        >
+          buttonColor="#f0f0f0">
           {{ $t('Remove image') }}
         </Button>
         <Button
           buttonIcon="image"
           v-bind:buttonAction="openMediaModal"
           style="margin-left: 5px;"
-          buttonColor="#f0f0f0"
-        >
+          buttonColor="#f0f0f0">
           {{ $t('Set image') }}
         </Button>
       </div>
@@ -34,18 +32,19 @@
       <div
         class="page-thumbnail"
         v-if="!page.get('page_thumbnail')"
-        v-bind:style="getCoverColor()"
-      ></div>
+        v-bind:style="getCoverColor()">
+      </div>
       <div class="content-wrapper">
-        <div class="page-info-wrapper">
+        <div
+          v-if="!isNew"
+          class="page-info-wrapper">
           <Link
             class="page-url-wrapper"
             linkColor="#f0f0f0"
             :linkURL="`/${ page.get('page_slug') }`"
             linkIcon="link"
             :linkLabel="`/${ page.get('page_slug') }`"
-            linkTarget="_blank"
-          />
+            linkTarget="_blank"/>
         </div>
         <InputText
           class="input"
@@ -54,26 +53,21 @@
           v-bind:onChangeValue="onChangeInputValue"
           propName="page_title"
           v-bind:errorMessage="page.errors.page_title"
-          helperMessage="At least 2 characters"
-        >
-        </InputText>
+          helperMessage="At least 2 characters"/>
         <editor
           v-bind:content="editorContent"
           v-bind:onChangeContent="onChangeContent"
           v-bind:errorMessage="page.errors.page_content"
-          helperMessage="At least 2 characters"
-        >
-        </editor>
+          helperMessage="At least 2 characters"/>
         <Gallery
+          v-if="!isNew"
           title="Gallery"
           description="Gallery description"
           v-bind:onAddItem="galleryOnAddItem"
           v-bind:items="page.get('page_gallery')"
           v-bind:onClickItem="galleryOnClickItem"
           onlyImages="yes"
-          maxItems="3"
-        >
-        </Gallery>
+          maxItems="3"/>
         <div class="date-wrapper">
           {{ pageDate }}
         </div>
@@ -86,30 +80,40 @@
         v-bind:onSelectOption="onSelectPageTemplateOption"
         v-bind:selectOptions="pageTemplateOptions"
         style="margin-left: 5px;"
-        openInTop="true"
-      >
-      </DropdownSelect>
+        openInTop="true"/>
       <DropdownSelect
         label="status"
         v-bind:initialIndexOption="pageStatusIndex"
         v-bind:onSelectOption="onSelectOption"
         v-bind:selectOptions="selectOptions"
         style="margin-left: 5px;"
-        openInTop="true"
-      >
-      </DropdownSelect>
+        openInTop="true"/>
       <Button
+        v-if="isNew"
+        buttonIcon="close"
+        v-bind:buttonAction="cancelCreate"
+        style="margin-left: 5px;">
+        {{ $t('Cancel') }}
+      </Button>
+      <Button
+        v-if="isNew"
+        buttonIcon="save"
+        v-bind:buttonAction="createPage"
+        style="margin-left: 5px;">
+        {{ $t('Create') }}
+      </Button>
+      <Button
+        v-if="!isNew"
         buttonIcon="remove"
         v-bind:buttonAction="showConfirmationModal"
-        style="margin-left: 5px;"
-      >
+        style="margin-left: 5px;">
         {{ $t('Delete') }}
       </Button>
       <Button
+        v-if="!isNew"
         buttonIcon="save"
         v-bind:buttonAction="updatePage"
-        style="margin-left: 5px;"
-      >
+        style="margin-left: 5px;">
         {{ $t('Update') }}
       </Button>
     </div>
@@ -130,9 +134,8 @@ import LoadingBar from '../templates/loading-bar.vue'
 export default {
   data() {
     return {
-      page: new this.$models.Page({
-        _id: this.$route.params.id,
-      }),
+      isNew: true,
+      page: new this.$models.Page(),
       editorContent: '',
       newVersionEditorContent: '',
       selectOptions: [
@@ -192,12 +195,18 @@ export default {
     LoadingBar,
   },
   created() {
-    this.getPageData()
-    this.setOnChangePage()
+    let routeParamId = this.$route.params.id
+    if (routeParamId !== undefined) {
+      this.isNew = false
+      this.page.set('_id', routeParamId)
+      this.getPageData()
+      this.setOnChangePage()
+    } else
+      this.page.set('page_status', 'publish')
     this.getFileTemplates()
   },
   methods: {
-    setOnChangePage: function() {
+    setOnChangePage: function () {
       this.page.on('change', ({ attribute, value }) => {
         let hasUpdate = this.page.getOption('hasNewVersionContent')
         if (hasUpdate) {
@@ -207,8 +216,10 @@ export default {
           this.$eventHub.$emit('confirmation-modal', this.confirmationUpdateContentModalData)
         }
         if (attribute === 'page_status') {
-          if (value === 'pending') this.pageStatusIndex = 1
-          else this.pageStatusIndex = 0
+          if (value === 'pending')
+            this.pageStatusIndex = 1
+          else
+            this.pageStatusIndex = 0
         }
         if (attribute === 'page_date')
           this.pageDate = moment(value).format('MMMM Do YYYY, h:mm:ss a')
@@ -219,51 +230,25 @@ export default {
     },
     getPageData: function() {
       this.isLoading = true
-      this.page
-        .fetch()
+      this.page.fetch()
         .then(data => {
-          this.isLoading = false
-          if (data.getData().status_code) {
-            this.$eventHub.$emit(
-              'dashboard-app-error',
-              data.getData().status_msg,
-            )
-            return
-          }
           this.editorContent = this.page.get('page_content')
           this.page.setOption('initialPageContent', this.editorContent)
           if (this.page.get('page_status') === 'pending')
             this.pageStatusIndex = 1
           this.setPageTemplateIndex()
         })
-        .catch(err => {
+        .finally(() => {
           this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', err.message)
         })
     },
     deletePage: function() {
       this.isLoading = true
-      this.page
-        .delete()
-        .then(data => {
+      this.page.delete()
+        .finally(err => {
           this.isLoading = false
-          if (data.getData().status_code) {
-            this.$eventHub.$emit(
-              'dashboard-app-error',
-              data.getData().status_msg,
-            )
-            return
-          }
-          this.$eventHub.$emit(
-            'dashboard-app-success',
-            data.getData().status_msg,
-          )
+          this.$router.replace({ name: 'pages', params: { page: 1 } })
         })
-        .catch(err => {
-          this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', err.message)
-        })
-      this.$router.replace({ name: 'pages', params: { page: 1 } })
     },
     updatePage: function() {
       if (Object.keys(this.page.errors).length)
@@ -271,25 +256,26 @@ export default {
 
       this.page.setOption('initialPageContent', this.page.get('page_content'))
       this.isLoading = true
-      this.page
-        .put()
+      this.page.put()
+        .finally(() => {
+          this.isLoading = false
+        })
+    },
+    createPage: function() {
+      this.isLoading = true
+      this.page.save()
         .then(data => {
-          this.isLoading = false
-          if (data.getData().status_code) {
-            this.$eventHub.$emit(
-              'dashboard-app-error',
-              data.getData().status_msg,
-            )
-            return
-          }
-          this.$eventHub.$emit(
-            'dashboard-app-success',
-            data.getData().status_msg,
-          )
+          this.$router.replace({
+            name: 'page-detail',
+            params: { id: data.getData().data.id },
+          })
         })
-        .catch(err => {
+        .finally(() => {
           this.isLoading = false
         })
+    },
+    cancelCreate: function() {
+      this.$router.back()
     },
     showConfirmationModal: function() {
       this.$eventHub.$emit('confirmation-modal', this.confirmationModalData)
@@ -327,22 +313,13 @@ export default {
     },
     getFileTemplates: function() {
       this.isLoading = true
-      this.fileTemplates
-        .fetch()
+      this.fileTemplates.fetch()
         .then(data => {
           this.isLoading = false
-          if (data.getData().status_code) {
-            this.$eventHub.$emit(
-              'dashboard-app-error',
-              data.getData().status_msg,
-            )
-            return
-          }
           this.setPageTemplateOptions()
         })
-        .catch(err => {
+        .finally(() => {
           this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', err.message)
         })
     },
     onSelectPageTemplateOption: function(option) {
@@ -394,10 +371,10 @@ export default {
     galleryOnClickItem: function(item) {
       this.previewMediaMetaFields = []
       if (item.meta_fields)
-        for (let metaField of item.meta_fields) {
+        for (let metaField of item.meta_fields)
           this.previewMediaMetaFields.push(metaField)
-        }
-      else this.setGalleryItemMetaFields()
+      else
+        this.setGalleryItemMetaFields()
       this.previewMediaModalData.file = item
       this.previewMediaModalData.metaFields = this.previewMediaMetaFields
       this.$eventHub.$emit('preview-media-modal', this.previewMediaModalData)
@@ -422,9 +399,9 @@ export default {
     removePreviewMediaModal: function(item) {
       let pageGallery = this.page.get('page_gallery')
       let mediaIndex = null
-      for (let index in pageGallery) {
-        if (pageGallery[index].media_id === item.media_id) mediaIndex = index
-      }
+      for (let index in pageGallery)
+        if (pageGallery[index].media_id === item.media_id)
+          mediaIndex = index
       pageGallery.splice(mediaIndex, 1)
       this.page.set('page_gallery', pageGallery)
       this.closePreviewMediaModal()
@@ -433,9 +410,9 @@ export default {
       item.meta_fields = metaFields
       let pageGallery = this.page.get('page_gallery')
       let mediaIndex = null
-      for (let index in pageGallery) {
-        if (pageGallery[index].media_id === item.media_id) mediaIndex = index
-      }
+      for (let index in pageGallery)
+        if (pageGallery[index].media_id === item.media_id)
+          mediaIndex = index
       pageGallery[mediaIndex] = item
       this.closePreviewMediaModal()
     },

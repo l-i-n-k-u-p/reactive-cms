@@ -63,7 +63,7 @@
           v-bind:onChangeValue="onChangeInputValue"
           propName='media_title'
           v-bind:errorMessage="media.errors.media_title"
-          helperMessage="At least 2 characters"/>
+          helperMessage="Insert a title for this file"/>
         <div class="date-wrapper">
           {{ mediaDate }}
         </div>
@@ -267,7 +267,9 @@ export default {
       this.formData.append('file', this.$refs.file.files[0])
       this.mediaName = this.$refs.file.files[0].name
       this.mediaTitle = this.mediaName
-      this.media.set('media_title', this.mediaName)
+      let mediaTitle = this.media.get('media_title')
+      if (mediaTitle === '')
+        this.media.set('media_title', this.mediaName)
       this.mediaFileError = false
     },
     addDragEnterAndLeaveEventListener: function () {
