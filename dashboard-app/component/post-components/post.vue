@@ -3,7 +3,7 @@
     <div class="header">
       <NavigationButtons/>
       <h2>
-        {{ $t('Post detail') }}
+        {{ $t('Post') }}
       </h2>
     </div>
     <LoadingBar v-if="isLoading"/>
@@ -13,38 +13,37 @@
           v-if="post.get('post_thumbnail')"
           buttonIcon="broken_image"
           v-bind:buttonAction="removeMedia"
-          buttonColor="#f0f0f0"
-        >
+          buttonColor="#f0f0f0">
           {{ $t('Remove image') }}
         </Button>
         <Button
           buttonIcon="image"
           v-bind:buttonAction="openMediaModal"
           buttonColor="#f0f0f0"
-          style="margin-left: 5px;"
-        >
+          style="margin-left: 5px;">
           {{ $t('Set image') }}
         </Button>
       </div>
       <div
         class="post-thumbnail"
         v-if="post.get('post_thumbnail')"
-        v-bind:style="getCoverImage()"
-      ></div>
+        v-bind:style="getCoverImage()">
+      </div>
       <div
         class="post-thumbnail"
         v-if="!post.get('post_thumbnail')"
-        v-bind:style="getCoverColor()"
-      ></div>
+        v-bind:style="getCoverColor()">
+      </div>
       <div class="content-wrapper">
-        <div class="post-info-wrapper">
+        <div
+          v-if="!isNew"
+          class="post-info-wrapper">
           <Link
             linkColor="#f0f0f0"
             :linkURL="`/blog/${ post.get('post_slug') }`"
             linkIcon="link"
             :linkLabel="`/blog/${ post.get('post_slug') }`"
-            linkTarget="_blank"
-          />
+            linkTarget="_blank"/>
         </div>
         <InputText
           class="input"
@@ -53,16 +52,12 @@
           v-bind:onChangeValue="onChangeInputValue"
           propName="post_title"
           v-bind:errorMessage="post.errors.post_title"
-          helperMessage="At least 2 characters"
-        >
-        </InputText>
+          helperMessage="At least 2 characters"/>
         <editor
           v-bind:content="editorContent"
           v-bind:onChangeContent="onChangeContent"
           v-bind:errorMessage="post.errors.post_content"
-          helperMessage="At least 2 characters"
-        >
-        </editor>
+          helperMessage="At least 2 characters"/>
         <div class="date-wrapper">
           {{ postDate }}
         </div>
@@ -74,21 +69,33 @@
         v-bind:initialIndexOption="postStatusIndex"
         v-bind:onSelectOption="onSelectOption"
         v-bind:selectOptions="selectOptions"
-        openInTop="true"
-      >
-      </DropdownSelect>
+        openInTop="true"/>
       <Button
+        v-if="isNew"
+        style="margin-left: 5px;"
+        buttonIcon="close"
+        v-bind:buttonAction="cancelCreate">
+        {{ $t('Cancel') }}
+      </Button>
+      <Button
+        v-if="isNew"
+        buttonIcon="save"
+        v-bind:buttonAction="createPost"
+        style="margin-left: 5px;">
+        {{ $t('Create') }}
+      </Button>
+      <Button
+        v-if="!isNew"
         buttonIcon="remove"
         v-bind:buttonAction="showConfirmationModal"
-        style="margin-left: 5px;"
-      >
+        style="margin-left: 5px;">
         {{ $t('Delete') }}
       </Button>
       <Button
+        v-if="!isNew"
         buttonIcon="save"
         v-bind:buttonAction="updatePost"
-        style="margin-left: 5px;"
-      >
+        style="margin-left: 5px;">
         {{ $t('Update') }}
       </Button>
     </div>
@@ -108,9 +115,8 @@ import LoadingBar from '../templates/loading-bar.vue'
 export default {
   data() {
     return {
-      post: new this.$models.Post({
-        _id: this.$route.params.id,
-      }),
+      isNew: true,
+      post: new this.$models.Post(),
       editorContent: '',
       newVersionEditorContent: '',
       selectOptions: [
@@ -158,8 +164,14 @@ export default {
     LoadingBar,
   },
   created() {
-    this.getPostData()
-    this.setOnChangePost()
+    let routeParamId = this.$route.params.id
+    if (routeParamId !== undefined) {
+      this.isNew = false
+      this.post.set('_id', routeParamId)
+      this.getPostData()
+      this.setOnChangePost()
+    } else
+      this.post.set('post_status', 'publish')
   },
   methods: {
     setOnChangePost: function() {
@@ -184,50 +196,24 @@ export default {
     },
     getPostData: function() {
       this.isLoading = true
-      this.post
-        .fetch()
+      this.post.fetch()
         .then(data => {
-          this.isLoading = false
-          if (data.getData().status_code) {
-            this.$eventHub.$emit(
-              'dashboard-app-error',
-              data.getData().status_msg,
-            )
-            return
-          }
           this.editorContent = this.post.get('post_content')
           this.post.setOption('initialPostContent', this.editorContent)
           if (this.post.get('post_status') === 'pending')
             this.postStatusIndex = 1
         })
-        .catch(err => {
+        .finally(() => {
           this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', err.message)
         })
     },
     deletePost: function() {
       this.isLoading = true
-      this.post
-        .delete()
-        .then(data => {
+      this.post.delete()
+        .finally(() => {
           this.isLoading = false
-          if (data.getData().status_code) {
-            this.$eventHub.$emit(
-              'dashboard-app-error',
-              data.getData().status_msg,
-            )
-            return
-          }
-          this.$eventHub.$emit(
-            'dashboard-app-success',
-            data.getData().status_msg,
-          )
+          this.$router.replace({ name: 'posts', params: { page: 1 } })
         })
-        .catch(err => {
-          this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', err.message)
-        })
-      this.$router.replace({ name: 'posts', params: { page: 1 } })
     },
     updatePost: function() {
       if (Object.keys(this.post.errors).length)
@@ -235,25 +221,26 @@ export default {
 
       this.post.setOption('initialPostContent', this.post.get('post_content'))
       this.isLoading = true
-      this.post
-        .put()
+      this.post.put()
+        .finally(() => {
+          this.isLoading = false
+        })
+    },
+    createPost: function() {
+      this.isLoading = true
+      this.post.save()
         .then(data => {
-          this.isLoading = false
-          if (data.getData().status_code) {
-            this.$eventHub.$emit(
-              'dashboard-app-error',
-              data.getData().status_msg,
-            )
-            return
-          }
-          this.$eventHub.$emit(
-            'dashboard-app-success',
-            data.getData().status_msg,
-          )
+          this.$router.replace({
+            name: 'post-detail',
+            params: { id: data.getData().data.id },
+          })
         })
-        .catch(err => {
+        .finally(() => {
           this.isLoading = false
         })
+    },
+    cancelCreate: function() {
+      this.$router.back()
     },
     showConfirmationModal: function() {
       this.$eventHub.$emit('confirmation-modal', this.confirmationModalData)
@@ -370,7 +357,7 @@ h2 {
 .content-wrapper {
   box-sizing: content-box;
   margin-bottom: 50px;
-margin-top: 170px;
+  margin-top: 170px;
   position: relative;
 }
 
