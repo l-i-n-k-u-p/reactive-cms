@@ -3,7 +3,7 @@
     <div class="header">
       <NavigationButtons />
       <h2>
-        {{ $t('Create role') }}
+        {{ $t('Role') }}
       </h2>
     </div>
     <LoadingBar v-if="isLoading"/>
@@ -15,8 +15,7 @@
           v-bind:onChangeValue="onChangeInputValue"
           propName="role_name"
           v-bind:errorMessage="role.errors.role_name"
-          helperMessage="At least 2 characters"
-        >
+          helperMessage="At least 2 characters">
         </InputText>
         <div id="doubleBoxWrapper">
           <div id="leftBox">
@@ -31,8 +30,7 @@
                   v-bind:buttonTextAction="addToRoleResources"
                   v-bind:buttonIconAction="addToRoleResources"
                   v-bind:data="index"
-                  :key="$uuid.v1()"
-                >
+                  :key="$uuid.v1()">
                   {{ resourceName }}
                 </ButtonDoubleAction>
               </div>
@@ -47,11 +45,11 @@
                 <ButtonDoubleAction
                   v-for="(resource, index) of this.role.get('role_resources')"
                   buttonIcon="remove"
+                  v-if="!resource.removed"
                   v-bind:buttonTextAction="openPermissionsModal"
                   v-bind:buttonIconAction="addToResources"
                   v-bind:data="index"
-                  :key="$uuid.v1()"
-                >
+                  :key="$uuid.v1()">
                   {{ resource.resource_name }}
                   <label class="item-permissions">
                     {{ resource.resource_permission.join(',') }}
@@ -65,18 +63,31 @@
     </BoxWrapper>
     <div class="buttons-wrapper">
       <Button
+        v-if="isNew"
         style="margin-left: 5px;"
         buttonIcon="close"
-        v-bind:buttonAction="cancelCreateRole"
-      >
+        v-bind:buttonAction="cancelCreateRole">
         {{ $t('Cancel') }}
       </Button>
       <Button
+        v-if="isNew"
         buttonIcon="save"
-        v-bind:buttonAction="saveRole"
-        style="margin-left: 10px;"
-      >
+        v-bind:buttonAction="validateRole"
+        style="margin-left: 10px;">
         {{ $t('Create') }}
+      </Button>
+      <Button
+        v-if="!isNew"
+        buttonIcon="remove"
+        v-bind:buttonAction="showConfirmationModal">
+        {{ $t('Delete') }}
+      </Button>
+      <Button
+        v-if="!isNew"
+        buttonIcon="save"
+        v-bind:buttonAction="validateRole"
+        style="margin-left: 10px;">
+        {{ $t('Update') }}
       </Button>
     </div>
     <Modal
@@ -104,10 +115,8 @@ import Modal from '../templates/modal.vue'
 export default {
   data() {
     return {
-      role: new this.$models.Role({
-        role_name: '',
-        role_resources: [],
-      }),
+      isNew: true,
+      role: new this.$models.Role(),
       views: new this.$models.ViewCollection(),
       resourceNames: [],
       resources: [],
@@ -117,6 +126,12 @@ export default {
       modalPermissionsDescription: 'Chose permissions for this resource',
       modalPermissionsCheckboxNames: [],
       currentResourceModalIndex: null,
+      confirmationModalData: {
+        modalTitle: 'Do you want delete this role?',
+        modalDescription: 'This action will delete this role',
+        cancelAction: this.cancelAction,
+        acceptAction: this.acceptAction,
+      },
     }
   },
   components: {
@@ -130,28 +145,33 @@ export default {
     Modal,
   },
   created() {
+    let routeParamId = this.$route.params.id
+    if (routeParamId !== undefined) {
+      this.isNew = false
+      this.role.set('_id', routeParamId)
+      this.getRoleData()
+    }
     this.getViewsData()
   },
   methods: {
-    getViewsData: function () {
+    getRoleData: function () {
       this.isLoading = true
-      this.views
-        .page(1)
-        .fetchAll()
+      this.role.fetch()
         .then(data => {
-          this.isLoading = false
-          if (data.getData().status_code) {
-            this.$eventHub.$emit(
-              'dashboard-app-error',
-              data.getData().status_msg,
-            )
-            return
-          }
           this.setInitialResourceData()
         })
-        .catch(err => {
+        .finally(() => {
           this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', err.message)
+        })
+    },
+    getViewsData: function () {
+      this.isLoading = true
+      this.views.page(1).fetchAll()
+        .then(data => {
+          this.setInitialResourceData()
+        })
+        .finally(() => {
+          this.isLoading = false
         })
     },
     onChangeInputValue: function (propName, value) {
@@ -163,7 +183,7 @@ export default {
       let resource = {
         resource_name: selectedResourceName,
         resource_permission: [],
-        resource_role_ref: this.role.get('_id'),
+        resource_role_ref: this.role.get('id'),
       }
       currentRoleResources.push(resource)
       this.role.set('role_resources', currentRoleResources)
@@ -171,7 +191,7 @@ export default {
     },
     addToResources: function (index) {
       let currentRoleResources = this.role.get('role_resources')
-      let removed = currentRoleResources.splice(index, 1)
+      currentRoleResources[index].removed = true
       this.role.set('role_resources', currentRoleResources)
       this.setInitialResourceData()
     },
@@ -183,30 +203,37 @@ export default {
       for (let view of this.views.getModels()) {
         isFreeResource = true
         for (let resource of currentRoleResources) {
-          if (resource.resource_name === view.view_name)
+          let resourceRemoved = resource.removed === undefined ? false : resource.removed
+          if (resource.resource_name === view.view_name && !resourceRemoved)
             isFreeResource = false
         }
         if (isFreeResource)
           this.resourceNames.push(view.view_name)
       }
     },
+    validateRole: function () {
+      this.role.validate().then((errors) => {
+        if (!_.isEmpty(errors))
+          return
+
+        if (this.isNew) {
+          this.saveRole()
+          return
+        }
+        this.updateRole()
+      })
+    },
+    updateRole: function () {
+      this.isLoading = true
+      this.role.put()
+        .finally(() => {
+          this.isLoading = false
+        })
+    },
     saveRole: function () {
       this.isLoading = true
-      this.role
-        .save()
+      this.role.save()
         .then(data => {
-          this.isLoading = false
-          if (data.getData().status_code) {
-            this.$eventHub.$emit(
-              'dashboard-app-error',
-              data.getData().status_msg,
-            )
-            return
-          }
-          this.$eventHub.$emit(
-            'dashboard-app-success',
-            data.getData().status_msg,
-          )
           this.$router.replace({
             name: 'role-detail',
             params: {
@@ -214,9 +241,12 @@ export default {
             },
           })
         })
-        .catch(err => {
+        .finally(() => {
           this.isLoading = false
         })
+    },
+    cancelCreateRole: function () {
+      this.$router.back()
     },
     openPermissionsModal: function (index) {
       this.currentResourceModalIndex = index
@@ -275,8 +305,25 @@ export default {
       currentRoleResources[this.currentResourceModalIndex].resource_permission = permissions
       this.role.set('role_resources', currentRoleResources)
     },
-    cancelCreateRole: function () {
-      this.$router.back()
+    showConfirmationModal: function () {
+      this.$eventHub.$emit('confirmation-modal', this.confirmationModalData)
+    },
+    acceptAction: function () {
+      this.$eventHub.$emit('confirmation-modal', null)
+      this.isLoading = true
+      this.role.delete()
+        .finally(() => {
+          this.isLoading = false
+          this.$router.replace({
+            name: 'roles',
+            params: {
+              page: 1,
+            },
+          })
+        })
+    },
+    cancelAction: function () {
+      this.$eventHub.$emit('confirmation-modal', null)
     },
   },
 }
