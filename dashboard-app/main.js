@@ -57,8 +57,7 @@ import UserDetail from './component/user-components/user-detail.vue'
 import UserCreate from './component/user-components/user-create.vue'
 import PostDetail from './component/post-components/post-detail.vue'
 import PostCreate from './component/post-components/post-create.vue'
-import PageDetail from './component/page-components/page-detail.vue'
-import PageCreate from './component/page-components/page-create.vue'
+import Page from './component/page-components/page.vue'
 import Media from './component/media-components/media.vue'
 import RoleDetail from './component/role-components/role-detail.vue'
 import RoleCreate from './component/role-components/role-create.vue'
@@ -181,12 +180,12 @@ const routes = [
   {
     name: 'page-detail',
     path: `${ APP_SETTINGS.appBaseURL }/page/:id`,
-    component: PageDetail,
+    component: Page,
   },
   {
     name: 'new-page',
-    path: `${ APP_SETTINGS.appBaseURL }/new-page/`,
-    component: PageCreate,
+    path: `${ APP_SETTINGS.appBaseURL }/page/`,
+    component: Page,
   },
   {
     name: 'media-detail',
