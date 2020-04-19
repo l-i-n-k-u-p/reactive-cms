@@ -16,7 +16,7 @@ class RoleModel extends BaseModel {
   defaults () {
     return {
       role_name: '',
-      role_resources: '',
+      role_resources: [],
       role_user_ref: '',
     }
   }

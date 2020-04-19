@@ -58,8 +58,7 @@ import UserCreate from './component/user-components/user-create.vue'
 import Post from './component/post-components/post.vue'
 import Page from './component/page-components/page.vue'
 import Media from './component/media-components/media.vue'
-import RoleDetail from './component/role-components/role-detail.vue'
-import RoleCreate from './component/role-components/role-create.vue'
+import Role from './component/role-components/role.vue'
 import NotFound from './component/not-found.vue'
 import Profile from './component/profile.vue'
 import View from './component/view-components/view.vue'
@@ -199,12 +198,12 @@ const routes = [
   {
     name: 'role-detail',
     path: `${ APP_SETTINGS.appBaseURL }/role/:id`,
-    component: RoleDetail,
+    component: Role,
   },
   {
     name: 'new-role',
-    path: `${ APP_SETTINGS.appBaseURL }/new-role/`,
-    component: RoleCreate,
+    path: `${ APP_SETTINGS.appBaseURL }/role/`,
+    component: Role,
   },
   {
     name: 'profile',
