@@ -37,7 +37,7 @@ class SiteModel extends BaseModel {
     return {
       setting_page_title: string.and(length(2, 150)),
       site_name: string.and(length(2, 150)),
-      site_items_peer_page: (value) => {
+      site_items_peer_page: value => {
         if (value < 1 || value > 40) {
           return 'Must have a number between 1 and 40'
         }

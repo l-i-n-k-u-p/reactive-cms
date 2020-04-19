@@ -115,7 +115,7 @@ export default {
     })
   },
   methods: {
-    getMedia: function() {
+    getMedia: function () {
       this.isLoading = true
       this.mediaFiles.set('page', this.currentPage)
       let req = this.mediaFiles.fetch()
@@ -129,23 +129,23 @@ export default {
           this.isLoading = false
         })
     },
-    navigationBefore: function() {
+    navigationBefore: function () {
       if (this.currentPage < 2) return
       this.currentPage--
       this.$router.push({ name: 'media', params: { page: this.currentPage } })
     },
-    navigationNext: function() {
+    navigationNext: function () {
       if (parseInt(this.currentPage) + 1 > this.totalPages) return
       this.currentPage++
       this.$router.push({ name: 'media', params: { page: this.currentPage } })
     },
-    showPageDetail: function(page) {
+    showPageDetail: function (page) {
       this.$router.push({ name: 'media-detail', params: { id: page._id } })
     },
-    openNewMediaForm: function() {
+    openNewMediaForm: function () {
       this.$router.push({ name: 'new-media' })
     },
-    onSelectOption: function(option) {
+    onSelectOption: function (option) {
       let promisses = []
       let typeAction = ''
       this.isLoading = true

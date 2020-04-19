@@ -61,15 +61,15 @@ export default {
     InputText,
   },
   watch: {
-    loginUserName: function(newValues, oldValues) {
+    loginUserName: function (newValues, oldValues) {
       this.validateUserName()
     },
-    loginUserPassword: function(newValues, oldValues) {
+    loginUserPassword: function (newValues, oldValues) {
       this.validateUserPassword()
     },
   },
   methods: {
-    acceptAction: function() {
+    acceptAction: function () {
       if (!this.validateUserName() || !this.validateUserPassword())
         return
 
@@ -96,13 +96,13 @@ export default {
           this.$eventHub.$emit('dashboard-app-error', err.message)
         })
     },
-    onChangeInputUserName: function(propName, value) {
+    onChangeInputUserName: function (propName, value) {
       this.loginUserName = value
     },
-    onChangeInputUserPassword: function(propName, value) {
+    onChangeInputUserPassword: function (propName, value) {
       this.loginUserPassword = value
     },
-    validateUserName: function() {
+    validateUserName: function () {
       if (!this.loginUserName) {
         this.loginUserNameError = 'Required'
         return false
@@ -110,7 +110,7 @@ export default {
       this.loginUserNameError = ''
       return true
     },
-    validateUserPassword: function() {
+    validateUserPassword: function () {
       if (!this.loginUserPassword) {
         this.loginUserPasswordError = 'Required'
         return false

@@ -127,7 +127,7 @@ export default {
     })
   },
   methods: {
-    getPosts: function() {
+    getPosts: function () {
       this.isLoading = true
       this.posts.set('page', this.currentPage)
       this.posts.fetch()
@@ -141,23 +141,23 @@ export default {
           this.isLoading = false
         })
     },
-    navigationBefore: function() {
+    navigationBefore: function () {
       if (this.currentPage < 2) return
       this.currentPage--
       this.$router.push({ name: 'posts', params: { page: this.currentPage } })
     },
-    navigationNext: function() {
+    navigationNext: function () {
       if (parseInt(this.currentPage) + 1 > this.totalPages) return
       this.currentPage++
       this.$router.push({ name: 'posts', params: { page: this.currentPage } })
     },
-    showPostDetail: function(post) {
+    showPostDetail: function (post) {
       this.$router.push({ name: 'post-detail', params: { id: post._id } })
     },
-    openNewPostForm: function() {
+    openNewPostForm: function () {
       this.$router.push({ name: 'new-post' })
     },
-    onSelectOption: function(option) {
+    onSelectOption: function (option) {
       let promisses = []
       let typeAction = ''
       this.isLoading = true

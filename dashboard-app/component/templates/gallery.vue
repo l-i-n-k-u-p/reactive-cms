@@ -57,7 +57,7 @@ export default {
       },
     }
   },
-  updated: function() {
+  updated: function () {
     this.showAddItem = this.isMaxItems()
   },
   components: {
@@ -65,13 +65,13 @@ export default {
     InputText,
   },
   methods: {
-    openMediaModal: function() {
+    openMediaModal: function () {
       this.$eventHub.$emit('media-modal', this.mediaModalData)
     },
-    closeMediaModal: function() {
+    closeMediaModal: function () {
       this.$eventHub.$emit('media-modal', null)
     },
-    onMediaSelect: function(media) {
+    onMediaSelect: function (media) {
       let mediaData = {
         media_id: media.get('id'),
         media_file_name: media.get('media_name'),
@@ -81,11 +81,11 @@ export default {
       this.onAddItem(mediaData)
       this.closeMediaModal()
     },
-    getCoverImage: function(image) {
+    getCoverImage: function (image) {
       if (image.media_image) return this.$getAvatarURL(image.media_file_name)
       else return this.$getHexColor(image.media_file_name)
     },
-    isMaxItems: function() {
+    isMaxItems: function () {
       if (this.items.length < parseInt(this.maxItems)) return true
 
       return false

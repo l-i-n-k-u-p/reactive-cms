@@ -30,7 +30,7 @@ class SettingModel extends BaseModel {
   validation() {
     return {
       setting_page_title: string.and(length(2, 150)),
-      setting_items_peer_page: (value) => {
+      setting_items_peer_page: value => {
         if (value < 1 || value > 40) {
           return 'Must have a number between 1 and 40'
         }

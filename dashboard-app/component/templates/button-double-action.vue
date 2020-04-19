@@ -31,19 +31,19 @@ export default {
   components: {},
   created() {},
   methods: {
-    getColor: function() {
+    getColor: function () {
       if (this.buttonColor)
         return `color: ${ this.buttonColor }`
 
       return 'color: #616161'
     },
-    onClickText: function() {
+    onClickText: function () {
       if (!this.buttonTextAction)
         return
 
       this.buttonTextAction(this.data)
     },
-    onClickIcon: function() {
+    onClickIcon: function () {
       if (!this.buttonIconAction)
         return
 

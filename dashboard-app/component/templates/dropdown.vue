@@ -52,17 +52,17 @@ export default {
     VuePerfectScrollbar,
   },
   methods: {
-    showOptions: function() {
+    showOptions: function () {
       this.show = !this.show
     },
-    onSelect: function(value) {
+    onSelect: function (value) {
       this.currentValue = value
       this.onSelectOption(this.currentValue)
     },
-    clickOutsite: function(event) {
+    clickOutsite: function (event) {
       this.show = false
     },
-    getIconName: function() {
+    getIconName: function () {
       let iconName = this.show ? 'expand_less' : 'expand_more'
       if (this.openInTop)
         return this.show ? 'expand_more' : 'expand_less'

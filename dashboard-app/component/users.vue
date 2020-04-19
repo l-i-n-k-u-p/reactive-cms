@@ -129,7 +129,7 @@ export default {
     })
   },
   methods: {
-    getUsers: function() {
+    getUsers: function () {
       this.isLoading = true
       this.users.set('page', this.currentPage)
       this.users.fetch()
@@ -143,23 +143,23 @@ export default {
           this.isLoading = false
         })
     },
-    navigationBefore: function() {
+    navigationBefore: function () {
       if (this.currentPage < 2) return
       this.currentPage--
       this.$router.push({ name: 'users', params: { page: this.currentPage } })
     },
-    navigationNext: function() {
+    navigationNext: function () {
       if (parseInt(this.currentPage) + 1 > this.totalPages) return
       this.currentPage++
       this.$router.push({ name: 'users', params: { page: this.currentPage } })
     },
-    showUserDetail: function(user) {
+    showUserDetail: function (user) {
       this.$router.push({ name: 'user-detail', params: { id: user._id } })
     },
-    openNewUserForm: function() {
+    openNewUserForm: function () {
       this.$router.push({ name: 'new-user' })
     },
-    onSelectOption: function(option) {
+    onSelectOption: function (option) {
       let promisses = []
       let typeAction = ''
       this.isLoading = true

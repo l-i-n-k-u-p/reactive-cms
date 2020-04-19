@@ -218,13 +218,13 @@ export default {
     this.$router.beforeResolve(this.routerBeforeResolve)
   },
   methods: {
-    closeMenu: function() {
+    closeMenu: function () {
       if (this.isMenuSticky)
         return
 
       this.$eventHub.$emit('dashboard-app-toggle-menu', '')
     },
-    highlightCurrentMenuItem: function(itemName) {
+    highlightCurrentMenuItem: function (itemName) {
       let name = ''
       let index = -1
       for (let itemIndex in this.menuItems)
@@ -238,20 +238,20 @@ export default {
 
       this.menuItems[index].expanded = true
     },
-    getMenuItemClass: function(item) {
+    getMenuItemClass: function (item) {
       return {
         'current': this.isCurrentItem(item),
         'option': true,
       }
     },
-    isCurrentItem: function(item) {
+    isCurrentItem: function (item) {
       return item.name == this.currentItemName
     },
-    routerBeforeResolve: function(to, from, next) {
+    routerBeforeResolve: function (to, from, next) {
       this.highlightCurrentMenuItem(to.name)
       next()
     },
-    toggleOptions: function(index) {
+    toggleOptions: function (index) {
       this.menuItems[index].expanded = !this.menuItems[index].expanded
     },
   },

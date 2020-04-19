@@ -151,7 +151,7 @@ export default {
     getCoverColor: function (string) {
       return this.$getHexColor(string)
     },
-    getCoverImage: function(item, itemPropName, index) {
+    getCoverImage: function (item, itemPropName, index) {
       if (!itemPropName)
         return false
 

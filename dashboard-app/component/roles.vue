@@ -111,7 +111,7 @@ export default {
     })
   },
   methods: {
-    getRoles: function() {
+    getRoles: function () {
       this.isLoading = true
       this.roles.set('page', this.currentPage)
       this.roles.fetch()
@@ -133,7 +133,7 @@ export default {
           this.$eventHub.$emit('dashboard-app-error', err.message)
         })
     },
-    navigationBefore: function() {
+    navigationBefore: function () {
       if (this.currentPage < 2) return
       this.currentPage--
       this.$router.push({
@@ -143,7 +143,7 @@ export default {
         },
       })
     },
-    navigationNext: function() {
+    navigationNext: function () {
       if (parseInt(this.currentPage) + 1 > this.totalPages) return
       this.currentPage++
       this.$router.push({
@@ -153,7 +153,7 @@ export default {
         },
       })
     },
-    showRoleDetail: function(role) {
+    showRoleDetail: function (role) {
       this.$router.push({
         name: 'role-detail',
         params: {
@@ -161,12 +161,12 @@ export default {
         },
       })
     },
-    openNewPostForm: function() {
+    openNewPostForm: function () {
       this.$router.push({
         name: 'new-role',
       })
     },
-    onSelectOption: function(option) {
+    onSelectOption: function (option) {
       let promisses = []
       let typeAction = ''
       this.isLoading = true

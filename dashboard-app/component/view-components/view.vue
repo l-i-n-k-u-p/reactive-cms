@@ -103,10 +103,10 @@ export default {
     }
   },
   methods: {
-    onChangeInputValue: function(propName, value) {
+    onChangeInputValue: function (propName, value) {
       this.view.set(propName, value)
     },
-    getViewData: function() {
+    getViewData: function () {
       this.isLoading = true
       this.view
         .fetch()
@@ -125,7 +125,7 @@ export default {
           this.$eventHub.$emit('dashboard-app-error', err.message)
         })
     },
-    deleteView: function() {
+    deleteView: function () {
       this.isLoading = true
       this.view
         .delete()
@@ -149,7 +149,7 @@ export default {
         })
       this.$router.replace({ name: 'views', params: { page: 1 } })
     },
-    updateView: function() {
+    updateView: function () {
       if (Object.keys(this.view.errors).length)
         return
 
@@ -175,17 +175,17 @@ export default {
           this.isLoading = false
         })
     },
-    showConfirmationModal: function() {
+    showConfirmationModal: function () {
       this.$eventHub.$emit('confirmation-modal', this.confirmationModalData)
     },
-    cancelAction: function() {
+    cancelAction: function () {
       this.$eventHub.$emit('confirmation-modal', null)
     },
-    acceptAction: function() {
+    acceptAction: function () {
       this.$eventHub.$emit('confirmation-modal', null)
       this.deleteView()
     },
-    createView: function() {
+    createView: function () {
       this.isLoading = true
       this.view
       .save()
@@ -211,7 +211,7 @@ export default {
         this.isLoading = false
       })
     },
-    cancelCreateView: function() {
+    cancelCreateView: function () {
       this.$router.back()
     },
   },

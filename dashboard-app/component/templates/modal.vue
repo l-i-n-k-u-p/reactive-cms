@@ -56,7 +56,7 @@ export default {
     }
   },
   watch: {
-    checkboxNames: function(newVal, oldVal) {
+    checkboxNames: function (newVal, oldVal) {
       this.checkboxValues = newVal
     },
   },
@@ -65,10 +65,10 @@ export default {
     Checkbox,
   },
   methods: {
-    onChangeValue: function(value, index) {
+    onChangeValue: function (value, index) {
       this.checkboxValues[index].value = value
     },
-    onAcceptAction: function() {
+    onAcceptAction: function () {
       this.acceptAction(this.checkboxValues)
     },
   }

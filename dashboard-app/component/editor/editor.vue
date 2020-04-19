@@ -261,7 +261,7 @@ export default {
     this.editor = new Editor(this.editorProps)
   },
   watch: {
-    content: function(newVal, oldVal) {
+    content: function (newVal, oldVal) {
       this.editor.setContent(newVal)
     },
   },
@@ -275,10 +275,10 @@ export default {
         command({ src })
       }
     },
-    onFocusEditor: function(event) {
+    onFocusEditor: function (event) {
       this.hasEditorFocus = true
     },
-    onBlurEditor: function(event) {
+    onBlurEditor: function (event) {
       this.hasEditorFocus = false
     },
   },

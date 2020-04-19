@@ -68,7 +68,7 @@ export default {
     VuePerfectScrollbar,
   },
   watch: {
-    initialIndexOption: function(newVal, oldVal) {
+    initialIndexOption: function (newVal, oldVal) {
       this.currentIndex = newVal
     },
   },
@@ -76,17 +76,17 @@ export default {
     this.currentIndex = this.initialIndexOption
   },
   methods: {
-    showOptions: function() {
+    showOptions: function () {
       this.show = !this.show
     },
-    onSelect: function(index) {
+    onSelect: function (index) {
       this.currentIndex = index
       this.onSelectOption(this.selectOptions[index], index)
     },
-    clickOutsite: function(event) {
+    clickOutsite: function (event) {
       this.show = false
     },
-    getOptionName: function() {
+    getOptionName: function () {
       let option = this.selectOptions[this.currentIndex]
       if (!option) return ''
 

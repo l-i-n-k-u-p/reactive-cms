@@ -163,7 +163,7 @@ export default {
         this.mediaDate = moment(value).format('MMMM Do YYYY, h:mm:ss a')
       })
     },
-    onChangeInputValue: function(propName, value) {
+    onChangeInputValue: function (propName, value) {
       this.mediaTitle = value
       this.media.set(propName, value)
     },

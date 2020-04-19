@@ -139,7 +139,7 @@ export default {
     this.getTemplateFilesData()
   },
   methods: {
-    getSettingsData: function() {
+    getSettingsData: function () {
       this.isLoading = true
       this.settings
       .fetch()
@@ -158,7 +158,7 @@ export default {
         this.$eventHub.$emit('dashboard-app-error', err.message)
       })
     },
-    getSiteData: function() {
+    getSiteData: function () {
       this.isLoading = true
       this.site
       .fetch()
@@ -180,7 +180,7 @@ export default {
         this.$eventHub.$emit('dashboard-app-error', err.message)
       })
     },
-    getSettingPagesData: function() {
+    getSettingPagesData: function () {
       this.isLoading = true
       this.settingPages
       .page(-1)
@@ -201,7 +201,7 @@ export default {
         this.$eventHub.$emit('dashboard-app-error', err.message)
       })
     },
-    getTemplateFilesData: function() {
+    getTemplateFilesData: function () {
       this.isLoading = true
       this.fileTemplates
       .fetch()
@@ -221,13 +221,13 @@ export default {
         this.$eventHub.$emit('dashboard-app-error', err.message)
       })
     },
-    onChangeInputValue: function(propName, value) {
+    onChangeInputValue: function (propName, value) {
       this.settings.set(propName, value)
     },
-    onChangeInputSiteValue: function(propName, value) {
+    onChangeInputSiteValue: function (propName, value) {
       this.site.set(propName, value)
     },
-    saveSetting: function() {
+    saveSetting: function () {
       let errorCount = Object.keys(this.settings.errors).length + Object.keys(this.site.errors).length
       if (errorCount)
         return
@@ -255,7 +255,7 @@ export default {
       })
       this.saveSite()
     },
-    saveSite: function() {
+    saveSite: function () {
       this.isLoading = true
       this.site
       .put()
@@ -278,10 +278,10 @@ export default {
         this.$eventHub.$emit('dashboard-app-error', err.message)
       })
     },
-    onSelectTemplateHome: function(option) {
+    onSelectTemplateHome: function (option) {
       this.site.set('site_template_home', option.value)
     },
-    setOnChangeSetting: function() {
+    setOnChangeSetting: function () {
       this.site.on('change', ({ attribute, value }) => {
         if (attribute === 'site_template_home')
           this.setIndexPageTemplate()
@@ -289,7 +289,7 @@ export default {
           this.setIndexPostsTemplate()
       })
     },
-    setInitialSelectPages: function() {
+    setInitialSelectPages: function () {
       let templates = this.settingPages.getModels()
       this.templateHomeOptions.push({
         name: 'none',
@@ -305,7 +305,7 @@ export default {
       }
       this.setIndexPageTemplate()
     },
-    setIndexPageTemplate: function() {
+    setIndexPageTemplate: function () {
       if (!this.templateHomeOptions) return
 
       let templates = this.settingPages.getModels()
@@ -319,10 +319,10 @@ export default {
         }
       }
     },
-    onSelectPostsTemplate: function(option) {
+    onSelectPostsTemplate: function (option) {
       this.site.set('site_template_posts', option.value)
     },
-    setInitialSelectPostsTemplates: function() {
+    setInitialSelectPostsTemplates: function () {
       let templates = this.fileTemplates.getModels()
       this.templateFileOptions.push({
         name: 'none',
@@ -338,7 +338,7 @@ export default {
       }
       this.setIndexPostsTemplate()
     },
-    setIndexPostsTemplate: function() {
+    setIndexPostsTemplate: function () {
       if (!this.templateFileOptions) return
 
       let templates = this.fileTemplates.getModels()
@@ -352,7 +352,7 @@ export default {
         }
       }
     },
-    setInitialThemes: function() {
+    setInitialThemes: function () {
       let themes = this.site.get('themes')
       if (!themes)
         return
@@ -369,10 +369,10 @@ export default {
       }
       this.setIndexTheme()
     },
-    onSelectTheme: function(option) {
+    onSelectTheme: function (option) {
       this.site.set('site_theme', option.value)
     },
-    setIndexTheme: function() {
+    setIndexTheme: function () {
       if (!this.siteThemeOptions) return
 
       let siteTheme = this.site.get('site_theme')

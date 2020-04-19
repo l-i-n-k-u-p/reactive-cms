@@ -37,7 +37,7 @@ class PageModel extends BaseModel {
   validation() {
     return {
       page_title: string.and(length(2, 150)),
-      page_content: (value) => {
+      page_content: value => {
         let valueStrip = value.replace(stripHTMLTagsRegex, '')
         if (valueStrip.length < 5)
           return 'Must have a length of at least 5'

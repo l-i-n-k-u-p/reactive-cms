@@ -30,7 +30,7 @@ class ViewModel extends BaseModel {
   }
   validation () {
     return {
-      view_name: (value) => {
+      view_name: value => {
         if (sapaceRegex.test(value))
           return "Not spaces only '-'"
 

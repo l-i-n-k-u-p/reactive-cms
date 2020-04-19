@@ -126,7 +126,7 @@ export default {
     })
   },
   methods: {
-    getPages: function() {
+    getPages: function () {
       this.isLoading = true
       this.pages.set('page', this.currentPage)
       this.pages.fetch()
@@ -140,23 +140,23 @@ export default {
           this.isLoading = false
         })
     },
-    navigationBefore: function() {
+    navigationBefore: function () {
       if (this.currentPage < 2) return
       this.currentPage--
       this.$router.push({ name: 'pages', params: { page: this.currentPage } })
     },
-    navigationNext: function() {
+    navigationNext: function () {
       if (parseInt(this.currentPage) + 1 > this.totalPages) return
       this.currentPage++
       this.$router.push({ name: 'pages', params: { page: this.currentPage } })
     },
-    showPageDetail: function(page) {
+    showPageDetail: function (page) {
       this.$router.push({ name: 'page-detail', params: { id: page._id } })
     },
-    openNewPageForm: function() {
+    openNewPageForm: function () {
       this.$router.push({ name: 'new-page' })
     },
-    onSelectOption: function(option) {
+    onSelectOption: function (option) {
       let promisses = []
       let typeAction = ''
       this.isLoading = true

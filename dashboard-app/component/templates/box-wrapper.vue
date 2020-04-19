@@ -38,13 +38,13 @@ export default {
     this.setCustomPaddingStyle()
   },
   methods: {
-    setcustomHeight: function() {
+    setcustomHeight: function () {
       let height = window.innerHeight - this.headerHeight
       if (this.footerSize)
         height = height - this.footerSize;
       this.customHeight = `height: ${ height }px;`
     },
-    setCustomPaddingStyle: function() {
+    setCustomPaddingStyle: function () {
       if (this.customPaddingStyle)
         this.customPadding = `padding: ${ this.customPaddingStyle };`
     },
