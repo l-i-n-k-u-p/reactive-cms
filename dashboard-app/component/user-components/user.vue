@@ -3,7 +3,7 @@
     <div class="header">
       <NavigationButtons/>
       <h2>
-        {{ $t('Create user') }}
+        {{ $t('User') }}
       </h2>
     </div>
     <LoadingBar v-if="isLoading"/>
@@ -13,41 +13,38 @@
           v-if="user.get('user_thumbnail')"
           buttonIcon="broken_image"
           v-bind:buttonAction="removeMedia"
-          buttonColor="#f0f0f0"
-        >
+          buttonColor="#f0f0f0">
           {{ $t('Remove image') }}
         </Button>
         <Button
           buttonIcon="image"
           v-bind:buttonAction="openMediaModal"
           buttonColor="#f0f0f0"
-          style="margin-left: 5px;"
-        >
+          style="margin-left: 5px;">
           {{ $t('Set image') }}
         </Button>
       </div>
       <div
         class="user-thumbnail"
         v-if="user.get('user_thumbnail')"
-        v-bind:style="getCoverImage()"
-      ></div>
+        v-bind:style="getCoverImage()">
+      </div>
       <div
         class="user-thumbnail"
         v-if="!user.get('user_thumbnail')"
-        v-bind:style="getCoverColor()"
-      ></div>
+        v-bind:style="getCoverColor()">
+      </div>
       <div class="user-avatar-wrapper">
         <div class="user-avatar">
           <div
             class="user-image-color"
             v-if="user.get('user_avatar')"
-            v-bind:style="getAvatarImage()"
-          ></div>
+            v-bind:style="getAvatarImage()">
+          </div>
           <div
             class="user-image-color"
             v-if="!user.get('user_avatar')"
-            v-bind:style="getCoverColor()"
-          >
+            v-bind:style="getCoverColor()">
             <span class="user-letter">
               {{ getUserFirstLetter(user) }}
             </span>
@@ -58,16 +55,14 @@
               v-if="user.get('user_avatar')"
               buttonIcon="broken_image"
               v-bind:buttonAction="removeMediaAvatar"
-              buttonColor="#f0f0f0"
-            >
+              buttonColor="#f0f0f0">
               {{ $t('Remove avatar') }}
             </Button>
             <Button
               class="buttom-bottom"
               buttonIcon="image"
               v-bind:buttonAction="openMediaAvatarModal"
-              buttonColor="#f0f0f0"
-            >
+              buttonColor="#f0f0f0">
               {{ $t('Set avatar') }}
             </Button>
           </div>
@@ -80,52 +75,40 @@
           v-bind:onChangeValue="onChangeInputValue"
           propName="user_first_name"
           v-bind:errorMessage="user.errors.user_first_name"
-          helperMessage="At least 2 characters"
-        >
-        </InputText>
+          helperMessage="At least 2 characters"/>
         <InputText
           inputName="Last name"
           v-bind:inputValue="user.get('user_last_name')"
           v-bind:onChangeValue="onChangeInputValue"
-          propName="user_last_name"
-        >
-        </InputText>
+          propName="user_last_name"/>
         <InputText
           inputName="User name"
           v-bind:inputValue="user.get('user_name')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="user_name"
           v-bind:errorMessage="user.errors.user_name"
-          helperMessage="At least 2 characters"
-        >
-        </InputText>
+          helperMessage="At least 2 characters"/>
         <InputText
-          inputName="Password"
+          inputName="New password"
           v-bind:inputValue="newPassword"
           v-bind:onChangeValue="onSetNewPassword"
           propName=""
           v-bind:errorMessage="user.errors.user_pass"
-          helperMessage="At least 2 characters"
-        >
-        </InputText>
+          helperMessage="At least 2 characters"/>
         <InputText
           inputName="Email"
           v-bind:inputValue="user.get('user_email')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="user_email"
           v-bind:errorMessage="user.errors.user_email"
-          helperMessage="Example: eduardobc.88@gmail.com"
-        >
-        </InputText>
+          helperMessage="Example: eduardobc.88@gmail.com"/>
         <FormDropdownSelect
           class="dropdown-select"
           label="Role"
-          v-bind:initialIndexOption="noop"
+          v-bind:initialIndexOption="userRoleIndex"
           v-bind:onSelectOption="onSelectRole"
           v-bind:selectOptions="roleOptions"
-          openInTop="true"
-        >
-        </FormDropdownSelect>
+          openInTop="true"/>
         <FormDropdownSelect
           class="dropdown-select"
           label="Language"
@@ -133,21 +116,38 @@
           v-bind:onSelectOption="onSelectLocale"
           v-bind:selectOptions="localeOptions"
           openInTop="true"
-          helperMessage="Select a language"
-        >
-        </FormDropdownSelect>
+          helperMessage="Select a language"/>
+        <div class="date-wrapper">
+          {{ userDate }}
+        </div>
       </div>
     </BoxWrapper>
     <div class="buttons-wrapper">
-      <Button buttonIcon="close" v-bind:buttonAction="cancelCreateUser">
+      <Button
+        v-if="isNew"
+        buttonIcon="close"
+        v-bind:buttonAction="cancelCreateUser">
         {{ $t('Cancel') }}
       </Button>
       <Button
+        v-if="isNew"
         buttonIcon="save"
-        v-bind:buttonAction="createUser"
-        style="margin-left: 5px;"
-      >
+        v-bind:buttonAction="validateUser"
+        style="margin-left: 5px;">
         {{ $t('Create') }}
+      </Button>
+      <Button
+        v-if="!isNew"
+        buttonIcon="remove"
+        v-bind:buttonAction="showConfirmationModal">
+        {{ $t('Delete') }}
+      </Button>
+      <Button
+        v-if="!isNew"
+        buttonIcon="save"
+        v-bind:buttonAction="validateUser"
+        style="margin-left: 5px;">
+        {{ $t('Update') }}
       </Button>
     </div>
   </div>
@@ -164,14 +164,19 @@ import LoadingBar from '../templates/loading-bar.vue'
 export default {
   data() {
     return {
-      user: new this.$models.User({
-        user_active: true,
-        user_locale: 'en',
-      }),
+      isNew: true,
+      user: new this.$models.User(),
       roles: new this.$models.RoleCollection(),
       newPassword: '',
+      userDate: '',
       userRoleIndex: null,
       roleOptions: [],
+      confirmationModalData: {
+        modalTitle: 'Do you want delete this user?',
+        modalDescription: 'This action will delete this user',
+        cancelAction: this.cancelAction,
+        acceptAction: this.acceptAction,
+      },
       mediaModalData: {
         onlyImages: true,
         modalTitle: 'Set Featured Image',
@@ -200,10 +205,27 @@ export default {
     LoadingBar,
   },
   created() {
+    let routeParamId = this.$route.params.id
+    if (routeParamId !== undefined) {
+      this.isNew = false
+      this.user.set('_id', routeParamId)
+      this.getUserData()
+      this.setOnChangeUser()
+    } else
+      this.setInitialLocations()
     this.getRolesData()
-    this.setInitialLocations()
   },
   methods: {
+    setOnChangeUser: function () {
+      this.user.on('change', ({ attribute, value }) => {
+        if (attribute === 'user_registration_date')
+          this.setUserFormatDate()
+        if (attribute === 'user_role_ref')
+          this.setInitialRolesIndex()
+        if (attribute === 'user_locale')
+          this.setInitialLocations()
+      })
+    },
     onSetNewPassword: function (propName, value) {
       this.newPassword = value
       this.user.set('user_pass', value)
@@ -211,31 +233,95 @@ export default {
     onChangeInputValue: function (propName, value) {
       this.user.set(propName, value)
     },
-    createUser: function () {
+    getUserData: function () {
       this.isLoading = true
-      this.user
-      .save()
+      this.user.fetch()
+        .then(data => {
+          this.setUserFormatDate()
+          this.setInitialRolesIndex()
+          this.setInitialLocations()
+        })
+        .finally(() => {
+          this.isLoading = false
+        })
+    },
+    getRolesData: function () {
+      this.isLoading = true
+      this.roles.page(-1).fetch()
       .then(data => {
+        this.setInitialRoles()
+      })
+      .finally(err => {
         this.isLoading = false
-        if (data.getData().status_code) {
-          this.$eventHub.$emit(
-            'dashboard-app-error',
-            data.getData().status_msg,
-          )
+      })
+    },
+    cancelCreateUser: function () {
+      this.$router.back()
+    },
+    validateUser: function () {
+      this.user.validate().then((errors) => {
+        if (!_.isEmpty(errors))
+          return
+
+        if (this.isNew) {
+          this.createUser()
           return
         }
-        this.$router.replace({
-          name: 'user-detail',
-          params: { id: data.getData().data.id },
-        })
-        this.$eventHub.$emit(
-          'dashboard-app-success',
-          data.getData().status_msg,
-        )
+        this.updateUser()
       })
-      .catch(err => {
+    },
+    deleteUser: function () {
+      this.isLoading = true
+      this.user.delete()
+        .finally(() => {
+          this.$router.replace({
+            name: 'users',
+            params: {
+              page: 1,
+            },
+          })
+          this.isLoading = false
+        })
+    },
+    createUser: function () {
+      this.isLoading = true
+      this.user.save()
+        .then(data => {
+          this.$router.replace({
+            name: 'user-detail',
+            params: { id: data.getData().data.id },
+          })
+        })
+        .finally(() => {
+          this.isLoading = false
+        })
+    },
+    updateUser: function () {
+      this.isLoading = true
+      this.user.put()
+      .then(data => {
+        this.user.set('user_pass', '')
+        this.newPassword = ''
+      })
+      .finally(() => {
         this.isLoading = false
       })
+    },
+    showConfirmationModal: function () {
+      this.$eventHub.$emit('confirmation-modal', this.confirmationModalData)
+    },
+    cancelAction: function () {
+      this.$eventHub.$emit('confirmation-modal', null)
+    },
+    acceptAction: function () {
+      this.$eventHub.$emit('confirmation-modal', null)
+      this.deleteUser()
+    },
+    openMediaModal: function () {
+      this.$eventHub.$emit('media-modal', this.mediaModalData)
+    },
+    closeMediaModal: function () {
+      this.$eventHub.$emit('media-modal', null)
     },
     onMediaSelect: function (media) {
       let mediaData = {
@@ -246,17 +332,8 @@ export default {
       this.user.set('user_thumbnail', mediaData)
       this.closeMediaModal()
     },
-    cancelCreateUser: function () {
-      this.$router.back()
-    },
     removeMedia: function () {
       this.user.set('user_thumbnail', '')
-    },
-    openMediaModal: function () {
-      this.$eventHub.$emit('media-modal', this.mediaModalData)
-    },
-    closeMediaModal: function () {
-      this.$eventHub.$emit('media-modal', null)
     },
     onMediaAvatarSelect: function (media) {
       let mediaData = {
@@ -276,27 +353,6 @@ export default {
     removeMediaAvatar: function () {
       this.user.set('user_avatar', '')
     },
-    getRolesData: function () {
-      this.isLoading = true
-      this.roles
-      .page(-1)
-      .fetch()
-      .then(data => {
-        this.isLoading = false
-        if (data.getData().status_code) {
-          this.$eventHub.$emit(
-            'dashboard-app-error',
-            data.getData().status_msg,
-          )
-          return
-        }
-        this.setInitialRoles()
-      })
-      .catch(err => {
-        this.isLoading = false
-        this.$eventHub.$emit('dashboard-app-error', err.toString())
-      })
-    },
     onSelectRole: function (option) {
       this.user.set({
         'user_role': option.value,
@@ -315,6 +371,18 @@ export default {
           },
         })
       }
+      this.setInitialRolesIndex()
+    },
+    setInitialRolesIndex: function () {
+      let currentUserRoleId = this.user.get('user_role_ref')
+      if (!currentUserRoleId)
+        return
+
+      let roles = this.roles.getModels()
+      for (let index in roles) {
+        let roleId = roles[index].get('_id')
+        if (roleId === currentUserRoleId) this.userRoleIndex = index
+      }
     },
     getCoverImage: function () {
       return this.$getThumbnailURL(
@@ -332,8 +400,8 @@ export default {
 
       return user.get('user_first_name')[0]
     },
-    noop: function () {
-      return
+    setUserFormatDate: function () {
+      this.userDate = moment(this.user.get('user_registration_date')).format('MMMM Do YYYY, h:mm:ss a')
     },
     setInitialLocations: function () {
       this.localeOptions = []
@@ -378,7 +446,6 @@ h2 {
   font-size: 13px;
   font-weight: 500;
   margin: 0;
-  text-transform: capitalize;
 }
 
 .buttons-wrapper {
@@ -504,6 +571,15 @@ h2 {
 .buttom-bottom {
   bottom: 15px;
   margin: auto;
+}
+
+.date-wrapper {
+  color: #616161;
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 15px;
+  text-align: right;
 }
 
 .dropdown-select {

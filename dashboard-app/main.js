@@ -53,8 +53,7 @@ import Users from './component/users.vue'
 import Roles from './component/roles.vue'
 import Views from './component/views.vue'
 import Settings from './component/settings.vue'
-import UserDetail from './component/user-components/user-detail.vue'
-import UserCreate from './component/user-components/user-create.vue'
+import User from './component/user-components/user.vue'
 import Post from './component/post-components/post.vue'
 import Page from './component/page-components/page.vue'
 import Media from './component/media-components/media.vue'
@@ -158,12 +157,12 @@ const routes = [
   {
     name: 'user-detail',
     path: `${ APP_SETTINGS.appBaseURL }/user/:id`,
-    component: UserDetail,
+    component: User,
   },
   {
     name: 'new-user',
-    path: `${ APP_SETTINGS.appBaseURL }/new-user/`,
-    component: UserCreate,
+    path: `${ APP_SETTINGS.appBaseURL }/user/`,
+    component: User,
   },
   {
     name: 'post-detail',
