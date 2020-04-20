@@ -90,9 +90,9 @@
           helperMessage="At least 2 characters"/>
         <InputText
           inputName="New password"
-          v-bind:inputValue="newPassword"
-          v-bind:onChangeValue="onSetNewPassword"
-          propName=""
+          v-bind:inputValue="user.get('user_pass')"
+          v-bind:onChangeValue="onChangeInputValue"
+          propName="user_pass"
           v-bind:errorMessage="user.errors.user_pass"
           helperMessage="At least 2 characters"/>
         <InputText
@@ -167,7 +167,6 @@ export default {
       isNew: true,
       user: new this.$models.User(),
       roles: new this.$models.RoleCollection(),
-      newPassword: '',
       userDate: '',
       userRoleIndex: null,
       roleOptions: [],
@@ -225,10 +224,6 @@ export default {
         if (attribute === 'user_locale')
           this.setInitialLocations()
       })
-    },
-    onSetNewPassword: function (propName, value) {
-      this.newPassword = value
-      this.user.set('user_pass', value)
     },
     onChangeInputValue: function (propName, value) {
       this.user.set(propName, value)
@@ -301,7 +296,6 @@ export default {
       this.user.put()
       .then(data => {
         this.user.set('user_pass', '')
-        this.newPassword = ''
       })
       .finally(() => {
         this.isLoading = false

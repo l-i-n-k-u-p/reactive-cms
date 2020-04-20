@@ -13,41 +13,38 @@
           v-if="user.get('user_thumbnail')"
           buttonIcon="broken_image"
           v-bind:buttonAction="removeMedia"
-          buttonColor="#f0f0f0"
-        >
+          buttonColor="#f0f0f0">
           {{ $t('Remove image') }}
         </Button>
         <Button
           buttonIcon="image"
           v-bind:buttonAction="openMediaModal"
           buttonColor="#f0f0f0"
-          style="margin-left: 5px;"
-        >
+          style="margin-left: 5px;">
           {{ $t('Set image') }}
         </Button>
       </div>
       <div
         class="user-thumbnail"
         v-if="user.get('user_thumbnail')"
-        v-bind:style="getCoverImage()"
-      ></div>
+        v-bind:style="getCoverImage()">
+      </div>
       <div
         class="user-thumbnail"
         v-if="!user.get('user_thumbnail')"
-        v-bind:style="getCoverColor()"
-      ></div>
+        v-bind:style="getCoverColor()">
+      </div>
       <div class="user-avatar-wrapper">
         <div class="user-avatar">
           <div
             class="user-image-color"
             v-if="user.get('user_avatar')"
-            v-bind:style="getAvatarImage()"
-          ></div>
+            v-bind:style="getAvatarImage()">
+          </div>
           <div
             class="user-image-color"
             v-if="!user.get('user_avatar')"
-            v-bind:style="getCoverColor()"
-          >
+            v-bind:style="getCoverColor()">
             <span class="user-letter">
               {{ getUserFirstLetter(user) }}
             </span>
@@ -58,16 +55,14 @@
               v-if="user.get('user_avatar')"
               buttonIcon="broken_image"
               v-bind:buttonAction="removeMediaAvatar"
-              buttonColor="#f0f0f0"
-            >
+              buttonColor="#f0f0f0">
               {{ $t('Remove avatar') }}
             </Button>
             <Button
               class="buttom-bottom"
               buttonIcon="image"
               v-bind:buttonAction="openMediaAvatarModal"
-              buttonColor="#f0f0f0"
-            >
+              buttonColor="#f0f0f0">
               {{ $t('Set avatar') }}
             </Button>
           </div>
@@ -80,46 +75,34 @@
           v-bind:onChangeValue="onChangeInputValue"
           propName="user_first_name"
           v-bind:errorMessage="user.errors.user_first_name"
-          helperMessage="At least 2 characters"
-        >
-        </InputText>
+          helperMessage="At least 2 characters"/>
         <InputText
           inputName="Last name"
           v-bind:inputValue="user.get('user_last_name')"
           v-bind:onChangeValue="onChangeInputValue"
-          propName="user_last_name"
-        >
-        </InputText>
+          propName="user_last_name"/>
         <InputText
           inputName="User name"
           v-bind:inputValue="user.get('user_name')"
-          disabled="true"
-        >
-        </InputText>
+          disabled="true"/>
         <InputText
           inputName="New password"
-          v-bind:inputValue="newPassword"
-          v-bind:onChangeValue="onSetNewPassword"
-          propName=""
+          v-bind:inputValue="user.get('user_pass')"
+          v-bind:onChangeValue="onChangeInputValue"
+          propName="user_pass"
           v-bind:errorMessage="user.errors.user_pass"
-          helperMessage="At least 2 characters"
-        >
-        </InputText>
+          helperMessage="At least 2 characters"/>
         <InputText
           inputName="Email"
           v-bind:inputValue="user.get('user_email')"
           v-bind:onChangeValue="onChangeInputValue"
           propName="user_email"
           v-bind:errorMessage="user.errors.user_email"
-          helperMessage="Example: user@reactivecms.com"
-        >
-        </InputText>
+          helperMessage="Example: user@reactivecms.com"/>
         <InputText
           inputName="Role"
           v-bind:inputValue="user.get('user_role').role_name"
-          disabled="true"
-        >
-        </InputText>
+          disabled="true"/>
         <FormDropdownSelect
           class="dropdown-select"
           label="Language"
@@ -127,9 +110,7 @@
           v-bind:onSelectOption="onSelectLocale"
           v-bind:selectOptions="localeOptions"
           openInTop="true"
-          helperMessage="Select a language"
-        >
-        </FormDropdownSelect>
+          helperMessage="Select a language"/>
         <div class="date-wrapper">
           {{ userDate }}
         </div>
@@ -139,8 +120,7 @@
       <Button
         buttonIcon="save"
         v-bind:buttonAction="updateUser"
-        style="margin-left: 5px;"
-      >
+        style="margin-left: 5px;">
         {{ $t('Update') }}
       </Button>
     </div>
@@ -161,7 +141,6 @@ export default {
       user: new this.$models.Profile({
         _id: this.$getCookie('user_id'),
       }),
-      newPassword: '',
       userDate: '',
       mediaModalData: {
         onlyImages: true,
@@ -203,61 +182,29 @@ export default {
           this.setInitialLocations()
       })
     },
-    onSetNewPassword: function (propName, value) {
-      this.newPassword = value
-      this.user.set('user_pass', value)
-    },
     onChangeInputValue: function (propName, value) {
       this.user.set(propName, value)
     },
     getUserData: function () {
       this.isLoading = true
-      this.user
-        .fetch()
+      this.user.fetch()
         .then(data => {
-          this.isLoading = false
-          if (data.getData().status_code) {
-            this.$eventHub.$emit(
-              'dashboard-app-error',
-              data.getData().status_msg,
-            )
-            return
-          }
           this.setUserFormatDate()
           this.setInitialLocations()
         })
-        .catch(err => {
+        .finally(() => {
           this.isLoading = false
-          this.$eventHub.$emit('dashboard-app-error', err.toString())
         })
     },
     updateUser: function () {
-      if (Object.keys(this.user.errors).length)
-        return
-
       this.isLoading = true
-      this.user
-      .put()
-      .then(data => {
-        this.isLoading = false
-        if (data.getData().status_code) {
-          this.$eventHub.$emit(
-            'dashboard-app-error',
-            data.getData().status_msg,
-          )
-          return
-        }
-        this.$eventHub.$emit(
-          'dashboard-app-success',
-          data.getData().status_msg,
-        )
-        this.user.user_pass = ''
-        this.newPassword = ''
-      })
-      .catch(err => {
-        this.isLoading = false
-        this.$eventHub.$emit('dashboard-app-error', err.message)
-      })
+      this.user.put()
+        .then(data => {
+          this.user.set('user_pass', '')
+        })
+        .finally(() => {
+          this.isLoading = false
+        })
     },
     openMediaModal: function () {
       this.$eventHub.$emit('media-modal', this.mediaModalData)
@@ -307,7 +254,8 @@ export default {
       return this.$getHexColor(this.user.get('user_first_name'))
     },
     getUserFirstLetter: function (user) {
-      if (!user.get('user_first_name')) return
+      if (!user.get('user_first_name'))
+        return
 
       return user.get('user_first_name')[0]
     },
