@@ -98,7 +98,7 @@
       <Button
         v-if="isNew"
         buttonIcon="save"
-        v-bind:buttonAction="createPage"
+        v-bind:buttonAction="validatePage"
         style="margin-left: 5px;">
         {{ $t('Create') }}
       </Button>
@@ -112,7 +112,7 @@
       <Button
         v-if="!isNew"
         buttonIcon="save"
-        v-bind:buttonAction="updatePage"
+        v-bind:buttonAction="validatePage"
         style="margin-left: 5px;">
         {{ $t('Update') }}
       </Button>
@@ -249,6 +249,18 @@ export default {
           this.isLoading = false
           this.$router.replace({ name: 'pages', params: { page: 1 } })
         })
+    },
+    validatePage: function () {
+      this.page.validate().then((errors) => {
+        if (!_.isEmpty(errors))
+          return
+
+        if (this.isNew) {
+          this.createPage()
+          return
+        }
+        this.updatePage()
+      })
     },
     updatePage: function () {
       if (Object.keys(this.page.errors).length)

@@ -80,7 +80,7 @@
       <Button
         v-if="isNew"
         buttonIcon="save"
-        v-bind:buttonAction="createPost"
+        v-bind:buttonAction="validatePost"
         style="margin-left: 5px;">
         {{ $t('Create') }}
       </Button>
@@ -94,7 +94,7 @@
       <Button
         v-if="!isNew"
         buttonIcon="save"
-        v-bind:buttonAction="updatePost"
+        v-bind:buttonAction="validatePost"
         style="margin-left: 5px;">
         {{ $t('Update') }}
       </Button>
@@ -215,10 +215,19 @@ export default {
           this.$router.replace({ name: 'posts', params: { page: 1 } })
         })
     },
-    updatePost: function () {
-      if (Object.keys(this.post.errors).length)
-        return
+    validatePost: function () {
+      this.post.validate().then((errors) => {
+        if (!_.isEmpty(errors))
+          return
 
+        if (this.isNew) {
+          this.createPost()
+          return
+        }
+        this.updatePost()
+      })
+    },
+    updatePost: function () {
       this.post.setOption('initialPostContent', this.post.get('post_content'))
       this.isLoading = true
       this.post.put()
