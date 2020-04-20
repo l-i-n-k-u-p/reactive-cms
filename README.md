@@ -22,16 +22,12 @@ Technologies and Design
 
 Requeriments
 -
-- NodeJS v10.16.0
-- MongoDB 
+- Linux
+- Docker
+- Nginx latest (if you don't use Docker)
+- NodeJS > v10.16.0 (if you don't use Docker)
+- MongoDB latest (if you don't use Docker)
 
-Installation without Docker
--
-```bash
-git clone https://github.com/reactive-web/reactive-cms.git
-cd reactive-cms
-npm install
-```
 
 Initial Configuration
 -
@@ -69,20 +65,8 @@ const APP_CONFIG = {
 }
 ```
 
-Running App without Docker
--
-```bash
-npm run start # compile dashboard and run server in production mode
-npm run server-production # only run server in production mode
-npm run server-development # run server in development mode and watch for file changes
-npm run server-monit # show all server logs with PM2
-npm run server-logs # show all server logs
-npm run server-stop # stop all server instances
-npm run dashboard-development # compile dashboard in development mode and watch for file changes
-npm run dashboard-production # compile dashboard in production mode
-```
 
-Install using Docker
+Install and running app using Docker
 -
 ```bash
 $cd bin/;
@@ -91,11 +75,32 @@ sh rcms --deployment; # this command download and create images
 sh rcms --start-development; # this command create docker containers and run all services
 sh rcms --start-production; # this command run all containers in production mode
 ```
+When you use --start-development or --start-production mode, all services are running in each container
+and you can see the logs using:
+```bash
+docker logs <container id> -f --tail 100
+```
 
 To do:
 -
 - Create global environment config for all containers
 - Prepare all containers for use docker stack deploy
+
+
+Install and running app without Docker
+-
+```bash
+cd reactive-cms;
+npm install;
+npm run start; # compile dashboard and run server in production mode
+npm run server-production; # only run server in production mode
+npm run server-development; # run server in development mode and watch for file changes
+npm run server-monit; # show all server logs with PM2
+npm run server-logs; # show all server logs
+npm run server-stop; # stop all server instances
+npm run dashboard-development; # compile dashboard in development mode and watch for file changes
+npm run dashboard-production; # compile dashboard in production mode
+```
 
 Test
 -
