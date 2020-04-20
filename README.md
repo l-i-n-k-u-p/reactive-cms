@@ -81,11 +81,6 @@ and you can see the logs using:
 docker logs <container id> -f --tail 100
 ```
 
-To do:
--
-- Create global environment config for all containers
-- Prepare all containers for use docker stack deploy
-
 
 Install and running app without Docker
 -
@@ -102,11 +97,19 @@ npm run dashboard-development; # compile dashboard in development mode and watch
 npm run dashboard-production; # compile dashboard in production mode
 ```
 
+
 Test
 -
 If you don't edit nothing about default ports from config.js
 
 Now enter to: localhost:3000 and fill the setup form.
+
+
+To do:
+-
+- Create global environment config for all containers
+- Prepare all containers for use docker stack deploy
+- Create complete documentation page
 
 
 ## Email:
