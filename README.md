@@ -7,6 +7,7 @@
 
 Technologies and Design
 -
+- Docker
 - NodeJS
 - MongoDB
 - FastifyJS
@@ -24,7 +25,7 @@ Requeriments
 - NodeJS v10.16.0
 - MongoDB 
 
-Installation
+Installation without Docker
 -
 ```bash
 git clone https://github.com/reactive-web/reactive-cms.git
@@ -68,7 +69,7 @@ const APP_CONFIG = {
 }
 ```
 
-Running App
+Running App without Docker
 -
 ```bash
 npm run start # compile dashboard and run server in production mode
@@ -80,6 +81,21 @@ npm run server-stop # stop all server instances
 npm run dashboard-development # compile dashboard in development mode and watch for file changes
 npm run dashboard-production # compile dashboard in production mode
 ```
+
+Install using Docker
+-
+```bash
+$cd bin/;
+sh rcms -h; # you can see all commands for use app with Docker
+sh rcms --deployment; # this command download and create images
+sh rcms --start-development; # this command create docker containers and run all services
+sh rcms --start-production; # this command run all containers in production mode
+```
+
+To do:
+-
+- Create global environment config for all containers
+- Prepare all containers for use docker stack deploy
 
 Test
 -
