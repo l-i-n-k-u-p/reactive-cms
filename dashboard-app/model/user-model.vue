@@ -49,6 +49,7 @@ class UserModel extends BaseModel {
 
           if (value.length < 2 || value.length > 100)
             return 'Must have a length between 2 and 100'
+
           return ''
         },
       user_email: email,
