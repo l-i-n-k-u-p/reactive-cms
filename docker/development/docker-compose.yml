@@ -12,7 +12,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ~/Docker/reactive-cms/:/reactive-cms/
+      - ../../:/reactive-cms/
     working_dir: /reactive-cms/
     env_file:
       - rcms-environment-vars.env
@@ -26,7 +26,7 @@ services:
       reactive-cms-network:
         ipv4_address: 192.168.3.3
     volumes:
-      - ~/Docker/reactive-cms/:/reactive-cms/
+      - ../../:/reactive-cms/
     working_dir: /reactive-cms/
     env_file:
       - rcms-environment-vars.env
@@ -46,8 +46,8 @@ services:
       - "27017:27017"
       - "27018:27018"
     volumes:
-      - ~/Docker/reactive-cms/:/reactive-cms/
-      - ~/Docker/reactive-cms/database/data/:/data/
+      - ../../:/reactive-cms/
+      - ../../database/data/:/data/
     working_dir: /reactive-cms/
     env_file:
       - rcms-environment-vars.env
@@ -57,7 +57,7 @@ services:
     image: rcms-nodejs-img:latest
     container_name: rcms-dashboard-app
     volumes:
-      - ~/Docker/reactive-cms/:/reactive-cms/
+      - ../../:/reactive-cms/
     working_dir: /reactive-cms/
     command: npm run dashboard-development
     tty: true

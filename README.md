@@ -69,11 +69,10 @@ const APP_CONFIG = {
 Install and running app using Docker
 -
 ```bash
-$cd bin/;
-sh rcms -h; # you can see all commands for use app with Docker
-sh rcms --deployment; # this command download and create images
-sh rcms --start-development; # this command create docker containers and run all services
-sh rcms --start-production; # this command run all containers in production mode
+cd reactive-cms;
+sh rcms.sh -h; # you can see all commands for use app with Docker
+sh rcms.sh --deployment; # this command download and create images
+sh rcms.sh --start-development; # this command create docker containers and run all services
 ```
 When you use --start-development or --start-production mode, all services are running in each container
 and you can see the logs using:

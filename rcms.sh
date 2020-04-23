@@ -24,7 +24,7 @@ rcms_help()
 rcms_deployment()
 {
   echo "Deployment";
-  base_dir=~/Docker/reactive-cms/docker/;
+  base_dir=./docker/;
   mkdir -p ${base_dir}../database/data/db/;
   mkdir -p ${base_dir}../database/data/mongodb/;
   docker build -f ${base_dir}dockerfile/dockerfile-mongodb -t rcms-mongodb-img .;
@@ -39,7 +39,7 @@ rcms_start_development()
 {
   echo "Starting development";
   echo "";
-  base_dir=~/Docker/reactive-cms/docker/development/;
+  base_dir=./docker/development/;
   docker-compose -f ${base_dir}docker-compose.yml -p rcms-development up -d;
   echo "";
   echo "Starting development finished";
@@ -49,7 +49,7 @@ rcms_start_production()
 {
   echo "Starting production";
   echo "";
-  base_dir=~/Docker/reactive-cms/docker/production/;
+  base_dir=./docker/production/;
   docker-compose -f ${base_dir}docker-compose.yml -p rcms-production up -d;
   docker-compose -f ${base_dir}rcms-dashboard-app-production.yml run --rm rcms-install;
   echo "";
@@ -60,7 +60,7 @@ rcms_stop_development()
 {
   echo "Stopping development";
   echo "";
-  base_dir=~/Docker/reactive-cms/docker/development/;
+  base_dir=./docker/development/;
   docker-compose -f ${base_dir}docker-compose.yml -p rcms-development stop;
   echo "";
   echo "Stopping development finished";
@@ -70,7 +70,7 @@ rcms_stop_production()
 {
   echo "Stopping production";
   echo "";
-  base_dir=~/Docker/reactive-cms/docker/production/;
+  base_dir=./docker/production/;
   docker-compose -f ${base_dir}docker-compose.yml -p rcms-production stop;
   echo "";
   echo "Stopping production finished";
@@ -80,7 +80,7 @@ rcms_restart_development()
 {
   echo "Restarting development";
   echo "";
-  base_dir=~/Docker/reactive-cms/docker/development/;
+  base_dir=./docker/development/;
   docker-compose -f ${base_dir}docker-compose.yml -p rcms-development stop;
   docker-compose -f ${base_dir}docker-compose.yml -p rcms-development start;
   echo "";
@@ -91,7 +91,7 @@ rcms_restart_production()
 {
   echo "Restarting production";
   echo "";
-  base_dir=~/Docker/reactive-cms/docker/production/;
+  base_dir=./docker/production/;
   docker-compose -f ${base_dir}docker-compose.yml -p rcms-production stop;
   docker-compose -f ${base_dir}docker-compose.yml -p rcms-production start;
   echo "";
@@ -102,7 +102,7 @@ rcms_remove_development()
 {
   echo "Removing development";
   echo "";
-  base_dir=~/Docker/reactive-cms/docker/development/;
+  base_dir=./docker/development/;
   docker-compose -f ${base_dir}docker-compose.yml -p rcms-development down;
   echo "";
   echo "Removing development finished";
@@ -112,7 +112,7 @@ rcms_remove_production()
 {
   echo "Removing production";
   echo "";
-  base_dir=~/Docker/reactive-cms/docker/production/;
+  base_dir=./docker/production/;
   docker-compose -f ${base_dir}docker-compose.yml -p rcms-production down;
   echo "";
   echo "Removing production finished";
@@ -122,7 +122,7 @@ rcms_install_dependencies()
 {
   echo "Installing dependencies";
   echo "";
-  base_dir=~/Docker/reactive-cms/docker/;
+  base_dir=./docker/;
   docker-compose -f ${base_dir}build/rcms-nodejs-builder.yml run --rm rcms-install;
   echo "";
   echo "Installing dependencies finished";
@@ -132,7 +132,7 @@ rcms_install_nodejs_dependencies()
 {
   echo "Installing nodejs dependencies";
   echo "";
-  base_dir=~/Docker/reactive-cms/docker/;
+  base_dir=./docker/;
   docker-compose -f ${base_dir}build/rcms-nodejs-builder.yml run --rm rcms-install;
   echo "";
   echo "Installing nodejs dependencies finished";
@@ -141,7 +141,7 @@ rcms_install_nodejs_dependencies()
 rcms_build_images() {
   echo "Building images";
   echo "";
-  base_dir=~/Docker/reactive-cms/docker/;
+  base_dir=./docker/;
   docker build --no-cache -f ${base_dir}dockerfile/dockerfile-mongodb -t rcms-mongodb-img .;
   docker build --no-cache -f ${base_dir}dockerfile/dockerfile-nginx -t rcms-nginx-img .;
   docker build --no-cache -f ${base_dir}dockerfile/dockerfile-nodejs -t rcms-nodejs-img .;
