@@ -3,7 +3,7 @@ services:
   rcms-base:
     image: rcms-nodejs-img:latest
     volumes:
-      - ~/Docker/reactive-cms/:/reactive-cms/
+      - ../../:/reactive-cms/
     working_dir: /reactive-cms/
   rcms-install:
     extends:
