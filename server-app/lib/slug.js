@@ -1,4 +1,4 @@
-const PostModel = require('../model/post-model')
+const PostModel = require('../module/post/model')
 const PageModel = require('../module/page/model')
 
 

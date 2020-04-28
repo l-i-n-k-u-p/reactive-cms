@@ -131,69 +131,6 @@ let routes = [
   },
   {
     method: 'GET',
-    url: '/post/:id',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.getPostByID,
-    config: { resource_name: 'posts', },
-  },
-  {
-    method: 'POST',
-    url: '/post/',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.addNewPost,
-    schema: {
-      body: {
-        type: 'object',
-        properties: {
-          post_title: { type: 'string' },
-          post_content: { type: 'string' },
-        },
-        required: [
-          'post_title',
-          'post_content',
-        ],
-      },
-    },
-    attachValidation: true,
-    config: { resource_name: 'posts', },
-  },
-  {
-    method: 'GET',
-    url: '/posts/:page',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.getPostsByPage,
-    config: { resource_name: 'posts', },
-  },
-  {
-    method: 'PUT',
-    url: '/post/:id',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.updatePostByID,
-    schema: {
-      body: {
-        type: 'object',
-        properties: {
-          post_title: { type: 'string' },
-          post_content: { type: 'string' },
-        },
-        required: [
-          'post_title',
-          'post_content',
-        ],
-      },
-    },
-    attachValidation: true,
-    config: { resource_name: 'posts', },
-  },
-  {
-    method: 'DELETE',
-    url: '/post/:id',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.deletePostByID,
-    config: { resource_name: 'posts', },
-  },
-  {
-    method: 'GET',
     url: '/media-file/:id',
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.getMediaByID,

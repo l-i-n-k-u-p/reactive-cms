@@ -1,5 +1,5 @@
 const UserModel = require('../model/user-model')
-const PostModel = require('../model/post-model')
+const PostModel = require('../module/post/model')
 const PageModel = require('../module/page/model')
 const MediaModel = require('../model/media-model')
 
