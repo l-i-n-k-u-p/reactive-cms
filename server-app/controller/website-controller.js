@@ -12,7 +12,7 @@ const mail = require('../lib/mail')
 
 const userQuery = require('../query/user-query')
 const postQuery = require('../query/post-query')
-const pageQuery = require('../query/page-query')
+const pageQuery = require('../module/page/query')
 const settingQuery = require('../query/setting-query')
 const siteQuery = require('../query/site-query')
 const viewQuery = require('../query/view-query')
