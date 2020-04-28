@@ -11,7 +11,7 @@ const session = require('../lib/session')
 const mail = require('../lib/mail')
 
 const userQuery = require('../query/user-query')
-const postQuery = require('../query/post-query')
+const postQuery = require('../module/post/query')
 const pageQuery = require('../module/page/query')
 const settingQuery = require('../query/setting-query')
 const siteQuery = require('../query/site-query')
@@ -260,7 +260,7 @@ exports.websiteIndexView = async (req, res) => {
 exports.websitePageView = async (req, res) => {
   let pageSlug = req.params.slug
   let pageView = `${ SITE_CONFIG.siteTheme }/page-detail`
-  let page = await pageQuery.getBySlug(pageSlug)
+  let page = await pageQuery.getDocumentBySlug(pageSlug)
   if (!page) {
     const urlData = req.urlData()
     res.code(404).view('404', {
@@ -330,7 +330,7 @@ exports.websiteBlogArchivePaginatedView = async (req, res) => {
 
 exports.websiteBlogSingleView = async (req, res) => {
   let postSlug = req.params.slug
-  let post = await postQuery.getBySlug(postSlug)
+  let post = await postQuery.getDocumentBySlug(postSlug)
   if (!post) {
     const urlData = req.urlData()
     res.code(404).view('404', {

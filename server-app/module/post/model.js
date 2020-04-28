@@ -2,7 +2,8 @@ const mongoose = require('mongoose')
 const dateTime = require('node-datetime')
 
 const Schema = mongoose.Schema
-const logQuery = require('../query/log-query')
+const logQuery = require('../../query/log-query')
+
 
 const PostModel = new Schema({
   post_title: { type: String, trim: true, required: true },
