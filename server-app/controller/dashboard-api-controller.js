@@ -6,7 +6,9 @@ const fs = require('fs')
 const DASHBOARD_ADMIN_CONFIG = require('../config/dashboard-admin-config')
 const SITE_CONFIG = require('../config/site-config')
 const websiteTemplates = require('../config/website-templates')
-const { mediaUpload } = require('../lib/media-upload')
+const {
+  mediaUpload
+} = require('../lib/media-upload')
 const session = require('../lib/session')
 const {
   generatePostSlug,
@@ -80,6 +82,7 @@ exports.search = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -88,6 +91,7 @@ exports.search = async (req, res) => {
   }
   let items = await searchQuery.getItemsWithWord(req.query.search)
   if (items.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Error searching',
@@ -106,6 +110,7 @@ exports.searchMedia = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -117,6 +122,7 @@ exports.searchMedia = async (req, res) => {
     search_mimetype: req.query.mimetype,
   })
   if (mediaData.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Error searching media',
@@ -135,6 +141,7 @@ exports.getUsersPaged = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -147,9 +154,12 @@ exports.getUsersPaged = async (req, res) => {
   let items = await userQuery.getItemsByPage({
     skip: skipItems,
     limit: DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST,
-    sort: { user_registration_date: ascSort },
+    sort: {
+      user_registration_date: ascSort
+    },
   })
   if (items.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Error loading users',
@@ -173,6 +183,7 @@ exports.getUserByID = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -181,18 +192,24 @@ exports.getUserByID = async (req, res) => {
   }
   let user = await userQuery.getByID(req.params.id)
   if (user.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: err.toString(),
     })
     return
   }
-  res.send(user)
+  res.send({
+    data: user,
+    status_code: 0,
+    status_msg: '',
+  })
 }
 
 exports.addNewUser = async (req, res) => {
   if (req.validationError) {
     let fisrtMessage = req.validationError.validation[0]
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: fisrtMessage.message,
@@ -205,6 +222,7 @@ exports.addNewUser = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -217,6 +235,7 @@ exports.addNewUser = async (req, res) => {
   userData.user_user_ref = req.session.user.user_id
   let newUser = await userQuery.create(userData)
   if (newUser.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Error creating the user',
@@ -231,13 +250,16 @@ exports.addNewUser = async (req, res) => {
   })
   res.pushBroadcastMessage({
     channel: 'user-post',
-    data: { data: newUser },
+    data: {
+      data: newUser
+    },
   })
 }
 
 exports.updateUserByID = async (req, res) => {
   if (req.validationError) {
     let fisrtMessage = req.validationError.validation[0]
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: fisrtMessage.message,
@@ -250,6 +272,7 @@ exports.updateUserByID = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -267,6 +290,7 @@ exports.updateUserByID = async (req, res) => {
     update_fields: req.body,
   })
   if (userUpdated.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'It could not update the user',
@@ -288,7 +312,9 @@ exports.updateUserByID = async (req, res) => {
   })
   res.pushBroadcastMessage({
     channel: 'user-put',
-    data: { data: newUserData },
+    data: {
+      data: newUserData
+    },
   })
 }
 
@@ -299,6 +325,7 @@ exports.deleteUserByID = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -307,6 +334,7 @@ exports.deleteUserByID = async (req, res) => {
   }
   let userToDelete = await userQuery.getByID(req.params.id)
   if (userToDelete.user_role.role_user_ref.toString() === '000000000000000000000000') {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -315,6 +343,7 @@ exports.deleteUserByID = async (req, res) => {
   }
   let userDeleted = await userQuery.deleteByID(req.params.id)
   if (userDeleted.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Error at delete user',
@@ -328,7 +357,9 @@ exports.deleteUserByID = async (req, res) => {
   })
   res.pushBroadcastMessage({
     channel: 'user-delete',
-    data: { data: userDeleted },
+    data: {
+      data: userDeleted
+    },
   })
 }
 
@@ -339,6 +370,7 @@ exports.getPostByID = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -347,18 +379,24 @@ exports.getPostByID = async (req, res) => {
   }
   let post = await postQuery.getByID(req.params.id)
   if (post.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Post not found',
     })
     return
   }
-  res.send(post)
+  res.send({
+    data: post,
+    status_code: 0,
+    status_msg: '',
+  })
 }
 
 exports.addNewPost = async (req, res) => {
   if (req.validationError) {
     let fisrtMessage = req.validationError.validation[0]
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: fisrtMessage.message,
@@ -371,6 +409,7 @@ exports.addNewPost = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -379,15 +418,19 @@ exports.addNewPost = async (req, res) => {
   }
   let bodyPostTitle = req.body.post_title
   if (!bodyPostTitle) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Error at create post',
     })
     return
   }
-  let newPostSlug = slugify(bodyPostTitle, { lower: true })
+  let newPostSlug = slugify(bodyPostTitle, {
+    lower: true
+  })
   let slug = await generatePostSlug(null, newPostSlug)
   if (slug.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Error at create post',
@@ -399,6 +442,7 @@ exports.addNewPost = async (req, res) => {
   req.body.post_user_ref = req.session.user.user_id
   let post = await postQuery.create(req.body)
   if (post.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Error at create post',
@@ -414,7 +458,9 @@ exports.addNewPost = async (req, res) => {
   })
   res.pushBroadcastMessage({
     channel: 'post-post',
-    data: { data: post },
+    data: {
+      data: post
+    },
   })
 }
 
@@ -425,6 +471,7 @@ exports.getPostsByPage = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -437,9 +484,12 @@ exports.getPostsByPage = async (req, res) => {
   let items = await postQuery.getItemsByPage({
     skip: skipItems,
     limit: DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST,
-    sort: { 'post_date': ascSort },
+    sort: {
+      'post_date': ascSort
+    },
   })
   if (items.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Error loading the posts',
@@ -459,6 +509,7 @@ exports.getPostsByPage = async (req, res) => {
 exports.updatePostByID = async (req, res) => {
   if (req.validationError) {
     let fisrtMessage = req.validationError.validation[0]
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: fisrtMessage.message,
@@ -471,15 +522,19 @@ exports.updatePostByID = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
     })
     return
   }
-  let newPostSlug = slugify(req.body.post_title, { lower: true })
+  let newPostSlug = slugify(req.body.post_title, {
+    lower: true
+  })
   let slug = await generatePostSlug(req.params.id, newPostSlug)
   if (slug.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Error updating post',
@@ -498,6 +553,7 @@ exports.updatePostByID = async (req, res) => {
   }
   let post = await postQuery.updateByID(objectData)
   if (post.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'It was not updated',
@@ -510,7 +566,9 @@ exports.updatePostByID = async (req, res) => {
   })
   res.pushBroadcastMessage({
     channel: 'post-put',
-    data: { data: post },
+    data: {
+      data: post
+    },
   })
 }
 
@@ -521,6 +579,7 @@ exports.deletePostByID = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -529,6 +588,7 @@ exports.deletePostByID = async (req, res) => {
   }
   let post = await postQuery.deleteByID(req.params.id)
   if (post.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Error deleting post',
@@ -541,7 +601,9 @@ exports.deletePostByID = async (req, res) => {
   })
   res.pushBroadcastMessage({
     channel: 'post-delete',
-    data: { data: post },
+    data: {
+      data: post
+    },
   })
 }
 
@@ -552,6 +614,7 @@ exports.getPageByID = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -560,18 +623,24 @@ exports.getPageByID = async (req, res) => {
   }
   let page = await pageQuery.getByID(req.params.id)
   if (page.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Page not found',
     })
     return
   }
-  res.send(page)
+  res.send({
+    data: page,
+    status_code: 0,
+    status_msg: '',
+  })
 }
 
 exports.addNewPage = async (req, res) => {
   if (req.validationError) {
     let fisrtMessage = req.validationError.validation[0]
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: fisrtMessage.message,
@@ -584,19 +653,23 @@ exports.addNewPage = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
     })
     return
   }
-  let newPostSlug = slugify(req.body.page_title, { lower: true })
+  let newPostSlug = slugify(req.body.page_title, {
+    lower: true
+  })
   let slug = await generatePageSlug(null, newPostSlug)
   req.body.page_date = dateTime.create().format('Y-m-d H:M:S')
   req.body.page_slug = slug
   req.body.page_user_ref = req.session.user.user_id
   let page = await pageQuery.create(req.body)
   if (page.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Error at create page',
@@ -612,7 +685,9 @@ exports.addNewPage = async (req, res) => {
   })
   res.pushBroadcastMessage({
     channel: 'page-post',
-    data: { data: page },
+    data: {
+      data: page
+    },
   })
 }
 
@@ -623,6 +698,7 @@ exports.getPagesByPage = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -635,9 +711,12 @@ exports.getPagesByPage = async (req, res) => {
   let items = await pageQuery.getItemsByPage({
     skip: skipItems,
     limit: DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST,
-    sort: { 'page_date': ascSort },
+    sort: {
+      'page_date': ascSort
+    },
   })
   if (items.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Error loading the pages',
@@ -657,6 +736,7 @@ exports.getPagesByPage = async (req, res) => {
 exports.updatePageByID = async (req, res) => {
   if (req.validationError) {
     let fisrtMessage = req.validationError.validation[0]
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: fisrtMessage.message,
@@ -669,13 +749,16 @@ exports.updatePageByID = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
     })
     return
   }
-  let newPostSlug = slugify(req.body.page_title, { lower: true })
+  let newPostSlug = slugify(req.body.page_title, {
+    lower: true
+  })
   let slug = await generatePageSlug(req.params.id, newPostSlug)
   let page = await pageQuery.updateByID({
     id: req.params.id,
@@ -690,6 +773,7 @@ exports.updatePageByID = async (req, res) => {
     }
   })
   if (page.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'It was not updated',
@@ -702,7 +786,9 @@ exports.updatePageByID = async (req, res) => {
   })
   res.pushBroadcastMessage({
     channel: 'page-put',
-    data: { data: page },
+    data: {
+      data: page
+    },
   })
 }
 
@@ -713,6 +799,7 @@ exports.deletePageByID = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -721,6 +808,7 @@ exports.deletePageByID = async (req, res) => {
   }
   let page = await pageQuery.deleteByID(req.params.id)
   if (page.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Error at delete page',
@@ -733,7 +821,9 @@ exports.deletePageByID = async (req, res) => {
   })
   res.pushBroadcastMessage({
     channel: 'page-delete',
-    data: { data: page },
+    data: {
+      data: page
+    },
   })
 }
 
@@ -744,6 +834,7 @@ exports.getMediaByID = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -752,13 +843,18 @@ exports.getMediaByID = async (req, res) => {
   }
   let mediaItem = await mediaQuery.getByID(req.params.id)
   if (mediaItem.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Media not found',
     })
     return
   }
-  res.send(mediaItem)
+  res.send({
+    data: mediaItem,
+    status_code: 0,
+    status_msg: '',
+  })
 }
 
 exports.addNewMedia = async (req, res) => {
@@ -768,6 +864,7 @@ exports.addNewMedia = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -776,6 +873,7 @@ exports.addNewMedia = async (req, res) => {
   }
   let resultUpload = await mediaUpload(req, res)
   if (!resultUpload.fileData) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Error at upload media',
@@ -793,6 +891,7 @@ exports.addNewMedia = async (req, res) => {
     media_user_ref: req.session.user.user_id,
   })
   if (newMedia.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: newMedia.error.toString(),
@@ -808,7 +907,9 @@ exports.addNewMedia = async (req, res) => {
   })
   res.pushBroadcastMessage({
     channel: 'media-post',
-    data: { data: newMedia },
+    data: {
+      data: newMedia
+    },
   })
 }
 
@@ -819,6 +920,7 @@ exports.getMediaByPage = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -830,9 +932,12 @@ exports.getMediaByPage = async (req, res) => {
   let items = await mediaQuery.getMediaItemsByPage({
     skip: skipPosts,
     limit: DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST,
-    sort: { 'media_date': 'desc' },
+    sort: {
+      'media_date': 'desc'
+    },
   })
   if (items.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Error loading the media items',
@@ -852,6 +957,7 @@ exports.getMediaByPage = async (req, res) => {
 exports.updateMediaByID = async (req, res) => {
   if (req.validationError) {
     let fisrtMessage = req.validationError.validation[0]
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: fisrtMessage.message,
@@ -864,6 +970,7 @@ exports.updateMediaByID = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -877,6 +984,7 @@ exports.updateMediaByID = async (req, res) => {
     },
   })
   if (media.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Media was not updated',
@@ -889,7 +997,9 @@ exports.updateMediaByID = async (req, res) => {
   })
   res.pushBroadcastMessage({
     channel: 'media-put',
-    data: { data: media },
+    data: {
+      data: media
+    },
   })
 }
 
@@ -900,6 +1010,7 @@ exports.deleteMediaByID = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -908,6 +1019,7 @@ exports.deleteMediaByID = async (req, res) => {
   }
   let media = await mediaQuery.deleteByID(req.params.id)
   if (media.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Error at delete media',
@@ -920,7 +1032,9 @@ exports.deleteMediaByID = async (req, res) => {
   })
   res.pushBroadcastMessage({
     channel: 'media-delete',
-    data: { data: media },
+    data: {
+      data: media
+    },
   })
 }
 
@@ -931,6 +1045,7 @@ exports.getSettings = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -939,18 +1054,24 @@ exports.getSettings = async (req, res) => {
   }
   let settings = await settingQuery.getAll()
   if (settings.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Settings not found',
     })
     return
   }
-  res.send(settings)
+  res.send({
+    data: settings,
+    status_code: 0,
+    status_msg: '',
+  })
 }
 
 exports.updateSettings = async (req, res) => {
   if (req.validationError) {
     let fisrtMessage = req.validationError.validation[0]
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: fisrtMessage.message,
@@ -963,6 +1084,7 @@ exports.updateSettings = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -977,6 +1099,7 @@ exports.updateSettings = async (req, res) => {
     update_fields: req.body,
   })
   if (settings.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'It could not update the settings',
@@ -990,7 +1113,9 @@ exports.updateSettings = async (req, res) => {
   })
   res.pushBroadcastMessage({
     channel: 'settings-put',
-    data: { data: settings },
+    data: {
+      data: settings
+    },
   })
 }
 const directory = require('../lib/directory')
@@ -1001,6 +1126,7 @@ exports.getSiteSettings = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -1009,18 +1135,24 @@ exports.getSiteSettings = async (req, res) => {
   }
   let siteSettings = await siteQuery.getAll()
   if (siteSettings.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Site settings not found',
     })
     return
   }
-  res.send(siteSettings)
+  res.send({
+    data: siteSettings,
+    status_code: 0,
+    status_msg: '',
+  })
 }
 
 exports.updateSiteSettings = async (req, res) => {
   if (req.validationError) {
     let fisrtMessage = req.validationError.validation[0]
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: fisrtMessage.message,
@@ -1033,6 +1165,7 @@ exports.updateSiteSettings = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -1046,6 +1179,7 @@ exports.updateSiteSettings = async (req, res) => {
     update_fields: req.body,
   })
   if (siteSettings.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'It could not update the site settings',
@@ -1059,7 +1193,9 @@ exports.updateSiteSettings = async (req, res) => {
   })
   res.pushBroadcastMessage({
     channel: 'site-settings-put',
-    data: { data: siteSettings },
+    data: {
+      data: siteSettings
+    },
   })
 }
 
@@ -1070,6 +1206,7 @@ exports.getDashboard = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -1077,7 +1214,9 @@ exports.getDashboard = async (req, res) => {
     return
   }
   let userID = req.session.user.user_id
-  let sort = { log_date: -1 }
+  let sort = {
+    log_date: -1
+  }
   let skipItems = 0
   let limitItems = 3
   let mediaItems = await logQuery.getItems({
@@ -1140,7 +1279,8 @@ exports.getDashboard = async (req, res) => {
       log_user_ref: userID,
     },
   })
-  if ( mediaItems.error || pageItems.error || postItems.error || userItems.error ) {
+  if (mediaItems.error || pageItems.error || postItems.error || userItems.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Error loading the dashboad',
@@ -1148,8 +1288,7 @@ exports.getDashboard = async (req, res) => {
     return
   }
   res.send({
-    items: [
-      {
+    items: [{
         model: 'media',
         items: mediaItems,
         total: mediaTotalItems,
@@ -1186,6 +1325,7 @@ exports.getRolesByPage = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -1196,6 +1336,7 @@ exports.getRolesByPage = async (req, res) => {
   let ascSort = -1
   let totalItems = await roleQuery.getTotalItems()
   if (totalItems.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Error loading the roles',
@@ -1208,6 +1349,7 @@ exports.getRolesByPage = async (req, res) => {
     limit: DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST,
   })
   if (items.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Error loading the roles',
@@ -1231,6 +1373,7 @@ exports.getRoleByID = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -1239,18 +1382,24 @@ exports.getRoleByID = async (req, res) => {
   }
   let role = await roleQuery.getByID(req.params.id)
   if (role.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Role not found',
     })
     return
   }
-  res.send(role)
+  res.send({
+    data: role,
+    status_code: 0,
+    status_msg: '',
+  })
 }
 
 exports.updateRoleByID = async (req, res) => {
   if (req.validationError) {
     let fisrtMessage = req.validationError.validation[0]
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: fisrtMessage.message,
@@ -1263,6 +1412,7 @@ exports.updateRoleByID = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -1278,6 +1428,7 @@ exports.updateRoleByID = async (req, res) => {
     },
   })
   if (role.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'It was not updated',
@@ -1342,6 +1493,7 @@ exports.updateRoleByID = async (req, res) => {
 exports.addNewRole = async (req, res) => {
   if (req.validationError) {
     let fisrtMessage = req.validationError.validation[0]
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: fisrtMessage.message,
@@ -1354,6 +1506,7 @@ exports.addNewRole = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -1365,6 +1518,7 @@ exports.addNewRole = async (req, res) => {
     role_user_ref: req.session.user.user_id,
   })
   if (role.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Role not registered',
@@ -1388,7 +1542,9 @@ exports.addNewRole = async (req, res) => {
   })
   res.pushBroadcastMessage({
     channel: 'role-post',
-    data: { data: roleCreated },
+    data: {
+      data: roleCreated
+    },
   })
 }
 
@@ -1401,6 +1557,7 @@ exports.deleteRoleByID = async (req, res) => {
   let id = req.params.id
   let roleToDelete = await roleQuery.getByID(id)
   if (!hasPermission || roleToDelete.role_user_ref.toString() === '000000000000000000000000') {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -1410,6 +1567,7 @@ exports.deleteRoleByID = async (req, res) => {
   await resourceQuery.deleteByRoleRef(id)
   let role = await roleQuery.deleteByID(id)
   if (role.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Error at delete role',
@@ -1430,6 +1588,7 @@ exports.deleteRoleByID = async (req, res) => {
 exports.getViewNames = async (req, res) => {
   let views = await viewQuery.getAll()
   if (views.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Views not found',
@@ -1446,6 +1605,7 @@ exports.getViewNames = async (req, res) => {
 exports.getProfileByID = async (req, res) => {
   let isSameSessionUserID = req.params.id === req.session.user.user_id
   if (!isSameSessionUserID) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -1454,18 +1614,24 @@ exports.getProfileByID = async (req, res) => {
   }
   let user = await userQuery.getByID(req.params.id)
   if (user.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: err.toString(),
     })
     return
   }
-  res.send(user)
+  res.send({
+    data: user,
+    status_code: 0,
+    status_msg: '',
+  })
 }
 
 exports.updateProfileByID = async (req, res) => {
   if (req.validationError) {
     let fisrtMessage = req.validationError.validation[0]
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: fisrtMessage.message,
@@ -1474,6 +1640,7 @@ exports.updateProfileByID = async (req, res) => {
   }
   let isSameSessionUserID = req.params.id === req.session.user.user_id
   if (!isSameSessionUserID) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -1492,6 +1659,7 @@ exports.updateProfileByID = async (req, res) => {
     update_fields: req.body,
   })
   if (userUpdated.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'It could not update the user',
@@ -1513,20 +1681,27 @@ exports.updateProfileByID = async (req, res) => {
   })
   res.pushBroadcastMessage({
     channel: 'user-put',
-    data: { data: newUserData },
+    data: {
+      data: newUserData
+    },
   })
 }
 
 exports.getDashboardSettings = async (req, res) => {
   let settings = await settingQuery.getAll()
   if (settings.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Settings not found',
     })
     return
   }
-  res.send(settings)
+  res.send({
+    data: settings,
+    status_code: 0,
+    status_msg: '',
+  })
 }
 
 exports.getViewByID = async (req, res) => {
@@ -1536,6 +1711,7 @@ exports.getViewByID = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -1544,18 +1720,24 @@ exports.getViewByID = async (req, res) => {
   }
   let view = await viewQuery.getByID(req.params.id)
   if (view.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'View not found',
     })
     return
   }
-  res.send(view)
+  res.send({
+    data: view,
+    status_code: 0,
+    status_msg: '',
+  })
 }
 
 exports.addNewView = async (req, res) => {
   if (req.validationError) {
     let fisrtMessage = req.validationError.validation[0]
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: fisrtMessage.message,
@@ -1568,6 +1750,7 @@ exports.addNewView = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -1576,6 +1759,7 @@ exports.addNewView = async (req, res) => {
   }
   let view = await viewQuery.create(req.body)
   if (view.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Error at create view',
@@ -1591,7 +1775,9 @@ exports.addNewView = async (req, res) => {
   })
   res.pushBroadcastMessage({
     channel: 'view-post',
-    data: { data: view },
+    data: {
+      data: view
+    },
   })
 }
 
@@ -1602,6 +1788,7 @@ exports.getViewsByPage = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -1614,9 +1801,12 @@ exports.getViewsByPage = async (req, res) => {
   let items = await viewQuery.getItemsByPage({
     skip: skipItems,
     limit: DASHBOARD_ADMIN_CONFIG.MAX_PAGES_BY_REQUEST,
-    sort: { _id: ascSort },
+    sort: {
+      _id: ascSort
+    },
   })
   if (items.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Error loading the views',
@@ -1636,6 +1826,7 @@ exports.getViewsByPage = async (req, res) => {
 exports.updateViewByID = async (req, res) => {
   if (req.validationError) {
     let fisrtMessage = req.validationError.validation[0]
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: fisrtMessage.message,
@@ -1648,6 +1839,7 @@ exports.updateViewByID = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -1663,6 +1855,7 @@ exports.updateViewByID = async (req, res) => {
   }
   let view = await viewQuery.updateByID(objectData)
   if (view.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'It was not updated',
@@ -1675,7 +1868,9 @@ exports.updateViewByID = async (req, res) => {
   })
   res.pushBroadcastMessage({
     channel: 'view-put',
-    data: { data: view },
+    data: {
+      data: view
+    },
   })
 }
 
@@ -1686,6 +1881,7 @@ exports.deleteViewByID = async (req, res) => {
     res: res,
   })
   if (!hasPermission) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'You don\'t have permission',
@@ -1694,6 +1890,7 @@ exports.deleteViewByID = async (req, res) => {
   }
   let view = await viewQuery.deleteByID(req.params.id)
   if (view.error) {
+    res.code(500)
     res.send({
       status_code: 1,
       status_msg: 'Error deleting view',
@@ -1706,6 +1903,8 @@ exports.deleteViewByID = async (req, res) => {
   })
   res.pushBroadcastMessage({
     channel: 'view-delete',
-    data: { data: view },
+    data: {
+      data: view
+    },
   })
 }

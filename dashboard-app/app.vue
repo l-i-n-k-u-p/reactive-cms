@@ -196,7 +196,10 @@ export default {
           return response
         },
         error => {
-          this.$eventHub.$emit('dashboard-app-error', error.message)
+          let message = error.response.data.status_msg
+          if (message === undefined || message === '')
+            message = error.message
+          this.$eventHub.$emit('dashboard-app-error', message)
           return Promise.reject(error)
         },
       )
