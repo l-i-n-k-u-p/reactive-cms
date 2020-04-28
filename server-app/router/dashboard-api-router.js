@@ -194,69 +194,6 @@ let routes = [
   },
   {
     method: 'GET',
-    url: '/page/:id',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.getPageByID,
-    config: { resource_name: 'pages', },
-  },
-  {
-    method: 'POST',
-    url: '/page/',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.addNewPage,
-    schema: {
-      body: {
-        type: 'object',
-        properties: {
-          page_title: { type: 'string' },
-          page_content: { type: 'string' },
-        },
-        required: [
-          'page_title',
-          'page_content',
-        ],
-      },
-    },
-    attachValidation: true,
-    config: { resource_name: 'pages', },
-  },
-  {
-    method: 'GET',
-    url: '/pages/:page',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.getPagesByPage,
-    config: { resource_name: 'pages', },
-  },
-  {
-    method: 'PUT',
-    url: '/page/:id',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.updatePageByID,
-    schema: {
-      body: {
-        type: 'object',
-        properties: {
-          page_title: { type: 'string' },
-          page_content: { type: 'string' },
-        },
-        required: [
-          'page_title',
-          'page_content',
-        ],
-      },
-    },
-    attachValidation: true,
-    config: { resource_name: 'pages', },
-  },
-  {
-    method: 'DELETE',
-    url: '/page/:id',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.deletePageByID,
-    config: { resource_name: 'pages', },
-  },
-  {
-    method: 'GET',
     url: '/media-file/:id',
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.getMediaByID,
@@ -367,13 +304,6 @@ let routes = [
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.getDashboard,
     config: { resource_name: 'dashboard', },
-  },
-  {
-    method: 'GET',
-    url: '/page/template-files*',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.getTemplateFileNames,
-    config: { resource_name: 'pages', },
   },
   {
     method: 'GET',
