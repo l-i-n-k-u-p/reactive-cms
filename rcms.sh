@@ -7,10 +7,12 @@ rcms_help()
   echo "--deployment                   Create images, containers and build dependencies";
   echo "--start-development            Create containers and start services";
   echo "--start-production             Create containers and start services";
+  echo "--start-production-stack       Use Docker deploy stack";
   echo "--restart-development          Restart services";
   echo "--restart-production           Restart services";
   echo "--stop-development             Stop services";
   echo "--stop-production              Stop services";
+  echo "--stop-production-stack        Stop and remove stack services";
   echo "--remove-development           Remove containers";
   echo "--remove-production            Remove containers";
   echo "--install-dependencies         Install dependencies";
@@ -56,6 +58,17 @@ rcms_start_production()
   echo "Starting production finished";
 }
 
+rcms_start_production_stack()
+{
+  echo "Starting production stack";
+  echo "";
+  base_dir=./docker/production/;
+  docker stack deploy -c ${base_dir}docker-compose.yml rcms-production;
+  docker-compose -f ${base_dir}rcms-dashboard-app-production.yml run --rm rcms-install;
+  echo "";
+  echo "Starting production stack finished";
+}
+
 rcms_stop_development()
 {
   echo "Stopping development";
@@ -74,6 +87,15 @@ rcms_stop_production()
   docker-compose -f ${base_dir}docker-compose.yml -p rcms-production stop;
   echo "";
   echo "Stopping production finished";
+}
+
+rcms_stop_production_stack()
+{
+  echo "Stopping production stack";
+  echo "";
+  docker stack rm rcms-production
+  echo "";
+  echo "Stopping production stack finished";
 }
 
 rcms_restart_development()
@@ -161,12 +183,18 @@ case $1 in
 --start-production)
 	rcms_start_production;
 	;;
+--start-production-stack)
+  rcms_start_production_stack;
+  ;;
 --stop-development)
   rcms_stop_development;
 	;;
 --stop-production)
 	rcms_stop_production;
 	;;
+--stop-production-stack)
+  rcms_stop_production_stack;
+  ;;
 --restart-development)
   rcms_restart_development;
 	;;
