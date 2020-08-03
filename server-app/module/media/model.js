@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const dateTime = require('node-datetime')
 
 const Schema = mongoose.Schema
-const logQuery = require('../query/log-query')
+const logQuery = require('../../query/log-query')
 
 
 const MediaModel = new Schema({
