@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const SessionModel = require('../model/session-model')
-const UserModel = require('../model/user-model')
+const UserModel = require('../module/user/model')
 
 
 const getSessionsWithRole = async (roleID) => {
