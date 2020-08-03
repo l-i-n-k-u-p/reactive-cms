@@ -90,36 +90,6 @@ let routes = [
   },
   {
     method: 'GET',
-    url: '/site/',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.getSiteSettings,
-    config: { resource_name: 'settings', },
-  },
-  {
-    method: 'PUT',
-    url: '/site/',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.updateSiteSettings,
-    schema: {
-      body: {
-        type: 'object',
-        properties: {
-          site_name: { type: 'string' },
-          site_items_peer_page: { type: 'number' },
-          site_url: { type: 'string' },
-        },
-        required: [
-          'site_name',
-          'site_items_peer_page',
-          'site_url',
-        ],
-      },
-    },
-    attachValidation: true,
-    config: { resource_name: 'settings', },
-  },
-  {
-    method: 'GET',
     url: '/dashboard/',
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.getDashboard,

@@ -4,7 +4,6 @@ const mongoose = require('mongoose')
 const fs = require('fs')
 
 const DASHBOARD_ADMIN_CONFIG = require('../config/dashboard-admin-config')
-const SITE_CONFIG = require('../config/site-config')
 const {
   mediaUpload
 } = require('../lib/media-upload')
@@ -20,7 +19,6 @@ const mediaQuery = require('../module/media/query')
 const searchQuery = require('../query/search-query')
 const dashboardQuery = require('../query/dashboard-query')
 const settingQuery = require('../query/setting-query')
-const siteQuery = require('../query/site-query')
 const resourceQuery = require('../module/resource/query')
 const logQuery = require('../query/log-query')
 const userQuery = require('../module/user/query')
@@ -206,86 +204,6 @@ exports.updateSettings = async (req, res) => {
     channel: 'settings-put',
     data: {
       data: settings
-    },
-  })
-}
-const directory = require('../lib/directory')
-exports.getSiteSettings = async (req, res) => {
-  let hasPermission = permission.canUser({
-    permission: 'r',
-    req: req,
-    res: res,
-  })
-  if (!hasPermission) {
-    res.code(500)
-    res.send({
-      status_code: 1,
-      status_msg: 'You don\'t have permission',
-    })
-    return
-  }
-  let siteSettings = await siteQuery.getAll()
-  if (siteSettings.error) {
-    res.code(500)
-    res.send({
-      status_code: 1,
-      status_msg: 'Site settings not found',
-    })
-    return
-  }
-  res.send({
-    data: siteSettings,
-    status_code: 0,
-    status_msg: '',
-  })
-}
-
-exports.updateSiteSettings = async (req, res) => {
-  if (req.validationError) {
-    let fisrtMessage = req.validationError.validation[0]
-    res.code(500)
-    res.send({
-      status_code: 1,
-      status_msg: fisrtMessage.message,
-    })
-    return
-  }
-  let hasPermission = permission.canUser({
-    permission: 'u',
-    req: req,
-    res: res,
-  })
-  if (!hasPermission) {
-    res.code(500)
-    res.send({
-      status_code: 1,
-      status_msg: 'You don\'t have permission',
-    })
-    return
-  }
-  if (!req.body)
-    return
-  let siteSettings = await siteQuery.update({
-    id: req.body.id,
-    update_fields: req.body,
-  })
-  if (siteSettings.error) {
-    res.code(500)
-    res.send({
-      status_code: 1,
-      status_msg: 'It could not update the site settings',
-    })
-    return
-  }
-  SITE_CONFIG.loadSiteSettings()
-  res.send({
-    status_code: 0,
-    status_msg: 'Settings updated',
-  })
-  res.pushBroadcastMessage({
-    channel: 'site-settings-put',
-    data: {
-      data: siteSettings
     },
   })
 }
