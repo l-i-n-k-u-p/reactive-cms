@@ -2,7 +2,7 @@ const UserModel = require('../module/user/model')
 const PostModel = require('../module/post/model')
 const PageModel = require('../module/page/model')
 const MediaModel = require('../module/media/model')
-const RoleModel = require('../model/role-model')
+const RoleModel = require('../module/role/model')
 
 
 const getItemsWithWord = async (word) => {

@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 
-const RoleModel = require('../model/role-model')
+const Model = require('./model')
 
 
 const getTotalItems = async () => {
   try {
-    let totalItems = await RoleModel.countDocuments()
+    let totalItems = await Model.countDocuments()
     return totalItems
   } catch (err) {
     return {
@@ -16,7 +16,7 @@ const getTotalItems = async () => {
 
 const getItemsByPage = async (objectData) => {
   try {
-    let items = await RoleModel.aggregate([
+    let items = await Model.aggregate([
       {
         $sort: {
           _id: objectData.sort,
@@ -48,7 +48,7 @@ const getItemsByPage = async (objectData) => {
 const getByID = async (id) => {
   try {
     let objectId = mongoose.Types.ObjectId(id)
-    let item = await RoleModel.aggregate([
+    let item = await Model.aggregate([
       {
         $match: {
           _id: objectId,
@@ -78,7 +78,7 @@ const getByID = async (id) => {
 
 const updateByID = async (objectData) => {
   try {
-    let item = await RoleModel.findOneAndUpdate({
+    let item = await Model.findOneAndUpdate({
       '_id': objectData.id,
     }, objectData.update_fields, { new: true })
     return item
@@ -91,7 +91,7 @@ const updateByID = async (objectData) => {
 
 const create = async (objectData) => {
   try {
-    let item = await new RoleModel(objectData).save()
+    let item = await new Model(objectData).save()
     return item
   } catch (err) {
     return {
@@ -102,7 +102,7 @@ const create = async (objectData) => {
 
 const deleteByID = async (id) => {
   try {
-    let item = await RoleModel.findOneAndRemove({
+    let item = await Model.findOneAndRemove({
       _id: id,
     })
     return item
@@ -115,7 +115,7 @@ const deleteByID = async (id) => {
 
 const getAll = async () => {
   try {
-    let items = await RoleModel.find()
+    let items = await Model.find()
     return items
   } catch (err) {
     return {
