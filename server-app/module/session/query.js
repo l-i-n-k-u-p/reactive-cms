@@ -1,12 +1,12 @@
 const mongoose = require('mongoose')
 
-const SessionModel = require('../model/session-model')
-const UserModel = require('../module/user/model')
+const Model = require('./model')
+const UserModel = require('../user/model')
 
 
 const getSessionsWithRole = async (roleID) => {
   let objectID = mongoose.Types.ObjectId(roleID)
-  let sessions = await SessionModel.find({
+  let sessions = await Model.find({
     'session.user.user_role._id': objectID
   })
   return sessions
@@ -17,7 +17,7 @@ const findByIDAndUpdateResources = async (sessionIDs, resources) => {
     let criteria = {
       _id: { $in: sessionIDs }
     }
-    let sessionsUpdated = await SessionModel.update(criteria, {
+    let sessionsUpdated = await Model.update(criteria, {
       'session.user.user_resource': resources,
     }, {
       multi: true,
@@ -62,7 +62,7 @@ const refreshUserSessionByID = async (objectID) => {
       },
     ])
     user = user[0]
-    let sessionsUpdated = await SessionModel.update({
+    let sessionsUpdated = await Model.update({
       'session.user.user_id': objectID.toString(),
     }, {
       'session.user.user_name': user.user_name,
