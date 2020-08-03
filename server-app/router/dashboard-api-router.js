@@ -24,13 +24,6 @@ let routes = [
   },
   {
     method: 'GET',
-    url: '/dashboard/',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.getDashboard,
-    config: { resource_name: 'dashboard', },
-  },
-  {
-    method: 'GET',
     url: '/profile/:id',
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.getProfileByID,

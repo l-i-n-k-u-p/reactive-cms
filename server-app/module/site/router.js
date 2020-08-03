@@ -2,7 +2,6 @@ const session = require('../../lib/session')
 const controller = require('./controller')
 
 
-
 let routes = [
   {
     method: 'GET',
