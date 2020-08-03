@@ -1,9 +1,9 @@
-const ViewModel = require('../model/view-model')
+const Model = require('./model')
 
 
 const getAll = async () => {
   try {
-    let items = await ViewModel.find()
+    let items = await Model.find()
     return items
   } catch (err) {
     return {
@@ -14,7 +14,7 @@ const getAll = async () => {
 
 const createMany = async (itemsData) => {
   try {
-    let items = await ViewModel.insertMany(itemsData)
+    let items = await Model.insertMany(itemsData)
     return items
   } catch (err) {
     return {
@@ -25,7 +25,7 @@ const createMany = async (itemsData) => {
 
 const getByID = async (id) => {
   try {
-    let item = await ViewModel.findById(id)
+    let item = await Model.findById(id)
     return item
   } catch (err) {
     return {
@@ -36,7 +36,7 @@ const getByID = async (id) => {
 
 const create = async (objectData) => {
   try {
-    let item = await new ViewModel(objectData).save()
+    let item = await new Model(objectData).save()
     return item
   } catch (err) {
     return {
@@ -47,7 +47,7 @@ const create = async (objectData) => {
 
 const getItemsByPage = async (objectData) => {
   try {
-    let items = await ViewModel.aggregate([
+    let items = await Model.aggregate([
       {
         $sort: objectData.sort,
       },
@@ -68,7 +68,7 @@ const getItemsByPage = async (objectData) => {
 
 const getTotalItems = async () => {
   try {
-    let totalItems = await ViewModel.countDocuments()
+    let totalItems = await Model.countDocuments()
     return totalItems
   } catch (err) {
     return {
@@ -79,7 +79,7 @@ const getTotalItems = async () => {
 
 const updateByID = async (objectData) => {
   try {
-    let item = await ViewModel.findOneAndUpdate({
+    let item = await Model.findOneAndUpdate({
       _id: objectData.id,
     }, objectData.update_fields, { new: true })
     return item
@@ -92,7 +92,7 @@ const updateByID = async (objectData) => {
 
 const deleteByID = async (id) => {
   try {
-    let item = await ViewModel.findOneAndRemove({
+    let item = await Model.findOneAndRemove({
       _id: id,
     })
     return item
