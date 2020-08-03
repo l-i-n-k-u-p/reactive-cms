@@ -1,4 +1,4 @@
-const MediaModel = require('../model/media-model')
+const MediaModel = require('./model')
 
 
 const searchMedia = async (objectData) => {

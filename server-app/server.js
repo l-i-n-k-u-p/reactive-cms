@@ -25,6 +25,7 @@ const SocketIO = require('./lib/socket-io')
 const pageRouter = require('./module/page/router')
 const postRouter = require('./module/post/router')
 const userRouter = require('./module/user/router')
+const mediaRouter = require('./module/media/router')
 
 
 // create static directory for uploads
@@ -126,6 +127,7 @@ fastify.register(dashboardAPIRouter, { prefix: '/dashboard/api/v1/' })
 fastify.register(pageRouter, { prefix: '/dashboard/api/v1/' })
 fastify.register(postRouter, { prefix: '/dashboard/api/v1/' })
 fastify.register(userRouter, { prefix: '/dashboard/api/v1/' })
+fastify.register(mediaRouter, { prefix: '/dashboard/api/v1/' })
 
 // hook for set cookie data
 fastify.addHook('onSend', (request, reply, payload, next) => {
