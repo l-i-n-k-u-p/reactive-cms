@@ -238,3 +238,88 @@ exports.deleteUserByID = async (req, res) => {
     },
   })
 }
+
+exports.updateProfileByID = async (req, res) => {
+  if (req.validationError) {
+    let fisrtMessage = req.validationError.validation[0]
+    res.code(500)
+    res.send({
+      status_code: 1,
+      status_msg: fisrtMessage.message,
+    })
+    return
+  }
+  let isSameSessionUserID = req.params.id === req.session.user.user_id
+  if (!isSameSessionUserID) {
+    res.code(500)
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
+  if (req.body.user_pass === undefined || !req.body.user_pass.length)
+    delete req.body.user_pass
+  else {
+    let newPassword = await session.hashPassword(req.body.user_pass)
+    req.body.user_pass = newPassword
+  }
+  delete req.body.user_name
+  let userUpdated = await query.updateByID({
+    id: req.params.id,
+    update_fields: req.body,
+  })
+  if (userUpdated.error) {
+    res.code(500)
+    res.send({
+      status_code: 1,
+      status_msg: 'It could not update the user',
+    })
+    return
+  }
+  let sessionFinished = await session.currentUserSessionDataChanged(userUpdated, req)
+  if (sessionFinished)
+    session.removeUserSessionOnDB(userUpdated._id)
+  let message = 'User updated'
+  if (sessionFinished)
+    message = 'User updated and session finished'
+  let objectId = mongoose.Types.ObjectId(userUpdated._id)
+  await sessionQuery.refreshUserSessionByID(objectId)
+  let newUserData = await query.getByID(userUpdated._id)
+  res.send({
+    status_code: 0,
+    status_msg: message,
+  })
+  res.pushBroadcastMessage({
+    channel: 'user-put',
+    data: {
+      data: newUserData
+    },
+  })
+}
+
+exports.getProfileByID = async (req, res) => {
+  let isSameSessionUserID = req.params.id === req.session.user.user_id
+  if (!isSameSessionUserID) {
+    res.code(500)
+    res.send({
+      status_code: 1,
+      status_msg: 'You don\'t have permission',
+    })
+    return
+  }
+  let user = await query.getByID(req.params.id)
+  if (user.error) {
+    res.code(500)
+    res.send({
+      status_code: 1,
+      status_msg: err.toString(),
+    })
+    return
+  }
+  res.send({
+    data: user,
+    status_code: 0,
+    status_msg: '',
+  })
+}
