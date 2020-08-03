@@ -1,4 +1,4 @@
-const SettingModel = require('../model/setting-model')
+const SettingModel = require('../module/setting/model')
 
 
 const loadDashboardSettings = async () => {

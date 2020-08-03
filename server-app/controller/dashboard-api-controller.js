@@ -18,7 +18,7 @@ const sessionQuery = require('../query/session-query')
 const mediaQuery = require('../module/media/query')
 const searchQuery = require('../query/search-query')
 const dashboardQuery = require('../query/dashboard-query')
-const settingQuery = require('../query/setting-query')
+const settingQuery = require('../module/setting/query')
 const resourceQuery = require('../module/resource/query')
 const logQuery = require('../query/log-query')
 const userQuery = require('../module/user/query')
@@ -124,87 +124,6 @@ exports.searchMedia = async (req, res) => {
   }
   res.send({
     items: mediaData,
-  })
-}
-
-exports.getSettings = async (req, res) => {
-  let hasPermission = permission.canUser({
-    permission: 'r',
-    req: req,
-    res: res,
-  })
-  if (!hasPermission) {
-    res.code(500)
-    res.send({
-      status_code: 1,
-      status_msg: 'You don\'t have permission',
-    })
-    return
-  }
-  let settings = await settingQuery.getAll()
-  if (settings.error) {
-    res.code(500)
-    res.send({
-      status_code: 1,
-      status_msg: 'Settings not found',
-    })
-    return
-  }
-  res.send({
-    data: settings,
-    status_code: 0,
-    status_msg: '',
-  })
-}
-
-exports.updateSettings = async (req, res) => {
-  if (req.validationError) {
-    let fisrtMessage = req.validationError.validation[0]
-    res.code(500)
-    res.send({
-      status_code: 1,
-      status_msg: fisrtMessage.message,
-    })
-    return
-  }
-  let hasPermission = permission.canUser({
-    permission: 'u',
-    req: req,
-    res: res,
-  })
-  if (!hasPermission) {
-    res.code(500)
-    res.send({
-      status_code: 1,
-      status_msg: 'You don\'t have permission',
-    })
-    return
-  }
-  if (!req.body)
-    return
-
-  let settings = await settingQuery.update({
-    id: req.body.id,
-    update_fields: req.body,
-  })
-  if (settings.error) {
-    res.code(500)
-    res.send({
-      status_code: 1,
-      status_msg: 'It could not update the settings',
-    })
-    return
-  }
-  DASHBOARD_ADMIN_CONFIG.loadDashboardSettings()
-  res.send({
-    status_code: 0,
-    status_msg: 'Settings updated',
-  })
-  res.pushBroadcastMessage({
-    channel: 'settings-put',
-    data: {
-      data: settings
-    },
   })
 }
 
