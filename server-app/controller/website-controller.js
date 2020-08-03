@@ -16,7 +16,7 @@ const pageQuery = require('../module/page/query')
 const settingQuery = require('../query/setting-query')
 const siteQuery = require('../query/site-query')
 const viewQuery = require('../query/view-query')
-const resourceQuery = require('../query/resource-query')
+const resourceQuery = require('../module/resource/query')
 const roleQuery = require('../query/role-query')
 
 
