@@ -1,17 +1,17 @@
-const session = require('../lib/session')
-const websiteController = require('../controller/website-controller')
+const session = require('../../lib/session')
+const controller = require('./controller')
 
 
 let routes = [
   {
     method: 'GET',
     url: '/setup',
-    handler: websiteController.websiteSetupView,
+    handler: controller.websiteSetupView,
   },
   {
     method: 'POST',
     url: '/setup',
-    handler: websiteController.websiteSetupSetInitialConfig,
+    handler: controller.websiteSetupSetInitialConfig,
     schema: {
       body: {
         type: 'object',
@@ -38,12 +38,12 @@ let routes = [
   {
     method: 'GET',
     url: '/admin',
-    handler: websiteController.websiteAdminValidateRequestAccess,
+    handler: controller.websiteAdminValidateRequestAccess,
   },
   {
     method: 'POST',
     url: '/admin',
-    handler: websiteController.websiteAdminValidateLoginAccess,
+    handler: controller.websiteAdminValidateLoginAccess,
     schema: {
       body: {
         type: 'object',
@@ -62,22 +62,22 @@ let routes = [
   {
     method: 'GET',
     url: '/admin-logout',
-    handler: websiteController.websiteDashboardLogout,
+    handler: controller.websiteDashboardLogout,
   },
   {
     method: 'GET',
     url: '/dashboard*',
-    handler: websiteController.websiteDashboardView,
+    handler: controller.websiteDashboardView,
   },
   {
     method: 'GET',
     url: '/recover-account',
-    handler: websiteController.websiteRecoverAccountView,
+    handler: controller.websiteRecoverAccountView,
   },
   {
     method: 'POST',
     url: '/recover-account',
-    handler: websiteController.websiteRecoverAccount,
+    handler: controller.websiteRecoverAccount,
     schema: {
       body: {
         type: 'object',
@@ -94,12 +94,12 @@ let routes = [
   {
     method: 'GET',
     url: '/reset-password/:token',
-    handler: websiteController.websiteResetPasswordView,
+    handler: controller.websiteResetPasswordView,
   },
   {
     method: 'POST',
     url: '/reset-password/',
-    handler: websiteController.websiteResetPassword,
+    handler: controller.websiteResetPassword,
     schema: {
       body: {
         type: 'object',
@@ -116,38 +116,38 @@ let routes = [
   {
     method: 'GET',
     url: '/',
-    handler: websiteController.websiteIndexView,
+    handler: controller.websiteIndexView,
   },
   {
     method: 'GET',
     url: '/:slug',
-    handler: websiteController.websitePageView,
+    handler: controller.websitePageView,
   },
   {
     method: 'GET',
     url: '/blog*',
-    handler: websiteController.websiteBlogArchiveView,
+    handler: controller.websiteBlogArchiveView,
   },
   {
     method: 'GET',
     url: '/blog/page/:page',
-    handler: websiteController.websiteBlogArchivePaginatedView,
+    handler: controller.websiteBlogArchivePaginatedView,
   },
   {
     method: 'GET',
     url: '/blog/:slug',
-    handler: websiteController.websiteBlogSingleView,
+    handler: controller.websiteBlogSingleView,
   },
 ]
 
-const websiteRouter = async (fastify, opts, next) => {
+const ROUTER = async (fastify, opts, next) => {
   routes.forEach((route) => {
     if (route.url.indexOf('/setup') < 0 && route.method.indexOf('POST') < 0)
-      route.preHandler = websiteController.websiteSetupPassed
+      route.preHandler = controller.websiteSetupPassed
     if (route.url.indexOf('/dashboard') >= 0)
       route.preHandler = session.isAuthenticated
     fastify.route(route)
   })
 }
 
-module.exports = websiteRouter
+module.exports = ROUTER
