@@ -62,34 +62,6 @@ let routes = [
   },
   {
     method: 'GET',
-    url: '/setting/',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.getSettings,
-    config: { resource_name: 'settings', },
-  },
-  {
-    method: 'PUT',
-    url: '/setting/',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.updateSettings,
-    schema: {
-      body: {
-        type: 'object',
-        properties: {
-          setting_page_title: { type: 'string' },
-          setting_items_peer_page: { type: 'number' },
-        },
-        required: [
-          'setting_page_title',
-          'setting_items_peer_page',
-        ],
-      },
-    },
-    attachValidation: true,
-    config: { resource_name: 'settings', },
-  },
-  {
-    method: 'GET',
     url: '/dashboard/',
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.getDashboard,

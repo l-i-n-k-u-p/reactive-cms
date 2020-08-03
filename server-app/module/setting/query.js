@@ -1,9 +1,9 @@
-const SettingModel = require('../model/setting-model')
+const Model = require('./model')
 
 
 const getAll = async () => {
   try {
-    let item = await SettingModel.findOne()
+    let item = await Model.findOne()
     return item
   } catch (err) {
     return {
@@ -14,7 +14,7 @@ const getAll = async () => {
 
 const update = async (objectData) => {
   try {
-    let item = await SettingModel.findOneAndUpdate({
+    let item = await Model.findOneAndUpdate({
       '_id': objectData.id,
     }, objectData.update_fields, { new: true })
     return item
@@ -27,7 +27,7 @@ const update = async (objectData) => {
 
 const create = async (objectData) => {
   try {
-    let item = new SettingModel(objectData).save()
+    let item = new Model(objectData).save()
     return item
   } catch (err) {
     return {
