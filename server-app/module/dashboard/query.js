@@ -1,7 +1,7 @@
-const UserModel = require('../module/user/model')
-const PostModel = require('../module/post/model')
-const PageModel = require('../module/page/model')
-const MediaModel = require('../module/media/model')
+const UserModel = require('../user/model')
+const PostModel = require('../post/model')
+const PageModel = require('../page/model')
+const MediaModel = require('../media/model')
 
 
 const getLog = async (word) => {
