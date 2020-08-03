@@ -3,7 +3,7 @@ const dateTime = require('node-datetime')
 
 const APP_CONFIG = require('../config/config')
 const DASHBOARD_ADMIN_CONFIG = require('../config/dashboard-admin-config')
-const SessionModel = require('../model/session-model')
+const SessionModel = require('../module/session/model')
 
 
 const isAuthenticated = (req, res, next) => {

@@ -14,7 +14,7 @@ const {
 } = require('../lib/slug')
 const permission = require('../lib/permission')
 
-const sessionQuery = require('../query/session-query')
+const sessionQuery = require('../module/session/query')
 const mediaQuery = require('../module/media/query')
 const searchQuery = require('../query/search-query')
 const dashboardQuery = require('../query/dashboard-query')
