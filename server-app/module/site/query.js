@@ -1,11 +1,11 @@
-const SiteModel = require('../model/site-model')
+const Model = require('./model')
 
-const websiteThemes = require('../config/website-themes')
+const websiteThemes = require('../../config/website-themes')
 
 
 const getAll = async () => {
   try {
-    let item = await SiteModel.aggregate([
+    let item = await Model.aggregate([
       {
         $addFields: {
           themes: websiteThemes.themes,
@@ -23,7 +23,7 @@ const getAll = async () => {
 
 const update = async (objectData) => {
   try {
-    let item = await SiteModel.findOneAndUpdate({
+    let item = await Model.findOneAndUpdate({
       '_id': objectData.id,
     }, objectData.update_fields, { new: true })
     return item
@@ -36,7 +36,7 @@ const update = async (objectData) => {
 
 const create = async (objectData) => {
   try {
-    let item = new SiteModel(objectData).save()
+    let item = new Model(objectData).save()
     return item
   } catch (err) {
     return {
