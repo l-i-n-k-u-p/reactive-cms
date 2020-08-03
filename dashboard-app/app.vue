@@ -127,7 +127,7 @@ export default {
       throttleToggleMenu: _.throttle(this.toggleMenu, 100, { 'trailing': false }),
       breakWidth: 1360,
       statusMessages: [],
-      version: 'Version 1.0.2',
+      version: 'Version 1.3.0',
     }
   },
   watch: {
@@ -196,7 +196,10 @@ export default {
           return response
         },
         error => {
-          this.$eventHub.$emit('dashboard-app-error', error.message)
+          let message = error.response.data.status_msg
+          if (message === undefined || message === '')
+            message = error.message
+          this.$eventHub.$emit('dashboard-app-error', message)
           return Promise.reject(error)
         },
       )

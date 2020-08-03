@@ -73,7 +73,7 @@ export default class BaseModel extends Model {
   }
   onFetchSuccess (response) {
     // overriding - onFetchSuccess
-    let attributes = response.getData()
+    let attributes = response.getData().data
     this.assign(attributes)
   }
   options () {

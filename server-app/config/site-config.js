@@ -1,4 +1,4 @@
-const SiteModel = require('../model/site-model')
+const SiteModel = require('../module/site/model')
 
 const directory = require('../lib/directory')
 

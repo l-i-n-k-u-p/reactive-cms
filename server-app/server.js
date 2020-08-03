@@ -19,9 +19,19 @@ const fastifyCSRF = require('fastify-csrf')
 
 const mongodb = require('./db/mongodb')
 const directory = require('./lib/directory')
-const websiteRouter = require('./router/website-router')
-const dashboardAPIRouter = require('./router/dashboard-api-router')
 const SocketIO = require('./lib/socket-io')
+const websiteRouter = require('./module/website/router')
+const sessionRouter = require('./module/session/router')
+const pageRouter = require('./module/page/router')
+const postRouter = require('./module/post/router')
+const userRouter = require('./module/user/router')
+const mediaRouter = require('./module/media/router')
+const viewRouter = require('./module/view/router')
+const roleRouter = require('./module/role/router')
+const siteRouter = require('./module/site/router')
+const settingRouter = require('./module/setting/router')
+const searchRouter = require('./module/search/router')
+const dashboardRouter = require('./module/dashboard/router')
 
 
 // create static directory for uploads
@@ -119,7 +129,17 @@ fastify.register(fastifyURLData)
 fastify.register(websiteRouter)
 
 // router website dashboard api
-fastify.register(dashboardAPIRouter, { prefix: '/dashboard/api/v1/' })
+fastify.register(sessionRouter, { prefix: '/session/api/v1/' })
+fastify.register(pageRouter, { prefix: '/dashboard/api/v1/' })
+fastify.register(postRouter, { prefix: '/dashboard/api/v1/' })
+fastify.register(userRouter, { prefix: '/dashboard/api/v1/' })
+fastify.register(mediaRouter, { prefix: '/dashboard/api/v1/' })
+fastify.register(viewRouter, { prefix: '/dashboard/api/v1/' })
+fastify.register(roleRouter, { prefix: '/dashboard/api/v1/' })
+fastify.register(siteRouter, { prefix: '/dashboard/api/v1/' })
+fastify.register(settingRouter, { prefix: '/dashboard/api/v1/' })
+fastify.register(searchRouter, { prefix: '/dashboard/api/v1/' })
+fastify.register(dashboardRouter, { prefix: '/dashboard/api/v1/' })
 
 // hook for set cookie data
 fastify.addHook('onSend', (request, reply, payload, next) => {

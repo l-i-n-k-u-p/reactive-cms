@@ -1,5 +1,5 @@
-const PostModel = require('../model/post-model')
-const PageModel = require('../model/page-model')
+const PostModel = require('../module/post/model')
+const PageModel = require('../module/page/model')
 
 
 const generatePostSlug = async (id, slug) => {
