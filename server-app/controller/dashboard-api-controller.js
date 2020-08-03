@@ -20,7 +20,7 @@ const searchQuery = require('../query/search-query')
 const dashboardQuery = require('../query/dashboard-query')
 const settingQuery = require('../module/setting/query')
 const resourceQuery = require('../module/resource/query')
-const logQuery = require('../query/log-query')
+const logQuery = require('../module/log/query')
 const userQuery = require('../module/user/query')
 
 
