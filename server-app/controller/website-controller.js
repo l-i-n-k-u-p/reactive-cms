@@ -17,7 +17,7 @@ const settingQuery = require('../query/setting-query')
 const siteQuery = require('../query/site-query')
 const viewQuery = require('../module/view/query')
 const resourceQuery = require('../module/resource/query')
-const roleQuery = require('../query/role-query')
+const roleQuery = require('../module/role/query')
 
 
 exports.websiteSetupView = async (req, res) => {

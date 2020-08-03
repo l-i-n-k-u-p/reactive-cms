@@ -127,69 +127,6 @@ let routes = [
   },
   {
     method: 'GET',
-    url: '/role/:id',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.getRoleByID,
-    config: { resource_name: 'roles', },
-  },
-  {
-    method: 'POST',
-    url: '/role/',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.addNewRole,
-    schema: {
-      body: {
-        type: 'object',
-        properties: {
-          role_name: { type: 'string' },
-        },
-        required: [
-          'role_name',
-        ],
-      },
-    },
-    attachValidation: true,
-    config: { resource_name: 'roles', },
-  },
-  {
-    method: 'GET',
-    url: '/roles/:page',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.getRolesByPage,
-    config: { resource_name: 'roles', },
-  },
-  {
-    method: 'PUT',
-    url: '/role/:id',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.updateRoleByID,
-    schema: {
-      body: {
-        type: 'object',
-        properties: {
-          role_name: { type: 'string' },
-          role_resources: { type: 'array' },
-          role_user_ref: { type: 'string' },
-        },
-        required: [
-          'role_name',
-          'role_resources',
-          'role_user_ref',
-        ],
-      },
-    },
-    attachValidation: true,
-    config: { resource_name: 'roles', },
-  },
-  {
-    method: 'DELETE',
-    url: '/role/:id',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.deleteRoleByID,
-    config: { resource_name: 'roles', },
-  },
-  {
-    method: 'GET',
     url: '/profile/:id',
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.getProfileByID,
