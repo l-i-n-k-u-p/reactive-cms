@@ -127,7 +127,7 @@ export default {
       throttleToggleMenu: _.throttle(this.toggleMenu, 100, { 'trailing': false }),
       breakWidth: 1360,
       statusMessages: [],
-      version: 'Version 1.0.2',
+      version: 'Version 1.3.0',
     }
   },
   watch: {
