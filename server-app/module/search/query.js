@@ -1,8 +1,8 @@
-const UserModel = require('../module/user/model')
-const PostModel = require('../module/post/model')
-const PageModel = require('../module/page/model')
-const MediaModel = require('../module/media/model')
-const RoleModel = require('../module/role/model')
+const UserModel = require('../user/model')
+const PostModel = require('../post/model')
+const PageModel = require('../page/model')
+const MediaModel = require('../media/model')
+const RoleModel = require('../role/model')
 
 
 const getItemsWithWord = async (word) => {
@@ -23,6 +23,23 @@ const getItemsWithWord = async (word) => {
   }
 }
 
+const searchMedia = async (objectData) => {
+  try {
+    const searchRegex = new RegExp(objectData.search_word, 'i')
+    const mimetypeRegex = new RegExp(objectData.search_mimetype, 'i')
+    let items = await MediaModel.find({
+      'media_title': searchRegex,
+      'media_mime_type': mimetypeRegex,
+    })
+    return items
+  } catch (err) {
+    return {
+      error: err
+    }
+  }
+}
+
 module.exports = {
   getItemsWithWord: getItemsWithWord,
+  searchMedia: searchMedia,
 }

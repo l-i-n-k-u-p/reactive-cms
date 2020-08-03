@@ -1,22 +1,6 @@
 const MediaModel = require('./model')
 
 
-const searchMedia = async (objectData) => {
-  try {
-    const searchRegex = new RegExp(objectData.search_word, 'i')
-    const mimetypeRegex = new RegExp(objectData.search_mimetype, 'i')
-    let items = await MediaModel.find({
-      'media_title': searchRegex,
-      'media_mime_type': mimetypeRegex,
-    })
-    return items
-  } catch (err) {
-    return {
-      error: err
-    }
-  }
-}
-
 const getByID = async (id) => {
   try {
     let mediaItem = await MediaModel.findById(id)
@@ -93,7 +77,6 @@ const deleteByID = async (id) => {
 }
 
 module.exports = {
-  searchMedia: searchMedia,
   getByID: getByID,
   createNewMedia: createNewMedia,
   getMediaItemsByPage: getMediaItemsByPage,

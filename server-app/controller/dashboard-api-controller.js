@@ -15,8 +15,6 @@ const {
 const permission = require('../lib/permission')
 
 const sessionQuery = require('../module/session/query')
-const mediaQuery = require('../module/media/query')
-const searchQuery = require('../query/search-query')
 const dashboardQuery = require('../query/dashboard-query')
 const settingQuery = require('../module/setting/query')
 const resourceQuery = require('../module/resource/query')
@@ -65,65 +63,6 @@ exports.login = async (req, res) => {
   }
   res.send({
     user_id: user._id.toString(),
-  })
-}
-
-exports.search = async (req, res) => {
-  let hasPermission = permission.canUser({
-    permission: 'r',
-    req: req,
-    res: res,
-  })
-  if (!hasPermission) {
-    res.code(500)
-    res.send({
-      status_code: 1,
-      status_msg: 'You don\'t have permission',
-    })
-    return
-  }
-  let items = await searchQuery.getItemsWithWord(req.query.search)
-  if (items.error) {
-    res.code(500)
-    res.send({
-      status_code: 1,
-      status_msg: 'Error searching',
-    })
-    return
-  }
-  res.send({
-    items: items,
-  })
-}
-
-exports.searchMedia = async (req, res) => {
-  let hasPermission = permission.canUser({
-    permission: 'r',
-    req: req,
-    res: res,
-  })
-  if (!hasPermission) {
-    res.code(500)
-    res.send({
-      status_code: 1,
-      status_msg: 'You don\'t have permission',
-    })
-    return
-  }
-  let mediaData = await mediaQuery.searchMedia({
-    search_word: req.query.search,
-    search_mimetype: req.query.mimetype,
-  })
-  if (mediaData.error) {
-    res.code(500)
-    res.send({
-      status_code: 1,
-      status_msg: 'Error searching media',
-    })
-    return
-  }
-  res.send({
-    items: mediaData,
   })
 }
 
