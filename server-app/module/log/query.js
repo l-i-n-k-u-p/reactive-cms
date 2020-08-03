@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 
-const LogModel = require('../model/log-model')
+const Model = require('./model')
 
 
 const create = async (objectData) => {
   try {
-    let item = new LogModel(objectData).save()
+    let item = new Model(objectData).save()
     return item
   } catch (err) {
     return {
@@ -18,7 +18,7 @@ const getItems = async (objectData) => {
   try {
     if (objectData.match.log_user_ref)
       objectData.match.log_user_ref = mongoose.Types.ObjectId(objectData.match.log_user_ref)
-    let items = await LogModel.aggregate([
+    let items = await Model.aggregate([
       {
         $match: objectData.match,
       },
@@ -44,7 +44,7 @@ const getTotalItems = async (objectData) => {
   try {
     if (objectData.match.log_user_ref)
       objectData.match.log_user_ref = mongoose.Types.ObjectId(objectData.match.log_user_ref)
-    let totalItems = await LogModel.aggregate([
+    let totalItems = await Model.aggregate([
       {
         $match: objectData.match,
       },
