@@ -10,7 +10,7 @@ const APP_CONFIG = require('../config/config')
 const session = require('../lib/session')
 const mail = require('../lib/mail')
 
-const userQuery = require('../query/user-query')
+const userQuery = require('../module/user/query')
 const postQuery = require('../module/post/query')
 const pageQuery = require('../module/page/query')
 const settingQuery = require('../query/setting-query')

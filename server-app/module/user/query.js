@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 
-const UserModel = require('../model/user-model')
+const Model = require('./model')
 
 
 const getByUserName = async (userName) => {
   try {
-    let user = await UserModel.aggregate([
+    let user = await Model.aggregate([
       {
         $match: {
           user_name: userName,
@@ -41,7 +41,7 @@ const getByUserName = async (userName) => {
 
 const getItemsByPage = async (objectData) => {
   try {
-    let users = await UserModel.aggregate([
+    let users = await Model.aggregate([
       {
         $sort: objectData.sort,
       },
@@ -87,7 +87,7 @@ const getItemsByPage = async (objectData) => {
 
 const getTotalItems = async () => {
   try {
-    let totalItems = await UserModel.countDocuments()
+    let totalItems = await Model.countDocuments()
     return totalItems
   } catch (err) {
     return {
@@ -99,7 +99,7 @@ const getTotalItems = async () => {
 const getByID = async (id) => {
   try {
     let objectId = mongoose.Types.ObjectId(id)
-    let user = await UserModel.aggregate([
+    let user = await Model.aggregate([
       {
         $match: {
           _id: objectId,
@@ -156,7 +156,7 @@ const getByID = async (id) => {
 
 const create = async (objectData) => {
   try {
-    let user = await new UserModel(objectData)
+    let user = await new Model(objectData)
     let userSaved = await user.save()
     return userSaved
   } catch (err) {
@@ -168,7 +168,7 @@ const create = async (objectData) => {
 
 const updateByID = async (objectData) => {
   try {
-    let user = await UserModel.findOneAndUpdate({
+    let user = await Model.findOneAndUpdate({
       '_id': objectData.id,
     }, objectData.update_fields, {
       new: true,
@@ -183,7 +183,7 @@ const updateByID = async (objectData) => {
 
 const deleteByID = async (id) => {
   try {
-    let userDeleted = await UserModel.findOneAndRemove({
+    let userDeleted = await Model.findOneAndRemove({
       _id: id,
     })
     return userDeleted
@@ -196,7 +196,7 @@ const deleteByID = async (id) => {
 
 const getByEmail = async (email) => {
   try {
-    let user = await UserModel.find({
+    let user = await Model.find({
       user_email: email
     })
     return user
