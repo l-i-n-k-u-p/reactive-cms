@@ -5,6 +5,12 @@ const controller = require('./controller')
 let routes = [
   {
     method: 'GET',
+    url: '/profile/:id',
+    preHandler: session.isAuthenticated,
+    handler: controller.getProfileByID,
+  },
+  {
+    method: 'GET',
     url: '/users/:page',
     preHandler: session.isAuthenticated,
     handler: controller.getUsersPaged,
@@ -71,6 +77,26 @@ let routes = [
     preHandler: session.isAuthenticated,
     handler: controller.deleteUserByID,
     config: { resource_name: 'users', },
+  },
+  {
+    method: 'PUT',
+    url: '/profile/:id',
+    preHandler: session.isAuthenticated,
+    handler: controller.updateProfileByID,
+    schema: {
+      body: {
+        type: 'object',
+        properties: {
+          user_email: { type: 'string' },
+          user_first_name: { type: 'string' },
+        },
+        required: [
+          'user_email',
+          'user_first_name',
+        ],
+      },
+    },
+    attachValidation: true,
   },
 ]
 

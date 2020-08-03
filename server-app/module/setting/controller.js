@@ -90,3 +90,20 @@ exports.updateSettings = async (req, res) => {
     },
   })
 }
+
+exports.getDashboardSettings = async (req, res) => {
+  let settings = await query.getAll()
+  if (settings.error) {
+    res.code(500)
+    res.send({
+      status_code: 1,
+      status_msg: 'Settings not found',
+    })
+    return
+  }
+  res.send({
+    data: settings,
+    status_code: 0,
+    status_msg: '',
+  })
+}

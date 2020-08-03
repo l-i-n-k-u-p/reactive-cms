@@ -31,6 +31,12 @@ let routes = [
     attachValidation: true,
     config: { resource_name: 'settings', },
   },
+  {
+    method: 'GET',
+    url: '/dashboard-settings/',
+    preHandler: session.isAuthenticated,
+    handler: controller.getDashboardSettings,
+  },
 ]
 
 const API_ROUTER = async (fastify, opts, next) => {

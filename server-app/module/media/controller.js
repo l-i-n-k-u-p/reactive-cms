@@ -9,6 +9,10 @@ const sessionQuery = require('../../module/session/query')
 
 const query = require('./query')
 
+const {
+  mediaUpload
+} = require('../../lib/media-upload')
+
 
 exports.getMediaByID = async (req, res) => {
   let hasPermission = permission.canUser({
