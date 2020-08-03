@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 
-const ResourceModel = require('../model/resource-model')
+const Model = require('./model')
 
 
 const create = async (ObjectData) => {
   try {
-    let item = await new ResourceModel(ObjectData).save()
+    let item = await new Model(ObjectData).save()
     return item
   } catch (err) {
     return {
@@ -17,7 +17,7 @@ const create = async (ObjectData) => {
 const updateByID = async (objectData) => {
   try {
     let objectID = mongoose.Types.ObjectId(objectData.id)
-    let item = await ResourceModel.updateOne({
+    let item = await Model.updateOne({
       _id: objectID,
     }, {
       $set: objectData.update_fields,
@@ -33,7 +33,7 @@ const updateByID = async (objectData) => {
 const deleteByRoleRef = async (roleID) => {
   try {
     let objectId = mongoose.Types.ObjectId(roleID)
-    let item = await ResourceModel.find({
+    let item = await Model.find({
       resource_role_ref: objectId,
     }).remove()
     return item
@@ -46,7 +46,7 @@ const deleteByRoleRef = async (roleID) => {
 
 const deleteByID = async (id) => {
   try {
-    let item = await ResourceModel.findOneAndRemove({
+    let item = await Model.findOneAndRemove({
       _id: id,
     })
     return item
@@ -59,7 +59,7 @@ const deleteByID = async (id) => {
 
 const createMany = async (itemsData) => {
   try {
-    let items = await ResourceModel.insertMany(itemsData)
+    let items = await Model.insertMany(itemsData)
     return items
   } catch (err) {
     return {
