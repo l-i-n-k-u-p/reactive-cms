@@ -19,7 +19,7 @@ const fastifyCSRF = require('fastify-csrf')
 
 const mongodb = require('./db/mongodb')
 const directory = require('./lib/directory')
-const websiteRouter = require('./router/website-router')
+const websiteRouter = require('./module/website/router')
 const SocketIO = require('./lib/socket-io')
 const sessionRouter = require('./module/session/router')
 const pageRouter = require('./module/page/router')
