@@ -24,44 +24,6 @@ let routes = [
   },
   {
     method: 'GET',
-    url: '/search*',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.search,
-    schema: {
-      querystring: {
-        type: 'object',
-        properties: {
-          search: { type: 'string' },
-        },
-        required: [
-          'search',
-        ],
-      },
-    },
-    config: { resource_name: 'search', },
-  },
-  {
-    method: 'GET',
-    url: '/search-media*',
-    preHandler: session.isAuthenticated,
-    handler: dashboardAPIController.searchMedia,
-    schema: {
-      querystring: {
-        type: 'object',
-        properties: {
-          search: { type: 'string' },
-          mimetype: { type: 'string' },
-        },
-        required: [
-          'search',
-          'mimetype',
-        ],
-      },
-    },
-    config: { resource_name: 'search-media', },
-  },
-  {
-    method: 'GET',
     url: '/dashboard/',
     preHandler: session.isAuthenticated,
     handler: dashboardAPIController.getDashboard,
