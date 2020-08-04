@@ -361,17 +361,14 @@ h3 {
 }
 
 .buttons-wrapper {
-  background-color: white;
-  bottom: 0;
+  bottom: -32px;
   display: flex;
-  flex-grow: 1;
   justify-content: flex-end;
   left: 0;
   margin: auto;
-  padding-bottom: 10px;
   position: absolute;
   right: 0;
-  width: calc(100% - 40px);
+  width: calc(100% - 20px);
   z-index: 1;
 }
 
