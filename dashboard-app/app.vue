@@ -16,7 +16,10 @@
     </Menu>
     <div
       id="content"
-      v-bind:class="{'full-content-width': isMenuSticky}">
+      v-bind:class="{
+        'full-content-width': isMenuSticky,
+        'full-content': (isMenuSticky && !menuIsOpen),
+        }">
       <div class="page-content-wrapper">
         <router-view :key="$route.fullPath" />
       </div>
@@ -277,6 +280,11 @@ export default {
   padding-right: 170px;
 }
 
+.full-content {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
 .page-content-wrapper {
   margin-top: 15px;
   margin: auto;
@@ -301,7 +309,7 @@ footer {
 footer span {
   align-self: center;
   display: flex;
-  font-size: 10px;
+  font-size: 12px;
   margin: auto 5px auto 5px;
 }
 
@@ -375,5 +383,9 @@ footer a {
   border-radius: 0px !important;
   bottom: 0 !important;
   height: 6px !important;
+}
+
+table {
+  width: 100%;
 }
 </style>

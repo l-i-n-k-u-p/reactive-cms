@@ -115,6 +115,16 @@
                       {{ item.get('role_name') }}
                     </label>
                   </div>
+                  <div
+                    v-if="item.get('model_name') === 'local_page'"
+                    v-on:click="goToLocalPage(item)">
+                    <i class="material-icons">
+                      {{ item.get('page_icon') }}
+                    </i>
+                    <label>
+                      {{ item.get('page_title') }}
+                    </label>
+                  </div>
                 </div>
               </div>
             </VuePerfectScrollbar>
@@ -256,23 +266,50 @@ export default {
       this.$eventHub.$emit('dashboard-app-toggle-menu', '')
     },
     onChangeSearchValue: function () {
-      if (!this.searchValue) return
+      this.searchIsFocused = true
+      if (!this.searchValue)
+        return
 
+      let localItems = []
+      let search = this.searchValue.toLowerCase()
+      for (let route of this.$router.options.routes) {
+        let title = route.title.toLowerCase()
+        let routeName = route.name
+        if (
+          title.indexOf(search) >= 0 &&
+          routeName.indexOf('detail') === -1 &&
+          routeName.indexOf('not-found') === -1
+        ) {
+          let path = route.path
+          let icon = 'list'
+          let params = {
+            page: 1,
+          }
+          if (path.indexOf(':page') === -1 ) {
+            params = ''
+            icon = 'insert_drive_file'
+          }
+          localItems.push({
+            'page_title': title,
+            'model_name': 'local_page',
+            'page_params': params,
+            'page_route_name': routeName,
+            'page_icon': icon,
+          })
+        }
+      }
       this.isLoading = true
       this.searchItems.clear()
       this.showResults()
-      this.searchItems
-      .fetch({
-        params: {
-          search: this.searchValue,
-        },
-      })
-      .then(data => {
-        this.isLoading = false
-      })
-      .catch(err => {
-        this.isLoading = false
-      })
+      this.searchItems.fetch({
+          params: {
+            search: this.searchValue,
+          },
+        })
+        .finally(() => {
+          this.searchItems.add(localItems)
+          this.isLoading = false
+        })
     },
     onClickResult: function () {
       this.hideResults()
@@ -320,6 +357,12 @@ export default {
       this.$router.push({
         name: 'role-detail',
         params: { id: role.get('_id') },
+      })
+    },
+    goToLocalPage: function (page) {
+      this.$router.push({
+        name: page.page_route_name,
+        params: page.page_params,
       })
     },
     showUserMenu: function () {

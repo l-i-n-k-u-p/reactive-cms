@@ -7,7 +7,10 @@
       </h2>
     </div>
     <LoadingBar v-if="isLoading"/>
-    <BoxWrapper style="position: relative">
+    <BoxWrapper
+      footerSize="12"
+      customPaddingStyle="0 10px"
+      style="position: relative">
       <div class="header-action-buttons-wrapper">
         <Button
           v-if="page.get('page_thumbnail')"
@@ -457,17 +460,14 @@ h2 {
 }
 
 .buttons-wrapper {
-  background-color: white;
-  bottom: 0;
+  bottom: -32px;
   display: flex;
-  flex-grow: 1;
   justify-content: flex-end;
   left: 0;
   margin: auto;
-  padding-bottom: 10px;
   position: absolute;
   right: 0;
-  width: calc(100% - 40px);
+  width: calc(100% - 20px);
   z-index: 1;
 }
 
