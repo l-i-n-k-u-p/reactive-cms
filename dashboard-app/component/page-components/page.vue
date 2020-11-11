@@ -446,7 +446,7 @@ export default {
 
 .header {
   display: flex;
-  margin: 0 20px 5px 20px;
+  margin: 0 10px 5px 10px;
 }
 
 h2 {
@@ -457,6 +457,7 @@ h2 {
   font-size: 13px;
   font-weight: 500;
   margin: 0;
+  text-transform: uppercase;
 }
 
 .buttons-wrapper {
@@ -473,8 +474,8 @@ h2 {
 
 .page-thumbnail {
   background-color: #f8f8f8;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
   box-sizing: border-box;
   color: #616161;
   display: flex;

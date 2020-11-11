@@ -1,35 +1,24 @@
 <template lang="html">
-  <div>
-    <div
-      v-bind:class="{ 'select-wrapper': true, open: show }"
-      v-on:click="showOptions"
-      v-click-outside="clickOutsite"
-    >
-      <label id="title">
-        {{ `${ $t(label) }:` }}
-      </label>
-      <label>
-        {{ getOptionName() }}
-      </label>
-      <div
-        id="select-options"
-        v-bind:class="{
-          'top': openInTop,
-          'bottom': !openInTop,
-        }"
-        v-if="show"
-        >
-        <VuePerfectScrollbar class="scroll-area">
-          <div
-            class="item"
-            v-for="(option, index) in selectOptions"
-            v-on:click="onSelect(index)"
-          >
-            {{ $t(option.name) }}
-          </div>
-        </VuePerfectScrollbar>
-      </div>
-    </div>
+  <div
+    id="select-wrapper"
+    v-bind:class="{
+        'open': show,
+        'embeded': rowEmbeded,
+      }"
+    v-click-outside="clickOutsite"
+    v-on:click="showOptions">
+    <label
+      id="input-title"
+      v-bind:class="{ 'error': errorMessage }">
+      {{ $t(label) }}
+    </label>
+    <input
+      type="text"
+      autocomplete="off"
+      readonly="readonly"
+      v-bind:value="getOptionName()"
+      v-on:focus="focus"
+      v-on:focusout="focusoutDebounce"/>
     <label
       v-show="errorMessage"
       id="input-error-message">
@@ -40,6 +29,24 @@
       id="input-helper-message">
       {{ $t(helperMessage) }}
     </label>
+    <div id="select-options"
+      v-if="show && !disabled">
+      <VuePerfectScrollbar class="scroll-area">
+        <div id="items">
+          <div
+            class="item"
+            v-on:click="onSelectEmpty()">
+            {{ $t('none') }}
+          </div>
+          <div
+            class="item"
+            v-for="(option, index) in selectOptions"
+            v-on:click="onSelect(index)">
+            {{ $t(option.name) }}
+          </div>
+        </div>
+      </VuePerfectScrollbar>
+    </div>
   </div>
 </template>
 
@@ -54,14 +61,20 @@ export default {
     'initialIndexOption',
     'label',
     'openInTop',
+    'propName',
     'helperMessage',
     'errorMessage',
+    'disabled',
+    'data',
+    'onOpenClose',
+    'rowEmbeded',
   ],
   data() {
     return {
       currentIndex: 0,
       show: false,
-      currentOptionLabel: '',
+      hasFocus: false,
+      focusoutDebounce: this._.debounce(this.focusout, 150)
     }
   },
   components: {
@@ -71,122 +84,183 @@ export default {
     initialIndexOption: function (newVal, oldVal) {
       this.currentIndex = newVal
     },
+    show: function (newVal, oldVal) {
+      this.onActions(newVal)
+    },
   },
   created() {
     this.currentIndex = this.initialIndexOption
   },
   methods: {
     showOptions: function () {
-      this.show = !this.show
+      this.hasFocus = true
+      this.show = true
+    },
+    focus: function () {
+      this.hasFocus = true
+      this.show = true
+    },
+    focusout: function () {
+      this.hasFocus = false
+      this.show = false
+    },
+    onSelectEmpty: function () {
+      this.currentIndex = -1
+      let option = {
+        name: '',
+        value: null,
+        prop_name: this.propName,
+        selected: false,
+      }
+      this.onSelectOption(option, this.currentIndex)
+      this.hasFocus = false
+      this.show = false
     },
     onSelect: function (index) {
       this.currentIndex = index
-      this.onSelectOption(this.selectOptions[index], index)
+      let option = this.selectOptions[index]
+      option.prop_name = this.propName
+      this.onSelectOption(option, index, this.data)
+      this.hasFocus = false
+      this.show = false
     },
-    clickOutsite: function (event) {
+    clickOutsite: function (e) {
+      this.hasFocus = false
       this.show = false
     },
     getOptionName: function () {
-      let option = this.selectOptions[this.currentIndex]
-      if (!option) return ''
+      let name = this.$t('none')
+      if (this.selectOptions.length === 0 || this.currentIndex === null || this.currentIndex < 0)
+        return name
 
-      return option.name
+      if (this.currentIndex >= 0)
+        name = this.selectOptions[this.currentIndex].name
+
+      return name
+    },
+    onActions: function (isOpen) {
+      if (this.onOpenClose !== undefined)
+        this.onOpenClose(isOpen)
     },
   },
 }
 </script>
 
 <style scoped lang="css">
+
 #select-options {
-  background-color: white;
+  background-color: #fff;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   left: 0;
   list-style: none;
   margin: 0;
-  max-height: 150px;
-  min-width: 112px;
+  max-width: 320px;
   overflow: auto;
-  padding: 0;
   position: absolute;
   right: 0;
-  z-index: 1;
+  top: 36px;
+  width: 100%;
+  z-index: 2;
+}
+
+.embeded #select-options {
+  top: 21px;
 }
 
 #select-options .scroll-area {
-  max-height: 150px;
+  max-height: 200px;
 }
 
-.select-wrapper {
+#select-wrapper {
   -webkit-user-select: none;
-  align-self: center;
-  background: transparent;
-  border-bottom: 1px solid #616161;
-  color: #616161;
+  background-color: transparent;
   cursor: pointer;
   display: flex;
-  font-size: 13px;
-  font-weight: 500;
-  height: 14px;
-  padding-bottom: 7px;
-  padding-top: 7px;
+  flex-direction: column;
+  height: 40px;
+  margin: 0;
+  max-width: 320px;
+  padding-top: 15px;
   position: relative;
   user-select: none;
 }
 
-label {
-  cursor: pointer;
+#select-wrapper.embeded {
+  height: auto;
+  padding: 0;
 }
 
-.select-wrapper #title {
-  margin-right: 5px;
-}
-
-.select-wrapper .icon {
-  font-size: 20px;
-  line-height: 1;
-  margin-right: 5px;
-  position: relative;
-  top: -2px;
-}
-
-.top {
-  bottom: 0;
-}
-
-.bottom {
+#input-title {
+  background-color: transparent;
+  color: #616161;
+  font-size: 12px;
+  font-weight: 500;
+  pointer-events: none;
+  position: absolute;
   top: 0;
+  transition-duration: 50ms;
 }
 
-#select-options.top {
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+input {
+  background: transparent;
+  border: none;
+  box-sizing: border-box;
+  caret-color: #1a73e8;
+  color: #616161;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1;
+  margin: 0;
+  outline: none;
+  padding: 3px 0;
+  pointer-events: none;
+  width: 100%;
+  border-bottom: 1px solid #616161;
 }
 
-#select-options.bottom {
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
+#select-wrapper .icon {
+  font-size: 14px;
+  left: 4px;
+  line-height: 1;
+  position: absolute;
 }
 
 #select-options .item {
-  background-color: white;
-  padding: 5px 15px 5px 40px;
+  background-color: #fff;
+  border-radius: 4px;
+  color: #616161;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 400;
+  overflow: hidden;
+  padding: 4px 8px;
+  text-overflow: ellipsis;
+}
+
+#select-options .item:first-letter {
+  text-transform: capitalize;
 }
 
 #select-options .item:hover {
-  background-color: rgba(200, 200, 200, 0.20);
-  color: #077ed6;
+  background-color: #1a73e81c;
 }
 
-.select-wrapper.open {
-  background-color: white;
-  border-bottom: 1px solid #077ed6;
+#select-options .item:active {
+  color: #1a73e8;
 }
 
-.select-wrapper.open #title {
-  color: #077ed6;
+#select-wrapper.open input {
+  border-bottom: 1px solid #616161;
 }
 
-#input-error-message, #input-helper-message {
+#select-wrapper.open #input-title {
+  color: #1a73e8;
+}
+
+#input-error-message,
+#input-helper-message {
   font-size: 12px;
   font-weight: 400;
   position: relative;

@@ -58,8 +58,8 @@ export default {
 
 #button-wrapper {
   background: transparent;
-  border-radius: 3px;
-  border: none;
+  border-radius: 4px;
+  border: 1px solid transparent;
   cursor: pointer;
   display: inline-flex;
   font-weight: 600;
@@ -70,8 +70,8 @@ export default {
 }
 
 #button-wrapper:hover {
-  background-color: rgba(200, 200, 200, 0.20);
-  color: #077ed6 !important;
+  background-color: #1a73e81c;
+  color: #1a73e8 !important;
 }
 
 #button-wrapper .icon {

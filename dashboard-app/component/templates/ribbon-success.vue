@@ -36,11 +36,11 @@ export default {
 #ribbon-success-wrapper {
   -webkit-user-select: none;
   background-color: #43a047;
-  border-radius: 3px;
+  border-radius: 4px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   color: white;
   display: flex;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: bold;
   line-height: 14px;
   margin-top: 5px;
@@ -59,7 +59,7 @@ p {
 .material-icons {
   cursor: pointer;
   flex-grow: 0;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: bold;
   margin-right: 20px;
 }

@@ -93,7 +93,7 @@ export default {
 #modal-box-content {
   align-self: center;
   background-color: white;
-  border-radius: 3px;
+  border-radius: 4px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   margin: auto;
   max-height: 300px;
@@ -113,7 +113,7 @@ export default {
 
 #modal-description {
   color: #616161;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 400;
   letter-spacing: 0;
   line-height: 20px;
@@ -130,14 +130,14 @@ export default {
 
 #modal-buttons-wrapper .button {
   background: transparent;
-  border-radius: 3px;
+  border-radius: 4px;
   border: none;
   color: #000;
   color: #444;
   cursor: pointer;
   display: block;
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 400;
   outline: none;
   padding: 7px;
   position: relative;
@@ -146,12 +146,12 @@ export default {
 }
 
 #modal-buttons-wrapper .button:last-child {
-  color: #077ed6;
+  color: #1a73e8;
   margin-left: 10px;
 }
 
 #modal-buttons-wrapper .button:hover {
-  background-color: rgba(200, 200, 200, 0.20);
+  background-color: #1a73e81c;
 }
 
 #content-wrapper {
@@ -170,7 +170,7 @@ export default {
 .item-name {
   color: #616161;
   display: flex;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 400;
   justify-content: center;
   margin: 5px 0px;

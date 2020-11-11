@@ -102,14 +102,14 @@ export default {
 
 h2 {
   color: #616161;
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 400;
   margin-bottom: 5px;
 }
 
 #gallery-description {
   color: #616161;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 400;
   margin-top: 0px;
 }
@@ -122,7 +122,7 @@ h2 {
 #items-wrapper .item {
   background-position: center center;
   background-size: cover;
-  border-radius: 3px;
+  border-radius: 4px;
   margin: 1px;
   display: flex;
   height: 70px;

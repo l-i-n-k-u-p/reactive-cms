@@ -4,16 +4,25 @@
       <table id="table-wrapper">
         <thead>
           <tr>
-            <td>
+            <td
+              v-if="!noCheckbox"
+              v-bind:class="{
+              'no-sticky': noHeadSticky,
+              }">
               <Checkbox
                 v-bind:onChangeValue="onChangeValue"
                 item="all"
                 v-bind:currentValue="checkAll"/>
             </td>
-            <td>
+            <td v-bind:class="{
+              'no-sticky': noHeadSticky,
+              }">
               {{ $t('icon') }}
             </td>
-            <td v-for="columnName in columnNames">
+            <td v-bind:class="{
+              'no-sticky': noHeadSticky,
+              }"
+              v-for="columnName in columnNames">
               {{ $t(columnName) }}
             </td>
           </tr>
@@ -22,10 +31,10 @@
           <tr
             v-for="item in collectionItems"
             :key="$uuid.v1()">
-            <td>
+            <td v-if="!noCheckbox">
               <Checkbox
                 v-bind:onChangeValue="onChangeValue"
-                v-bind:item="item.get('_id')"
+                v-bind:item="getItemId(item)"
                 v-bind:currentValue="checkAll"/>
             </td>
             <td v-on:click="onClickRow(item)">
@@ -37,9 +46,9 @@
               <div
                 v-if="!imageURL"
                 class="avatar"
-                v-bind:style="getCoverColor(item[itemPropNames[0]])">
+                v-bind:style="getCoverColor(item.get(iconPropName))">
                 <span>
-                  {{ item[itemPropNames[0]][0] }}
+                  {{ item.get(iconPropName)[0] }}
                 </span>
               </div>
             </td>
@@ -52,17 +61,6 @@
             </td>
           </tr>
         </tbody>
-        <tfoot>
-          <tr>
-            <td></td>
-            <td>
-              {{ $t('icon') }}
-            </td>
-            <td v-for="columnName in columnNames">
-              {{ $t(columnName) }}
-            </td>
-          </tr>
-        </tfoot>
       </table>
     </div>
   </div>
@@ -100,6 +98,9 @@ export default {
     'columnNames',
     'itemPropNames',
     'keyThumbnail',
+    'iconPropName',
+    'noHeadSticky',
+    'noCheckbox',
   ],
   data() {
     return {
@@ -133,7 +134,7 @@ export default {
           return
         }
         for (let item of this.collectionItems) {
-          let id = item.get('_id')
+          let id = item.get(item.getOption('identifier'))
           this.itemSelected[id] = id
         }
         this.$eventHub.$emit('items-selected', this.itemSelected)
@@ -148,21 +149,17 @@ export default {
     getMomentDate: function (date) {
       return moment(date).format('MMMM Do YYYY, h:mm:ss a')
     },
-    getCoverColor: function (string) {
-      return this.$getHexColor(string)
+    getCoverColor: function (value) {
+      return this.$getHexColor(value)
     },
     getCoverImage: function (item, itemPropName, index) {
       if (!itemPropName)
         return false
-
       if (Array.isArray(itemPropName))
         return this.getCoverImage(item[itemPropName[index]], itemPropName[index + 1], index + 1)
-
       let imageName = item[itemPropName]
-
       if (!imageName)
         return false
-
       return this.$getAvatarURL(imageName)
     },
     getItemText: function (item, itemPropName, index) {
@@ -177,7 +174,12 @@ export default {
           return this.getMomentDate(item[key])
       }
       return item[keys[0]]
-    }
+    },
+    getItemId: function (item) {
+      let identifier = item.getOption('identifier')
+      let id = item.get(identifier)
+      return id
+    },
   },
 }
 </script>
@@ -201,15 +203,13 @@ export default {
 }
 
 #table-wrapper tbody tr td:first-child,
-#table-wrapper thead tr td:first-child,
-#table-wrapper tfoot tr td:first-child {
+#table-wrapper thead tr td:first-child {
   padding-left: 8px;
   width: 30px;
 }
 
 #table-wrapper tbody tr td:last-child,
-#table-wrapper thead tr td:last-child,
-#table-wrapper tfoot tr td:last-child {
+#table-wrapper thead tr td:last-child {
   padding-right: 8px;
 }
 
@@ -217,25 +217,25 @@ export default {
   width: 40px;
 }
 
-thead tr td,
-tfoot tr td {
+thead tr td {
   background-color: white;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
   height: 30px;
   padding: 0;
   position: -webkit-sticky;
   position: sticky;
-  text-transform: capitalize;
+  text-transform: uppercase;
   z-index: 1;
+}
+
+.no-sticky {
+  position: inherit !important;;
+  position: inherit !important;
 }
 
 thead tr td {
   top: 0;
-}
-
-tfoot tr td {
-  bottom: 0;
 }
 
 #table-wrapper tbody tr td {
@@ -244,17 +244,8 @@ tfoot tr td {
   padding: 3px 0;
 }
 
-#table-wrapper tbody tr {
-  border-bottom: 1px solid #f4f4f4;
-}
-
-#table-wrapper tbody tr:last-child {
-  border: none;
-}
-
 #table-wrapper tbody tr:hover {
-  background-color: #077ed61c;
-  color: #077ed6;
+  background-color: #1a73e81c;
 }
 
 .avatar {
@@ -278,5 +269,18 @@ tfoot tr td {
   align-self: center;
   margin: 0;
   padding: 0;
+}
+
+#table-wrapper tbody tr td:first-child {
+  border-bottom-left-radius: 4px;
+  border-top-left-radius: 4px;
+}
+#table-wrapper tbody tr td:last-child {
+  border-bottom-right-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+tbody tr:nth-child(even) {
+  background-color: rgba(200, 200, 200, 0.10);
 }
 </style>

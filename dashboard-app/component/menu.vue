@@ -6,24 +6,25 @@
         'sticky': isMenuSticky,
         'no-sticky': !isMenuSticky,
         }"
-      v-click-outside="closeMenu"
-      >
+      v-click-outside="closeMenu">
       <VuePerfectScrollbar class="scroll-area">
-        <img
-          id="logo"
-          src="/website/assets/reactive-cms-logo.png"
-          v-if="!isMenuSticky"
-          />
+        <a
+          id="link-logo"
+          href="https://github.com/reactive-web/reactive-cms"
+          target="_blank">
+          <img
+            id="logo"
+            src="/website/assets/reactive-cms-logo.png"
+            v-if="!isMenuSticky"/>
+        </a>
         <div
           v-for="(item, index) in menuItems"
           v-acl-show="item.resourceName"
-          class="menu-option"
-          >
+          class="menu-option">
           <router-link
             v-bind:key="item.position"
             :to="{ name: item.name, params: item.params }"
-            v-bind:class="getMenuItemClass(item)"
-          >
+            v-bind:class="getMenuItemClass(item)">
             <i class="material-icons icon">
               {{ item.icon }}
             </i>
@@ -32,8 +33,7 @@
           <i
             v-if="item.children"
             class="material-icons button-more-items"
-            v-on:click="toggleOptions(index)"
-            >
+            v-on:click="toggleOptions(index)">
             {{ item.expanded ? 'expand_less' : 'expand_more' }}
           </i>
           <router-link
@@ -41,8 +41,7 @@
             class="children-item"
             v-for="(itemChildren) of item.children"
             v-bind:key="itemChildren.uuid"
-            :to="{ name: itemChildren.name, params: '' }"
-            >
+            :to="{ name: itemChildren.name, params: '' }">
             <i class="material-icons icon">
               {{ itemChildren.icon }}
             </i>
@@ -54,8 +53,7 @@
     </div>
     <div
       class="shadow"
-      v-if="!isMenuSticky"
-      >
+      v-if="!isMenuSticky">
     </div>
   </div>
 </template>
@@ -95,7 +93,7 @@ export default {
           expanded: false,
           children: [
             {
-              title: 'Add page',
+              title: 'New',
               name: 'new-page',
               icon: 'add',
               uuid: this.$uuid.v1(),
@@ -113,7 +111,7 @@ export default {
           expanded: false,
           children: [
             {
-              title: 'Add post',
+              title: 'New',
               name: 'new-post',
               icon: 'add',
               uuid: this.$uuid.v1(),
@@ -131,7 +129,7 @@ export default {
           expanded: false,
           children: [
             {
-              title: 'Add media',
+              title: 'New',
               name: 'new-media',
               icon: 'add',
               uuid: this.$uuid.v1(),
@@ -149,7 +147,7 @@ export default {
           expanded: false,
           children: [
             {
-              title: 'Add user',
+              title: 'New',
               name: 'new-user',
               icon: 'add',
               uuid: this.$uuid.v1(),
@@ -163,11 +161,11 @@ export default {
           icon: 'pages',
           params: { page: 1 },
           resourceName: 'views',
-          keys: 'views, view',
+          keys: 'views, new-view, view-detail',
           expanded: false,
           children: [
             {
-              title: 'Add view',
+              title: 'New',
               name: 'new-view',
               icon: 'add',
               uuid: this.$uuid.v1(),
@@ -185,7 +183,7 @@ export default {
           expanded: false,
           children: [
             {
-              title: 'Add role',
+              title: 'New',
               name: 'new-role',
               icon: 'add',
               uuid: this.$uuid.v1(),
@@ -227,15 +225,33 @@ export default {
     highlightCurrentMenuItem: function (itemName) {
       let name = ''
       let index = -1
-      for (let itemIndex in this.menuItems)
-        if (this.menuItems[itemIndex].keys.indexOf(itemName) >= 0) {
-          name = this.menuItems[itemIndex].name
-          index = itemIndex
+      let isMatch = false
+      for (let itemIndex in this.menuItems) {
+        let regx = new RegExp(`^${ itemName }$`, 'gi')
+        let itemKeys = this.menuItems[itemIndex].keys.replace(/\s/gi, '').split(',')
+        for (let itemKey of itemKeys) {
+          let match = itemKey.match(regx)
+          if (match) {
+            name = this.menuItems[itemIndex].name
+            index = itemIndex
+            isMatch = true
+            // NOTE: check for children
+            let children = this.menuItems[itemIndex].children
+            if (children !== undefined)
+              for (let child of children)
+                if (child.keys !== undefined && child.keys.indexOf(itemName) >= 0) {
+                  child.expanded = true
+                  break
+                }
+            break
+          }
         }
+        if (isMatch)
+          break
+      }
       this.currentItemName = name
       if (!this.menuItems[index])
         return
-
       this.menuItems[index].expanded = true
     },
     getMenuItemClass: function (item) {
@@ -262,64 +278,60 @@ export default {
 #menu {
   flex-grow: 0;
   left: 0;
-  min-width: 170px;
+  width: 179px;
   overflow-y: auto;
   position: fixed;
   z-index: 1;
 }
-
 .no-sticky {
   background-color: #fff;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   height: 100%;
   top: 0px;
 }
-
 .sticky {
   height: calc(100% - 50px);
   top: 50px;
 }
-
+#link-logo {
+  display: flex;
+}
 #logo {
   align-self: center;
   display: flex;
   margin: 10px auto;
   width: 130px;
 }
-
 #menu .option {
   -webkit-user-select: none;
   align-items: center;
   border-bottom: 0;
-  border-radius: 3px;
+  border-radius: 4px;
   border: 0;
   color: #616161;
   cursor: pointer;
   display: flex;
   flex-direction: row;
   flex-shrink: 0;
-  font-size: 13px;
+  font-size: 12px;
   height: 30px;
   margin: 0 2px;
   max-width: 100%;
   padding: 0 10px;
   position: relative;
   text-decoration: none;
-  text-transform: capitalize;
+  text-transform: uppercase;
   user-select: none;
   z-index: 2;
 }
-
 #menu .option:hover {
-  background-color: rgba(200, 200, 200, 0.20);
-  color: #077ed6;
+  background-color: #1a73e81c;
+  color: #1a73e8;
 }
-
 #menu .option .icon {
   font-size: 16px;
   margin-right: 10px;
 }
-
 .shadow {
   bottom: 0;
   height: 100%;
@@ -330,18 +342,16 @@ export default {
   width: 100%;
   z-index: 0;
 }
-
 #menu .option.current {
-  background-color: rgba(200, 200, 200, 0.20);
-  color: #077ed6;
+  background-color: #1a73e81c;
+  color: #1a73e8;
   font-weight: 500;
 }
-
 .children-item {
   -webkit-user-select: none;
   align-items: center;
   border-bottom: 0;
-  border-radius: 3px;
+  border-radius: 4px;
   border: 0;
   color: #616161;
   cursor: pointer;
@@ -359,26 +369,22 @@ export default {
   user-select: none;
   z-index: 2;
 }
-
 .children-item:hover {
-  background-color: rgba(200, 200, 200, 0.20);
-  color: #077ed6;
+  background-color: #1a73e81c;
+  color: #1a73e8;
 }
-
 .children-item .icon {
   font-size: 18px;
   margin: 0;
   padding: 0;
 }
-
 .menu-option {
+  margin: 0 8px;
   position: relative;
 }
-
 #menu-footer {
   height: 30px;
 }
-
 .button-more-items {
   -webkit-user-select: none;
   color: #616161;

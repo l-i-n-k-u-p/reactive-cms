@@ -1,10 +1,16 @@
 <template lang="html">
   <div
     id="button-wrapper"
-    v-on:click="buttonAction"
+    v-on:click="onClick"
     v-bind:style="this.getColor()"
   >
-    <i v-if="buttonIcon" class="material-icons icon">
+    <i
+      v-if="buttonIcon"
+      v-bind:class="{
+        'material-icons': true,
+        'icon': !isEmbeded,
+        'embeded': isEmbeded,
+      }">
       {{ buttonIcon }}
     </i>
   </div>
@@ -16,6 +22,8 @@ export default {
     'buttonIcon',
     'buttonAction',
     'buttonColor',
+    'data',
+    'isEmbeded',
   ],
   data() {
     return {}
@@ -29,6 +37,9 @@ export default {
 
       return 'color: #616161'
     },
+    onClick: function () {
+      this.buttonAction(this.data)
+    },
   },
 }
 </script>
@@ -37,8 +48,8 @@ export default {
 #button-wrapper {
   -webkit-user-select: none;
   background: transparent;
-  border-radius: 3px;
-  border: none;
+  border-radius: 4px;
+  border: 1px solid transparent;
   cursor: pointer;
   display: inline-flex;
   font-weight: 600;
@@ -49,13 +60,19 @@ export default {
 }
 
 #button-wrapper:hover{
-  background-color: rgba(200, 200, 200, 0.20);
-  color: #077ed6 !important;
+  background-color: #1a73e81c;
+  color: #1a73e8 !important;
 }
 
 #button-wrapper .icon {
   align-self: center;
   font-size: 24px;
+  line-height: 1;
+}
+
+#button-wrapper .embeded {
+  align-self: center;
+  font-size: 18px;
   line-height: 1;
 }
 </style>

@@ -2,33 +2,27 @@
   <div>
     <div
       id="header"
-      v-window-resize="onResizeWindow"
-    >
+      v-window-resize="onResizeWindow">
       <div
         class="left-wrapper"
-        v-bind:style="headerLeftRightStyle"
-        >
+        v-bind:style="headerLeftRightStyle">
         <i
           class="material-icons menu-icon"
-          v-on:click="toggleMenu"
-          >
+          v-on:click="toggleMenu">
           menu
         </i>
         <img
           id="logo"
           src="/website/assets/reactive-cms-logo.png"
-          v-if="isDesktopScreen"
-          />
+          v-if="isDesktopScreen"/>
       </div>
       <div
         class="search-wrapper"
         v-bind:class="{ 'search-active': resultsIsVisible }"
-        v-click-outside="clickOutsite"
-      >
+        v-click-outside="clickOutsite">
         <LoadingBar
           v-show="isLoading"
-          style="margin: 0; width: 100%;"
-          />
+          style="margin: 0; width: 100%;"/>
         <i class="material-icons icon">
           search
         </i>
@@ -36,34 +30,28 @@
           type="text"
           v-bind:placeholder="$t('Search')"
           v-model="searchValue"
-          v-on:focus="onChangeSearchValueThrottle"
-        />
+          v-on:focus="onChangeSearchValueThrottle"/>
         <div class="bkg"></div>
         <div
           class="results-wrapper"
-          v-if="resultsIsVisible"
-          >
+          v-if="resultsIsVisible">
           <div
             class="no-results"
-            v-if="!searchItems.getModels().length"
-            >
+            v-if="!searchItems.getModels().length">
             {{ $t('Without results') }}
           </div>
           <div
             id="search-results"
-            v-if="searchItems.getModels().length"
-            >
+            v-if="searchItems.getModels().length">
             <VuePerfectScrollbar class="scroll-area">
               <div id="items-wrapper">
                 <div
                   class="item"
                   v-on:click="onClickResult"
-                  v-for="item in searchItems.getModels()"
-                >
+                  v-for="item in searchItems.getModels()">
                   <div
                     v-if="item.get('model_name') === 'user'"
-                    v-on:click="showUserDetail(item)"
-                  >
+                    v-on:click="showUserDetail(item)">
                     <i class="material-icons">
                       person
                     </i>
@@ -73,8 +61,7 @@
                   </div>
                   <div
                     v-if="item.get('model_name') === 'post'"
-                    v-on:click="showPostDetail(item)"
-                  >
+                    v-on:click="showPostDetail(item)">
                     <i class="material-icons">
                       insert_drive_file
                     </i>
@@ -84,8 +71,7 @@
                   </div>
                   <div
                     v-if="item.get('model_name') === 'page'"
-                    v-on:click="showPageDetail(item)"
-                  >
+                    v-on:click="showPageDetail(item)">
                     <i class="material-icons">
                       insert_drive_file
                     </i>
@@ -95,8 +81,7 @@
                   </div>
                   <div
                     v-if="item.get('model_name') === 'media'"
-                    v-on:click="showMediaDetail(item)"
-                  >
+                    v-on:click="showMediaDetail(item)">
                     <i class="material-icons">
                       image
                     </i>
@@ -106,8 +91,7 @@
                   </div>
                   <div
                     v-if="item.get('model_name') === 'role'"
-                    v-on:click="showRoleDetail(item)"
-                  >
+                    v-on:click="showRoleDetail(item)">
                     <i class="material-icons">
                       security
                     </i>
@@ -134,22 +118,18 @@
           v-if="resultsIsVisible"
           buttonIcon="close"
           v-bind:buttonAction="hideResults"
-          id="search-close-button"
-        />
+          id="search-close-button"/>
       </div>
       <div
         class="right-wrapper"
-        v-bind:style="headerLeftRightStyle"
-        >
+        v-bind:style="headerLeftRightStyle">
         <div
           class="username"
           v-on:click="showUserMenu"
-          v-click-outside="hideUserMenu"
-          >
+          v-click-outside="hideUserMenu">
           <div
             v-if="isDesktopScreen"
-            class="name"
-          >
+            class="name">
             <p id="user-first-name">
               {{ user.get('user_first_name') }}
             </p>
@@ -160,26 +140,23 @@
           <div
             class="avatar"
             v-if="user.get('user_avatar')"
-            v-bind:style="getCoverImage()"
-          ></div>
+            v-bind:style="getCoverImage()">
+          </div>
           <div
             class="avatar"
             v-if="!user.get('user_avatar')"
-            v-bind:style="getCoverColor()"
-          >
+            v-bind:style="getCoverColor()">
             <span>
               {{ getUserFirstLetter(user) }}
             </span>
           </div>
           <div
             class="menu"
-            v-if="userMenuOpen"
-            >
+            v-if="userMenuOpen">
             <div class="options-wrapper">
               <div
                 class="option"
-                v-on:click="showUserProfile(user)"
-                >
+                v-on:click="showUserProfile(user)">
                 <i class="material-icons option-icon">
                   person
                 </i>
@@ -187,8 +164,7 @@
               </div>
               <a
                 class="option"
-                href="/admin-logout"
-                >
+                href="/admin-logout">
                 <i class="material-icons option-icon">
                   input
                 </i>
@@ -401,8 +377,9 @@ export default {
 <style scoped lang="css">
 #header {
   color: #616161;
+  background-color: #1a73e81c;
   display: flex;
-  height: 48px;
+  height: 42px;
   left: 0px;
   position: absolute;
   right: 0px;
@@ -476,7 +453,7 @@ export default {
 
 .username .menu {
   background-color: white;
-  border-radius: 3px;
+  border-radius: 4px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   display: flex;
   flex-direction: column;
@@ -490,7 +467,7 @@ export default {
 
 .options-wrapper {
   background-color: white;
-  border-radius: 3px;
+  border-radius: 4px;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -506,13 +483,13 @@ export default {
 }
 
 .username .menu .option:hover {
-  background-color: rgba(200, 200, 200, 0.20);
-  color: #077ed6;
+  background-color: #1a73e81c;
+  color: #1a73e8;
 }
 
 .search-wrapper {
   align-self: center;
-  border-radius: 3px;
+  border-radius: 4px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   display: flex;
   margin: auto;
@@ -551,8 +528,8 @@ export default {
 
 .search-wrapper .bkg {
   align-self: center;
-  background: white;
-  border-radius: 3px;
+  background: #8c8c8c28;
+  border-radius: 4px;
   height: 30px;
   width: 100%;
 }
@@ -571,8 +548,8 @@ export default {
 
 .results-wrapper {
   background-color: white;
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   color: #616161;
   max-height: 240px;
@@ -596,11 +573,11 @@ export default {
 }
 
 .results-wrapper .item:hover {
-  background-color: rgba(200, 200, 200, 0.20);
+  background-color: #1a73e81c;
 }
 
 .results-wrapper .item:hover div {
-  color: #077ed6;
+  color: #1a73e8;
 }
 
 .results-wrapper .item > div {
@@ -659,7 +636,7 @@ export default {
 }
 
 #search-close-button:hover {
-  color: #077ed6 !important;
+  color: #1a73e8 !important;
 }
 
 #logo {

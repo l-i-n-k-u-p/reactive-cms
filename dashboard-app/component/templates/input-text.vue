@@ -43,6 +43,7 @@ export default {
     'disabled',
     'helperMessage',
     'errorMessage',
+    'data',
   ],
   data() {
     return {
@@ -54,11 +55,12 @@ export default {
     value: {
       get() {
         this.hasText = false
-        if (this.inputValue) this.hasText = true
+        if (this.inputValue !== '')
+          this.hasText = true
         return this.inputValue
       },
       set(newVal) {
-        this.onChangeValue(this.propName, newVal)
+        this.onChangeValue(this.propName, newVal, this.data)
       },
     },
   },
@@ -81,6 +83,7 @@ export default {
   flex-direction: column;
   height: 40px;
   margin: 0;
+  max-width: 320px;
   padding-top: 15px;
   position: relative;
 }
@@ -88,7 +91,7 @@ export default {
 #input-title {
   background-color: transparent;
   color: #616161;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   pointer-events: none;
   position: absolute;
@@ -103,9 +106,9 @@ export default {
   border-right: none;
   border-top: none;
   box-sizing: border-box;
-  caret-color: #077ed6;
+  caret-color: #1a73e8;
   color: #616161;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 400;
   margin: 0;
   outline: none;
@@ -114,13 +117,13 @@ export default {
 }
 
 .input-wrapper.focus #input-title {
-  color: #077ed6;
+  color: #1a73e8;
   top: 4px;
   font-size: 12px;
 }
 
 .input-wrapper.focus input {
-  border-bottom: 1px solid #077ed6;
+  border-bottom: 1px solid #1a73e8;
 }
 
 .input-wrapper.no-empty #input-title {

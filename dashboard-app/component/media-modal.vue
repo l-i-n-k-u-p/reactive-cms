@@ -310,6 +310,7 @@ h2 {
   line-height: 1;
   margin: 0;
   padding: 0;
+  text-transform: uppercase;
 }
 
 #modal-description {
@@ -348,7 +349,7 @@ h2 {
 
 .box-content {
   background-color: white;
-  border-radius: 3px;
+  border-radius: 4px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   box-sizing: border-box;
   display: flex;
@@ -386,7 +387,7 @@ h2 {
 
 .media-files-wrapper {
   align-content: flex-start;
-  border-radius: 3px;
+  border-radius: 4px;
   display: flex;
   flex-flow: row wrap;
   flex-wrap: wrap;
@@ -396,7 +397,7 @@ h2 {
 
 .image {
   background-color: #f0f0f0;
-  border-radius: 3px;
+  border-radius: 4px;
   border: 1px solid white;
   cursor: pointer;
   flex: auto;
@@ -438,7 +439,7 @@ h2 {
 
 .media-file-info-wrapper .avatar {
   align-self: center;
-  border-radius: 3px;
+  border-radius: 4px;
   height: 30px;
   min-width: 30px;
 }
@@ -466,8 +467,8 @@ h2 {
 
 .dropzone {
   background-color: #f8f8f8;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
   border: 2px dashed #ccc;
   box-sizing: border-box;
   color: #616161;
@@ -544,12 +545,12 @@ h2 {
 }
 
 .buttons-wrapper .button:last-child {
-  color: #077ed6;
+  color: #1a73e8;
   margin-left: 10px;
 }
 
 .buttons-wrapper .button:hover {
-  background-color: rgba(200, 200, 200, 0.20);
+  background-color: #1a73e81c;
 }
 
 #media-scroll-wrapper {

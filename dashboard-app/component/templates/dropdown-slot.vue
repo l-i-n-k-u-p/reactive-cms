@@ -40,7 +40,7 @@ export default {
   -webkit-user-select: none;
   align-self: center;
   background: transparent;
-  border-radius: 3px;
+  border-radius: 4px;
   border: none;
   color: #616161;
   cursor: pointer;
@@ -56,8 +56,8 @@ export default {
 }
 
 .select-wrapper:hover {
-  background-color: rgba(200, 200, 200, 0.20);
-  color: #077ed6 !important;
+  background-color: #1a73e81c;
+  color: #1a73e8 !important;
 }
 
 .select-wrapper.open .icon,
@@ -67,7 +67,7 @@ export default {
 
 .items-wrapper {
   background-color: white;
-  border-radius: 3px;
+  border-radius: 4px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   display: flex;
   flex-wrap: wrap;
