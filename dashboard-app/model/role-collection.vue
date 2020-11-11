@@ -14,7 +14,7 @@ class RoleCollection extends BaseCollection {
   }
   routes () {
     return {
-      fetch: `${ APP_SETTINGS.appApiBaseURL }/roles/{page}`,
+      fetch: `${ APP_SETTINGS.appApiBaseURL }/roles/{page_number}/`,
     }
   }
 }

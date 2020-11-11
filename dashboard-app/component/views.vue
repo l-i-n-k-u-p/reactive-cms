@@ -21,8 +21,7 @@
     <LoadingBar v-if="isLoading"/>
     <BoxWrapper
       footerSize="12"
-      customPaddingStyle="0 10px"
-      >
+      customPaddingStyle="0 10px">
       <ListTable
         v-if="views.getModels().length"
         v-bind:collection="views"
@@ -48,14 +47,12 @@
       </div>
       <ButtonIcon
         buttonIcon="navigate_before"
-        v-bind:buttonAction="navigationBefore"
-      >
+        v-bind:buttonAction="navigationBefore">
       </ButtonIcon>
       <ButtonIcon
         buttonIcon="navigate_next"
         v-bind:buttonAction="navigationNext"
-        style="margin-left: 5px;"
-      >
+        style="margin-left: 5px;">
       </ButtonIcon>
     </div>
   </div>
@@ -115,7 +112,7 @@ export default {
   methods: {
     getViews: function () {
       this.isLoading = true
-      this.views.set('page', this.currentPage)
+      this.views.set('page_number', this.currentPage)
       this.views.fetch()
         .then(data => {
           this.isLoading = false

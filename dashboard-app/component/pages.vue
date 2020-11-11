@@ -129,7 +129,7 @@ export default {
   methods: {
     getPages: function () {
       this.isLoading = true
-      this.pages.set('page', this.currentPage)
+      this.pages.set('page_number', this.currentPage)
       this.pages.fetch()
         .then(data => {
           this.isLoading = false

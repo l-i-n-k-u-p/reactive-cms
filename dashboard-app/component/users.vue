@@ -132,7 +132,7 @@ export default {
   methods: {
     getUsers: function () {
       this.isLoading = true
-      this.users.set('page', this.currentPage)
+      this.users.set('page_number', this.currentPage)
       this.users.fetch()
         .then(data => {
           this.isLoading = false

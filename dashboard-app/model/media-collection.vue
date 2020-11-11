@@ -14,7 +14,7 @@ class MediaCollection extends BaseCollection {
   }
   routes () {
     return {
-      fetch: `${ APP_SETTINGS.appApiBaseURL }/media-files/{page}`,
+      fetch: `${ APP_SETTINGS.appApiBaseURL }/media-files/{page_number}/`,
     }
   }
 }

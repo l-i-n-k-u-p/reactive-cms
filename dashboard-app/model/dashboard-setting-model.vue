@@ -14,9 +14,6 @@ class DashboardSettingModel extends BaseModel {
       setting_items_peer_page: '',
     }
   }
-  options () {
-    return {}
-  }
   routes () {
     return {
       fetch: `${ APP_SETTINGS.appApiBaseURL }/dashboard-settings/`,

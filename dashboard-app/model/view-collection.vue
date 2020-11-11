@@ -14,8 +14,8 @@ class ViewCollection extends BaseCollection {
   }
   routes () {
     return {
-      fetch: `${ APP_SETTINGS.appApiBaseURL }/views/{page}`,
-      fetchAll: `${ APP_SETTINGS.appApiBaseURL }/views-all/{page}`,
+      fetch: `${ APP_SETTINGS.appApiBaseURL }/views/{page_number}/`,
+      fetchAll: `${ APP_SETTINGS.appApiBaseURL }/views-all/`,
     }
   }
 }

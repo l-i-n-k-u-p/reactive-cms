@@ -13,17 +13,6 @@ let io = new Socket.IO()
 export default class BaseModel extends Model {
   constructor (props) {
     super(props)
-    this.setCSRFToken()
-    this.setupListeners()
-  }
-  setCSRFToken () {
-    let csrf = lib.getCookie('csrf-token')
-    this.set('_csrf', csrf)
-  }
-  setupListeners () {
-    this.on('fetch', (event) => {
-      this.setCSRFToken()
-    })
   }
   listenPushMessages (modelName = '') {
     if (modelName === '')
@@ -32,17 +21,19 @@ export default class BaseModel extends Model {
     io.registerEvent(
       `${ modelName }-put`,
       data => {
-        if (this.get('_id') !== data.data._id)
+        let identifier = this.getOption('identifier')
+        if (this.get(identifier) !== data.data[identifier])
           return
 
-        this.set(data.data)
+        this.set(data.data) // TODO: ask for update
         this.emit('notification', { method: 'put' })
       }
     )
     io.registerEvent(
       `${ modelName }-delete`,
       data => {
-        if (this.get('_id') !== data.data._id)
+        let identifier = this.getOption('identifier')
+        if (this.get(identifier) !== data.data[identifier])
           return
 
         this.removeFromAllCollections()
@@ -54,7 +45,8 @@ export default class BaseModel extends Model {
     io.registerEvent(
       `${ modelName }-${ event }`,
       data => {
-        if (this.get('_id') === data.data._id)
+        let identifier = this.getOption('identifier')
+        if (this.get(identifier) === data.data[identifier])
           this.set(data.data)
       }
     )
@@ -63,27 +55,74 @@ export default class BaseModel extends Model {
     delete this._listeners[eventName]
   }
   getHeaders () {
-    return {
-      'Content-Type': 'application/json',
-      'csrf-token': lib.getCookie('csrf-token'),
-    }
+    return Vue.axios.defaults.headers.common
   }
   getRequest (config) {
     return new Request(config)
   }
   onFetchSuccess (response) {
-    // overriding - onFetchSuccess
-    let attributes = response.getData().data
+    let keyData = this.getOption('responseKeyData')
+    let attributes = response.getData()
+    if (keyData !== '')
+      attributes = attributes[keyData]
+    if (Vue.prototype._.isEmpty(attributes))
+      throw this.createResponseError('No data in fetch response', response)
     this.assign(attributes)
+    Vue.set(this, 'fatal',   false)
+    Vue.set(this, 'loading', false)
+    this.emit('fetch', { error: null })
+  }
+  onSaveSuccess (response) {
+    let action
+    this.clearErrors()
+    if (response) {
+      let keyData = this.getOption('responseKeyData')
+      let responseData = response.getData()
+      if (keyData !== '')
+        responseData = responseData[keyData]
+      action = 'update'
+      if (response.getStatus() === 201 ||
+          ( !this.saved('id') && (Vue.prototype._.isPlainObject(responseData) && Vue.prototype._.get(responseData, 'id'))))
+          action = 'create'
+      this.update(responseData)
+    }
+    Vue.set(this, 'saving', false)
+    Vue.set(this, 'fatal',  false)
+    this.emit('save.success', { error: null })
+    if (action)
+      this.emit(action, { error: null })
   }
   options () {
     return {
+      identifier: '_id',
       validateOnChange: true,
       validateRecursively: true,
       useFirstErrorOnly: true,
       saveUnchanged: false,
       isActiveRequest: false, // custom option
+      responseKeyData: 'data', // custom option
     }
+  }
+  _modelFetch (methodName, routeName, params) {
+    let method = methodName
+    let route = this.getRoute(routeName)
+    let url = this.getURL(route, this.getRouteParameters())
+    let header = this.getHeaders()
+    let data = this._attributes
+    let config = {
+      url,
+      method,
+      data,
+      params,
+      header,
+    }
+    let request = this.request(
+      config,
+      this.onFetch,
+      this.onFetchSuccess,
+      this.onFetchFailure
+    )
+    return request
   }
   _modelSave (methodName, routeName, params) {
     let method = methodName

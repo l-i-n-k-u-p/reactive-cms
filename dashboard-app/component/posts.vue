@@ -130,7 +130,7 @@ export default {
   methods: {
     getPosts: function () {
       this.isLoading = true
-      this.posts.set('page', this.currentPage)
+      this.posts.set('page_number', this.currentPage)
       this.posts.fetch()
         .then(data => {
           this.isLoading = false

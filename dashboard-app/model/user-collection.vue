@@ -14,7 +14,7 @@ class UserCollection extends BaseCollection {
   }
   routes () {
     return {
-      fetch: `${ APP_SETTINGS.appApiBaseURL }/users/{page}`,
+      fetch: `${ APP_SETTINGS.appApiBaseURL }/users/{page_number}/`,
     }
   }
 }
