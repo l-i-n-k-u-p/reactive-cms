@@ -14,7 +14,7 @@ class PageCollection extends BaseCollection {
   }
   routes () {
     return {
-      fetch: `${ APP_SETTINGS.appApiBaseURL }/pages/{page}`,
+      fetch: `${ APP_SETTINGS.appApiBaseURL }/pages/{page_number}/`,
       bulkDelete: `${ APP_SETTINGS.appApiBaseURL }/pages/`,
       bulkUpdate: `${ APP_SETTINGS.appApiBaseURL }/pages/`,
     }

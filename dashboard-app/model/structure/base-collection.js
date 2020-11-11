@@ -13,17 +13,11 @@ let io = new Socket.IO()
 export default class BaseCollection extends Collection {
   constructor (props) {
     super(props)
-    this.setCSRFToken()
-    this.setupListeners()
   }
-  setCSRFToken () {
-    let csrf = lib.getCookie('csrf-token')
-    this.set('_csrf', csrf)
-  }
-  setupListeners () {
-    this.on('fetch', (event) => {
-      this.setCSRFToken()
-    })
+  defaults () {
+    return {
+      page_number: 1,
+    }
   }
   listenPushMessages (modelName = '') {
     if (modelName === '')
@@ -47,7 +41,7 @@ export default class BaseCollection extends Collection {
     io.registerEvent(
       `${ modelName }-delete`,
       data => {
-        this.emit('notification', {method: 'delete'})
+        this.emit('notification', { method: 'delete' })
       }
     )
   }
@@ -63,10 +57,7 @@ export default class BaseCollection extends Collection {
     delete this._listeners[eventName]
   }
   getHeaders () {
-    return {
-      'Content-Type': 'application/json',
-      'csrf-token': lib.getCookie('csrf-token'),
-    }
+    return Vue.axios.defaults.headers.common
   }
   getChangedModels () {
     return this.filter((model) => {

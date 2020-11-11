@@ -42,12 +42,12 @@ class ProfileModel extends BaseModel {
       user_pass: value => {
           let id = this.get('_id')
           if (id !== undefined && value === '')
-            return ''
+            return
 
           if (value.length < 2 || value.length > 100)
             return 'Must have a length between 2 and 100'
 
-          return ''
+          return
         },
       user_email: email,
       user_first_name: string.and(length(2, 100)),

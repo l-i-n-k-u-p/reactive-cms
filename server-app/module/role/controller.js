@@ -6,6 +6,7 @@ const DASHBOARD_ADMIN_CONFIG = require('../../config/dashboard-admin-config')
 const session = require('../../lib/session')
 const permission = require('../../lib/permission')
 const sessionQuery = require('../../module/session/query')
+const resourceQuery = require('../../module/resource/query')
 
 const query = require('./query')
 

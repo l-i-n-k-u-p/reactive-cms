@@ -7,8 +7,8 @@ import {
 import BaseModel from './structure/base-model'
 import APP_SETTINGS from '../app-settings'
 
-let viewNameRegex = /[a-z\-]+/gi
-let sapaceRegex = /\s/gi
+let viewNameRegex = /[^a-z\-]+/g
+let sapaceRegex = /(^\s)/g
 
 
 class ViewModel extends BaseModel {
@@ -31,14 +31,16 @@ class ViewModel extends BaseModel {
   validation () {
     return {
       view_name: value => {
-        if (sapaceRegex.test(value))
+        if (value.match(sapaceRegex))
           return "Not spaces only '-'"
 
-        if (!viewNameRegex.test(value))
-          return "Only letters"
+        if (value.match(viewNameRegex))
+          return 'Only letters'
 
         if (value.length < 2)
           return 'Must have a length of at least 2'
+
+        return
       },
       view_description: string.and(length(2, 150)),
     }

@@ -14,7 +14,7 @@ class PostCollection extends BaseCollection {
   }
   routes () {
     return {
-      fetch: `${ APP_SETTINGS.appApiBaseURL }/posts/{page}`,
+      fetch: `${ APP_SETTINGS.appApiBaseURL }/posts/{page_number}/`,
     }
   }
 }

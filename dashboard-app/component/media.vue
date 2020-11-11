@@ -118,7 +118,7 @@ export default {
   methods: {
     getMedia: function () {
       this.isLoading = true
-      this.mediaFiles.set('page', this.currentPage)
+      this.mediaFiles.set('page_number', this.currentPage)
       let req = this.mediaFiles.fetch()
         .then(data => {
           this.isLoading = false
