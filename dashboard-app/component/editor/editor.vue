@@ -303,7 +303,7 @@ export default {
 button {
   align-self: center;
   background: transparent;
-  border-radius: 3px;
+  border-radius: 4px;
   border: none;
   color: #616161;
   cursor: pointer;
@@ -322,7 +322,7 @@ button {
 
 button:hover {
   background-color: rgba(200, 200, 200, 0.20);
-  color: #077ed6;
+  color: #1a73e8;
 }
 
 button i {
@@ -357,14 +357,14 @@ button i {
 }
 
 #editor-wrapper.focus {
-  border-bottom: 1px solid #077ed6;
+  border-bottom: 1px solid #1a73e8;
 }
 </style>
 
 <style lang="css">
 .ProseMirror {
   background: transparent;
-  caret-color: #077ed6;
+  caret-color: #1a73e8;
   font-size: 13px;
   font-weight: 500;
   margin: 0;

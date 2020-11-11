@@ -2,19 +2,18 @@
   <div>
     <div class="header">
       <NavigationButtons />
-      <h2>{{ $t('views') }}</h2>
+      <h2>
+        {{ $t('views') }}
+      </h2>
       <div class="buttons-wrapper">
         <Dropdown
           label="Bulk actions"
           v-bind:onSelectOption="onSelectOption"
-          v-bind:selectOptions="selectOptions"
-        >
-        </Dropdown>
+          v-bind:selectOptions="selectOptions"/>
         <Button
           buttonIcon="add"
           v-bind:buttonAction="openNewViewForm"
-          style="margin-left: 5px;"
-        >
+          style="margin-left: 5px;">
           {{ $t('Add view') }}
         </Button>
       </div>
@@ -36,7 +35,8 @@
         v-bind:totalItems="totalItems"
         v-bind:columnNames="columnNames"
         v-bind:itemPropNames="itemPropNames"
-        v-bind:keyThumbnail="keyThumbnail"/>
+        v-bind:keyThumbnail="keyThumbnail"
+        iconPropName="view_name"/>
     </BoxWrapper>
     <div class="navigation-wrapper">
       <div class="data">
@@ -187,7 +187,7 @@ export default {
 <style scoped lang="css">
 .header {
   display: flex;
-  margin: 0 20px 5px 20px;
+  margin: 0 10px 5px 10px;
 }
 
 h2 {
@@ -198,7 +198,7 @@ h2 {
   font-size: 13px;
   font-weight: 500;
   margin: 0;
-  text-transform: capitalize;
+  text-transform: uppercase;
 }
 
 .buttons-wrapper {
@@ -212,7 +212,7 @@ h2 {
   display: flex;
   font-weight: 400;
   justify-content: flex-end;
-  margin: 5px 20px;
+  margin: 5px 10px;
   position: relative;
 }
 

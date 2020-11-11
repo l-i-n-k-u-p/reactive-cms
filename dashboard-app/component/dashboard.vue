@@ -225,7 +225,7 @@ export default {
 
 .header {
   display: flex;
-  margin: 0 20px 5px 20px;
+  margin: 0 10px 5px 10px;
 }
 
 h2 {
@@ -236,7 +236,7 @@ h2 {
   font-size: 13px;
   font-weight: 500;
   margin: 0;
-  text-transform: capitalize;
+  text-transform: uppercase;
 }
 
 .buttons-wrapper {
@@ -272,7 +272,7 @@ h2 {
 
 .section-wrapper {
   background-color: white;
-  border-radius: 3px;
+  border-radius: 4px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   flex-grow: 1;
   height: 300px;
@@ -305,7 +305,7 @@ h2 {
 
 #global-chart {
   background-color: white;
-  border-radius: 3px;
+  border-radius: 4px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   flex-grow: 1;
   height: auto;

@@ -16,7 +16,6 @@ rcms_help()
   echo "--remove-development           Remove containers";
   echo "--remove-production            Remove containers";
   echo "--install-dependencies         Install dependencies";
-  echo "--install-nodejs-dependencies  Install NodeJS dependencies";
   echo "--build-images                 Build images";
   echo "";
   echo "If you want to show some container logs you can run:";
@@ -150,16 +149,6 @@ rcms_install_dependencies()
   echo "Installing dependencies finished";
 }
 
-rcms_install_nodejs_dependencies()
-{
-  echo "Installing nodejs dependencies";
-  echo "";
-  base_dir=./docker/;
-  docker-compose -f ${base_dir}build/rcms-nodejs-builder.yml run --rm rcms-install;
-  echo "";
-  echo "Installing nodejs dependencies finished";
-}
-
 rcms_build_images() {
   echo "Building images";
   echo "";
@@ -209,9 +198,6 @@ case $1 in
 	;;
 --install-dependencies)
 	rcms_install_dependencies;
-  ;;
---install-nodejs-dependencies)
-	rcms_install_nodejs_dependencies;
   ;;
 --build-images)
   rcms_build_images;

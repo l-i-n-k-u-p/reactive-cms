@@ -336,7 +336,7 @@ export default {
 
 .header {
   display: flex;
-  margin: 0 20px 5px 20px;
+  margin: 0 10px 5px 10px;
 }
 
 h2 {
@@ -344,9 +344,10 @@ h2 {
   color: #616161;
   display: flex;
   flex-grow: 1;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   margin: 0;
+  text-transform: uppercase;
 }
 
 h3 {
@@ -354,7 +355,7 @@ h3 {
   color: #616161;
   display: flex;
   flex-grow: 1;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   margin: 30px 0 15px 0;
   text-transform: capitalize;
@@ -382,8 +383,7 @@ h3 {
 }
 
 #doubleBoxWrapper {
-  border-radius: 3px;
-  border: 1px solid #616161;
+  border-radius: 4px;
   display: flex;
   margin: 10px 0;
 }
@@ -395,16 +395,12 @@ h3 {
   width: 50%;
 }
 
-#rightBox {
-  border-left: 1px solid #616161;
-}
-
 .sub-title {
   align-self: center;
   color: #616161;
   display: flex;
   flex-grow: 1;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   margin: 5px 0;
 }
@@ -412,8 +408,8 @@ h3 {
 .boxlist-wrapper {
   box-sizing: border-box;
   display: block;
-  max-height: 100px;
-  padding: 10px;
+  max-height: 320px;
+  padding-right: 8px;
   width: 100%;
 }
 

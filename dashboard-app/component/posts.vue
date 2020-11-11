@@ -36,7 +36,8 @@
         v-bind:totalItems="totalItems"
         v-bind:columnNames="columnNames"
         v-bind:itemPropNames="itemPropNames"
-        v-bind:keyThumbnail="keyThumbnail"/>
+        v-bind:keyThumbnail="keyThumbnail"
+        iconPropName="post_title"/>
     </BoxWrapper>
     <div class="navigation-wrapper">
       <div class="data">
@@ -217,7 +218,7 @@ export default {
 <style scoped lang="css">
 .header {
   display: flex;
-  margin: 0 20px 5px 20px;
+  margin: 0 10px 5px 10px;
 }
 
 h2 {
@@ -228,7 +229,7 @@ h2 {
   font-size: 13px;
   font-weight: 500;
   margin: 0;
-  text-transform: capitalize;
+  text-transform: uppercase;
 }
 
 .buttons-wrapper {
@@ -242,7 +243,7 @@ h2 {
   display: flex;
   font-weight: 400;
   justify-content: flex-end;
-  margin: 5px 20px;
+  margin: 5px 10px;
   position: relative;
 }
 

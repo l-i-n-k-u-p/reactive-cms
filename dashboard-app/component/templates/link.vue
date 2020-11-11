@@ -38,11 +38,11 @@ export default {
   -webkit-user-select: none;
   align-self: center;
   background: transparent;
-  border-radius: 3px;
+  border-radius: 4px;
   border: none;
   cursor: pointer;
   display: flex;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   height: 14px;
   outline: none;
@@ -53,8 +53,8 @@ export default {
 }
 
 #link-wrapper:hover {
-  background-color: rgba(200, 200, 200, 0.20);
-  color: #077ed6 !important;
+  background-color: #1a73e81c;
+  color: #1a73e8 !important;
 }
 
 #link-wrapper .icon {

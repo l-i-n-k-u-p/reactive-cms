@@ -53,7 +53,7 @@ export default {
 .input-wrapper label {
   align-self: center;
   color: #616161;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: bold;
   line-height: 0;
   margin-left: 26px;
@@ -74,7 +74,7 @@ export default {
 }
 
 .checkmark {
-  border-radius: 3px;
+  border-radius: 4px;
   border: 2px solid #616161;
   bottom: 0;
   height: 14px;
@@ -87,8 +87,8 @@ export default {
 }
 
 .input-wrapper input:checked ~ .checkmark {
-  background-color: #077ed6;
-  border: 2px solid #077ed6;
+  background-color: #1a73e8;
+  border: 2px solid #1a73e8;
 }
 
 .checkmark:after {

@@ -361,12 +361,12 @@ footer a {
 }
 
 .ps>.ps__scrollbar-y-rail {
-  background-color: #077ed645 !important;
+  background-color: #1a73e845 !important;
   width: 6px !important;
   z-index: 1;
 }
 .ps>.ps__scrollbar-y-rail>.ps__scrollbar-y {
-  background-color: #077ed6 !important;
+  background-color: #1a73e8 !important;
   border-radius: 0px !important;
   right: 0 !important;
   width: 6px !important;
@@ -379,7 +379,7 @@ footer a {
 }
 
 .ps>.ps__scrollbar-x-rail>.ps__scrollbar-x {
-  background-color: #077ed6 !important;
+  background-color: #1a73e8 !important;
   border-radius: 0px !important;
   bottom: 0 !important;
   height: 6px !important;

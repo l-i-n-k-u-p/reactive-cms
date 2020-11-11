@@ -1,7 +1,7 @@
 <template lang="html">
   <div
     id="button-wrapper"
-    v-on:click="buttonAction"
+    v-on:click="onClickbutton"
     v-bind:style="this.getColor()"
   >
     <i v-if="buttonIcon" class="material-icons icon">
@@ -17,6 +17,7 @@ export default {
     'buttonIcon',
     'buttonAction',
     'buttonColor',
+    'data',
   ],
   data() {
     return {}
@@ -24,6 +25,9 @@ export default {
   components: {},
   created() {},
   methods: {
+    onClickbutton: function () {
+      this.buttonAction(this.data)
+    },
     getColor: function () {
       if (this.buttonColor)
         return `color: ${ this.buttonColor }`
@@ -39,27 +43,29 @@ export default {
   -webkit-user-select: none;
   align-self: center;
   background: transparent;
-  border-radius: 3px;
-  border: none;
+  border-radius: 4px;
+  border: 1px solid transparent;
   cursor: pointer;
   display: block;
   display: flex;
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 400;
   height: 14px;
   outline: none;
   padding: 5px 15px;
   position: relative;
   user-select: none;
+  text-transform: uppercase;
 }
 
 #button-wrapper:hover {
-  background-color: rgba(200, 200, 200, 0.20);
-  color: #077ed6 !important;
+  background-color: #1a73e81c;
+  color: #1a73e8 !important;
 }
 
 #button-wrapper .icon {
   font-size: 16px;
   margin-right: 5px;
+  align-self: center;
 }
 </style>

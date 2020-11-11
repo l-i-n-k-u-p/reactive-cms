@@ -294,7 +294,7 @@ export default {
 <style scoped lang="css">
 .header {
   display: flex;
-  margin: 0 20px 5px 20px;
+  margin: 0 10px 5px 10px;
 }
 
 h2 {
@@ -305,6 +305,7 @@ h2 {
   font-size: 13px;
   font-weight: 500;
   margin: 0;
+  text-transform: uppercase;
 }
 
 .buttons-wrapper {
@@ -321,8 +322,8 @@ h2 {
 
 .user-thumbnail {
   background-color: #f8f8f8;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
   box-sizing: border-box;
   color: #616161;
   display: flex;
@@ -340,8 +341,8 @@ h2 {
 
 .user-thumbnail:after {
   background-color: rgba(160, 160, 160, 0.5);
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
   bottom: 0;
   content: "";
   left: 0;

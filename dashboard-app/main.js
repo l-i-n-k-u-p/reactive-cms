@@ -22,6 +22,8 @@ import localeES from './i18n/locale-es'
 import APP_SETTINGS from './app-settings'
 import GLOBAL_DIRECTIVES from './directive/global-directives.vue'
 import ACL_DIRECTIVES from './directive/acl-directives.vue'
+
+
 // NOTE: models
 import UserModel from './model/user-model.vue'
 import UserCollection from './model/user-collection.vue'
@@ -43,6 +45,7 @@ import ViewModel from './model/view-model.vue'
 import ViewCollection from './model/view-collection.vue'
 import ProfileModel from './model/profile-model.vue'
 import DashboardSettingModel from './model/dashboard-setting-model.vue'
+
 // NOTE: components
 import App from './app.vue'
 import Dashboard from './component/dashboard.vue'
@@ -69,6 +72,8 @@ for (let directive of ACL_DIRECTIVES.directives)
   Vue.directive(directive.name, directive.action)
 Vue.use(VueRouter)
 Vue.use(lodash)
+axios.defaults.xsrfCookieName = 'csrf-token'
+axios.defaults.xsrfHeaderName = 'csrf-token'
 Vue.use(VueAxios, axios)
 Vue.use(UUID)
 Vue.use(VueI18n)
@@ -95,6 +100,7 @@ Vue.prototype.$models = {
   Profile: ProfileModel.model,
   DashboardSetting: DashboardSettingModel.model,
 }
+
 Vue.prototype.$appApiBaseURL = APP_SETTINGS.appApiBaseURL
 Vue.prototype.$getHexColor = getHexColor
 Vue.prototype.$getAvatarURL = getAvatarURL
@@ -103,6 +109,8 @@ Vue.prototype.$aclReplaceVNode = aclReplaceVNode
 Vue.prototype.$aclUserCan = aclUserCan
 Vue.prototype.$getCookie = getCookie
 Vue.prototype.$socketIO = new sockerIO.IO()
+Vue.prototype._ = lodash
+window.Vue = Vue
 
 const i18n = new VueI18n({
   locale: 'en',

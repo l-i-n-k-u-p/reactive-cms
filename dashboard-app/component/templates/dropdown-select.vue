@@ -96,13 +96,13 @@ export default {
   -webkit-user-select: none;
   align-self: center;
   background: transparent;
-  border-radius: 3px;
+  border-radius: 4px;
   border: none;
   color: #616161;
   cursor: pointer;
   display: flex;
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 400;
   height: 14px;
   outline: none;
   padding: 5px 15px;
@@ -116,12 +116,12 @@ export default {
 }
 
 .select-wrapper:hover {
-  background-color: rgba(200, 200, 200, 0.20);
+  background-color: #1a73e81c;
 }
 
 .select-wrapper:hover label,
 .select-wrapper:hover .icon {
-  color: #077ed6 !important;
+  color: #1a73e8 !important;
 }
 
 .select-wrapper.open .icon,
@@ -134,12 +134,12 @@ export default {
   line-height: 1;
   margin-right: 5px;
   position: relative;
-  top: -2px;
+  align-self: center;
 }
 
 #select-options {
   background-color: white;
-  border-radius: 3px;
+  border-radius: 4px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   left: 0;
   list-style: none;
@@ -177,13 +177,13 @@ export default {
 
 #select-options .item {
   background-color: white;
-  padding: 5px 15px 5px 40px;
+  padding: 5px 15px;
   text-transform: capitalize;
 }
 
 #select-options .item:hover {
-  background-color: rgba(200, 200, 200, 0.20);
-  color: #077ed6 !important;
+  background-color: #1a73e81c;
+  color: #1a73e8 !important;
 }
 
 .select-wrapper.open {
