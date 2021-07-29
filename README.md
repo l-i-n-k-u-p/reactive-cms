@@ -118,7 +118,7 @@ eduardobc.88@gmail.com
     <br />
     Development by:
     <br />
-    <a href="https://www.reactive-web.com">
-        <img src="./ReadmeMDAssets/reactive-web.png" width="300" height="auto"/>
+    <a href="https://www.artifactstudio.io">
+        <img src="./ReadmeMDAssets/artifactstudio-logo.png" width="300" height="auto"/>
     </a>
 </div>

@@ -17,7 +17,7 @@
   "keywords": [
     "Reactive CMS"
   ],
-  "author": "https://www.reactive-web.com",
+  "author": "https://www.artifactstudio.io",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^3.0.7",

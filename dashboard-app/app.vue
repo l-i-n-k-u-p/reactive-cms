@@ -55,10 +55,10 @@
     <footer>
       <span>Development by</span>
       <a
-        href="https://www.reactive-web.com"
+        href="https://www.artifactstudio.io"
         target="_blank"
         >
-        <img src="/website/assets/reactive-web.png" />
+        <img src="/website/assets/artifactstudio-logo.png" />
       </a>
       <span>{{ version }}</span>
     </footer>

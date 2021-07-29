@@ -10,7 +10,7 @@
       <VuePerfectScrollbar class="scroll-area">
         <a
           id="link-logo"
-          href="https://github.com/reactive-web/reactive-cms"
+          href="https://github.com/artifactstudio/reactive-cms"
           target="_blank">
           <img
             id="logo"

@@ -150,7 +150,7 @@ const messages = {
   'Listview post template': 'Template de archivo de entradas',
   'Theme': 'Tema',
   'Number of items by page from 1 to 40': 'Número de artículos por página de 1 - 40',
-  'Example: https://www.reactive-web.com/': 'Ejemplo: https://www.reactive-web.com/',
+  'Example: https://www.artifactstudio.io/': 'Ejemplo: https://www.artifactstudio.io/',
   'Chose one image or upload new': 'Selecciona una imagen o carga una nueva',
   'Library': 'Biblioteca',
   'Upload': 'Cargar',

@@ -49,7 +49,7 @@
           v-bind:onChangeValue="onChangeInputSiteValue"
           propName="site_url"
           v-bind:errorMessage="site.errors.site_url"
-          helperMessage="Example: https://www.reactive-web.com/"/>
+          helperMessage="Example: https://www.artifactstudio.io/"/>
         <FormDropdownSelect
           class="dropdown-select"
           label="Home page template"
