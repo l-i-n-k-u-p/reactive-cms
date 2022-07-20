@@ -118,7 +118,5 @@ eduardobc.88@gmail.com
     <br />
     Development by:
     <br />
-    <a href="https://www.artifactstudio.io">
-        <img src="./ReadmeMDAssets/artifactstudio-logo.png" height="64" height="auto"/>
-    </a>
+    linkup
 </div>
